@@ -15,6 +15,7 @@ namespace Assets.Source.Game.Scripts
 
         [SerializeField] private RoomData[] _roomDatas;
         [SerializeField] private Room _startRoom;
+        [SerializeField] private Transform _playerSpawnPoint;
 
         private Room[,] spawnedRooms;
 
@@ -57,7 +58,7 @@ namespace Assets.Source.Game.Scripts
                 }
             }
 
-            Room newRoom = Instantiate(_roomDatas[Random.Range(0, _roomDatas.Length)].Room); // заменить на GetRandomRoom  + доавить вероятность комнаты
+            Room newRoom = Instantiate(GetRandomRoom());
 
             int limit = 500; //значение для теста
 
@@ -66,7 +67,7 @@ namespace Assets.Source.Game.Scripts
                 // Эту строчку можно заменить на выбор положения комнаты с учётом того насколько он далеко/близко от центра,
                 // или сколько у него соседей, чтобы генерировать более плотные, или наоборот, растянутые данжи
                 Vector2Int position = freeSpawnSpace.ElementAt(Random.Range(0, freeSpawnSpace.Count));
-                newRoom.RotateRandomly();
+                newRoom.RotateWallRandomly();
 
                 if (ConnectRooms(newRoom, position))
                 {
@@ -86,16 +87,16 @@ namespace Assets.Source.Game.Scripts
 
             List<Vector2Int> neighbours = new ();
 
-            if (room.DoorUpper != null && vector2.y < maxY && spawnedRooms[vector2.x, vector2.y + _shitIndex]?.DoorDown != null) 
+            if (room.WallUpper != null && vector2.y < maxY && spawnedRooms[vector2.x, vector2.y + _shitIndex]?.WallDown != null)
                 neighbours.Add(Vector2Int.up);
 
-            if (room.DoorDown != null && vector2.y > 0 && spawnedRooms[vector2.x, vector2.y - _shitIndex]?.DoorUpper != null) 
+            if (room.WallDown != null && vector2.y > 0 && spawnedRooms[vector2.x, vector2.y - _shitIndex]?.WallUpper != null)
                 neighbours.Add(Vector2Int.down);
 
-            if (room.DoorRight != null && vector2.x < maxX && spawnedRooms[vector2.x + _shitIndex, vector2.y]?.DoorLeft != null) 
+            if (room.WallRight != null && vector2.x < maxX && spawnedRooms[vector2.x + _shitIndex, vector2.y]?.WallLeft != null)
                 neighbours.Add(Vector2Int.right);
 
-            if (room.DoorLeft != null && vector2.x > 0 && spawnedRooms[vector2.x - _shitIndex, vector2.y]?.DoorRight != null) 
+            if (room.WallLeft != null && vector2.x > 0 && spawnedRooms[vector2.x - _shitIndex, vector2.y]?.WallRight != null)
                 neighbours.Add(Vector2Int.left);
 
             if (neighbours.Count == 0) 
@@ -106,23 +107,23 @@ namespace Assets.Source.Game.Scripts
 
             if (selectedDirection == Vector2Int.up)
             {
-                room.DoorUpper.SetActive(false);
-                selectedRoom.DoorDown.SetActive(false);
+                room.WallUpper.SetActive(false);
+                selectedRoom.WallDown.SetActive(false);
             }
             else if (selectedDirection == Vector2Int.down)
             {
-                room.DoorDown.SetActive(false);
-                selectedRoom.DoorUpper.SetActive(false);
+                room.WallDown.SetActive(false);
+                selectedRoom.WallUpper.SetActive(false);
             }
             else if (selectedDirection == Vector2Int.right)
             {
-                room.DoorRight.SetActive(false);
-                selectedRoom.DoorLeft.SetActive(false);
+                room.WallRight.SetActive(false);
+                selectedRoom.WallLeft.SetActive(false);
             }
             else if (selectedDirection == Vector2Int.left)
             {
-                room.DoorLeft.SetActive(false);
-                selectedRoom.DoorRight.SetActive(false);
+                room.WallLeft.SetActive(false);
+                selectedRoom.WallRight.SetActive(false);
             }
 
             return true;
@@ -134,7 +135,7 @@ namespace Assets.Source.Game.Scripts
 
             for (int index = 0; index < _roomDatas.Length; index++)
             {
-               // chances.Add(_roomDatas[i].Room.ChanceFromDistance.Evaluate(Player.transform.position.z)); //Player Transform или точка спавна персонажа
+                chances.Add(_roomDatas[index].ChanceFromDistance.Evaluate(_playerSpawnPoint.position.x));
             }
 
             float value = Random.Range(0, chances.Sum());

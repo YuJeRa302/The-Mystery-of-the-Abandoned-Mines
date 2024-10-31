@@ -10,8 +10,8 @@ public class EnemyStateMashineExample : MonoBehaviour
 {
     [SerializeField] private float _speed;
     [SerializeField] private float _attackDistance;
-    [SerializeField] private Player _target;
-
+    
+    private Player _target;
     private StateMashine _stateMashine;
     private Enemy _enemy;
     private NavMeshAgent _meshAgent;
@@ -22,8 +22,21 @@ public class EnemyStateMashineExample : MonoBehaviour
 
     private void Start()
     {
+        //_meshAgent = GetComponent<NavMeshAgent>();
+        //_enemy = GetComponent<Enemy>();
+    }
+
+    private void Update()
+    {
+        if (_stateMashine != null)
+            _stateMashine.UpdateStateMashine();
+    }
+
+    public void InitializeStateMashine(Player target)
+    {
         _meshAgent = GetComponent<NavMeshAgent>();
         _enemy = GetComponent<Enemy>();
+        _target = target;
         _stateMashine = new StateMashine(_target);
 
         _stateMashine.AddState(new IdleState(_stateMashine, _target));
@@ -35,9 +48,8 @@ public class EnemyStateMashineExample : MonoBehaviour
         _stateMashine.SetState<IdleState>();
     }
 
-    private void Update()
+    public void ResetState()
     {
-        if (_stateMashine != null)
-            _stateMashine.UpdateStateMashine();
+        _stateMashine.SetState<IdleState>();
     }
 }

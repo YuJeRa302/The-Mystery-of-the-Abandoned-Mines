@@ -1,8 +1,44 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class Enemy : PoolObject
 {
+    [SerializeField] private EnemyStateMashineExample _stateMashine;
+    [SerializeField] private float _health;
     
+    private bool _isDead;
+    private float _currentHealth;
+
+    public void Initialize(Player player)
+    {
+        _currentHealth = _health;
+        _stateMashine.InitializeStateMashine(player);
+    }
+
+    public void ResetEnemy()
+    {
+        _isDead = true;
+        _currentHealth = _health;
+        _stateMashine.ResetState();
+    }
+
+    public void TakeDamage(float damage)
+    {
+        if (damage < 0)
+            return;
+
+        if (_currentHealth < 0)
+            return;
+
+        _currentHealth -= damage;
+        //GotHit?.Invoke();
+        //TakedDamage?.Invoke(damage); ;
+        //HealthChanged?.Invoke(_health, _maxHealth);
+
+        if (_currentHealth <= 0)
+        {
+            _currentHealth = 0;
+            _isDead = true;
+            gameObject.SetActive(false);//test
+        }
+    }
 }

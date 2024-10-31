@@ -14,6 +14,8 @@ public class MovmetPlayer : MonoBehaviour
     private InputAction _move;
     private bool _isModile = false;
 
+    public float MaxMoveSpeed => _maxMoveSpeed;
+
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();

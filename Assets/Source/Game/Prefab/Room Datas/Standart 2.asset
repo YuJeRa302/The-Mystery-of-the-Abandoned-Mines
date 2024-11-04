@@ -10,20 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b3b84350d56850447958dc7183b943e3, type: 3}
-  m_Name: Standart
+  m_Name: Standart 2
   m_EditorClassIdentifier: 
-  _id: 0
-  _roomName: St
-  _room: {fileID: 8234881999620521735, guid: 7b1c697bf7e9d6d4899a09334c62ce74, type: 3}
+  _id: 1
+  _roomName: Room Boss
+  _room: {fileID: 7416874074565796790, guid: 773f354892204254883985b3b438b9a9, type: 3}
   _chanceFromDistance:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 34
+      time: 0.012499999
+      value: 0.19575472
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
       weightedMode: 0
       inWeight: 0
       outWeight: 0
@@ -32,10 +32,13 @@ MonoBehaviour:
       value: 1
       inSlope: 0
       outSlope: 0
-      tangentMode: 34
+      tangentMode: 0
       weightedMode: 0
       inWeight: 0
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  _enemyDatas:
+  - {fileID: 11400000, guid: c09a3c0740e3502468be820b02f1d026, type: 2}
+  - {fileID: 11400000, guid: e88a5ccc8245ee745b4fc75cb3a9a14b, type: 2}

@@ -24,6 +24,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8434575785932242322}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -63,7 +64,6 @@ Transform:
   - {fileID: 1152527446397529555}
   - {fileID: 7108338992248623513}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8234881999620521735
 MonoBehaviour:
@@ -87,6 +87,9 @@ MonoBehaviour:
   _doorLeft: {fileID: 4115925027373035552}
   _trapSpawnpoints: []
   _enemySpawnPoints: []
+  _bossSpawnPoint: {fileID: 0}
+  _confiner: {fileID: 0}
+  _navSurface: {fileID: 7270544330635659012}
 --- !u!1001 &161469830684790957
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1895,6 +1898,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1676609100239073865, guid: 0d780173c250d334f80c9061373c8e4f, type: 3}
   m_PrefabInstance: {fileID: 6608107744675046483}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &7270544330635659012 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: -4660487327945465001, guid: 0d780173c250d334f80c9061373c8e4f, type: 3}
+  m_PrefabInstance: {fileID: 6608107744675046483}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &6895961407339043461
 PrefabInstance:
   m_ObjectHideFlags: 0

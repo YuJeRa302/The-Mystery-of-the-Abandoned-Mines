@@ -11,7 +11,6 @@ public class IdleState : State
 
     public override void EnterState()
     {
-        Debug.Log("Enter Idle State");
     }
 
     public override void UpdateState()
@@ -24,6 +23,5 @@ public class IdleState : State
 
     public override void ExitState()
     {
-        Debug.Log("Exit Idle State");
     }
 }

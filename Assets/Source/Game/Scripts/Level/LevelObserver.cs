@@ -6,12 +6,20 @@ namespace Assets.Source.Game.Scripts
     {
         [SerializeField] private RoomPlacer _roomPlacer;
         [SerializeField] private EnemySpawner _enemySpawner;
+        [SerializeField] private CameraControiler _cameraControiler;
 
+        private Room _currentRoom;
         private int _currentRoomLevel = 0;
 
         private void Awake()
         {
+            _cameraControiler.ChengeConfiner(_roomPlacer.StartRoom);
             Initialize();
+        }
+
+        private void OnEnable()
+        {
+            _enemySpawner.AllEnemyRoomDied += OnEnemyRoomDied;
         }
 
         private void OnDestroy()
@@ -43,7 +51,16 @@ namespace Assets.Source.Game.Scripts
 
         private void OnRoomEntering(Room room) 
         {
-            _enemySpawner.Initialize(room.EnemySpawnPoints, room.RoomData.EnemyData, _currentRoomLevel);
+            _currentRoom = room;
+            _cameraControiler.ChengeConfiner(room);
+
+            if(room.IsComplete == false)
+                _enemySpawner.Initialize(room.EnemySpawnPoints, room.RoomData.EnemyData, _currentRoomLevel);
+        }
+
+        private void OnEnemyRoomDied()
+        {
+            _currentRoom.SetComplete();
         }
     }
 }

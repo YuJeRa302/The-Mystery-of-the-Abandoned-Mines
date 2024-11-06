@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PlayerAttacker : MonoBehaviour
 {
-    private const float SearchRadius = 3f;
+    private const float SearchRadius = 5f;
 
     [SerializeField] private float _damage;
 
@@ -51,7 +51,11 @@ public class PlayerAttacker : MonoBehaviour
         else
         {
             _currentTarget = _enemies.OrderBy(distance => distance.Key).First().Value;
-            GetHit();
+
+            if(_currentTarget != null && _currentTarget.isActiveAndEnabled == true)
+            {
+                GetHit();
+            }
         }
     }
 
@@ -59,6 +63,5 @@ public class PlayerAttacker : MonoBehaviour
     {
         _currentTarget.TakeDamage(_damage);
         Attacked?.Invoke();
-        Debug.Log("Damage");
     }
 }

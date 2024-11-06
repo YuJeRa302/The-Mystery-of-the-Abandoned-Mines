@@ -1,12 +1,15 @@
+using System;
 using UnityEngine;
 
 public class Enemy : PoolObject
 {
     [SerializeField] private EnemyStateMashineExample _stateMashine;
-    [SerializeField] private float _health;
+    private float _health = 20f;
     
     private bool _isDead;
     private float _currentHealth;
+
+    public event Action Died;
 
     public void Initialize(Player player)
     {
@@ -23,21 +26,24 @@ public class Enemy : PoolObject
 
     public void TakeDamage(float damage)
     {
+        Debug.Log("TAKE DAMAGE");
+        Debug.Log(damage);
         if (damage < 0)
             return;
 
-        if (_currentHealth < 0)
+        if (_currentHealth <= 0)
             return;
 
         _currentHealth -= damage;
         //GotHit?.Invoke();
         //TakedDamage?.Invoke(damage); ;
         //HealthChanged?.Invoke(_health, _maxHealth);
-
+        Debug.Log(_currentHealth);
         if (_currentHealth <= 0)
         {
             _currentHealth = 0;
             _isDead = true;
+            Died?.Invoke();
             gameObject.SetActive(false);//test
         }
     }

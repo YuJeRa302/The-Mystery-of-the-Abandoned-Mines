@@ -1,4 +1,5 @@
 using System;
+using Unity.AI.Navigation;
 using UnityEngine;
 
 namespace Assets.Source.Game.Scripts
@@ -23,6 +24,10 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private Transform[] _trapSpawnpoints;
         [SerializeField] private Transform[] _enemySpawnPoints;
         [SerializeField] private Transform _bossSpawnPoint;
+        [Header("Confiner Zone")]
+        [SerializeField] private BoxCollider _confiner;
+        [Header("NavMesh")]
+        [SerializeField] private NavMeshSurface _navSurface;
 
         public event Action<Room> RoomEntering;
 
@@ -33,6 +38,8 @@ namespace Assets.Source.Game.Scripts
         public Transform[] TrapSpawnPoints => _trapSpawnpoints;
         public Transform[] EnemySpawnPoints => _enemySpawnPoints;
         public Transform BossSpawnPoint => _bossSpawnPoint;
+        public BoxCollider Confiner => _confiner;
+        public NavMeshSurface NavSurface => _navSurface;
         public RoomData RoomData { get; private set; }
         public int CurrentLevel { get; private set; }
         public bool IsComplete { get; private set; } = false;
@@ -42,12 +49,15 @@ namespace Assets.Source.Game.Scripts
             if (collider.TryGetComponent(out Player player))
                 if (IsComplete == false)
                     LockRoom();
+                else
+                    RoomEntering?.Invoke(this);
         }
 
         public void Initialize(RoomData roomData, int currentLevel)
         {
             RoomData = roomData;
             CurrentLevel = currentLevel;
+            _navSurface.BuildNavMesh();
         }
 
         public void SetComplete()

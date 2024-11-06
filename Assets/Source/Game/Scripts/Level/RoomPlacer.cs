@@ -22,6 +22,7 @@ namespace Assets.Source.Game.Scripts
         private List<Room> _createdRooms = new ();
 
         public List<Room> CreatedRooms => _createdRooms;
+        public Room StartRoom => _startRoom;
 
         public void Initialize(int currentRoomLevel)
         {

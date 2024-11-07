@@ -53,6 +53,11 @@ namespace Assets.Source.Game.Scripts
                     RoomEntering?.Invoke(this);
         }
 
+        public void SetRoomStatus()//test
+        {
+            IsComplete = true;
+        }
+
         public void Initialize(RoomData roomData, int currentLevel)
         {
             RoomData = roomData;

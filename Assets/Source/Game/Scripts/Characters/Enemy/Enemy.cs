@@ -26,8 +26,6 @@ public class Enemy : PoolObject
 
     public void TakeDamage(float damage)
     {
-        Debug.Log("TAKE DAMAGE");
-        Debug.Log(damage);
         if (damage < 0)
             return;
 
@@ -38,13 +36,20 @@ public class Enemy : PoolObject
         //GotHit?.Invoke();
         //TakedDamage?.Invoke(damage); ;
         //HealthChanged?.Invoke(_health, _maxHealth);
-        Debug.Log(_currentHealth);
+
         if (_currentHealth <= 0)
         {
             _currentHealth = 0;
             _isDead = true;
             Died?.Invoke();
-            gameObject.SetActive(false);//test
+            ReturnToPool();//test
         }
+    }
+
+    protected override void ReturnToPool()
+    {
+        base.ReturnToPool();
+        _isDead = false;
+        _currentHealth = _health;
     }
 }

@@ -39,6 +39,9 @@ namespace Assets.Source.Game.Scripts
             {
                 room.RoomEntering += OnRoomEntering;
             }
+
+            _roomPlacer.StartRoom.SetRoomStatus();//
+            _roomPlacer.StartRoom.RoomEntering += OnRoomEntering;//test
         }
 
         private void RemoveListener()
@@ -47,6 +50,8 @@ namespace Assets.Source.Game.Scripts
             {
                 room.RoomEntering -= OnRoomEntering;
             }
+
+            _roomPlacer.StartRoom.RoomEntering -= OnRoomEntering;
         }
 
         private void OnRoomEntering(Room room) 
@@ -56,6 +61,8 @@ namespace Assets.Source.Game.Scripts
 
             if(room.IsComplete == false)
                 _enemySpawner.Initialize(room.EnemySpawnPoints, room.RoomData.EnemyData, _currentRoomLevel);
+
+            Debug.Log("Enter Room");
         }
 
         private void OnEnemyRoomDied()

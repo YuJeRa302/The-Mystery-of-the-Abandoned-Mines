@@ -9,6 +9,8 @@ public class Pool : MonoBehaviour
 
     public event Action GetPoolObject;
 
+    public List<PoolObject> PoolObjects => _poolObjects;
+
     private void OnDisable()
     {
         foreach (var pollObject in _poolObjects)

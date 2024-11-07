@@ -93,7 +93,8 @@ namespace Assets.Source.Game.Scripts
                 _spawnPoints[value].position.y,
                 _spawnPoints[value].position.z),
                 new Quaternion(_minValue, _minValue, _minValue, _minValue));
-
+                
+                _enemuPool.InstantiatePoolObject(enemy);
                 enemy.Initialize(_player);
                 enemy.Died += OnEnemyDead;
                 _enemies.Add(enemy);
@@ -102,14 +103,14 @@ namespace Assets.Source.Game.Scripts
 
         private bool TyrFindEnemy(PoolObject enemyType, out Enemy poolEnemy)
         {
-            Enemy enemy = enemyType as Enemy;
+            //Enemy enemy = enemyType as Enemy;
             poolEnemy = null;
 
             if (_enemuPool.TryPoolObject(out PoolObject enemyPool))
             {
                 poolEnemy = enemyPool as Enemy;
             }
-
+            Debug.Log(poolEnemy != null);
             return poolEnemy != null;
         }
 

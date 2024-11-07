@@ -29,6 +29,7 @@ public class PlayerAttacker : MonoBehaviour
 
     private void FindTarget()
     {
+        _enemies.Clear();
         _currentTarget = null;
 
         var colliders = Physics.OverlapSphere(transform.position, SearchRadius);
@@ -61,7 +62,11 @@ public class PlayerAttacker : MonoBehaviour
 
     private void GetHit()
     {
-        _currentTarget.TakeDamage(_damage);
         Attacked?.Invoke();
+    }
+
+    private void ApplyDamage()
+    {
+        _currentTarget.TakeDamage(_damage);
     }
 }

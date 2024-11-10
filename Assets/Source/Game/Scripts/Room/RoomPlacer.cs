@@ -12,9 +12,11 @@ namespace Assets.Source.Game.Scripts
         private readonly int _massRoomSize = 11;
         private readonly int _spawnCenterCoordinate = 5;
         private readonly int _minValue = 0;
-        private readonly int _shitIndex = 1;
+        private readonly int _shiftIndex = 1;
+        private readonly int _roomBossId = 1;
 
         [SerializeField] private RoomData[] _roomDatas;
+        [SerializeField] private RoomData _defaultRoomData;
         [SerializeField] private Room _startRoom;
         [SerializeField] private Transform _playerSpawnPoint;
 
@@ -41,37 +43,38 @@ namespace Assets.Source.Game.Scripts
 
             for (int x = 0; x < _spawnedRooms.GetLength(_minValue); x++)
             {
-                for (int y = 0; y < _spawnedRooms.GetLength(_shitIndex); y++)
+                for (int y = 0; y < _spawnedRooms.GetLength(_shiftIndex); y++)
                 {
                     if (_spawnedRooms[x, y] == null)
                         continue;
 
-                    int maxX = _spawnedRooms.GetLength(_minValue) - _shitIndex;
-                    int maxY = _spawnedRooms.GetLength(_shitIndex) - _shitIndex;
+                    int maxX = _spawnedRooms.GetLength(_minValue) - _shiftIndex;
+                    int maxY = _spawnedRooms.GetLength(_shiftIndex) - _shiftIndex;
 
-                    if (x > 0 && _spawnedRooms[x - _shitIndex, y] == null)
-                        freeSpawnSpace.Add(new Vector2Int(x - _shitIndex, y));
+                    if (x > 0 && _spawnedRooms[x - _shiftIndex, y] == null)
+                        freeSpawnSpace.Add(new Vector2Int(x - _shiftIndex, y));
 
-                    if (y > 0 && _spawnedRooms[x, y - _shitIndex] == null)
-                        freeSpawnSpace.Add(new Vector2Int(x, y - _shitIndex));
+                    if (y > 0 && _spawnedRooms[x, y - _shiftIndex] == null)
+                        freeSpawnSpace.Add(new Vector2Int(x, y - _shiftIndex));
 
-                    if (x < maxX && _spawnedRooms[x + _shitIndex, y] == null)
-                        freeSpawnSpace.Add(new Vector2Int(x + _shitIndex, y));
+                    if (x < maxX && _spawnedRooms[x + _shiftIndex, y] == null)
+                        freeSpawnSpace.Add(new Vector2Int(x + _shiftIndex, y));
 
-                    if (y < maxY && _spawnedRooms[x, y + _shitIndex] == null)
-                        freeSpawnSpace.Add(new Vector2Int(x, y + _shitIndex));
+                    if (y < maxY && _spawnedRooms[x, y + _shiftIndex] == null)
+                        freeSpawnSpace.Add(new Vector2Int(x, y + _shiftIndex));
                 }
             }
 
             RoomData randomRoomData = GetRandomRoom();
-            Room newRoom = Instantiate(randomRoomData.Room);
 
+            if (TryGetBossRoom(randomRoomData))
+                randomRoomData = _defaultRoomData;
+
+            Room newRoom = Instantiate(randomRoomData.Room);
             int limit = 500; //значение для теста
 
             while (limit-- > 0)
             {
-                // Эту строчку можно заменить на выбор положения комнаты с учётом того насколько он далеко/близко от центра,
-                // или сколько у него соседей, чтобы генерировать более плотные, или наоборот, растянутые данжи
                 Vector2Int position = freeSpawnSpace.ElementAt(_rnd.Next(0, freeSpawnSpace.Count));
                 //newRoom.RotateWallRandomly(); // временно убран
 
@@ -90,21 +93,21 @@ namespace Assets.Source.Game.Scripts
 
         private bool ConnectRooms(Room room, Vector2Int vector2)
         {
-            int maxX = _spawnedRooms.GetLength(_minValue) - _shitIndex;
-            int maxY = _spawnedRooms.GetLength(_shitIndex) - _shitIndex;
+            int maxX = _spawnedRooms.GetLength(_minValue) - _shiftIndex;
+            int maxY = _spawnedRooms.GetLength(_shiftIndex) - _shiftIndex;
 
             List<Vector2Int> neighbours = new ();
 
-            if (room.WallUpper != null && vector2.y < maxY && _spawnedRooms[vector2.x, vector2.y + _shitIndex]?.WallDown != null)
+            if (room.WallUpper != null && vector2.y < maxY && _spawnedRooms[vector2.x, vector2.y + _shiftIndex]?.WallDown != null)
                 neighbours.Add(Vector2Int.up);
 
-            if (room.WallDown != null && vector2.y > 0 && _spawnedRooms[vector2.x, vector2.y - _shitIndex]?.WallUpper != null)
+            if (room.WallDown != null && vector2.y > 0 && _spawnedRooms[vector2.x, vector2.y - _shiftIndex]?.WallUpper != null)
                 neighbours.Add(Vector2Int.down);
 
-            if (room.WallRight != null && vector2.x < maxX && _spawnedRooms[vector2.x + _shitIndex, vector2.y]?.WallLeft != null)
+            if (room.WallRight != null && vector2.x < maxX && _spawnedRooms[vector2.x + _shiftIndex, vector2.y]?.WallLeft != null)
                 neighbours.Add(Vector2Int.right);
 
-            if (room.WallLeft != null && vector2.x > 0 && _spawnedRooms[vector2.x - _shitIndex, vector2.y]?.WallRight != null)
+            if (room.WallLeft != null && vector2.x > 0 && _spawnedRooms[vector2.x - _shiftIndex, vector2.y]?.WallRight != null)
                 neighbours.Add(Vector2Int.left);
 
             if (neighbours.Count == 0)
@@ -137,6 +140,20 @@ namespace Assets.Source.Game.Scripts
             return true;
         }
 
+        private bool TryGetBossRoom(RoomData randomRoomData) 
+        {
+            if (randomRoomData.Id == _roomBossId)
+            {
+                foreach (var room in _createdRooms)
+                {
+                    if (room.RoomData.Id == randomRoomData.Id)
+                        return true;
+                }
+            }
+
+            return false;
+        }
+
         private RoomData GetRandomRoom()
         {
             List<float> chances = new ();
@@ -157,7 +174,7 @@ namespace Assets.Source.Game.Scripts
                     return _roomDatas[index];
             }
 
-            return _roomDatas[_roomDatas.Length - _shitIndex];
+            return _roomDatas[_roomDatas.Length - _shiftIndex];
         }
     }
 }

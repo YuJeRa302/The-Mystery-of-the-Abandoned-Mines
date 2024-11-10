@@ -15,11 +15,13 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private GameObject _wallRight;
         [SerializeField] private GameObject _wallDown;
         [SerializeField] private GameObject _wallLeft;
+        [Header("Room Doorway Places")]
+        [SerializeField] private GameObject _doorwayUpper;
+        [SerializeField] private GameObject _doorwayRight;
+        [SerializeField] private GameObject _doorwayDown;
+        [SerializeField] private GameObject _doorwayLeft;
         [Header("Room Door Places")]
-        [SerializeField] private GameObject _doorUpper;
-        [SerializeField] private GameObject _doorRight;
-        [SerializeField] private GameObject _doorDown;
-        [SerializeField] private GameObject _doorLeft;
+        [SerializeField] private RoomDoor[] _doors;
         [Header("Spawn Locations")]
         [SerializeField] private Transform[] _trapSpawnpoints;
         [SerializeField] private Transform[] _enemySpawnPoints;
@@ -63,6 +65,7 @@ namespace Assets.Source.Game.Scripts
             RoomData = roomData;
             CurrentLevel = currentLevel;
             _navSurface.BuildNavMesh();
+            CreateDoorway();
         }
 
         public void SetComplete()
@@ -87,36 +90,40 @@ namespace Assets.Source.Game.Scripts
             }
         }
 
-        private void LockRoom()
+        private void CreateDoorway() 
         {
             if (_wallLeft != null && _wallLeft.activeSelf == false)
-                _doorLeft.SetActive(true);
+                _doorwayLeft.SetActive(true);
 
             if (_wallRight != null && _wallRight.activeSelf == false)
-                _doorRight.SetActive(true);
+                _doorwayRight.SetActive(true);
 
             if (_wallUpper != null && _wallUpper.activeSelf == false)
-                _doorUpper.SetActive(true);
+                _doorwayUpper.SetActive(true);
 
             if (_wallDown != null && _wallDown.activeSelf == false)
-                _doorDown.SetActive(true);
+                _doorwayDown.SetActive(true);
+        }
+
+        private void LockRoom()
+        {
+            if (IsComplete == true)
+                return;
+
+            foreach (var door in _doors) 
+            {
+                door.Lock();
+            }
 
             RoomEntering?.Invoke(this);
         }
 
         private void UnlockRoom()
         {
-            if (_doorLeft != null && _doorLeft.activeSelf == true)
-                _doorLeft.SetActive(false);
-
-            if (_doorRight != null && _doorRight.activeSelf == true)
-                _doorRight.SetActive(false);
-
-            if (_doorUpper != null && _doorUpper.activeSelf == true)
-                _doorUpper.SetActive(false);
-
-            if (_doorDown != null && _doorDown.activeSelf == true)
-                _doorDown.SetActive(false);
+            foreach (var door in _doors)
+            {
+                door.Unlock();
+            }
         }
     }
 }

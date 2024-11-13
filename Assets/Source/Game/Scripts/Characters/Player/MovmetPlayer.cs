@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -5,6 +6,7 @@ using UnityEngine.InputSystem;
 public class MovmetPlayer : MonoBehaviour
 {
     [SerializeField] private Camera _camera;
+    [SerializeField] private VariableJoystick _variableJoystick;
     [SerializeField] private float _moveSpeed;
 
     private float _maxMoveSpeed;
@@ -38,15 +40,37 @@ public class MovmetPlayer : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (_isModile)
-        {
-            //MobileMove();
-        }
+        MobileMove();
+        DekstopMove();
+        //if (_isModile)
+        //{
+        //    MobileMove();
+        //}
+        //else
+        //{
+        //    DekstopMove();
+        //    _rigidbody.velocity = new Vector3(_rigidbody.velocity.x, 0, _rigidbody.velocity.z);
+        //}
+    }
+
+    private void MobileMove()
+    {
+        float mobileSpeed = _moveSpeed * 12.7f;
+        _direction = Vector3.forward * _variableJoystick.Vertical + Vector3.right * _variableJoystick.Horizontal;
+        _rigidbody.AddForce(_direction * mobileSpeed * Time.fixedDeltaTime, ForceMode.VelocityChange);
+        MobileLookAt();
+    }
+
+    private void MobileLookAt()
+    {
+        Vector3 direction = _rigidbody.velocity;
+        direction.y = 0;
+        Vector2 turn = new Vector2(_variableJoystick.Horizontal, _variableJoystick.Vertical);
+
+        if (turn.sqrMagnitude > 0.1f && direction.sqrMagnitude > 0.1f)
+            _rigidbody.rotation = Quaternion.LookRotation(direction, Vector3.up);
         else
-        {
-            DekstopMove();
-            _rigidbody.velocity = new Vector3(_rigidbody.velocity.x, 0, _rigidbody.velocity.z);
-        }
+            _rigidbody.angularVelocity = Vector3.zero;
     }
 
     private void DekstopMove()

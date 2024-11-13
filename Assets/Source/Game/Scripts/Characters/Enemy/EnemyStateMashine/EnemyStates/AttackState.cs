@@ -2,25 +2,35 @@ using UnityEngine;
 
 public class AttackState : State
 {
-    private float _lastAttackTime = 0;
-    private float _attackDelay = 2f;
-    private float _attackRange;
-    private Vector3 _directionToTarget;
-    private float _distanceToTarget;
-    private Player _target;
-    private Enemy _enemy;
+    protected float _lastAttackTime = 0;
+    protected float _attackDelay;
+    protected float _attackRange;
+    protected Vector3 _directionToTarget;
+    protected float _distanceToTarget;
+    protected Player _target;
+    protected Enemy _enemy;
+    private Player target;
+    private Enemy enemy;
+    private float attackDistance;
 
-    public AttackState(StateMashine stateMashine, Player target, Enemy enemy,float attackDistance) : base(stateMashine)
+    public AttackState(StateMashine stateMashine, Player target, Enemy enemy,float attackDistance, float attackDelay) : base(stateMashine)
     {
         _target = target;
         _attackRange = attackDistance;
         _enemy = enemy;
+        _attackDelay = attackDelay;
+    }
+
+    public override void EnterState()
+    {
+        base.EnterState();
     }
 
     public override void UpdateState()
     {
         _directionToTarget = _enemy.transform.position - _target.transform.position;
         _distanceToTarget = _directionToTarget.magnitude;
+        _enemy.transform.LookAt(_target.transform.position);
 
         if (_distanceToTarget > _attackRange)
             _stateMashine.SetState<MoveState>();
@@ -31,7 +41,7 @@ public class AttackState : State
         }
     }
 
-    private bool Attack()
+    protected bool Attack()
     {
         if (_distanceToTarget <= _attackRange)
         {

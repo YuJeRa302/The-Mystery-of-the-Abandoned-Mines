@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -20,13 +19,7 @@ public class EnemyStateMashineExample : MonoBehaviour
 
     public Dictionary<Type, State> MashineStates => _stateMashine.States;
 
-    private void Start()
-    {
-        //_meshAgent = GetComponent<NavMeshAgent>();
-        //_enemy = GetComponent<Enemy>();
-    }
-
-    private void Update()
+    private void FixedUpdate()
     {
         if (_stateMashine != null)
             _stateMashine.UpdateStateMashine();
@@ -41,7 +34,16 @@ public class EnemyStateMashineExample : MonoBehaviour
 
         _stateMashine.AddState(new IdleState(_stateMashine, _target));
         _stateMashine.AddState(new MoveState(_stateMashine, _target, _attackDistance, _speed, _meshAgent, _enemy));
-        _stateMashine.AddState(new AttackState(_stateMashine, _target, _enemy, _attackDistance));
+
+        if(_enemy.TryGetComponent(out Boss boss))
+        {
+            _stateMashine.AddState(new BossAttackState(_stateMashine, _target, _enemy, _attackDistance, _enemy.AttackDelay, boss.AdditionalAttackDelay));//
+            _stateMashine.AddState(new BossSpecialAttackState(_stateMashine));//
+        }
+        else
+        {
+            _stateMashine.AddState(new AttackState(_stateMashine, _target, _enemy, _attackDistance, _enemy.AttackDelay));
+        }
 
         MashineInitialized?.Invoke();
 

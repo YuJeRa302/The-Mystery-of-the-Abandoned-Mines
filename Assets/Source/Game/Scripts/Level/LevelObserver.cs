@@ -61,8 +61,6 @@ namespace Assets.Source.Game.Scripts
 
             if(room.IsComplete == false)
                 _enemySpawner.Initialize(room.EnemySpawnPoints, room.RoomData.EnemyData, _currentRoomLevel);
-
-            Debug.Log("Enter Room");
         }
 
         private void OnEnemyRoomDied()

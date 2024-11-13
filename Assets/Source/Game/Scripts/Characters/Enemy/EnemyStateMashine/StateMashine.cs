@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class StateMashine
 {
@@ -31,6 +32,7 @@ public class StateMashine
             CurrentState?.ExitState();
             CurrentState = newState;
             CurrentState.EnterState();
+            Debug.Log(CurrentState);
         }
     }
 

@@ -4,10 +4,14 @@ using UnityEngine;
 public class Enemy : PoolObject
 {
     [SerializeField] private EnemyStateMashineExample _stateMashine;
+    [SerializeField] private float _attackDelay;
+
     private float _health = 20f;
     
     private bool _isDead;
     private float _currentHealth;
+
+    public float AttackDelay => _attackDelay;
 
     public event Action Died;
 

@@ -18,7 +18,7 @@ public class EnemyAnimation : MonoBehaviour
         _enemyStateMashine.MashineInitialized += AddAnimationAction;
     }
 
-    private void OnDisable()
+    private void OnDestroy()
     {
         _enemyStateMashine.MashineInitialized -= AddAnimationAction;
 
@@ -28,6 +28,7 @@ public class EnemyAnimation : MonoBehaviour
             events.Value.Moving -= OnMove;
             events.Value.TakedDamage -= OnTakeDamage;
             events.Value.PlayerLose -= OnWinGame;
+            events.Value.AdditionalAttacking -= OnAdditionalAttack;
         }
     }
 
@@ -39,12 +40,14 @@ public class EnemyAnimation : MonoBehaviour
             events.Value.Moving += OnMove;
             events.Value.TakedDamage += OnTakeDamage;
             events.Value.PlayerLose += OnWinGame;
+            events.Value.AdditionalAttacking += OnAdditionalAttack;
         }
     }
 
     private void OnMove() => _animator.SetTrigger(_animationEnemy.MoveAnimation);
 
     private void OnAttack() => _animator.SetTrigger(_animationEnemy.AttackAnimation);
+    private void OnAdditionalAttack() => _animator.SetTrigger(_animationEnemy.AdditionalAttackAnimation);
 
     private void OnTakeDamage() => _animator.SetTrigger(_animationEnemy.TakeDamageAnimation);
 

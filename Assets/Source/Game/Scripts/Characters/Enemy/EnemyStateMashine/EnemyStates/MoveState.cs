@@ -30,7 +30,12 @@ public class MoveState : State
         float distance = directionToTarget.magnitude;
 
         if (distance <= _distanceToTransition)
-            _stateMashine.SetState<AttackState>();
+        {
+            if (_enemy.TryGetComponent(out Boss boss))
+                _stateMashine.SetState<BossAttackState>();
+            else
+                _stateMashine.SetState<AttackState>();
+        }
 
         Move();
     }
@@ -43,5 +48,7 @@ public class MoveState : State
     private void Move()
     {
         _navMeshAgent.SetDestination(Vector3.forward + _target.transform.position);
+        _navMeshAgent.destination = _target.transform.position;
+        _enemy.transform.LookAt(_target.transform.position);
     }
 }

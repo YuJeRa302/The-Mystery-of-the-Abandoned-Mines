@@ -8,7 +8,7 @@ namespace Assets.Source.Game.Scripts
     public class EnemySpawner : MonoBehaviour
     {
         private readonly System.Random _rnd = new ();
-        private readonly float _delaySpawn = 5.0f;
+        private readonly float _delaySpawn = 1.0f;
         private readonly int _minValue = 0;
 
         [SerializeField] private Player _player;
@@ -26,7 +26,7 @@ namespace Assets.Source.Game.Scripts
         private int _spawnedEnemy;
         private int _deadEnemy = 0;
         private int _countStats;
-        private float _maxGameTime = 2f;//временное значение
+        private float _maxGameTime = 1;//временное значение
 
         public event Action AllEnemyRoomDied;
 
@@ -86,14 +86,15 @@ namespace Assets.Source.Game.Scripts
             }
             else
             {
-                enemy = Instantiate(
-                enemyData.PrefabEnemy,
-                new Vector3(
-                _spawnPoints[value].position.x,
-                _spawnPoints[value].position.y,
-                _spawnPoints[value].position.z),
-                new Quaternion(_minValue, _minValue, _minValue, _minValue));
-                
+                //enemy = Instantiate(
+                //enemyData.PrefabEnemy,
+                //new Vector3(
+                //_spawnPoints[value].position.x,
+                //_spawnPoints[value].position.y,
+                //_spawnPoints[value].position.z),
+                //new Quaternion(_minValue, _minValue, _minValue, _minValue));
+                enemy = Instantiate(enemyData.PrefabEnemy, _spawnPoints[value].position, _spawnPoints[value].rotation);
+
                 _enemuPool.InstantiatePoolObject(enemy);
                 enemy.Initialize(_player);
                 enemy.Died += OnEnemyDead;
@@ -110,7 +111,7 @@ namespace Assets.Source.Game.Scripts
             {
                 poolEnemy = enemyPool as Enemy;
             }
-            Debug.Log(poolEnemy != null);
+
             return poolEnemy != null;
         }
 

@@ -5,22 +5,38 @@ public class BossAttackState : AttackState
     private float _additionalAttackDelay = 7f;
     protected float _lastAdditionalAttackTime = 0;
 
-    public BossAttackState(StateMashine stateMashine, Player target, Enemy enemy, float attackDistance, float attackDelay, float additionalAttackDelay) : base(stateMashine, target, enemy, attackDistance, attackDelay)
+    public BossAttackState(StateMashine stateMashine, Player target, Enemy enemy, float attackDistance, float attackDelay, float damage, 
+        float additionalAttackDelay, AnimationStateController animationController) : base(stateMashine, target, enemy, attackDistance, attackDelay, damage, animationController)
     {
         _target = target;
         _attackRange = attackDistance;
         _enemy = enemy;
         _attackDelay = attackDelay;
         _additionalAttackDelay = additionalAttackDelay;
+        _animationController = animationController;
+        _animationController.Attacked += ApplyDamage;
+        _animationController.AdditionalAttacked += AditionalAttackAppalyDamage;
     }
 
     public override void UpdateState()
     {
-        base.UpdateState();
-
-        if (AdditionalAttack())
+        if (_canTransit)
         {
-            AdditionalAttackEvent();
+            _directionToTarget = _enemy.transform.position - _target.transform.position;
+            _distanceToTarget = _directionToTarget.magnitude;
+
+            if (_distanceToTarget > _attackRange)
+                _stateMashine.SetState<MoveState>();
+
+            if (Attack())
+            {
+                AttackEvent();
+            }
+
+            if (AdditionalAttack())
+            {
+                AdditionalAttackEvent();
+            }
         }
     }
 
@@ -37,5 +53,11 @@ public class BossAttackState : AttackState
 
         _lastAdditionalAttackTime -= Time.deltaTime;
         return false;
+    }
+
+    private void AditionalAttackAppalyDamage()
+    {
+        _canTransit = true;
+        Debug.Log("TryAplayDamage");
     }
 }

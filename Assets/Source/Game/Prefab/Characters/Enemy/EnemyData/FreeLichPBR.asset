@@ -28,4 +28,4 @@ MonoBehaviour:
   _enemyAbilityParticleSystem: {fileID: 0}
   _audioClipDie: {fileID: 0}
   _hit: {fileID: 0}
-  _prefabEnemy: {fileID: 5799371161530998459, guid: 8a874ac03b442f94595eb25ecec1e2ff, type: 3}
+  _prefabEnemy: {fileID: 190874258655281799, guid: 8a874ac03b442f94595eb25ecec1e2ff, type: 3}

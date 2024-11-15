@@ -1,5 +1,4 @@
 using System;
-using UnityEngine;
 
 public abstract class State 
 {
@@ -28,7 +27,6 @@ public abstract class State
     protected void MoveEvent() 
     { 
         Moving?.Invoke();
-        Debug.Log("MoveIvent");
     }
 
     protected void TakeDamageEvent() => TakedDamage?.Invoke();

@@ -40,5 +40,4 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   _enemyDatas:
-  - {fileID: 11400000, guid: c09a3c0740e3502468be820b02f1d026, type: 2}
   - {fileID: 11400000, guid: e88a5ccc8245ee745b4fc75cb3a9a14b, type: 2}

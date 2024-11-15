@@ -9,6 +9,7 @@ public class EnemyStateMashineExample : MonoBehaviour
 {
     [SerializeField] private float _speed;
     [SerializeField] private float _attackDistance;
+    [SerializeField] private AttackState _attack;
     
     private Player _target;
     private StateMashine _stateMashine;
@@ -37,12 +38,16 @@ public class EnemyStateMashineExample : MonoBehaviour
 
         if(_enemy.TryGetComponent(out Boss boss))
         {
-            _stateMashine.AddState(new BossAttackState(_stateMashine, _target, _enemy, _attackDistance, _enemy.AttackDelay, boss.AdditionalAttackDelay));//
+            _stateMashine.AddState(new BossAttackState(_stateMashine, _target, _enemy, _attackDistance, _enemy.AttackDelay, _enemy.Damage, boss.AdditionalAttackDelay, _enemy.AnimationStateController));//
             _stateMashine.AddState(new BossSpecialAttackState(_stateMashine));//
+        }
+        else if (_enemy.TryGetComponent(out RangeEnemy rangeEnemy))
+        {
+            _stateMashine.AddState(new RangeAttackState(_stateMashine, _target, _enemy, _attackDistance, _enemy.AttackDelay, _enemy.Damage, _enemy.AnimationStateController, rangeEnemy.BulletSpawner));
         }
         else
         {
-            _stateMashine.AddState(new AttackState(_stateMashine, _target, _enemy, _attackDistance, _enemy.AttackDelay));
+            _stateMashine.AddState(new AttackState(_stateMashine, _target, _enemy, _attackDistance, _enemy.AttackDelay, _enemy.Damage, _enemy.AnimationStateController));
         }
 
         MashineInitialized?.Invoke();

@@ -466,11 +466,11 @@ GameObject:
   - component: {fileID: 8554810091201740863}
   - component: {fileID: 7060195615098159593}
   - component: {fileID: 5938546545316644564}
-  - component: {fileID: 3756330777779673236}
   - component: {fileID: 6466123994611825158}
   - component: {fileID: 2394918646678090073}
   - component: {fileID: 4251205277681547902}
   - component: {fileID: 6460710701101056627}
+  - component: {fileID: -1716427446601766911}
   m_Layer: 0
   m_Name: GoldGragonBoss
   m_TagString: Untagged
@@ -539,33 +539,6 @@ CapsuleCollider:
   m_Height: 6.15
   m_Direction: 1
   m_Center: {x: 0, y: 1.05, z: 0}
---- !u!54 &3756330777779673236
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1361657303877518475}
-  serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 116
-  m_CollisionDetection: 0
 --- !u!114 &6466123994611825158
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -615,6 +588,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _stateMashine: {fileID: 6460710701101056627}
   _attackDelay: 5
+  _damage: 0
+  _animationController: {fileID: -1716427446601766911}
   _additionalAttackDelay: 7
 --- !u!114 &6460710701101056627
 MonoBehaviour:
@@ -630,6 +605,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _speed: 3
   _attackDistance: 6
+--- !u!114 &-1716427446601766911
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1361657303877518475}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4fe45c7f5b1c2fa4aafed4583e92244c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1417575129968025986
 GameObject:
   m_ObjectHideFlags: 0

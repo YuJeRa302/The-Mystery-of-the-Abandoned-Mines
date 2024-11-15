@@ -5,6 +5,8 @@ public class Enemy : PoolObject
 {
     [SerializeField] private EnemyStateMashineExample _stateMashine;
     [SerializeField] private float _attackDelay;
+    [SerializeField] protected float _damage;
+    [SerializeField] private AnimationStateController _animationController;
 
     private float _health = 20f;
     
@@ -12,6 +14,8 @@ public class Enemy : PoolObject
     private float _currentHealth;
 
     public float AttackDelay => _attackDelay;
+    public float Damage => _damage;
+    public AnimationStateController AnimationStateController => _animationController;
 
     public event Action Died;
 

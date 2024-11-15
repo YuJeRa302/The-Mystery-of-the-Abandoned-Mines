@@ -33,6 +33,8 @@ public class MoveState : State
         {
             if (_enemy.TryGetComponent(out Boss boss))
                 _stateMashine.SetState<BossAttackState>();
+            else if (_enemy.TryGetComponent(out RangeEnemy rangeEnemy))
+                _stateMashine.SetState<RangeAttackState>();
             else
                 _stateMashine.SetState<AttackState>();
         }

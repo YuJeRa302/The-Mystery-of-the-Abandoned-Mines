@@ -1,3 +1,4 @@
+using Unity.AI.Navigation;
 using UnityEngine;
 
 namespace Assets.Source.Game.Scripts
@@ -7,6 +8,7 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private RoomPlacer _roomPlacer;
         [SerializeField] private EnemySpawner _enemySpawner;
         [SerializeField] private CameraControiler _cameraControiler;
+        [SerializeField] private NavMeshSurface _navSurface;
 
         private Room _currentRoom;
         private int _currentRoomLevel = 0;
@@ -31,6 +33,7 @@ namespace Assets.Source.Game.Scripts
         {
             _roomPlacer.Initialize(_currentRoomLevel);
             AddListener();
+            _navSurface.BuildNavMesh();
         }
 
         private void AddListener() 

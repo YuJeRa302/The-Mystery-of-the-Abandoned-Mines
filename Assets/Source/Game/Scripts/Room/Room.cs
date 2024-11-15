@@ -64,7 +64,6 @@ namespace Assets.Source.Game.Scripts
         {
             RoomData = roomData;
             CurrentLevel = currentLevel;
-            _navSurface.BuildNavMesh();
             CreateDoorway();
         }
 

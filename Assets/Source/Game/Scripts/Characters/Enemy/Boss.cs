@@ -1,8 +1,11 @@
 using UnityEngine;
 
-public class Boss : Enemy
+namespace Assets.Source.Game.Scripts
 {
-    [SerializeField] private float _additionalAttackDelay = 7f;
+    public class Boss : Enemy
+    {
+        [SerializeField] private float _additionalAttackDelay = 7f;
 
-    public float AdditionalAttackDelay => _additionalAttackDelay;
+        public float AdditionalAttackDelay => _additionalAttackDelay;
+    }
 }

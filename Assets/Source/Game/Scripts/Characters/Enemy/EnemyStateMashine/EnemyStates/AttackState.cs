@@ -1,72 +1,77 @@
 using UnityEngine;
 
-public class AttackState : State
+namespace Assets.Source.Game.Scripts
 {
-    protected float _lastAttackTime = 0;
-    protected float _attackDelay;
-    protected float _attackRange;
-    protected Vector3 _directionToTarget;
-    protected float _distanceToTarget;
-    protected float _damage;
-    protected Player _target;
-    protected Enemy _enemy;
-    protected AnimationStateController _animationController;
-
-    protected bool _canTransit = true;
-
-    public AttackState(StateMashine stateMashine, Player target, Enemy enemy,float attackDistance, float attackDelay, float damage,AnimationStateController animationController) : base(stateMashine)
+    public class AttackState : State
     {
-        _target = target;
-        _attackRange = attackDistance;
-        _damage = damage;
-        _enemy = enemy;
-        _attackDelay = attackDelay;
-        _animationController = animationController;
-        _animationController.Attacked += ApplyDamage;
-    }
+        protected float _lastAttackTime = 0;
+        protected float _attackDelay;
+        protected float _attackRange;
+        protected Vector3 _directionToTarget;
+        protected float _distanceToTarget;
+        protected float _damage;
+        protected Player _target;
+        protected Enemy _enemy;
+        protected AnimationStateController _animationController;
 
-    public override void EnterState()
-    {
-        base.EnterState();
-    }
+        protected bool _canTransit = true;
 
-    public override void UpdateState()
-    {
-        if (_canTransit)
+        public AttackState(StateMashine stateMashine, Player target, Enemy enemy, float attackDistance, float attackDelay, float damage, AnimationStateController animationController) : base(stateMashine)
         {
-            _directionToTarget = _enemy.transform.position - _target.transform.position;
-            _distanceToTarget = _directionToTarget.magnitude;
-
-            if (_distanceToTarget > _attackRange)
-                _stateMashine.SetState<MoveState>();
-
-            if (Attack())
-            {
-                AttackEvent();
-            }
+            _target = target;
+            _attackRange = attackDistance;
+            _damage = damage;
+            _enemy = enemy;
+            _attackDelay = attackDelay;
+            _animationController = animationController;
+            _animationController.Attacked += ApplyDamage;
         }
-    }
 
-    protected bool Attack()
-    {
-        if (_distanceToTarget <= _attackRange)
+        public override void EnterState()
         {
-            _enemy.transform.LookAt(_target.transform.position);
+            base.EnterState();
+        }
 
-            if (_lastAttackTime <= 0)
+        public override void UpdateState()
+        {
+            if (_canTransit)
             {
-                _lastAttackTime = _attackDelay;
-                _canTransit = false;
-                return true;
+                _directionToTarget = _enemy.transform.position - _target.transform.position;
+                _distanceToTarget = _directionToTarget.magnitude;
+
+                if (_distanceToTarget > _attackRange)
+                    _stateMashine.SetState<MoveState>();
+
+                if (Attack())
+                {
+                    AttackEvent();
+                }
             }
         }
 
-        _lastAttackTime -= Time.deltaTime;
-        return false;
-    }
+        protected bool Attack()
+        {
+            Debug.Log("Try");
+            if (_distanceToTarget <= _attackRange)
+            {
+                _enemy.transform.LookAt(_target.transform.position);
 
-    protected void ApplyDamage()
-    {
-        _canTransit = true;
+                if (_lastAttackTime <= 0)
+                {
+                    _lastAttackTime = _attackDelay;
+                    _canTransit = false;
+                    return true;
+                }
+            }
+
+            _lastAttackTime -= Time.deltaTime;
+            return false;
+        }
+
+        protected void ApplyDamage()
+        {
+            _canTransit = true;
+            Debug.Log("TryAplayDamage");
+        }
     }
 }

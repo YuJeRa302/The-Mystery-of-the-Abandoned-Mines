@@ -1,18 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+namespace Assets.Source.Game.Scripts
 {
-    // Start is called before the first frame update
-    void Start()
+    public class Player : MonoBehaviour
     {
-        
-    }
+        [SerializeField] private PlayerAttacker _playerAttacker;
+        [SerializeField] private PlayerStats _playerStats;
+        [SerializeField] private CardDeck _cardDeck;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        public CardDeck CardDeck => _cardDeck;
+        public PlayerAttacker PlayerAttacker => _playerAttacker;
+        public PlayerStats PlayerStats => _playerStats;
     }
 }

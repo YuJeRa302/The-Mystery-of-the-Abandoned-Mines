@@ -1,63 +1,66 @@
 using System;
 using UnityEngine;
 
-public class Enemy : PoolObject
+namespace Assets.Source.Game.Scripts
 {
-    [SerializeField] private EnemyStateMashineExample _stateMashine;
-    [SerializeField] private float _attackDelay;
-    [SerializeField] protected float _damage;
-    [SerializeField] private AnimationStateController _animationController;
-
-    private float _health = 20f;
-    
-    private bool _isDead;
-    private float _currentHealth;
-
-    public float AttackDelay => _attackDelay;
-    public float Damage => _damage;
-    public AnimationStateController AnimationStateController => _animationController;
-
-    public event Action Died;
-
-    public void Initialize(Player player)
+    public class Enemy : PoolObject
     {
-        _currentHealth = _health;
-        _stateMashine.InitializeStateMashine(player);
-    }
+        [SerializeField] private EnemyStateMashineExample _stateMashine;
+        [SerializeField] private float _attackDelay;
+        [SerializeField] protected float _damage;
+        [SerializeField] private AnimationStateController _animationController;
 
-    public void ResetEnemy()
-    {
-        _isDead = true;
-        _currentHealth = _health;
-        _stateMashine.ResetState();
-    }
+        private float _health = 20f;
 
-    public void TakeDamage(float damage)
-    {
-        if (damage < 0)
-            return;
+        private bool _isDead;
+        private float _currentHealth;
 
-        if (_currentHealth <= 0)
-            return;
+        public float AttackDelay => _attackDelay;
+        public float Damage => _damage;
+        public AnimationStateController AnimationStateController => _animationController;
 
-        _currentHealth -= damage;
-        //GotHit?.Invoke();
-        //TakedDamage?.Invoke(damage); ;
-        //HealthChanged?.Invoke(_health, _maxHealth);
+        public event Action Died;
 
-        if (_currentHealth <= 0)
+        public void Initialize(Player player)
         {
-            _currentHealth = 0;
-            _isDead = true;
-            Died?.Invoke();
-            ReturnToPool();//test
+            _currentHealth = _health;
+            _stateMashine.InitializeStateMashine(player);
         }
-    }
 
-    protected override void ReturnToPool()
-    {
-        base.ReturnToPool();
-        _isDead = false;
-        _currentHealth = _health;
+        public void ResetEnemy()
+        {
+            _isDead = true;
+            _currentHealth = _health;
+            _stateMashine.ResetState();
+        }
+
+        public void TakeDamage(float damage)
+        {
+            if (damage < 0)
+                return;
+
+            if (_currentHealth <= 0)
+                return;
+
+            _currentHealth -= damage;
+            //GotHit?.Invoke();
+            //TakedDamage?.Invoke(damage); ;
+            //HealthChanged?.Invoke(_health, _maxHealth);
+
+            if (_currentHealth <= 0)
+            {
+                _currentHealth = 0;
+                _isDead = true;
+                Died?.Invoke();
+                ReturnToPool();//test
+            }
+        }
+
+        protected override void ReturnToPool()
+        {
+            base.ReturnToPool();
+            _isDead = false;
+            _currentHealth = _health;
+        }
     }
 }

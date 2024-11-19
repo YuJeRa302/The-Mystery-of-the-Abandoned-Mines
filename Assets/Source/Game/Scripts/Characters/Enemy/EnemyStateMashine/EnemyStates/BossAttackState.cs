@@ -1,63 +1,66 @@
 using UnityEngine;
 
-public class BossAttackState : AttackState
+namespace Assets.Source.Game.Scripts
 {
-    private float _additionalAttackDelay = 7f;
-    protected float _lastAdditionalAttackTime = 0;
-
-    public BossAttackState(StateMashine stateMashine, Player target, Enemy enemy, float attackDistance, float attackDelay, float damage, 
-        float additionalAttackDelay, AnimationStateController animationController) : base(stateMashine, target, enemy, attackDistance, attackDelay, damage, animationController)
+    public class BossAttackState : AttackState
     {
-        _target = target;
-        _attackRange = attackDistance;
-        _enemy = enemy;
-        _attackDelay = attackDelay;
-        _additionalAttackDelay = additionalAttackDelay;
-        _animationController = animationController;
-        _animationController.Attacked += ApplyDamage;
-        _animationController.AdditionalAttacked += AditionalAttackAppalyDamage;
-    }
+        private float _additionalAttackDelay = 7f;
+        protected float _lastAdditionalAttackTime = 0;
 
-    public override void UpdateState()
-    {
-        if (_canTransit)
+        public BossAttackState(StateMashine stateMashine, Player target, Enemy enemy, float attackDistance, float attackDelay, float damage,
+            float additionalAttackDelay, AnimationStateController animationController) : base(stateMashine, target, enemy, attackDistance, attackDelay, damage, animationController)
         {
-            _directionToTarget = _enemy.transform.position - _target.transform.position;
-            _distanceToTarget = _directionToTarget.magnitude;
-
-            if (_distanceToTarget > _attackRange)
-                _stateMashine.SetState<MoveState>();
-
-            if (Attack())
-            {
-                AttackEvent();
-            }
-
-            if (AdditionalAttack())
-            {
-                AdditionalAttackEvent();
-            }
+            _target = target;
+            _attackRange = attackDistance;
+            _enemy = enemy;
+            _attackDelay = attackDelay;
+            _additionalAttackDelay = additionalAttackDelay;
+            _animationController = animationController;
+            _animationController.Attacked += ApplyDamage;
+            _animationController.AdditionalAttacked += AditionalAttackAppalyDamage;
         }
-    }
 
-    private bool AdditionalAttack()
-    {
-        if (_distanceToTarget <= _attackRange)
+        public override void UpdateState()
         {
-            if (_lastAdditionalAttackTime <= 0)
+            if (_canTransit)
             {
-                _lastAdditionalAttackTime = _additionalAttackDelay;
-                return true;
+                _directionToTarget = _enemy.transform.position - _target.transform.position;
+                _distanceToTarget = _directionToTarget.magnitude;
+
+                if (_distanceToTarget > _attackRange)
+                    _stateMashine.SetState<MoveState>();
+
+                if (Attack())
+                {
+                    AttackEvent();
+                }
+
+                if (AdditionalAttack())
+                {
+                    AdditionalAttackEvent();
+                }
             }
         }
 
-        _lastAdditionalAttackTime -= Time.deltaTime;
-        return false;
-    }
+        private bool AdditionalAttack()
+        {
+            if (_distanceToTarget <= _attackRange)
+            {
+                if (_lastAdditionalAttackTime <= 0)
+                {
+                    _lastAdditionalAttackTime = _additionalAttackDelay;
+                    return true;
+                }
+            }
 
-    private void AditionalAttackAppalyDamage()
-    {
-        _canTransit = true;
-        Debug.Log("TryAplayDamage");
+            _lastAdditionalAttackTime -= Time.deltaTime;
+            return false;
+        }
+
+        private void AditionalAttackAppalyDamage()
+        {
+            _canTransit = true;
+            Debug.Log("TryAplayDamage");
+        }
     }
 }

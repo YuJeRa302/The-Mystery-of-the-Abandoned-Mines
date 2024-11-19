@@ -1,23 +1,26 @@
 using UnityEngine;
 
-public class EnemyBullet : PoolObject
+namespace Assets.Source.Game.Scripts
 {
-    private float _damage;
-
-    public void Initialaze(int damage)
+    public class EnemyBullet : PoolObject
     {
-        _damage = damage;
-    }
+        private float _damage;
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.collider.TryGetComponent(out Player player))
+        public void Initialaze(int damage)
         {
-            //player.TakeDamage(_damage);
-            ReturObjectPool();
+            _damage = damage;
         }
 
-        //if (collision.collider.TryGetComponent(out Wall wall))
-        //    ReturObjectPool();
+        private void OnCollisionEnter(Collision collision)
+        {
+            if (collision.collider.TryGetComponent(out Player player))
+            {
+                //player.TakeDamage(_damage);
+                ReturObjectPool();
+            }
+
+            //if (collision.collider.TryGetComponent(out Wall wall))
+            //    ReturObjectPool();
+        }
     }
 }

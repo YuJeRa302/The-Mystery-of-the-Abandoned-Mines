@@ -1,27 +1,30 @@
 using UnityEngine;
 
-public class IdleState : State
+namespace Assets.Source.Game.Scripts
 {
-    private Player _target;
-
-    public IdleState(StateMashine stateMashine, Player player) : base(stateMashine)
+    public class IdleState : State
     {
-        _target = player;
-    }
+        private Player _target;
 
-    public override void EnterState()
-    {
-    }
-
-    public override void UpdateState()
-    {
-        if(_target != null)
+        public IdleState(StateMashine stateMashine, Player player) : base(stateMashine)
         {
-            _stateMashine.SetState<MoveState>();
+            _target = player;
         }
-    }
 
-    public override void ExitState()
-    {
+        public override void EnterState()
+        {
+        }
+
+        public override void UpdateState()
+        {
+            if (_target != null)
+            {
+                _stateMashine.SetState<MoveState>();
+            }
+        }
+
+        public override void ExitState()
+        {
+        }
     }
 }

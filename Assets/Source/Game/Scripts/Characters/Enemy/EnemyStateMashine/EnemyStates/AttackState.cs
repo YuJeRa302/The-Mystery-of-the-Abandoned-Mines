@@ -49,7 +49,6 @@ public class AttackState : State
 
     protected bool Attack()
     {
-        Debug.Log("Try");
         if (_distanceToTarget <= _attackRange)
         {
             _enemy.transform.LookAt(_target.transform.position);
@@ -69,6 +68,5 @@ public class AttackState : State
     protected void ApplyDamage()
     {
         _canTransit = true;
-        Debug.Log("TryAplayDamage");
     }
 }

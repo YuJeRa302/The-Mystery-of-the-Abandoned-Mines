@@ -60,8 +60,11 @@ namespace Assets.Source.Game.Scripts
             IsComplete = true;
         }
 
-        public void Initialize(RoomData roomData, int currentLevel)
+        public void Initialize(RoomData roomData, int currentLevel, float sizeCameraConfierX)
         {
+            Debug.Log(_confiner.size);
+            _confiner.size = new Vector3(sizeCameraConfierX, sizeCameraConfierX, sizeCameraConfierX);
+            Debug.Log(_confiner.size);
             RoomData = roomData;
             CurrentLevel = currentLevel;
             CreateDoorway();

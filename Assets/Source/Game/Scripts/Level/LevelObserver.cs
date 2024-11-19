@@ -5,6 +5,9 @@ namespace Assets.Source.Game.Scripts
 {
     public class LevelObserver : MonoBehaviour
     {
+        private const float CameraAriaXStandart = 0f;
+        private const float CameraAriaXMaxSaze = 1f;
+
         [SerializeField] private RoomPlacer _roomPlacer;
         [SerializeField] private EnemySpawner _enemySpawner;
         [SerializeField] private CameraControiler _cameraControiler;
@@ -12,6 +15,7 @@ namespace Assets.Source.Game.Scripts
 
         private Room _currentRoom;
         private int _currentRoomLevel = 0;
+        private float _cameraAriaSizeCurrent;
 
         private void Awake()
         {
@@ -31,7 +35,14 @@ namespace Assets.Source.Game.Scripts
 
         private void Initialize() 
         {
-            _roomPlacer.Initialize(_currentRoomLevel);
+            if (_cameraControiler.TrySeeDoor(_roomPlacer.StartRoom.WallLeft) == false)
+            {
+                _cameraAriaSizeCurrent = CameraAriaXMaxSaze;
+                Debug.Log(_cameraAriaSizeCurrent);
+            }
+
+            _cameraAriaSizeCurrent = CameraAriaXStandart;
+            _roomPlacer.Initialize(_currentRoomLevel, _cameraAriaSizeCurrent);
             AddListener();
             _navSurface.BuildNavMesh();
         }

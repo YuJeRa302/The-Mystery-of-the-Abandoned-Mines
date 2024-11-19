@@ -26,18 +26,18 @@ namespace Assets.Source.Game.Scripts
         public List<Room> CreatedRooms => _createdRooms;
         public Room StartRoom => _startRoom;
 
-        public void Initialize(int currentRoomLevel)
+        public void Initialize(int currentRoomLevel, float cameraAriaX)
         {
             _spawnedRooms = new Room[_massRoomSize, _massRoomSize];
             _spawnedRooms[_spawnCenterCoordinate, _spawnCenterCoordinate] = _startRoom;
 
             for (int index = 0; index < _maxRoomCount; index++)
             {
-                PlaceOneRoom(currentRoomLevel);
+                PlaceOneRoom(currentRoomLevel, cameraAriaX);
             }
         }
 
-        private void PlaceOneRoom(int currentRoomLevel)
+        private void PlaceOneRoom(int currentRoomLevel, float cameraAriaX)
         {
             HashSet<Vector2Int> freeSpawnSpace = new();
 
@@ -82,7 +82,7 @@ namespace Assets.Source.Game.Scripts
                 {
                     newRoom.transform.position = new Vector3(position.x - _spawnCenterCoordinate, 0, position.y - _spawnCenterCoordinate) * _roomSize;
                     _spawnedRooms[position.x, position.y] = newRoom;
-                    newRoom.Initialize(randomRoomData, currentRoomLevel);
+                    newRoom.Initialize(randomRoomData, currentRoomLevel, cameraAriaX);
                     _createdRooms.Add(newRoom);
                     return;
                 }

@@ -14,8 +14,11 @@ namespace Assets.Source.Game.Scripts
 
         private void OnTriggerEnter(Collider collider)
         {
-            if (collider.TryGetComponent(out Player player))
+            if (collider.TryGetComponent(out Player player)) 
+            {
                 SetDoorState(true);
+                RoomDoorTaked?.Invoke(this);
+            }
         }
 
         private void OnTriggerExit(Collider other)
@@ -26,9 +29,9 @@ namespace Assets.Source.Game.Scripts
 
         public void Lock() 
         {
+            SetDoorState(false);
             _colider.enabled = false;
             _outline.enabled = false;
-            SetDoorState(false);
         }
 
         public void Unlock() 
@@ -37,10 +40,16 @@ namespace Assets.Source.Game.Scripts
             _outline.enabled = true;
         }
 
+        public void SetDoorOpen() 
+        {
+            SetDoorState(true);
+            _colider.enabled = false;
+            _outline.enabled = false;
+        }
+
         private void SetDoorState(bool state) 
         {
-            if (gameObject.activeSelf == true)
-                _animator.SetBool(DoorTransitionParameter.IsOpen.ToString(), state);
+            _animator.SetBool(DoorTransitionParameter.IsOpen.ToString(), state);
         }
     }
 }

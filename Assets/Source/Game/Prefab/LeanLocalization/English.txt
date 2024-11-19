@@ -1,0 +1,2 @@
+﻿Skip,"Skip"
+Reroll,"Reroll"

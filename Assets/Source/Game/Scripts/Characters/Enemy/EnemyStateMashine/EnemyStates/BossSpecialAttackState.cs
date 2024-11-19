@@ -1,6 +1,9 @@
-public class BossSpecialAttackState : State
+namespace Assets.Source.Game.Scripts
 {
-    public BossSpecialAttackState(StateMashine stateMashine) : base(stateMashine)
+    public class BossSpecialAttackState : State
     {
+        public BossSpecialAttackState(StateMashine stateMashine) : base(stateMashine)
+        {
+        }
     }
 }

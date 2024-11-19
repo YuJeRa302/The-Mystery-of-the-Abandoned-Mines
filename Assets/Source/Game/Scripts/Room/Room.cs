@@ -6,10 +6,6 @@ namespace Assets.Source.Game.Scripts
 {
     public class Room : MonoBehaviour
     {
-        private readonly System.Random _rnd = new ();
-        private readonly int _rotateCount = 4;
-        private readonly float _degreeRotation = 90.0f;
-
         [Header("Room Wall Places")]
         [SerializeField] private GameObject _wallUpper;
         [SerializeField] private GameObject _wallRight;
@@ -31,6 +27,8 @@ namespace Assets.Source.Game.Scripts
         [Header("NavMesh")]
         [SerializeField] private NavMeshSurface _navSurface;
 
+        private RoomDoor _openDoor;
+
         public event Action<Room> RoomEntering;
 
         public GameObject WallUpper => _wallUpper;
@@ -46,13 +44,26 @@ namespace Assets.Source.Game.Scripts
         public int CurrentLevel { get; private set; }
         public bool IsComplete { get; private set; } = false;
 
+        private void Awake()
+        {
+            foreach (var door in _doors)
+            {
+                door.RoomDoorTaked += OnDoorTaked;
+            }
+        }
+
+        private void OnDestroy()
+        {
+            foreach (var door in _doors)
+            {
+                door.RoomDoorTaked -= OnDoorTaked;
+            }
+        }
+
         private void OnTriggerEnter(Collider collider)
         {
             if (collider.TryGetComponent(out Player player))
-                if (IsComplete == false)
-                    LockRoom();
-                else
-                    RoomEntering?.Invoke(this);
+                RoomEntering?.Invoke(this);
         }
 
         public void SetRoomStatus()//test
@@ -73,20 +84,26 @@ namespace Assets.Source.Game.Scripts
             UnlockRoom();
         }
 
-        public void RotateWallRandomly()
+        public void LockRoom()
         {
-            int count = _rnd.Next(_rotateCount);
+            if (IsComplete == true)
+                return;
 
-            for (int index = 0; index < count; index++)
+            foreach (var door in _doors)
             {
-                transform.Rotate(0, _degreeRotation, 0);
-
-                GameObject temp = _wallLeft;
-                _wallLeft = _wallDown;
-                _wallDown = _wallRight;
-                _wallRight = _wallUpper;
-                _wallUpper = temp;
+                door.Lock();
             }
+        }
+
+        public void UnlockRoom()
+        {
+            foreach (var door in _doors)
+            {
+                door.Unlock();
+            }
+
+            if(_openDoor != null)
+                _openDoor.SetDoorOpen();
         }
 
         private void CreateDoorway() 
@@ -104,25 +121,9 @@ namespace Assets.Source.Game.Scripts
                 _doorwayDown.SetActive(true);
         }
 
-        private void LockRoom()
+        private void OnDoorTaked(RoomDoor roomDoor) 
         {
-            if (IsComplete == true)
-                return;
-
-            foreach (var door in _doors) 
-            {
-                door.Lock();
-            }
-
-            RoomEntering?.Invoke(this);
-        }
-
-        private void UnlockRoom()
-        {
-            foreach (var door in _doors)
-            {
-                door.Unlock();
-            }
+            _openDoor = roomDoor;
         }
     }
 }

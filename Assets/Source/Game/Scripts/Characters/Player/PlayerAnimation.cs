@@ -2,41 +2,44 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerAnimation : MonoBehaviour
+namespace Assets.Source.Game.Scripts
 {
-    [SerializeField] private MovmetPlayer _playerMovment;
-    [SerializeField] private Player _player;
-    [SerializeField] private PlayerAttacker _playerAttacker;
-
-    private Animator _animator;
-    private Rigidbody _rigidbody;
-    private float _maxSpeed;
-    private HashAnimationPlayer _animationPlayer = new HashAnimationPlayer();
-
-    private void Start()
+    public class PlayerAnimation : MonoBehaviour
     {
-        _animator = GetComponent<Animator>();
-        _rigidbody = GetComponent<Rigidbody>();
-        _maxSpeed = _playerMovment.MaxMoveSpeed;
-    }
+        [SerializeField] private MovmetPlayer _playerMovment;
+        [SerializeField] private Player _player;
+        [SerializeField] private PlayerAttacker _playerAttacker;
 
-    private void OnEnable()
-    {
-        _playerAttacker.Attacked += OnAttackAnimation;
-    }
+        private Animator _animator;
+        private Rigidbody _rigidbody;
+        private float _maxSpeed;
+        private HashAnimationPlayer _animationPlayer = new HashAnimationPlayer();
 
-    private void OnDisable()
-    {
-        _playerAttacker.Attacked -= OnAttackAnimation;
-    }
+        private void Start()
+        {
+            _animator = GetComponent<Animator>();
+            _rigidbody = GetComponent<Rigidbody>();
+            _maxSpeed = _playerMovment.MaxMoveSpeed;
+        }
 
-    private void Update()
-    {
-        _animator.SetFloat(_animationPlayer.MoveAnimation, _rigidbody.velocity.magnitude / _maxSpeed);
-    }
+        private void OnEnable()
+        {
+            _playerAttacker.Attacked += OnAttackAnimation;
+        }
 
-    private void OnAttackAnimation()
-    {
-        _animator.SetTrigger(_animationPlayer.AttackAnimation);
+        private void OnDisable()
+        {
+            _playerAttacker.Attacked -= OnAttackAnimation;
+        }
+
+        private void Update()
+        {
+            _animator.SetFloat(_animationPlayer.MoveAnimation, _rigidbody.velocity.magnitude / _maxSpeed);
+        }
+
+        private void OnAttackAnimation()
+        {
+            _animator.SetTrigger(_animationPlayer.AttackAnimation);
+        }
     }
 }

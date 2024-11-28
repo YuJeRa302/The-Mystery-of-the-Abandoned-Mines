@@ -1,114 +1,93 @@
 using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Assets.Source.Game.Scripts
 {
-    public abstract class Ability : MonoBehaviour
+    public class Ability : IDisposable
     {
         private readonly int _minValue = 0;
-        private readonly int _indexAbilityDuration = 1;
-        private readonly int _indexAbilityDelay = 2;
-        private readonly int _indexAbilityDamage = 0;
+        private readonly ICoroutineRunner _coroutineRunner;
 
-        [SerializeField] private Image _reloadingImage;
-        [SerializeField] private Image _abilityIcon;
-
-        protected Spell Spell;
-        protected bool IsAbilityUsed = false;
-        protected bool IsAbilityEnded = false;
-        protected Player Player;
-        private Transform _throwPoint;
         private float _currentDuration;
         private float _defaultDuration;
         private int _currentAbilityValue;
+        private float _abilityCooldownReduction;
+        private float _abilityDuration;
+        private int _abilityValue;
         private TypeAbility _typeAbility;
         private TypeAttackAbility _typeAttackAbility;
         private float _defaultDelay;
         private float _currentDelay;
-        private ParticleSystem _particleSystem;
-        private Coroutine _coolDown;
         private AudioClip _audioClip;
+        private Coroutine _coolDown;
+        private Coroutine _duration;
+        private bool _isAbilityUsed = false;
 
+        public event Action AbilityRemoved;
         public event Action<Ability> AbilityUsed;
         public event Action<Ability> AbilityEnded;
+        public event Action<float> AbilityUpgraded;
+        public event Action<float> CooldownValueChanged;
+        public event Action<float> CooldownValueReseted;
 
+        public bool IsAbilityEnded { get; private set; } = false;
         public float CurrentDuration => _currentDuration;
-        public Transform ThrowPoint => _throwPoint;
         public int CurrentAbilityValue => _currentAbilityValue;
         public TypeAbility TypeAbility => _typeAbility;
         public TypeAttackAbility TypeAttackAbility => _typeAttackAbility;
-        public ParticleSystem ParticleSystem => _particleSystem;
 
-        private void OnEnable()
+        public Ability(
+            AbilityAttributeData abilityAttributeData,
+            int currentLevel,
+            float abilityCooldownReduction,
+            float abilityDuration,
+            int abilityValue,
+            ICoroutineRunner coroutineRunner)
         {
-            Use();
-        }
-
-        private void OnDisable()
-        {
-            if (_coolDown != null)
-                StopCoroutine(_coolDown);
-        }
-
-        private void OnDestroy()
-        {
-            if (_coolDown != null)
-                StopCoroutine(_coolDown);
-
-            AbilityEnded?.Invoke(this);
-        }
-
-        public void Initialize(Player player, Transform throwPoint, AbilityAttributeData abilityAttributeData, int currentLevel, ParticleSystem particleSystem)
-        {
-            Player = player;
-            FillCardParameters(abilityAttributeData, currentLevel);
+            FillAbilityParameters(abilityAttributeData, currentLevel);
             _typeAbility = abilityAttributeData.TypeAbility;
-            _particleSystem = particleSystem;
-            _abilityIcon.sprite = abilityAttributeData.Icon;
-            _defaultDelay = abilityAttributeData.CardParameters[currentLevel].CardParameters[_indexAbilityDelay].Value;
-            _currentDuration = abilityAttributeData.CardParameters[currentLevel].CardParameters[_indexAbilityDuration].Value;
-            _currentAbilityValue = abilityAttributeData.CardParameters[currentLevel].CardParameters[_indexAbilityDamage].Value;
-
-            if (_typeAbility == TypeAbility.AttackAbility)
-            {
-                _throwPoint = throwPoint;
-                Spell = (abilityAttributeData as AttackAbilityData).Spell;
-                _typeAttackAbility = (abilityAttributeData as AttackAbilityData).TypeAttackAbility;
-            }
-
             _audioClip = abilityAttributeData.AudioClip;
+            _typeAttackAbility = (abilityAttributeData as AttackAbilityData) != null ? (abilityAttributeData as AttackAbilityData).TypeAttackAbility : 0;
+            _coroutineRunner = coroutineRunner;
+            _abilityCooldownReduction = abilityCooldownReduction;
+            _abilityDuration = abilityDuration;
+            _abilityValue = abilityValue;
+            UpdateAbilityParamters();
         }
 
-        protected virtual void ApplyAbility()
+        public void Dispose()
         {
-            AbilityUsed?.Invoke(this);
-            IsAbilityEnded = false;
-            _currentDelay = _defaultDelay;
-            _currentDuration = _defaultDuration;
-            StartCoroutine(DurationAbility());
-            //Player.PlayerSounds.PlayAbilityAudio(_audioClip);
-            UpdateAbility(true, _currentDelay);
-            ResumeCooldown();
+            AbilityRemoved?.Invoke();
+            ReleaseUnmanagedResources();
+            GC.SuppressFinalize(this);
         }
 
-        private void Use()
+        public void Use()
         {
-            if (IsAbilityUsed == false)
-            {
+            if (_isAbilityUsed == false)
                 ApplyAbility();
-            }
             else
-            {
-                if (_coolDown != null)
-                    StopCoroutine(_coolDown);
-
-                _coolDown = StartCoroutine(CoolDown());
-            }
+                ResumeCoroutine();
         }
 
-        private void FillCardParameters(AbilityAttributeData abilityAttributeData, int currentLevel)
+        public void StopCoroutine()
+        {
+            if (_duration != null)
+                _coroutineRunner.StopCoroutine(_duration);
+
+            if (_coolDown != null)
+                _coroutineRunner.StopCoroutine(_coolDown);
+        }
+
+        public void Upgrade(AbilityAttributeData abilityAttributeData, int currentLevel) 
+        {
+            FillAbilityParameters(abilityAttributeData, currentLevel);
+            UpdateAbilityParamters();
+            AbilityUpgraded?.Invoke(_defaultDelay);
+        }
+
+        private void FillAbilityParameters(AbilityAttributeData abilityAttributeData, int currentLevel)
         {
             foreach (CardParameter parameter in abilityAttributeData.CardParameters[currentLevel].CardParameters)
             {
@@ -121,15 +100,50 @@ namespace Assets.Source.Game.Scripts
             }
         }
 
-        private void ResumeCooldown()
+        private void UpdateAbilityParamters() 
         {
-            if (gameObject.activeSelf == true)
-            {
-                if (_coolDown != null)
-                    StopCoroutine(_coolDown);
+            _defaultDelay -= _abilityCooldownReduction;
+            _defaultDuration += _abilityDuration;
+            _currentAbilityValue += _abilityValue;
+        }
 
-                _coolDown = StartCoroutine(CoolDown());
-            }
+        private void ApplyAbility()
+        {
+            _currentDelay = _defaultDelay;
+            _currentDuration = _defaultDuration;
+            IsAbilityEnded = false;
+            //Player.PlayerSounds.PlayAbilityAudio(_audioClip);
+            UpdateAbility(true, _currentDelay);
+            _duration = _coroutineRunner.StartCoroutine(DurationAbility());
+            ResumeCoroutine();
+            AbilityUsed?.Invoke(this);
+        }
+
+        private void ResumeCoroutine()
+        {
+            if (_coolDown != null)
+                _coroutineRunner.StopCoroutine(_coolDown);
+
+            if (_duration != null)
+                _coroutineRunner.StopCoroutine(_duration);
+
+            _coolDown = _coroutineRunner.StartCoroutine(CoolDown());
+            _duration = _coroutineRunner.StartCoroutine(DurationAbility());
+        }
+
+        private void UpdateAbility(bool state, float delay)
+        {
+            _isAbilityUsed = state;
+            CooldownValueReseted?.Invoke(delay);
+        }
+
+        private void ReleaseUnmanagedResources()
+        {
+            if (_duration != null)
+                _coroutineRunner.StopCoroutine(_duration);
+
+            if (_coolDown != null)
+                _coroutineRunner.StopCoroutine(_coolDown);
         }
 
         private IEnumerator DurationAbility()
@@ -140,8 +154,10 @@ namespace Assets.Source.Game.Scripts
                 yield return null;
             }
 
+            if(IsAbilityEnded == false)
+                AbilityEnded?.Invoke(this);
+
             IsAbilityEnded = true;
-            AbilityEnded?.Invoke(this);
         }
 
         private IEnumerator CoolDown()
@@ -149,18 +165,12 @@ namespace Assets.Source.Game.Scripts
             while (_currentDelay > _minValue)
             {
                 _currentDelay -= Time.deltaTime;
-                _reloadingImage.fillAmount = _currentDelay / _defaultDelay;
+                CooldownValueChanged?.Invoke(_currentDelay);
                 yield return null;
             }
 
             UpdateAbility(false, _minValue);
             Use();
-        }
-
-        private void UpdateAbility(bool state, float delay)
-        {
-            IsAbilityUsed = state;
-            _reloadingImage.fillAmount = delay;
         }
     }
 }

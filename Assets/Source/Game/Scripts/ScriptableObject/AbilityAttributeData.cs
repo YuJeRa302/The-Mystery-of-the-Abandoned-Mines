@@ -6,11 +6,11 @@ namespace Assets.Source.Game.Scripts
     public abstract class AbilityAttributeData : AttributeData
     {
         [SerializeField] private TypeAbility _typeAbility;
-        [SerializeField] private Ability _ability;
+        [SerializeField] private AbilityView _abilityView;
         [SerializeField] private ParticleSystem _particleSystem;
         [SerializeField] private AudioClip _audioClip;
 
-        public Ability Ability => _ability;
+        public AbilityView AbilityView => _abilityView;
         public TypeAbility TypeAbility => _typeAbility;
         public ParticleSystem ParticleSystem => _particleSystem;
         public AudioClip AudioClip => _audioClip;

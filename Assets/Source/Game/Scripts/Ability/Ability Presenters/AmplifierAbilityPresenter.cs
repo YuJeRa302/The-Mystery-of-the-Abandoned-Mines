@@ -1,0 +1,98 @@
+using System;
+using UnityEngine;
+
+namespace Assets.Source.Game.Scripts
+{
+    public class AmplifierAbilityPresenter : IDisposable
+    {
+        private readonly IGameLoopService _gameLoopService;
+
+        private Ability _ability;
+        private AbilityView _abilityView;
+        private ParticleSystem _particleSystem;
+
+        public AmplifierAbilityPresenter(Ability ability, AbilityView abilityView, ParticleSystem particleSystem, IGameLoopService gameLoopService)
+        {
+            _ability = ability;
+            _abilityView = abilityView;
+            _particleSystem = particleSystem;
+            _gameLoopService = gameLoopService;
+            AddListener();
+        }
+
+        public void Dispose()
+        {
+            if (_abilityView != null)
+                _abilityView.ViewDestroy();
+
+            RemoveListener();
+            GC.SuppressFinalize(this);
+        }
+
+        private void AddListener()
+        {
+            _ability.AbilityUsed += OnAbilityUsed;
+            _ability.AbilityEnded += OnAbilityEnded;
+            _ability.AbilityUpgraded += OnAbilityUpgraded;
+            _ability.CooldownValueChanged += OnCooldownValueChanged;
+            _ability.CooldownValueReseted += OnCooldownValueReseted;
+            _ability.AbilityRemoved += Dispose;
+            _gameLoopService.GamePaused += OnGamePaused;
+            _gameLoopService.GameResumed += OnGameResumed;
+            _gameLoopService.GameClosed += OnGameClosed;
+        }
+
+        private void RemoveListener()
+        {
+            _ability.AbilityUsed -= OnAbilityUsed;
+            _ability.AbilityEnded -= OnAbilityEnded;
+            _ability.AbilityUpgraded -= OnAbilityUpgraded;
+            _ability.CooldownValueChanged -= OnCooldownValueChanged;
+            _ability.CooldownValueReseted -= OnCooldownValueReseted;
+            _ability.AbilityRemoved -= Dispose;
+            _gameLoopService.GamePaused -= OnGamePaused;
+            _gameLoopService.GameResumed -= OnGameResumed;
+            _gameLoopService.GameClosed -= OnGameClosed;
+        }
+
+        private void OnGameClosed()
+        {
+            Dispose();
+        }
+
+        private void OnGamePaused()
+        {
+            _ability.StopCoroutine();
+        }
+
+        private void OnGameResumed()
+        {
+            _ability.Use();
+        }
+
+        private void OnAbilityUpgraded(float delay)
+        {
+            _abilityView.Upgrade(delay);
+        }
+
+        private void OnAbilityUsed(Ability ability)
+        {
+            _particleSystem.Play();
+        }
+
+        private void OnAbilityEnded(Ability ability)
+        {
+            _particleSystem.Stop();
+        }
+
+        private void OnCooldownValueChanged(float value)
+        {
+            _abilityView.ChangeCooldownValue(value);
+        }
+
+        private void OnCooldownValueReseted(float value)
+        {
+            _abilityView.ResetCooldownValue(value);
+        }
+    }
+}

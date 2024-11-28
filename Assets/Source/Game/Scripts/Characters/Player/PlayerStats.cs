@@ -60,10 +60,11 @@ namespace Assets.Source.Game.Scripts
             _playerAbilityCaster.AbilityEnded -= OnAbilityEnded;
         }
 
-        public void Initialize(int score, UpgradeState[] upgradeState, LevelObserver levelObserver)
+        public void Initialize(int score, UpgradeState[] upgradeState, LevelObserver levelObserver, AbilityFactory abilityFactory, AbilityPresenterFactory abilityPresenterFactory)
         {
             //UpgradePlayerStats(upgradeState, levelObserver.UpgradeDatas);
             _playerHealth.Initialize(levelObserver);
+            _playerAbilityCaster.Initialize(abilityFactory, abilityPresenterFactory);
             GenerateLevelPlayer(_maxPlayerLevel);
             GenerateUpgradeLevel(_maxUpgradeLevel);
             SetPlayerStats(score);

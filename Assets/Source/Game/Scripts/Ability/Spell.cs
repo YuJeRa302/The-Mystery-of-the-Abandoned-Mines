@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 
 namespace Assets.Source.Game.Scripts
@@ -16,7 +15,7 @@ namespace Assets.Source.Game.Scripts
             Gizmos.DrawWireSphere(transform.position, _findEnemyRange);
         }
 
-        public void Initialize(ParticleSystem particleSystem, Ability ability)
+        public void Initialize(ParticleSystem particleSystem, float currentDuration)
         {
             if (_abilityEffect != null)
             {
@@ -24,7 +23,7 @@ namespace Assets.Source.Game.Scripts
                     Destroy(_abilityEffect);
             }
 
-            _spellLifeTime = ability.CurrentDuration;
+            _spellLifeTime = currentDuration;
             CreateEffect(particleSystem);
             Destroy(_abilityEffect.gameObject, _spellLifeTime);
             Destroy(gameObject, _spellLifeTime);
@@ -44,7 +43,7 @@ namespace Assets.Source.Game.Scripts
             return false;
         }
 
-        private void CreateEffect(ParticleSystem particleSystem) 
+        private void CreateEffect(ParticleSystem particleSystem)
         {
             _abilityEffect = Instantiate(particleSystem, transform);
             _abilityEffect.Play();

@@ -32,7 +32,7 @@ namespace Assets.Source.Game.Scripts
         private int _currentUpgradeExperience = 0;
         private int _rerollPoints = 2;
         private int _score = 0;
-        private int _damage = 10;//убран из инициализации атакера
+        private int _damage = 10;//пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         private int _armor = 2;
         private int _regeneration = 1;
         private int _countKillEnemy = 0;
@@ -62,13 +62,15 @@ namespace Assets.Source.Game.Scripts
             _playerAbilityCaster.AbilityEnded -= OnAbilityEnded;
         }
 
-        public void Initialize(int score, UpgradeState[] upgradeState, LevelObserver levelObserver)
+        public void Initialize(int score, UpgradeState[] upgradeState, LevelObserver levelObserver, AbilityFactory abilityFactory, AbilityPresenterFactory abilityPresenterFactory)
         {
             //UpgradePlayerStats(upgradeState, levelObserver.UpgradeDatas);
             _playerView = levelObserver.PlayerView;
             _playerAttakcer.Initialize(_player.WeaponView.WeaponData);
             _playerHealth.Initialize(levelObserver);
             _playerMovment.Initialize(levelObserver.CameraControiler.Camera, levelObserver.CameraControiler.VariableJoystick, _speed);
+            _playerAbilityCaster.Initialize(abilityFactory, abilityPresenterFactory);
+
             GenerateLevelPlayer(_maxPlayerLevel);
             GenerateUpgradeLevel(_maxUpgradeLevel);
             SetPlayerStats(score);

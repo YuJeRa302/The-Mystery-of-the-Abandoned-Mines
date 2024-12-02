@@ -1,10 +1,12 @@
 using System;
+using System.Collections;
 using Unity.AI.Navigation;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Assets.Source.Game.Scripts
 {
-    public class LevelObserver : MonoBehaviour
+    public class LevelObserver : MonoBehaviour, IGameLoopService, ICoroutineRunner
     {
         private readonly float _pauseValue = 0;
         private readonly float _resumeValue = 1;
@@ -18,18 +20,25 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private NavMeshSurface _navSurface;
         [Space(20)]
         [SerializeField] private GamePanels[] _panels;
+        [Space(20)]
+        [SerializeField] private Button _pauseButton;//test buttons
+        [SerializeField] private Button _resumeButton;//test
 
         private Player _player;
         private Room _currentRoom;
         private int _currentRoomLevel = 0;
+        private AbilityFactory _abilityFactory;
+        private AbilityPresenterFactory _abilityPresenterFactory;
 
-        public event Action GamePaused;
-        public event Action GameResumed;
         public event Action GameEnded;
         public event Action GameClosed;
+        public event Action GamePaused;
+        public event Action GameResumed;
 
         public PlayerView PlayerView => _playerView;
         public CameraControiler CameraControiler => _cameraControiler;
+
+        public bool IsPaused => throw new NotImplementedException();
 
         private void Awake()
         {
@@ -61,7 +70,41 @@ namespace Assets.Source.Game.Scripts
             _player.PlayerStats.Initialize(10, null, this); // test
             AddListener();
             _enemySpawner.SetTotalEnemyCount(_roomPlacer.AllEnemyCount, _player);
+            RegisterServices();
+            _player.PlayerStats.Initialize(10, null, this, _abilityFactory, _abilityPresenterFactory); // test
             _navSurface.BuildNavMesh();
+        }
+
+        public void ResumeByRewarded()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void PauseByRewarded()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ResumeByMenu()
+        {
+            Time.timeScale = _resumeValue;
+            GameResumed?.Invoke();
+        }
+
+        public void PauseByMenu()
+        {
+            Time.timeScale = _pauseValue;
+            GamePaused?.Invoke();
+        }
+
+        public void ResumeByInterstitial()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void PauseByInterstitial()
+        {
+            throw new NotImplementedException();
         }
 
         private void AddListener()
@@ -71,6 +114,8 @@ namespace Assets.Source.Game.Scripts
                 room.RoomEntering += OnRoomEntering;
             }
 
+            _pauseButton.onClick.AddListener(PauseByMenu);//test
+            _resumeButton.onClick.AddListener(ResumeByMenu);//test
             _roomPlacer.StartRoom.SetRoomStatus();//
             _roomPlacer.StartRoom.RoomEntering += OnRoomEntering;//test
         }
@@ -89,8 +134,8 @@ namespace Assets.Source.Game.Scripts
         {
             foreach (var panel in _panels)
             {
-                panel.PanelOpened += PauseGame;
-                panel.PanelClosed += ResumeGame;
+                panel.PanelOpened += PauseByMenu;
+                panel.PanelClosed += ResumeByMenu;
             }
         }
 
@@ -98,8 +143,8 @@ namespace Assets.Source.Game.Scripts
         {
             foreach (var panel in _panels)
             {
-                panel.PanelOpened -= PauseGame;
-                panel.PanelClosed -= ResumeGame;
+                panel.PanelOpened -= PauseByMenu;
+                panel.PanelClosed -= ResumeByMenu;
             }
         }
 
@@ -113,18 +158,6 @@ namespace Assets.Source.Game.Scripts
         {
             foreach (var panel in _panels)
                 panel.gameObject.SetActive(false);
-        }
-
-        private void PauseGame()
-        {
-            Time.timeScale = _pauseValue;
-            GamePaused?.Invoke();
-        }
-
-        private void ResumeGame()
-        {
-            Time.timeScale = _resumeValue;
-            GameResumed?.Invoke();
         }
 
         private void OnRoomEntering(Room room)
@@ -159,6 +192,12 @@ namespace Assets.Source.Game.Scripts
         {
             _currentRoom.SetComplete();
             UnlockAllDoors();
+        }
+
+        private void RegisterServices()
+        {
+            _abilityFactory = new AbilityFactory(this);
+            _abilityPresenterFactory = new AbilityPresenterFactory(this, this);
         }
     }
 }

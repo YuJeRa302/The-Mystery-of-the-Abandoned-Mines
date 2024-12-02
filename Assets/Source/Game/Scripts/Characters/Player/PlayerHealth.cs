@@ -25,8 +25,8 @@ namespace Assets.Source.Game.Scripts
 
         private void OnDestroy()
         {
-            //_levelObserver.GamePaused -= OnPauseGame;
-            //_levelObserver.GameResumed -= OnResumeGame;
+            _levelObserver.GamePaused -= OnPauseGame;
+            _levelObserver.GameResumed -= OnResumeGame;
             _player.PlayerStats.MaxHealthChanged -= OnMaxHealthChanged;
             HealthChanged -= OnHealthChanged;
         }
@@ -61,8 +61,8 @@ namespace Assets.Source.Game.Scripts
 
         private void AddListener() 
         {
-            //_levelObserver.GamePaused += OnPauseGame;
-            //_levelObserver.GameResumed += OnResumeGame;
+            _levelObserver.GamePaused += OnPauseGame;
+            _levelObserver.GameResumed += OnResumeGame;
             _player.PlayerStats.MaxHealthChanged += OnMaxHealthChanged;
             HealthChanged += OnHealthChanged;
         }

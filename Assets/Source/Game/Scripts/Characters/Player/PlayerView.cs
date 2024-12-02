@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -5,6 +6,8 @@ namespace Assets.Source.Game.Scripts
 {
     public class PlayerView : MonoBehaviour
     {
+        private readonly int _indexAbilityDelay = 2;
+
         [SerializeField] private GameObject _mobileInterface;
         [Space(20)]
         [SerializeField] private Slider _sliderHP;
@@ -23,31 +26,24 @@ namespace Assets.Source.Game.Scripts
 
         private ParticleSystem _abilityEffect;
 
+        public event Action<AbilityView, ParticleSystem, Transform> AbilityViewCreated;
+
         private void Awake()
         {
-            //_player.PlayerStats.PlayerHealth.HealthChanged += OnChangeHealth;
-            //_player.PlayerStats.ExperienceValueChanged += OnChangeExperience;
-            //_player.PlayerStats.UpgradeExperienceValueChanged += OnChangeUpgradeExperience;
-            //_player.PlayerStats.PlayerAbilityCaster.AbilityTaked += OnAbilityTaked;
-            //_player.PlayerStats.PlayerAbilityCaster.AbilityRemoved += OnAbilityRemoved;
-            //_player.PlayerStats.PlayerAbilityCaster.AbilityEnded += OnAbilityEnded;
-            //_player.PlayerStats.PlayerAbilityCaster.AbilityUsed += OnAbilityUsed;
-            //_player.PlayerStats.KillCountChanged += OnChangeKillCount;
+            _player.PlayerStats.PlayerHealth.HealthChanged += OnChangeHealth;
+            _player.PlayerStats.ExperienceValueChanged += OnChangeExperience;
+            _player.PlayerStats.UpgradeExperienceValueChanged += OnChangeUpgradeExperience;
+            _player.PlayerStats.PlayerAbilityCaster.AbilityTaked += OnAbilityTaked;
+            _player.PlayerStats.KillCountChanged += OnChangeKillCount;
         }
 
         private void OnDestroy()
         {
-            if(_player != null)
-            {
-                _player.PlayerStats.PlayerHealth.HealthChanged -= OnChangeHealth;
-                _player.PlayerStats.ExperienceValueChanged -= OnChangeExperience;
-                _player.PlayerStats.UpgradeExperienceValueChanged -= OnChangeUpgradeExperience;
-                _player.PlayerStats.PlayerAbilityCaster.AbilityTaked -= OnAbilityTaked;
-                _player.PlayerStats.PlayerAbilityCaster.AbilityRemoved -= OnAbilityRemoved;
-                _player.PlayerStats.PlayerAbilityCaster.AbilityEnded -= OnAbilityEnded;
-                _player.PlayerStats.PlayerAbilityCaster.AbilityUsed -= OnAbilityEnded;
-                _player.PlayerStats.KillCountChanged -= OnChangeKillCount;
-            }
+            _player.PlayerStats.PlayerHealth.HealthChanged -= OnChangeHealth;
+            _player.PlayerStats.ExperienceValueChanged -= OnChangeExperience;
+            _player.PlayerStats.UpgradeExperienceValueChanged -= OnChangeUpgradeExperience;
+            _player.PlayerStats.PlayerAbilityCaster.AbilityTaked -= OnAbilityTaked;
+            _player.PlayerStats.KillCountChanged -= OnChangeKillCount;
         }
 
         public void Initialize(Player player, int maxLevelValue, int levelExperience, int maxUpgradeValue, int upgradeExperience, int currentLevel, int currentUpgradePoints)
@@ -118,31 +114,9 @@ namespace Assets.Source.Game.Scripts
                 _abilityEffect = abilityAttributeData.ParticleSystem;
             }
 
-            Ability ability = Instantiate(abilityAttributeData.Ability, _abilityObjectContainer);
-            ability.Initialize(_player, _throwPoint, abilityAttributeData, currentLevel, _abilityEffect);
-            _player.PlayerStats.PlayerAbilityCaster.AddAbility(ability);
-        }
-
-        private void OnAbilityRemoved(Ability ability)
-        {
-            if (ability != null)
-                Destroy(ability.gameObject);
-
-            if (ability.TypeAbility != TypeAbility.AttackAbility)
-            {
-                if (ability.ParticleSystem != null)
-                    Destroy(ability.ParticleSystem.gameObject);
-            }
-        }
-
-        private void OnAbilityUsed(Ability ability)
-        {
-            ability.ParticleSystem.Play();
-        }
-
-        private void OnAbilityEnded(Ability ability)
-        {
-            ability.ParticleSystem.Stop();
+            AbilityView abilityView = Instantiate(abilityAttributeData.AbilityView, _abilityObjectContainer);
+            abilityView.Initialize(abilityAttributeData.Icon, abilityAttributeData.CardParameters[currentLevel].CardParameters[_indexAbilityDelay].Value);
+            AbilityViewCreated?.Invoke(abilityView, _abilityEffect, _throwPoint);
         }
 
         private void OnChangeExperience(int target)

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Assets.Source.Game.Scripts
@@ -9,6 +10,9 @@ namespace Assets.Source.Game.Scripts
 
         private Animator _animator;
         private HashAnimationEnemy _animationEnemy = new HashAnimationEnemy();
+
+        public event Action Attacked;
+        public event Action AdditionalAttacked;
 
         private void Awake()
         {
@@ -32,6 +36,16 @@ namespace Assets.Source.Game.Scripts
                 events.Value.PlayerLose -= OnWinGame;
                 events.Value.AdditionalAttacking -= OnAdditionalAttack;
             }
+        }
+
+        public void TryAttackPlayer()
+        {
+           Attacked?.Invoke();
+        }
+
+        public void TryAdditionAtacked()
+        {
+            AdditionalAttacked?.Invoke();
         }
 
         private void AddAnimationAction()

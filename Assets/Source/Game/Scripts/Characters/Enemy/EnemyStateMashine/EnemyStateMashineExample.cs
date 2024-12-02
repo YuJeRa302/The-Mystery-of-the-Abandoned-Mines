@@ -9,10 +9,6 @@ namespace Assets.Source.Game.Scripts
     [RequireComponent(typeof(Enemy))]
     public class EnemyStateMashineExample : MonoBehaviour
     {
-        [SerializeField] private float _speed;
-        [SerializeField] private float _attackDistance;
-        [SerializeField] private AttackState _attack;
-
         private Player _target;
         private StateMashine _stateMashine;
         private Enemy _enemy;
@@ -36,20 +32,20 @@ namespace Assets.Source.Game.Scripts
             _stateMashine = new StateMashine(_target);
 
             _stateMashine.AddState(new IdleState(_stateMashine, _target));
-            _stateMashine.AddState(new MoveState(_stateMashine, _target, _attackDistance, _speed, _meshAgent, _enemy));
+            _stateMashine.AddState(new MoveState(_stateMashine, _target, _meshAgent, _enemy));
 
             if (_enemy.TryGetComponent(out Boss boss))
             {
-                _stateMashine.AddState(new BossAttackState(_stateMashine, _target, _enemy, _attackDistance, _enemy.AttackDelay, _enemy.Damage, boss.AdditionalAttackDelay, _enemy.AnimationStateController));//
-                _stateMashine.AddState(new BossSpecialAttackState(_stateMashine));//
+                _stateMashine.AddState(new BossAttackState(_stateMashine, _target, _enemy));
+                _stateMashine.AddState(new BossSpecialAttackState(_stateMashine));
             }
             else if (_enemy.TryGetComponent(out RangeEnemy rangeEnemy))
             {
-                _stateMashine.AddState(new RangeAttackState(_stateMashine, _target, _enemy, _attackDistance, _enemy.AttackDelay, _enemy.Damage, _enemy.AnimationStateController, rangeEnemy.BulletSpawner));
+                _stateMashine.AddState(new RangeAttackState(_stateMashine, _target, _enemy, rangeEnemy.BulletSpawner));
             }
             else
             {
-                _stateMashine.AddState(new AttackState(_stateMashine, _target, _enemy, _attackDistance, _enemy.AttackDelay, _enemy.Damage, _enemy.AnimationStateController));
+                _stateMashine.AddState(new AttackState(_stateMashine, _target, _enemy));
             }
 
             MashineInitialized?.Invoke();

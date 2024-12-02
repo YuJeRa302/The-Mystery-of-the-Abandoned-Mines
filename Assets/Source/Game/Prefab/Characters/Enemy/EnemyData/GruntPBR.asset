@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46298075006e7674bb48a2417b651218, type: 3}
   m_Name: GruntPBR
   m_EditorClassIdentifier: 
-  _id: 0
+  _id: 2
   _level: 0
   _damage: 0
   _health: 0

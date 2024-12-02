@@ -5,7 +5,20 @@ using UnityEngine;
 public class CameraControiler : MonoBehaviour
 {
     [SerializeField] private CinemachineConfiner _cameraConfiner;
+    [SerializeField] private CinemachineVirtualCamera _virtualCamera;
     [SerializeField] private Camera _camera;
+    [SerializeField] private VariableJoystick _variableJoystick;
+
+    private Transform _target;
+
+    public Camera Camera => _camera;
+    public VariableJoystick VariableJoystick => _variableJoystick;
+
+    public void SetLookTarget(Transform target)
+    {
+        _target = target;
+        _virtualCamera.Follow = _target;
+    }
 
     public void ChengeConfiner(Room room)
     {

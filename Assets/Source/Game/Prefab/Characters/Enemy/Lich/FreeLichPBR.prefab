@@ -46,7 +46,6 @@ GameObject:
   - component: {fileID: 8643847770700492779}
   - component: {fileID: 1366531873766497782}
   - component: {fileID: 190874258655281799}
-  - component: {fileID: 4183376573385099344}
   - component: {fileID: 6197596675293197854}
   - component: {fileID: 8957740864070520519}
   m_Layer: 0
@@ -182,23 +181,14 @@ MonoBehaviour:
   _stateMashine: {fileID: 8643847770700492779}
   _attackDelay: 3
   _damage: 10
-  _animationController: {fileID: 4183376573385099344}
+  _animationController: {fileID: 7001231755956893765}
+  _health: 20
+  _speed: 3
+  _attackDistance: 11
   _bullet: {fileID: -1335520857732936479, guid: 61c908ef79d4154468ad9a56433bf629, type: 3}
   _shootPoint: {fileID: 183278518815668641}
   _poolBullet: {fileID: 6197596675293197854}
   _bulletSpawner: {fileID: 8957740864070520519}
---- !u!114 &4183376573385099344
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 179196348292612535}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4fe45c7f5b1c2fa4aafed4583e92244c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &6197596675293197854
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -473,7 +463,7 @@ Transform:
   m_GameObject: {fileID: 3667011420571338672}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.19, z: 1.74}
+  m_LocalPosition: {x: 0.009, y: 1.02, z: 3.118}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

@@ -1,12 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.Source.Game.Scripts
 {
     public class PlayerAnimation : MonoBehaviour
     {
-        [SerializeField] private MovmetPlayer _playerMovment;
+        [SerializeField] private MovementPlayer _playerMovment;
         [SerializeField] private Player _player;
         [SerializeField] private PlayerAttacker _playerAttacker;
 
@@ -17,7 +15,6 @@ namespace Assets.Source.Game.Scripts
 
         private void Start()
         {
-            _animator = GetComponent<Animator>();
             _rigidbody = GetComponent<Rigidbody>();
             _maxSpeed = _playerMovment.MaxMoveSpeed;
         }
@@ -35,6 +32,12 @@ namespace Assets.Source.Game.Scripts
         private void Update()
         {
             _animator.SetFloat(_animationPlayer.MoveAnimation, _rigidbody.velocity.magnitude / _maxSpeed);
+        }
+
+        public void Initialize(PlayerClassData classData)
+        {
+            _animator = GetComponent<Animator>();
+            _animator.runtimeAnimatorController = classData.AnimatorController;
         }
 
         private void OnAttackAnimation()

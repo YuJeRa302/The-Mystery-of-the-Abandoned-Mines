@@ -7,12 +7,16 @@ namespace Assets.Source.Game.Scripts
 {
     public class PlayerAttacker : MonoBehaviour
     {
-        private const float SearchRadius = 5f;
+        private float SearchRadius = 5f;//tests
 
-        [SerializeField] private float _damage;
+        private float _damage;
+        [SerializeField] private Transform _shotPoint;
+        [SerializeField] private ProjectileSpawner _bulletSpawner;
+        [SerializeField] private Pool _poolBullet;
 
         private float _attackDelay = 2f;
         private float _timeAfterLastAttack = 0f;
+        private WeaponData _weaponData;
         private Enemy _currentTarget;
         private Dictionary<float, Enemy> _enemies = new Dictionary<float, Enemy>();
 
@@ -26,6 +30,19 @@ namespace Assets.Source.Game.Scripts
             {
                 FindTarget();
                 _timeAfterLastAttack = 0;
+            }
+        }
+
+        public void Initialize(WeaponData weapon)
+        {
+            _weaponData = weapon;
+            _damage = _weaponData.BonusDamage;
+
+            if (_weaponData.TargetClass == TypePlayerClass.Warlock)
+            {
+                SearchRadius = 25f;
+                WarlockWeaponData paladinWeaponData = weapon as WarlockWeaponData;
+                _bulletSpawner.Initialize(paladinWeaponData.BulletPrafab, _poolBullet, _shotPoint, _damage);
             }
         }
 
@@ -69,7 +86,14 @@ namespace Assets.Source.Game.Scripts
 
         private void ApplyDamage()
         {
-            _currentTarget.TakeDamage(_damage);
+            if(_currentTarget != null)
+                _currentTarget.TakeDamage(_damage);
+        }
+
+        private void InstantiateBullet()
+        {
+            if (_currentTarget != null)
+                _bulletSpawner.SpawnProjectile(_currentTarget);
         }
     }
 }

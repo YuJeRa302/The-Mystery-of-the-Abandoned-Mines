@@ -5,38 +5,38 @@ namespace Assets.Source.Game.Scripts
 {
     public class BulletSpawner : MonoBehaviour
     {
-        private EnemyBullet _bulletBrefab;
+        private Bullet _bulletBrefab;
         private Pool _pool;
-        private Transform _shootPoint;
+        private Transform _shotPoint;
         private float _damage;
 
-        public void Initialize(EnemyBullet enemyBullet, Pool pool, Transform shootPoint, float damage)
+        public void Initialize(Bullet enemyBullet, Pool pool, Transform shotPoint, float damage)
         {
             _bulletBrefab = enemyBullet;
             _pool = pool;
-            _shootPoint = shootPoint;
+            _shotPoint = shotPoint;
             _damage = damage;
         }
 
         public void SpawnBullet()
         {
-            EnemyBullet bullet;
+            Bullet bullet;
 
-            if (_pool.TryPoolObject(out PoolObject pollBullet))
+            if (_pool.TryPoolObject(_bulletBrefab.gameObject, out PoolObject pollBullet))
             {
-                bullet = pollBullet as EnemyBullet;
-                bullet.transform.position = _shootPoint.transform.position;
-                bullet.transform.rotation = _shootPoint.transform.rotation;
+                bullet = pollBullet as Bullet;
+                bullet.transform.position = _shotPoint.transform.position;
+                bullet.transform.rotation = _shotPoint.transform.rotation;
                 bullet.gameObject.SetActive(true);
             }
             else
             {
-                bullet = Instantiate(_bulletBrefab, _shootPoint.transform.position, _shootPoint.transform.rotation);
-                _pool.InstantiatePoolObject(bullet);
+                bullet = Instantiate(_bulletBrefab, _shotPoint.transform.position, _shotPoint.transform.rotation);
+                _pool.InstantiatePoolObject(bullet, _bulletBrefab.name);
             }
 
             bullet.Initialaze((int)Math.Round(_damage));
-            bullet.GetComponent<Rigidbody>().AddForce(_shootPoint.forward * 5f, ForceMode.Impulse);
+            bullet.GetComponent<Rigidbody>().AddForce(_shotPoint.forward * 5f, ForceMode.Impulse);
         }
     }
 }

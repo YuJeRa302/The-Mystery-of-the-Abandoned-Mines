@@ -19,8 +19,9 @@ public class Pool : MonoBehaviour
         }
     }
 
-    public void InstantiatePoolObject(PoolObject poolObject)
+    public void InstantiatePoolObject(PoolObject poolObject, string objectName)
     {
+        poolObject.InitializeObject(objectName);
         poolObject.PoolReturned += PoolObject;
     }
 
@@ -30,10 +31,17 @@ public class Pool : MonoBehaviour
         GetPoolObject?.Invoke();
     }
 
-    public bool TryPoolObject(out PoolObject bullet)
+    public bool TryPoolObject(GameObject soughtObject, out PoolObject poolObject)
     {
-        bullet = _poolObjects.FirstOrDefault(p => p.gameObject.activeSelf == false);
+        PoolObject result = null;
 
-        return bullet != null;
+        foreach (var object1InPool in _poolObjects)
+        {
+            if (object1InPool.NameObject == soughtObject.name)
+                result = object1InPool;
+        }
+
+        poolObject = result;
+        return poolObject != null;
     }
 }

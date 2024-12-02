@@ -11,8 +11,8 @@ namespace Assets.Source.Game.Scripts
         private readonly float _delaySpawn = 1.0f;
         private readonly int _minValue = 0;
 
-        [SerializeField] private Player _player;
-        [SerializeField] private Transform[] _spawnPoints;
+        private Player _player;
+        private Transform[] _spawnPoints;
         [SerializeField] private List<Enemy> _enemies;
         [SerializeField] private Pool _enemuPool;
 
@@ -25,35 +25,37 @@ namespace Assets.Source.Game.Scripts
         private int _waveLenght = 1;
         private int _spawnedEnemy;
         private int _deadEnemy = 0;
-        private int _countStats;
-        private float _maxGameTime = 1;//временное значение
+        private int _countEnemyRoom = 1;//временное значение
+        private int _totalEnemyCount;
 
         public event Action AllEnemyRoomDied;
 
-        //private void Update()
-        //{
-        //    _timeAfterLastSpawn += Time.deltaTime;
-
-        //    if (_timeAfterLastSpawn >= _delay)
-        //    {
-        //        InitializeEnemy();
-        //        _spawned++;
-        //        _timeAfterLastSpawn = 0;
-        //    }
-
-        //}
-
-        public void Initialize(Transform[] spawnPoints, EnemyData[] enemyDatas, int currentRoomLevel)
+        public void Initialize(Room currentRoom)
         {
             if (_spawn != null)
                 StopCoroutine(_spawn);
 
-            _spawnedEnemy = 0;
-            _deadEnemy = 0;
-            _spawnPoints = spawnPoints;
-            _enemyDatas = enemyDatas;
-            _spawn = Spawn();
-            StartCoroutine(_spawn);
+            if(currentRoom.EnemySpawnPoints.Length == 0)
+            {
+                AllEnemyRoomDied?.Invoke();
+            }
+            else
+            {
+                _spawnedEnemy = 0;
+                _deadEnemy = 0;
+                _countEnemyRoom = currentRoom.CountEnemy;
+                _spawnPoints = currentRoom.EnemySpawnPoints;
+                _enemyDatas = currentRoom.RoomData.EnemyData;
+                _spawn = Spawn();
+                StartCoroutine(_spawn);
+            }
+        }
+
+        public void SetTotalEnemyCount(int countEnemy, Player player)
+        {
+            _player = player;
+            _totalEnemyCount = countEnemy;
+            Debug.Log(_totalEnemyCount);
         }
 
         private IEnumerator Spawn()
@@ -65,7 +67,7 @@ namespace Assets.Source.Game.Scripts
             //    _maxGameTime--;
             //}
 
-            while (_spawnedEnemy < _maxGameTime)
+            while (_spawnedEnemy < _countEnemyRoom)
             {
                 yield return new WaitForSeconds(_delaySpawn);
                 EnemyCreate(_enemyDatas[_rnd.Next(_enemyDatas.Length)], _rnd.Next(_spawnPoints.Length));
@@ -77,7 +79,7 @@ namespace Assets.Source.Game.Scripts
         {
             Enemy enemy = null;
 
-            if (TyrFindEnemy(enemyData.PrefabEnemy, out Enemy poolEnemy))
+            if (TryFindEnemy(enemyData.PrefabEnemy.gameObject, out Enemy poolEnemy))
             {
                 enemy = poolEnemy;
                 enemy.transform.position = _spawnPoints[value].position;
@@ -86,28 +88,20 @@ namespace Assets.Source.Game.Scripts
             }
             else
             {
-                //enemy = Instantiate(
-                //enemyData.PrefabEnemy,
-                //new Vector3(
-                //_spawnPoints[value].position.x,
-                //_spawnPoints[value].position.y,
-                //_spawnPoints[value].position.z),
-                //new Quaternion(_minValue, _minValue, _minValue, _minValue));
                 enemy = Instantiate(enemyData.PrefabEnemy, _spawnPoints[value].position, _spawnPoints[value].rotation);
 
-                _enemuPool.InstantiatePoolObject(enemy);
-                enemy.Initialize(_player);
+                _enemuPool.InstantiatePoolObject(enemy, enemyData.PrefabEnemy.name);
+                enemy.Initialize(_player, enemyData.Id);
                 enemy.Died += OnEnemyDead;
                 _enemies.Add(enemy);
             }
         }
 
-        private bool TyrFindEnemy(PoolObject enemyType, out Enemy poolEnemy)
+        private bool TryFindEnemy(GameObject enemyType, out Enemy poolEnemy)
         {
-            //Enemy enemy = enemyType as Enemy;
             poolEnemy = null;
 
-            if (_enemuPool.TryPoolObject(out PoolObject enemyPool))
+            if (_enemuPool.TryPoolObject(enemyType, out PoolObject enemyPool))
             {
                 poolEnemy = enemyPool as Enemy;
             }
@@ -119,9 +113,16 @@ namespace Assets.Source.Game.Scripts
         {
             _deadEnemy++;
 
-            if (_deadEnemy == Convert.ToInt32(_maxGameTime))
+            if (_deadEnemy == Convert.ToInt32(_countEnemyRoom))
             {
                 AllEnemyRoomDied?.Invoke();
+            }
+
+            _totalEnemyCount--;
+
+            if(_totalEnemyCount <= 0)
+            {
+                Debug.Log("!WIN!");
             }
         }
     }

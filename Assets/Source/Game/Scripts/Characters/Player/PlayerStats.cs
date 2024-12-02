@@ -18,7 +18,9 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private Player _player;
         [SerializeField] private PlayerAbilityCaster _playerAbilityCaster;
         [SerializeField] private PlayerHealth _playerHealth;
-        [SerializeField] private PlayerView _playerView;
+        [SerializeField] private PlayerAttacker _playerAttakcer;
+        [SerializeField] private MovementPlayer _playerMovment;
+        private PlayerView _playerView;
         [SerializeField] private float _speed;
         [SerializeField] private int _maxPlayerLevel;
         [SerializeField] private int _maxUpgradeLevel;
@@ -30,7 +32,7 @@ namespace Assets.Source.Game.Scripts
         private int _currentUpgradeExperience = 0;
         private int _rerollPoints = 2;
         private int _score = 0;
-        private int _damage = 10;
+        private int _damage = 10;//убран из инициализации атакера
         private int _armor = 2;
         private int _regeneration = 1;
         private int _countKillEnemy = 0;
@@ -63,7 +65,10 @@ namespace Assets.Source.Game.Scripts
         public void Initialize(int score, UpgradeState[] upgradeState, LevelObserver levelObserver)
         {
             //UpgradePlayerStats(upgradeState, levelObserver.UpgradeDatas);
+            _playerView = levelObserver.PlayerView;
+            _playerAttakcer.Initialize(_player.WeaponView.WeaponData);
             _playerHealth.Initialize(levelObserver);
+            _playerMovment.Initialize(levelObserver.CameraControiler.Camera, levelObserver.CameraControiler.VariableJoystick, _speed);
             GenerateLevelPlayer(_maxPlayerLevel);
             GenerateUpgradeLevel(_maxUpgradeLevel);
             SetPlayerStats(score);
@@ -235,7 +240,7 @@ namespace Assets.Source.Game.Scripts
             _score = score;
             _levels.TryGetValue(_currentLevel, out int levelValue);
             _upgradeLevels.TryGetValue(_currentUpgradeLevel, out int upgradeValue);
-            _playerView.Initialize(levelValue, _currentExperience, upgradeValue, _currentUpgradeExperience, _currentLevel, _currentUpgradeLevel);
+            _playerView.Initialize(_player, levelValue, _currentExperience, upgradeValue, _currentUpgradeExperience, _currentLevel, _currentUpgradeLevel);
         }
 
         private void GenerateLevelPlayer(int level)

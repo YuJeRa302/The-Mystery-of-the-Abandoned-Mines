@@ -11,13 +11,13 @@ namespace Assets.Source.Game.Scripts
         private Enemy _enemy;
         private NavMeshAgent _navMeshAgent;
 
-        public MoveState(StateMashine stateMashine, Player player, float distance, float moveSpeed, NavMeshAgent meshAgent, Enemy enemy) : base(stateMashine)
+        public MoveState(StateMashine stateMashine, Player player, NavMeshAgent meshAgent, Enemy enemy) : base(stateMashine)
         {
             _target = player;
-            _distanceToTransition = distance;
-            _moveSpeed = moveSpeed;
-            _navMeshAgent = meshAgent;
             _enemy = enemy;
+            _distanceToTransition = _enemy.AttackDistance;
+            _moveSpeed = _enemy.Speed;
+            _navMeshAgent = meshAgent;
         }
 
         public override void EnterState()

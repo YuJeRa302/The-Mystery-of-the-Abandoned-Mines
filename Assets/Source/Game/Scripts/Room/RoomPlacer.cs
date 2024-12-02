@@ -22,22 +22,25 @@ namespace Assets.Source.Game.Scripts
 
         private Room[,] _spawnedRooms;
         private List<Room> _createdRooms = new ();
+        private int _allEnemyCount;
 
         public List<Room> CreatedRooms => _createdRooms;
         public Room StartRoom => _startRoom;
+        public int AllEnemyCount => _allEnemyCount;
 
-        public void Initialize(int currentRoomLevel, float cameraAriaX)
+        public void Initialize(int currentRoomLevel, bool canSeeDoor)
         {
             _spawnedRooms = new Room[_massRoomSize, _massRoomSize];
             _spawnedRooms[_spawnCenterCoordinate, _spawnCenterCoordinate] = _startRoom;
+            _startRoom.SetCameraArial(canSeeDoor);
 
             for (int index = 0; index < _maxRoomCount; index++)
             {
-                PlaceOneRoom(currentRoomLevel, cameraAriaX);
+                PlaceOneRoom(currentRoomLevel, canSeeDoor);
             }
         }
 
-        private void PlaceOneRoom(int currentRoomLevel, float cameraAriaX)
+        private void PlaceOneRoom(int currentRoomLevel, bool canSeeDoor)
         {
             HashSet<Vector2Int> freeSpawnSpace = new();
 
@@ -82,7 +85,8 @@ namespace Assets.Source.Game.Scripts
                 {
                     newRoom.transform.position = new Vector3(position.x - _spawnCenterCoordinate, 0, position.y - _spawnCenterCoordinate) * _roomSize;
                     _spawnedRooms[position.x, position.y] = newRoom;
-                    newRoom.Initialize(randomRoomData, currentRoomLevel, cameraAriaX);
+                    newRoom.Initialize(randomRoomData, currentRoomLevel, canSeeDoor);
+                    _allEnemyCount += newRoom.CountEnemy;
                     _createdRooms.Add(newRoom);
                     return;
                 }

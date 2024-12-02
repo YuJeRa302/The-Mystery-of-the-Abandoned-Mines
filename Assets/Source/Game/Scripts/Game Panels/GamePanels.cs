@@ -22,14 +22,14 @@ namespace Assets.Source.Game.Scripts
         protected virtual void Open()
         {
             gameObject.SetActive(true);
-            LevelObserver.PlayerView.gameObject.SetActive(false);
+            //LevelObserver.PlayerView.gameObject.SetActive(false);
             PanelOpened?.Invoke();
         }
 
         protected virtual void Close()
         {
             gameObject.SetActive(false);
-            LevelObserver.PlayerView.gameObject.SetActive(true);
+            //LevelObserver.PlayerView.gameObject.SetActive(true);
             PanelClosed?.Invoke();
         }
     }

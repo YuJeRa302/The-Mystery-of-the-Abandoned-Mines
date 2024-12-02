@@ -8,22 +8,28 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private EnemyStateMashineExample _stateMashine;
         [SerializeField] private float _attackDelay;
         [SerializeField] protected float _damage;
-        [SerializeField] private AnimationStateController _animationController;
+        [SerializeField] private EnemyAnimation _animationController;
+        [SerializeField] private float _health = 20f;
+        [SerializeField] private float _speed;
+        [SerializeField] private float _attackDistance;
 
-        private float _health = 20f;
-
+        private int _id;
         private bool _isDead;
         private float _currentHealth;
 
+        public int Id => _id;
         public float AttackDelay => _attackDelay;
         public float Damage => _damage;
-        public AnimationStateController AnimationStateController => _animationController;
+        public float Speed => _speed;
+        public float AttackDistance => _attackDistance;
+        public EnemyAnimation AnimationStateController => _animationController;
 
         public event Action Died;
 
-        public void Initialize(Player player)
+        public void Initialize(Player player, int id)
         {
             _currentHealth = _health;
+            _id = id;
             _stateMashine.InitializeStateMashine(player);
         }
 

@@ -470,7 +470,6 @@ GameObject:
   - component: {fileID: 2394918646678090073}
   - component: {fileID: 4251205277681547902}
   - component: {fileID: 6460710701101056627}
-  - component: {fileID: -1716427446601766911}
   m_Layer: 0
   m_Name: GoldGragonBoss
   m_TagString: Untagged
@@ -535,10 +534,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 2.06
-  m_Height: 6.15
+  m_Radius: 6.4632635
+  m_Height: 13.62
   m_Direction: 1
-  m_Center: {x: 0, y: 1.05, z: 0}
+  m_Center: {x: 0, y: 0.38, z: 0.53}
 --- !u!114 &6466123994611825158
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -589,7 +588,10 @@ MonoBehaviour:
   _stateMashine: {fileID: 6460710701101056627}
   _attackDelay: 5
   _damage: 0
-  _animationController: {fileID: -1716427446601766911}
+  _animationController: {fileID: 6466123994611825158}
+  _health: 50
+  _speed: 2
+  _attackDistance: 6
   _additionalAttackDelay: 7
 --- !u!114 &6460710701101056627
 MonoBehaviour:
@@ -601,20 +603,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 031adfffe299c4a4f9aa118c2cd62a29, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _speed: 3
-  _attackDistance: 6
---- !u!114 &-1716427446601766911
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1361657303877518475}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4fe45c7f5b1c2fa4aafed4583e92244c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1417575129968025986
@@ -4188,15 +4176,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 453986, guid: 6ec8d4ecb3803764b8b54ecc5897784f, type: 3}
       propertyPath: m_LocalScale.x
-      value: 99.99996
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 453986, guid: 6ec8d4ecb3803764b8b54ecc5897784f, type: 3}
       propertyPath: m_LocalScale.y
-      value: 99.99996
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 453986, guid: 6ec8d4ecb3803764b8b54ecc5897784f, type: 3}
       propertyPath: m_LocalScale.z
-      value: 99.999954
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 453986, guid: 6ec8d4ecb3803764b8b54ecc5897784f, type: 3}
       propertyPath: m_LocalPosition.x

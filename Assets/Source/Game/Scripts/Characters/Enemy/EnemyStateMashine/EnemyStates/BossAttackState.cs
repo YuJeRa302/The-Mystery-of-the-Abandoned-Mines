@@ -7,15 +7,16 @@ namespace Assets.Source.Game.Scripts
         private float _additionalAttackDelay = 7f;
         protected float _lastAdditionalAttackTime = 0;
 
-        public BossAttackState(StateMashine stateMashine, Player target, Enemy enemy, float attackDistance, float attackDelay, float damage,
-            float additionalAttackDelay, AnimationStateController animationController) : base(stateMashine, target, enemy, attackDistance, attackDelay, damage, animationController)
+        public BossAttackState(StateMashine stateMashine, Player target, Enemy enemy) : base(stateMashine, target, enemy)
         {
-            _target = target;
-            _attackRange = attackDistance;
             _enemy = enemy;
-            _attackDelay = attackDelay;
-            _additionalAttackDelay = additionalAttackDelay;
-            _animationController = animationController;
+            _target = target;
+            _attackRange = _enemy.AttackDistance;
+            _damage = _enemy.Damage;
+            _attackDelay = _enemy.AttackDelay;
+            _animationController = _enemy.AnimationStateController;
+            Boss boss = enemy as Boss;
+            _additionalAttackDelay = boss.AdditionalAttackDelay;
             _animationController.Attacked += ApplyDamage;
             _animationController.AdditionalAttacked += AditionalAttackAppalyDamage;
         }
@@ -49,6 +50,7 @@ namespace Assets.Source.Game.Scripts
                 if (_lastAdditionalAttackTime <= 0)
                 {
                     _lastAdditionalAttackTime = _additionalAttackDelay;
+                    _canTransit = false;
                     return true;
                 }
             }
@@ -60,7 +62,6 @@ namespace Assets.Source.Game.Scripts
         private void AditionalAttackAppalyDamage()
         {
             _canTransit = true;
-            Debug.Log("TryAplayDamage");
         }
     }
 }

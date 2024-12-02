@@ -7,7 +7,7 @@ namespace Assets.Source.Game.Scripts
     public class PlayerAbilityCaster : MonoBehaviour
     {
         [SerializeField] private Player _player;
-        [SerializeField] private PlayerView _playerView;
+        private PlayerView _playerView;
 
         private AbilityAttributeData _abilityAttributeData;
         private List<Ability> _abilities = new();

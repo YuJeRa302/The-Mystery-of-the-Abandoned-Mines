@@ -173,7 +173,6 @@ GameObject:
   - component: {fileID: 4204253619367470614}
   - component: {fileID: 577765474960408540}
   - component: {fileID: 1360474038383006577}
-  - component: {fileID: -6069190607215951554}
   m_Layer: 0
   m_Name: GruntPBR
   m_TagString: Untagged
@@ -233,7 +232,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _stateMashine: {fileID: 577765474960408540}
   _attackDelay: 2
-  _animationController: {fileID: -6069190607215951554}
+  _damage: 0
+  _animationController: {fileID: 1360474038383006577}
+  _health: 35
+  _speed: 3
+  _attackDistance: 3
 --- !u!195 &7828819319788438954
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -291,7 +294,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 031adfffe299c4a4f9aa118c2cd62a29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 5
+  _speed: 3
   _attackDistance: 3
 --- !u!114 &1360474038383006577
 MonoBehaviour:
@@ -306,18 +309,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _enemyStateMashine: {fileID: 577765474960408540}
---- !u!114 &-6069190607215951554
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2617371603306725137}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4fe45c7f5b1c2fa4aafed4583e92244c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2625969313675315899
 GameObject:
   m_ObjectHideFlags: 0

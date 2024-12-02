@@ -27,7 +27,10 @@ namespace Assets.Source.Game.Scripts
         [Header("NavMesh")]
         [SerializeField] private NavMeshSurface _navSurface;
 
+        private readonly Vector3 _standartCameraArial = new Vector3(0, 1.5f, 1.6f);
+        private readonly Vector3 _maxCameraArial = new Vector3(1f, 1.5f, 1.6f);
         private RoomDoor _openDoor;
+        private int _countEnemy;
 
         public event Action<Room> RoomEntering;
 
@@ -43,6 +46,7 @@ namespace Assets.Source.Game.Scripts
         public RoomData RoomData { get; private set; }
         public int CurrentLevel { get; private set; }
         public bool IsComplete { get; private set; } = false;
+        public int CountEnemy => _countEnemy;
 
         private void Awake()
         {
@@ -71,13 +75,26 @@ namespace Assets.Source.Game.Scripts
             IsComplete = true;
         }
 
-        public void Initialize(RoomData roomData, int currentLevel, float sizeCameraConfierX)
+        public void SetCameraArial(bool canSeeDoor)
         {
-            Debug.Log(_confiner.size);
-            _confiner.size = new Vector3(sizeCameraConfierX, sizeCameraConfierX, sizeCameraConfierX);
-            Debug.Log(_confiner.size);
+            if (canSeeDoor)
+                _confiner.size = _standartCameraArial;
+            else
+                _confiner.size = _maxCameraArial;
+        }
+
+        public void Initialize(RoomData roomData, int currentLevel, bool canSeeDoor)
+        {
+            SetCameraArial(canSeeDoor);
+
             RoomData = roomData;
             CurrentLevel = currentLevel;
+            
+            if(RoomData.Id == 1)
+                _countEnemy = 1;
+            else
+                _countEnemy = UnityEngine.Random.Range(1, 3); //tests
+
             CreateDoorway();
         }
 

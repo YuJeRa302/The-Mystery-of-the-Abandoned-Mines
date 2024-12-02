@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2bf4e7565ed04304ba72d9831d3ab542, type: 3}
+  m_Name: FantasyWeapon
+  m_EditorClassIdentifier: 
+  _targetClass: 0
+  _weaponPrefab: {fileID: -4235938381245114250, guid: 431cac0d95aacae4289f2938eec575b4, type: 3}
+  _bonusDamage: 6
+  _bonusArmor: 6
+  _additionalWeapon: {fileID: 2929962777720419722, guid: de056d4bdfc524146a1fd6441b2360c1, type: 3}

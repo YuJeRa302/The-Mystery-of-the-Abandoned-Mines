@@ -1,14 +1,14 @@
 using Assets.Source.Game.Scripts;
 using UnityEngine;
 
-public class ProjectileSpawner : MonoBehaviour
+public class ProjectileSpawner
 {
     private PlayerProjectile _bulletBrefab;
     private Pool _pool;
     private Transform _shotPoint;
     private float _damage;
 
-    public void Initialize(PlayerProjectile playerProjectile, Pool pool, Transform shotPoint, float damage)
+    public ProjectileSpawner(PlayerProjectile playerProjectile, Pool pool, Transform shotPoint, float damage)
     {
         _bulletBrefab = playerProjectile;
         _pool = pool;
@@ -29,7 +29,7 @@ public class ProjectileSpawner : MonoBehaviour
         }
         else
         {
-            playerProjectile = Instantiate(_bulletBrefab, _shotPoint.transform.position, _shotPoint.transform.rotation);
+            playerProjectile = GameObject.Instantiate(_bulletBrefab, _shotPoint.transform.position, _shotPoint.transform.rotation);
             _pool.InstantiatePoolObject(playerProjectile, _bulletBrefab.name);
         }
 

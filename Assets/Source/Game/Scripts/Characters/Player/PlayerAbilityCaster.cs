@@ -25,10 +25,6 @@ namespace Assets.Source.Game.Scripts
 
         private void Awake()
         {
-            _player.PlayerStats.AbilityDurationChanged += OnAbilityDurationChanged;
-            _player.PlayerStats.AbilityDamageChanged += OnAbilityDamageChanged;
-            _player.PlayerStats.AbilityCooldownReductionChanged += OnAbilityCooldownReductionChanged;
-            _playerView.AbilityViewCreated += OnAbilityViewCreated;
         }
 
         private void OnDestroy()
@@ -40,10 +36,17 @@ namespace Assets.Source.Game.Scripts
             DestroyAbilities();
         }
 
-        public void Initialize(AbilityFactory abilityFactory, AbilityPresenterFactory abilityPresenterFactory) 
+        public void Initialize(AbilityFactory abilityFactory, AbilityPresenterFactory abilityPresenterFactory, Player player, PlayerView playerView) 
         {
             _abilityFactory = abilityFactory;
             _abilityPresenterFactory = abilityPresenterFactory;
+            _player = player;
+            _playerView = playerView;
+            ///
+            _player.PlayerStats.AbilityDurationChanged += OnAbilityDurationChanged;
+            _player.PlayerStats.AbilityDamageChanged += OnAbilityDamageChanged;
+            _player.PlayerStats.AbilityCooldownReductionChanged += OnAbilityCooldownReductionChanged;
+            _playerView.AbilityViewCreated += OnAbilityViewCreated;
         }
 
         public void TakeAbility(CardView cardView)

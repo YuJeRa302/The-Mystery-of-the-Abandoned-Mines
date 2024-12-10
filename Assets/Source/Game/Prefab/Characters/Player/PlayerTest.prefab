@@ -486,18 +486,12 @@ GameObject:
   - component: {fileID: 2909471469563594498}
   - component: {fileID: 2234261728090648628}
   - component: {fileID: 1331979722624184602}
-  - component: {fileID: 3860478640609618952}
   - component: {fileID: 5129466093622292130}
   - component: {fileID: 116321836545481359}
-  - component: {fileID: 3012732813627665005}
-  - component: {fileID: 5518775522385654886}
-  - component: {fileID: 6661701345041642546}
   - component: {fileID: 546374387721671116}
   - component: {fileID: 1928279005320493959}
   - component: {fileID: 6640039334682548513}
-  - component: {fileID: 2929622857616005226}
   - component: {fileID: 3665270091436053377}
-  - component: {fileID: 4993213443824913561}
   m_Layer: 0
   m_Name: PlayerTest
   m_TagString: Untagged
@@ -576,18 +570,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 116
   m_CollisionDetection: 2
---- !u!114 &3860478640609618952
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3060439647535226261}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 20f236b30833adc48aa825df2d3fc143, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!136 &5129466093622292130
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -623,56 +605,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c3d841ec97f7c54e91ffdc50db9369b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerAttacker: {fileID: 5518775522385654886}
-  _playerStats: {fileID: 1928279005320493959}
-  _cardDeck: {fileID: 6640039334682548513}
+  _animator: {fileID: 2234261728090648628}
+  _rigidbody: {fileID: 1331979722624184602}
+  _shotPoint: {fileID: 8624854817256175002}
   _weaponPoint: {fileID: 2490256430192700955}
   _additionalWeaponPoint: {fileID: 8998010172795856166}
-  _weaponView: {fileID: 2929622857616005226}
-  _playerAnimation: {fileID: 3012732813627665005}
---- !u!114 &3012732813627665005
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3060439647535226261}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a69ca09759c7934ab4c1ea62215a90a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _playerMovment: {fileID: 3860478640609618952}
-  _player: {fileID: 116321836545481359}
-  _playerAttacker: {fileID: 5518775522385654886}
---- !u!114 &5518775522385654886
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3060439647535226261}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac962c2fdad46c142ac58d11be21f3e7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _shotPoint: {fileID: 8624854817256175002}
-  _bulletSpawner: {fileID: 4993213443824913561}
   _poolBullet: {fileID: 3665270091436053377}
---- !u!114 &6661701345041642546
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3060439647535226261}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 90d538a959672ed478f3b59b71d62e40, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _player: {fileID: 116321836545481359}
+  _playerStats: {fileID: 1928279005320493959}
+  _cardDeck: {fileID: 6640039334682548513}
 --- !u!114 &546374387721671116
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -700,12 +640,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _player: {fileID: 116321836545481359}
   _playerAbilityCaster: {fileID: 546374387721671116}
-  _playerHealth: {fileID: 6661701345041642546}
-  _playerAttakcer: {fileID: 5518775522385654886}
-  _playerMovment: {fileID: 3860478640609618952}
+  _playerMovment: {fileID: 0}
   _speed: 2
-  _maxPlayerLevel: 10
-  _maxUpgradeLevel: 100
+  _maxPlayerLevel: 0
+  _maxUpgradeLevel: 0
 --- !u!114 &6640039334682548513
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -719,18 +657,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerStats: {fileID: 1928279005320493959}
---- !u!114 &2929622857616005226
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3060439647535226261}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d79733c235be6694888a3bad15273f3e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &3665270091436053377
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -741,18 +667,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9a1b8de054ce0d948ae6d85146409c99, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &4993213443824913561
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3060439647535226261}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 173a9b7f5ace57e48bc5d3aa126fb7b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &3123656251356516078

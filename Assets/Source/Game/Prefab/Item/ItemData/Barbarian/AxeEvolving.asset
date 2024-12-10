@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: AxeEvolving
   m_EditorClassIdentifier: 
   _targetClass: 2
-  _weaponPrefab: {fileID: -7989572966418557843, guid: 6d047b9776780c8408c257072b128521, type: 3}
+  _weaponPrefab: {fileID: -4351137862763014755, guid: 6d047b9776780c8408c257072b128521, type: 3}
   _bonusDamage: 10
   _bonusArmor: 0

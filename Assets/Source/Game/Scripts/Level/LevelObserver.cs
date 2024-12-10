@@ -1,8 +1,6 @@
 using System;
-using System.Collections;
 using Unity.AI.Navigation;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Assets.Source.Game.Scripts
 {
@@ -12,18 +10,22 @@ namespace Assets.Source.Game.Scripts
         private readonly float _resumeValue = 1;
 
         [SerializeField] private RoomPlacer _roomPlacer;
+        [SerializeField] private Pool _enemuPool;
         [Space(20)]
-        [SerializeField] private PlayerFactory _playerFactory;
+        [SerializeField] private PlayerInventory _playerInventory;
+        [SerializeField] private Transform _spawnPlayerPoint;
+        [SerializeField] private Player _playerPrefab;
+        [SerializeField] private PlayerClassData _classData; //test
         [SerializeField] private PlayerView _playerView;
-        [SerializeField] private EnemySpawner _enemySpawner;
         [SerializeField] private CameraControiler _cameraControiler;
         [SerializeField] private NavMeshSurface _navSurface;
         [Space(20)]
         [SerializeField] private GamePanels[] _panels;
         [Space(20)]
-        [SerializeField] private Button _pauseButton;//test buttons
-        [SerializeField] private Button _resumeButton;//test
+        [SerializeField] private CardPanel _cardPanel;
 
+        private EnemySpawner _enemySpawner;
+        private PlayerFactory _playerFactory;
         private Player _player;
         private Room _currentRoom;
         private int _currentRoomLevel = 0;
@@ -48,30 +50,30 @@ namespace Assets.Source.Game.Scripts
             LoadGamePanels();
         }
 
-        private void OnEnable()
-        {
-            _enemySpawner.AllEnemyRoomDied += OnEnemyRoomDied;
-        }
-
         private void OnDestroy()
         {
             RemoveListener();
             RemovePanelListener();
+
+            _enemySpawner.Dispose();
         }
 
         private void Initialize()
         {
             bool canSeeDoor = _cameraControiler.TrySeeDoor(_roomPlacer.StartRoom.WallLeft);
 
+            RegisterServices();
+            _enemySpawner = new EnemySpawner(_enemuPool, this);
+            _enemySpawner.AllEnemyRoomDied += OnEnemyRoomDied;
+
             _roomPlacer.Initialize(_currentRoomLevel, canSeeDoor);
-            _playerFactory.SpawnPlayer(out Player player);
+            _playerFactory = new PlayerFactory(_playerInventory, this, _abilityFactory, _abilityPresenterFactory, _playerPrefab, _spawnPlayerPoint, _classData, out Player player);
             _player = player;
             _cameraControiler.SetLookTarget(_player.transform);
-            _player.PlayerStats.Initialize(10, null, this); // test
+            _cardPanel.Initialize(_player);
             AddListener();
             _enemySpawner.SetTotalEnemyCount(_roomPlacer.AllEnemyCount, _player);
-            RegisterServices();
-            _player.PlayerStats.Initialize(10, null, this, _abilityFactory, _abilityPresenterFactory); // test
+            //_player.PlayerStats.Initialize(10, null, this, _abilityFactory, _abilityPresenterFactory); // test
             _navSurface.BuildNavMesh();
         }
 
@@ -114,8 +116,6 @@ namespace Assets.Source.Game.Scripts
                 room.RoomEntering += OnRoomEntering;
             }
 
-            _pauseButton.onClick.AddListener(PauseByMenu);//test
-            _resumeButton.onClick.AddListener(ResumeByMenu);//test
             _roomPlacer.StartRoom.SetRoomStatus();//
             _roomPlacer.StartRoom.RoomEntering += OnRoomEntering;//test
         }

@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using Lean.Localization;
 using UnityEngine;
@@ -13,7 +11,6 @@ namespace Assets.Source.Game.Scripts
         private readonly string _rerollTextTranslationName = "Reroll";
 
         [SerializeField] private CardLoader _cardLoader;
-        [SerializeField] private Player _player;
         [SerializeField] private Transform _cardContainer;
         [SerializeField] private CardView _cardView;
         [SerializeField] private PlayerView _testPanel;
@@ -25,6 +22,7 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private LeanLocalizedText _buttonSkipText;
         [SerializeField] private LeanLocalizedText _buttonRerollText;
 
+        private Player _player;
         private List<CardView> _cardViews = new();
 
         private void Awake()
@@ -43,6 +41,12 @@ namespace Assets.Source.Game.Scripts
             _buttonReroll.onClick.RemoveListener(Reroll);
             _buttonSkip.onClick.RemoveListener(Skip);
             _cardLoader.CardPoolCreated -= Fill;
+        }
+
+        public void Initialize(Player player)
+        {
+            _player = player;
+            _cardLoader.Initialize(_player.CardDeck);
         }
 
         protected override void Open()

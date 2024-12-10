@@ -4,16 +4,17 @@ using UnityEngine;
 
 namespace Assets.Source.Game.Scripts
 {
-    public class PlayerHealth : MonoBehaviour
+    public class PlayerHealth : IDisposable
     {
         private readonly int _minHealth = 0;
         private readonly int _delayHealing = 1;
 
-        [SerializeField] private Player _player;
+        private Player _player;
+        private ICoroutineRunner _coroutineRunner;
 
         private int _maxHealth = 100;
         private int _currentHealth = 0;
-        private IEnumerator _regeneration;
+        private Coroutine _regeneration;
         private LevelObserver _levelObserver;
 
         public event Action DamageTaked;
@@ -23,20 +24,13 @@ namespace Assets.Source.Game.Scripts
         public int MaxHealth => _maxHealth;
         public int CurrentHealth => _currentHealth;
 
-        private void OnDestroy()
+        public PlayerHealth(LevelObserver levelObserver, Player player,ICoroutineRunner coroutineRunner)
         {
-            _levelObserver.GamePaused -= OnPauseGame;
-            _levelObserver.GameResumed -= OnResumeGame;
-            _player.PlayerStats.MaxHealthChanged -= OnMaxHealthChanged;
-            HealthChanged -= OnHealthChanged;
-        }
-
-        public void Initialize(LevelObserver levelObserver)
-        {
+            _coroutineRunner = coroutineRunner;
             _levelObserver = levelObserver;
+            _player = player;
             _currentHealth = 50;
-            _regeneration = RegenerationHealth();
-            StartCoroutine(_regeneration);
+            _regeneration = _coroutineRunner.StartCoroutine(RegenerationHealth());
             AddListener();
         }
 
@@ -75,13 +69,13 @@ namespace Assets.Source.Game.Scripts
         private void OnPauseGame()
         {
             if (_regeneration != null)
-                StopCoroutine(_regeneration);
+                _regeneration = _coroutineRunner.StartCoroutine(RegenerationHealth());
         }
 
         private void OnResumeGame()
         {
             if (_regeneration != null)
-                StartCoroutine(_regeneration);
+                _regeneration = _coroutineRunner.StartCoroutine(RegenerationHealth());
         }
 
         private void OnHealthChanged(int value) 
@@ -92,8 +86,7 @@ namespace Assets.Source.Game.Scripts
             }
             else 
             {
-                _regeneration = RegenerationHealth();
-                StartCoroutine(_regeneration);
+                _regeneration = _coroutineRunner.StartCoroutine(RegenerationHealth());
             }
         }
 
@@ -113,6 +106,19 @@ namespace Assets.Source.Game.Scripts
         {
             //Destroy(gameObject);
             PlayerDied?.Invoke();
+        }
+
+        public void Dispose()
+        {
+            _levelObserver.GamePaused -= OnPauseGame;
+            _levelObserver.GameResumed -= OnResumeGame;
+            _player.PlayerStats.MaxHealthChanged -= OnMaxHealthChanged;
+            HealthChanged -= OnHealthChanged;
+
+            if (_regeneration != null)
+                _coroutineRunner.StopCoroutine(_regeneration);
+
+            GC.SuppressFinalize(this);
         }
     }
 }

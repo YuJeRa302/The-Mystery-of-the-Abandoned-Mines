@@ -1,48 +1,51 @@
+using System;
+using System.Collections;
 using UnityEngine;
 
 namespace Assets.Source.Game.Scripts
 {
-    public class PlayerAnimation : MonoBehaviour
+    public class PlayerAnimation : IDisposable
     {
-        [SerializeField] private MovementPlayer _playerMovment;
-        [SerializeField] private Player _player;
-        [SerializeField] private PlayerAttacker _playerAttacker;
-
+        private ICoroutineRunner _coroutineRunner;
         private Animator _animator;
         private Rigidbody _rigidbody;
         private float _maxSpeed;
+        private Coroutine _moveCorontine;
+        private Player _player;
         private HashAnimationPlayer _animationPlayer = new HashAnimationPlayer();
 
-        private void Start()
+        public PlayerAnimation(Animator animator, Rigidbody rigidbody, float maxSpeed, PlayerClassData classData, Player coroutineRunner)
         {
-            _rigidbody = GetComponent<Rigidbody>();
-            _maxSpeed = _playerMovment.MaxMoveSpeed;
-        }
-
-        private void OnEnable()
-        {
-            _playerAttacker.Attacked += OnAttackAnimation;
-        }
-
-        private void OnDisable()
-        {
-            _playerAttacker.Attacked -= OnAttackAnimation;
-        }
-
-        private void Update()
-        {
-            _animator.SetFloat(_animationPlayer.MoveAnimation, _rigidbody.velocity.magnitude / _maxSpeed);
-        }
-
-        public void Initialize(PlayerClassData classData)
-        {
-            _animator = GetComponent<Animator>();
+            _animator = animator;
+            _rigidbody = rigidbody;
+            _maxSpeed = maxSpeed;
             _animator.runtimeAnimatorController = classData.AnimatorController;
+            _coroutineRunner = coroutineRunner;
+            _player = coroutineRunner;
+
+            _moveCorontine = _coroutineRunner.StartCoroutine(PlayingAnimationMove());
         }
 
-        private void OnAttackAnimation()
+        public void Dispose()
+        {
+            if (_moveCorontine != null)
+                _coroutineRunner.StopCoroutine(_moveCorontine);
+
+            GC.SuppressFinalize(this);
+        }
+
+        public void AttackAnimation()
         {
             _animator.SetTrigger(_animationPlayer.AttackAnimation);
+        }
+
+        private IEnumerator PlayingAnimationMove()
+        {
+            while (_player.isActiveAndEnabled)
+            {
+                _animator.SetFloat(_animationPlayer.MoveAnimation, _rigidbody.velocity.magnitude / _maxSpeed);
+                yield return null;
+            }
         }
     }
 }

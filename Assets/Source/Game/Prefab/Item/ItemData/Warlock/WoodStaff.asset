@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: WoodStaff
   m_EditorClassIdentifier: 
   _targetClass: 1
-  _weaponPrefab: {fileID: 4600616755136012922, guid: fda8de860ceef0b47aafe990cdeeb763, type: 3}
+  _weaponPrefab: {fileID: 5201497864007015725, guid: fda8de860ceef0b47aafe990cdeeb763, type: 3}
   _bonusDamage: 8
   _bonusArmor: 0
   _bulletPrefab: {fileID: -8979001810310791697, guid: 956d7ba531875a24b963c77474ed0464, type: 3}

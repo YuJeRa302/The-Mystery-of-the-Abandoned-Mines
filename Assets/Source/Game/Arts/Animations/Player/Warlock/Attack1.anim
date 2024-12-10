@@ -44155,7 +44155,7 @@ AnimationClip:
   m_HasMotionFloatCurves: 1
   m_Events:
   - time: 0.5
-    functionName: InstantiateBullet
+    functionName: TryAttackEnemy
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

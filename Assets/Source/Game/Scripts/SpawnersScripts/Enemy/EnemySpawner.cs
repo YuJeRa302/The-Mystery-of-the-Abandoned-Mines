@@ -5,19 +5,19 @@ using UnityEngine;
 
 namespace Assets.Source.Game.Scripts
 {
-    public class EnemySpawner : MonoBehaviour
+    public class EnemySpawner : IDisposable
     {
         private readonly System.Random _rnd = new ();
         private readonly float _delaySpawn = 1.0f;
         private readonly int _minValue = 0;
 
-        private Player _player;
+        private Pool _enemuPool;
         private Transform[] _spawnPoints;
-        [SerializeField] private List<Enemy> _enemies;
-        [SerializeField] private Pool _enemuPool;
-
+        private Player _player;
         private EnemyData[] _enemyDatas;
-        private IEnumerator _spawn;
+        private Coroutine _spawn;
+        private ICoroutineRunner _coroutineRunner;
+        private List<Enemy> _enemies = new List<Enemy>();
         private int _currentWaveNumber = 0;
         private int _countWaves;
         private float _timeAfterLastSpawn;
@@ -30,10 +30,24 @@ namespace Assets.Source.Game.Scripts
 
         public event Action AllEnemyRoomDied;
 
+        public EnemySpawner (Pool enemyPool, ICoroutineRunner coroutineRunner)
+        {
+            _enemuPool = enemyPool;
+            _coroutineRunner = coroutineRunner;
+        }
+
+        public void Dispose()
+        {
+            if (_spawn != null)
+                _coroutineRunner.StopCoroutine(_spawn);
+
+            GC.SuppressFinalize(this);
+        }
+
         public void Initialize(Room currentRoom)
         {
             if (_spawn != null)
-                StopCoroutine(_spawn);
+                _coroutineRunner.StopCoroutine(_spawn);
 
             if(currentRoom.EnemySpawnPoints.Length == 0)
             {
@@ -46,8 +60,7 @@ namespace Assets.Source.Game.Scripts
                 _countEnemyRoom = currentRoom.CountEnemy;
                 _spawnPoints = currentRoom.EnemySpawnPoints;
                 _enemyDatas = currentRoom.RoomData.EnemyData;
-                _spawn = Spawn();
-                StartCoroutine(_spawn);
+                _spawn = _coroutineRunner.StartCoroutine(Spawn());
             }
         }
 
@@ -55,7 +68,6 @@ namespace Assets.Source.Game.Scripts
         {
             _player = player;
             _totalEnemyCount = countEnemy;
-            Debug.Log(_totalEnemyCount);
         }
 
         private IEnumerator Spawn()
@@ -88,7 +100,7 @@ namespace Assets.Source.Game.Scripts
             }
             else
             {
-                enemy = Instantiate(enemyData.PrefabEnemy, _spawnPoints[value].position, _spawnPoints[value].rotation);
+                enemy = GameObject.Instantiate(enemyData.PrefabEnemy, _spawnPoints[value].position, _spawnPoints[value].rotation);
 
                 _enemuPool.InstantiatePoolObject(enemy, enemyData.PrefabEnemy.name);
                 enemy.Initialize(_player, enemyData.Id);

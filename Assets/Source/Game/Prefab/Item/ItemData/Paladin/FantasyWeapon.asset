@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: FantasyWeapon
   m_EditorClassIdentifier: 
   _targetClass: 0
-  _weaponPrefab: {fileID: -4235938381245114250, guid: 431cac0d95aacae4289f2938eec575b4, type: 3}
+  _weaponPrefab: {fileID: -737242756977397214, guid: 431cac0d95aacae4289f2938eec575b4, type: 3}
   _bonusDamage: 6
   _bonusArmor: 6
-  _additionalWeapon: {fileID: 2929962777720419722, guid: de056d4bdfc524146a1fd6441b2360c1, type: 3}
+  _additionalWeapon: {fileID: -5167669675695763617, guid: de056d4bdfc524146a1fd6441b2360c1, type: 3}

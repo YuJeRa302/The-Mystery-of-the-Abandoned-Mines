@@ -49,16 +49,13 @@ namespace Assets.Source.Game.Scripts
                 return;
 
             _currentHealth -= damage;
-            //GotHit?.Invoke();
-            //TakedDamage?.Invoke(damage); ;
-            //HealthChanged?.Invoke(_health, _maxHealth);
 
             if (_currentHealth <= 0)
             {
                 _currentHealth = 0;
                 _isDead = true;
                 Died?.Invoke();
-                ReturnToPool();//test
+                ReturnToPool();
             }
         }
 

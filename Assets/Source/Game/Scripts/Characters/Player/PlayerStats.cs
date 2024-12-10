@@ -4,7 +4,6 @@ using UnityEngine;
 
 namespace Assets.Source.Game.Scripts
 {
-    [RequireComponent(typeof(PlayerHealth))]
     [RequireComponent(typeof(PlayerAbilityCaster))]
 
     public class PlayerStats : MonoBehaviour
@@ -17,14 +16,14 @@ namespace Assets.Source.Game.Scripts
 
         [SerializeField] private Player _player;
         [SerializeField] private PlayerAbilityCaster _playerAbilityCaster;
-        [SerializeField] private PlayerHealth _playerHealth;
         [SerializeField] private PlayerAttacker _playerAttakcer;
-        [SerializeField] private MovementPlayer _playerMovment;
-        private PlayerView _playerView;
         [SerializeField] private float _speed;
         [SerializeField] private int _maxPlayerLevel;
         [SerializeField] private int _maxUpgradeLevel;
 
+        private PlayerMovement _playerMovment;
+        //private PlayerHealth _playerHealth;
+        private PlayerView _playerView;
         private int _currentLevel = 1;
         private int _currentUpgradeLevel = 0;
         private int _currentUpgradePoints = 0;
@@ -32,7 +31,7 @@ namespace Assets.Source.Game.Scripts
         private int _currentUpgradeExperience = 0;
         private int _rerollPoints = 2;
         private int _score = 0;
-        private int _damage = 10;//����� �� ������������� �������
+        private int _damage = 10;//
         private int _armor = 2;
         private int _regeneration = 1;
         private int _countKillEnemy = 0;
@@ -54,7 +53,7 @@ namespace Assets.Source.Game.Scripts
         public int Regeneration => _regeneration;
         public int UpgradeExperience => _currentUpgradeExperience;
         public PlayerAbilityCaster PlayerAbilityCaster => _playerAbilityCaster;
-        public PlayerHealth PlayerHealth => _playerHealth;
+        //public PlayerHealth PlayerHealth => _playerHealth;
 
         private void OnDestroy()
         {
@@ -66,10 +65,10 @@ namespace Assets.Source.Game.Scripts
         {
             //UpgradePlayerStats(upgradeState, levelObserver.UpgradeDatas);
             _playerView = levelObserver.PlayerView;
-            _playerAttakcer.Initialize(_player.WeaponView.WeaponData);
-            _playerHealth.Initialize(levelObserver);
-            _playerMovment.Initialize(levelObserver.CameraControiler.Camera, levelObserver.CameraControiler.VariableJoystick, _speed);
-            _playerAbilityCaster.Initialize(abilityFactory, abilityPresenterFactory);
+            //_playerAttakcer.Initialize(_player.Equipment.WeaponData);
+            //_playerHealth.Initialize(levelObserver);
+            //_playerMovment.Initialize(levelObserver.CameraControiler.Camera, levelObserver.CameraControiler.VariableJoystick, _speed);
+            _playerAbilityCaster.Initialize(abilityFactory, abilityPresenterFactory, _player, _playerView);
 
             GenerateLevelPlayer(_maxPlayerLevel);
             GenerateUpgradeLevel(_maxUpgradeLevel);

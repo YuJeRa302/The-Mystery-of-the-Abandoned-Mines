@@ -1535,7 +1535,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ConfineMode: 1
-  m_BoundingVolume: {fileID: 0}
+  m_BoundingVolume: {fileID: 1947479714}
   m_BoundingShape2D: {fileID: 0}
   m_ConfineScreenEdges: 1
   m_Damping: 0
@@ -2649,7 +2649,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _cardLoader: {fileID: 1642288389}
-  _player: {fileID: 0}
   _cardContainer: {fileID: 1031471852}
   _cardView: {fileID: 3236075013698862364, guid: 69403bcc5fe0ede4ca92a5f7a425d7af, type: 3}
   _testPanel: {fileID: 102847951}
@@ -4527,11 +4526,9 @@ GameObject:
   - component: {fileID: 1642288383}
   - component: {fileID: 1642288382}
   - component: {fileID: 1642288384}
-  - component: {fileID: 1642288385}
   - component: {fileID: 1642288386}
   - component: {fileID: 1642288388}
   - component: {fileID: 1642288389}
-  - component: {fileID: 1642288390}
   - component: {fileID: 1642288391}
   m_Layer: 0
   m_Name: Scripts
@@ -4588,27 +4585,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _roomPlacer: {fileID: 1642288382}
-  _player: {fileID: 0}
-  _playerFactory: {fileID: 1642288390}
+  _enemuPool: {fileID: 1642288388}
+  _playerInventory: {fileID: 1642288391}
+  _spawnPlayerPoint: {fileID: 1351146445}
+  _playerPrefab: {fileID: 116321836545481359, guid: 0866360d73a4833478781d1bfbcb3f44, type: 3}
+  _classData: {fileID: 11400000, guid: 443a12eb8334cd24380eafbd7710991d, type: 2}
   _playerView: {fileID: 102847951}
-  _enemySpawner: {fileID: 1642288385}
   _cameraControiler: {fileID: 1642288386}
   _navSurface: {fileID: 1947479713}
   _panels: []
---- !u!114 &1642288385
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1642288381}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 280b03d83bdcb404d8dc2006b9aed469, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _enemies: []
-  _enemuPool: {fileID: 1642288388}
+  _cardPanel: {fileID: 880188248}
 --- !u!114 &1642288386
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4657,23 +4643,6 @@ MonoBehaviour:
     CurrentLevel: 0
   _cardData:
   - {fileID: 11400000, guid: 3c68c34c6cc44fd49a10d039e6a455e1, type: 2}
-  _cardDeck: {fileID: 0}
---- !u!114 &1642288390
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1642288381}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d3c801ee136b4242bba291622447d67, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _spawnPoint: {fileID: 1351146445}
-  _weaponData: {fileID: 11400000, guid: 20106646bd78bbc40978f5eb1f317423, type: 2}
-  _classData: {fileID: 11400000, guid: 443a12eb8334cd24380eafbd7710991d, type: 2}
-  _playerPrefab: {fileID: 116321836545481359, guid: 0866360d73a4833478781d1bfbcb3f44, type: 3}
 --- !u!114 &1642288391
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4691,7 +4660,7 @@ MonoBehaviour:
   _barbarianWeapons:
   - {fileID: 11400000, guid: 63d4eea141e6306448339549d40910cf, type: 2}
   - {fileID: 11400000, guid: 63e2a65505f8ce544a0b8b2c71298602, type: 2}
-  _waelockWeapons:
+  _warlockWeapons:
   - {fileID: 11400000, guid: 20106646bd78bbc40978f5eb1f317423, type: 2}
 --- !u!1 &1648141229
 GameObject:
@@ -5349,6 +5318,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!64 &1947479714 stripped
+MeshCollider:
+  m_CorrespondingSourceObject: {fileID: 4551713866318324650, guid: 0d780173c250d334f80c9061373c8e4f, type: 3}
+  m_PrefabInstance: {fileID: 6608107746057098447}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1955248940
 GameObject:
   m_ObjectHideFlags: 0

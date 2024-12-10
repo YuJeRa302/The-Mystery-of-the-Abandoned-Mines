@@ -63,6 +63,7 @@ namespace Assets.Source.Game.Scripts
         private void OnMove() => _animator.SetTrigger(_animationEnemy.MoveAnimation);
 
         private void OnAttack() => _animator.SetTrigger(_animationEnemy.AttackAnimation);
+
         private void OnAdditionalAttack() => _animator.SetTrigger(_animationEnemy.AdditionalAttackAnimation);
 
         private void OnTakeDamage() => _animator.SetTrigger(_animationEnemy.TakeDamageAnimation);

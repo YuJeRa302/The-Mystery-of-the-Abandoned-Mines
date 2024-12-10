@@ -30,16 +30,11 @@ namespace Assets.Source.Game.Scripts
 
         private void Awake()
         {
-            _player.PlayerStats.PlayerHealth.HealthChanged += OnChangeHealth;
-            _player.PlayerStats.ExperienceValueChanged += OnChangeExperience;
-            _player.PlayerStats.UpgradeExperienceValueChanged += OnChangeUpgradeExperience;
-            _player.PlayerStats.PlayerAbilityCaster.AbilityTaked += OnAbilityTaked;
-            _player.PlayerStats.KillCountChanged += OnChangeKillCount;
         }
 
         private void OnDestroy()
         {
-            _player.PlayerStats.PlayerHealth.HealthChanged -= OnChangeHealth;
+            _player.PlayerHealth.HealthChanged -= OnChangeHealth;
             _player.PlayerStats.ExperienceValueChanged -= OnChangeExperience;
             _player.PlayerStats.UpgradeExperienceValueChanged -= OnChangeUpgradeExperience;
             _player.PlayerStats.PlayerAbilityCaster.AbilityTaked -= OnAbilityTaked;
@@ -50,8 +45,8 @@ namespace Assets.Source.Game.Scripts
         {
             _player = player;
             SubscribePlayerEvent();
-            _sliderHP.maxValue = _player.PlayerStats.PlayerHealth.MaxHealth;
-            _sliderHP.value = _player.PlayerStats.PlayerHealth.CurrentHealth;
+            _sliderHP.maxValue = _player.PlayerHealth.MaxHealth;
+            _sliderHP.value = _player.PlayerHealth.CurrentHealth;
             _sliderXP.maxValue = maxLevelValue;
             _sliderXP.value = levelExperience;
             _sliderUpgradePoints.maxValue = maxUpgradeValue;
@@ -90,13 +85,10 @@ namespace Assets.Source.Game.Scripts
 
         private void SubscribePlayerEvent()
         {
-            _player.PlayerStats.PlayerHealth.HealthChanged += OnChangeHealth;
+            _player.PlayerHealth.HealthChanged += OnChangeHealth;
             _player.PlayerStats.ExperienceValueChanged += OnChangeExperience;
             _player.PlayerStats.UpgradeExperienceValueChanged += OnChangeUpgradeExperience;
             _player.PlayerStats.PlayerAbilityCaster.AbilityTaked += OnAbilityTaked;
-            _player.PlayerStats.PlayerAbilityCaster.AbilityRemoved += OnAbilityRemoved;
-            _player.PlayerStats.PlayerAbilityCaster.AbilityEnded += OnAbilityEnded;
-            _player.PlayerStats.PlayerAbilityCaster.AbilityUsed += OnAbilityUsed;
             _player.PlayerStats.KillCountChanged += OnChangeKillCount;
         }
 

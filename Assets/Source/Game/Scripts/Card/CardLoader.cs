@@ -13,14 +13,19 @@ namespace Assets.Source.Game.Scripts
 
         [SerializeField] private List<CardState> _cardState;
         [SerializeField] private List<CardData> _cardData;
-        [SerializeField] private CardDeck _cardDeck;
 
+        private CardDeck _cardDeck;
         private List<CardData> _mainCardsPool = new ();
         private bool _isExtraAbilityLocked = false;
 
         public event Action CardPoolCreated;
 
         public List<CardData> MainCardsPool => _mainCardsPool;
+
+        public void Initialize(CardDeck deck)
+        {
+            _cardDeck = deck;
+        }
 
         public void CreateCardPool()
         {

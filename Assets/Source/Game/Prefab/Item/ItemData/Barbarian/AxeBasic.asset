@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: AxeBasic
   m_EditorClassIdentifier: 
   _targetClass: 2
-  _weaponPrefab: {fileID: 5682485563633640812, guid: fa4a9cbe03cac1a4982e8d102e7f8697, type: 3}
+  _weaponPrefab: {fileID: -108846339144735249, guid: fa4a9cbe03cac1a4982e8d102e7f8697, type: 3}
   _bonusDamage: 5
   _bonusArmor: 0

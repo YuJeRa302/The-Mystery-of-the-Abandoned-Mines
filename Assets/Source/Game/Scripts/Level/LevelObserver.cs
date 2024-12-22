@@ -25,6 +25,7 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private CardPanel _cardPanel;
 
         private EnemySpawner _enemySpawner;
+        private TrapsSpawner _trapsSpawner;
         private PlayerFactory _playerFactory;
         private Player _player;
         private Room _currentRoom;
@@ -56,6 +57,7 @@ namespace Assets.Source.Game.Scripts
             RemovePanelListener();
 
             _enemySpawner.Dispose();
+            _trapsSpawner.Dispose();
         }
 
         private void Initialize()
@@ -65,15 +67,16 @@ namespace Assets.Source.Game.Scripts
             RegisterServices();
             _enemySpawner = new EnemySpawner(_enemuPool, this);
             _enemySpawner.AllEnemyRoomDied += OnEnemyRoomDied;
+            _trapsSpawner = new TrapsSpawner();
 
             _roomPlacer.Initialize(_currentRoomLevel, canSeeDoor);
             _playerFactory = new PlayerFactory(_playerInventory, this, _abilityFactory, _abilityPresenterFactory, _playerPrefab, _spawnPlayerPoint, _classData, out Player player);
             _player = player;
+            _playerView.Initialize(_player);
             _cameraControiler.SetLookTarget(_player.transform);
             _cardPanel.Initialize(_player);
             AddListener();
             _enemySpawner.SetTotalEnemyCount(_roomPlacer.AllEnemyCount, _player);
-            //_player.PlayerStats.Initialize(10, null, this, _abilityFactory, _abilityPresenterFactory); // test
             _navSurface.BuildNavMesh();
         }
 
@@ -167,7 +170,11 @@ namespace Assets.Source.Game.Scripts
 
             if (room.IsComplete == false)
             {
-                _enemySpawner.Initialize(room);
+                if(room.EnemySpawnPoints.Length == 0)
+                    _trapsSpawner.Initialize(room);
+                else
+                    _enemySpawner.Initialize(room);
+
                 LockAllDoors();
             }
         }

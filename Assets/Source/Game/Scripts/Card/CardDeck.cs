@@ -1,13 +1,17 @@
+using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace Assets.Source.Game.Scripts
 {
-    public class CardDeck : MonoBehaviour
+    public class CardDeck
     {
-        [SerializeField] private PlayerStats _playerStats;
-
         private List<CardData> _cardDataAbility = new ();
+
+        public event Action<CardView> SetNewAbility;
+        public event Action<CardView> RerollPointsUpdated;
+        public event Action<CardView> PlayerStatsUpdated;
+
+        public CardDeck() { }
 
         public List<CardData> CardDataAbility => _cardDataAbility;
 
@@ -15,7 +19,7 @@ namespace Assets.Source.Game.Scripts
         {
             if (cardView.CardData.TypeCardParameter == TypeCardParameter.Ability)
             {
-                _playerStats.SetNewAbility(cardView);
+                SetNewAbility?.Invoke(cardView);
 
                 if (_cardDataAbility.Count > 0)
                     AddCardAbilityData(cardView);
@@ -24,11 +28,11 @@ namespace Assets.Source.Game.Scripts
             }
             else if (cardView.CardData.TypeCardParameter == TypeCardParameter.RerollPoints)
             {
-                _playerStats.UpdateRerollPoints(cardView);
+                RerollPointsUpdated?.Invoke(cardView);
             }
             else
             {
-                _playerStats.UpdatePlayerStats(cardView);
+                PlayerStatsUpdated?.Invoke(cardView);
             }
         }
 

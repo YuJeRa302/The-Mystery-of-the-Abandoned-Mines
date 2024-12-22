@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 3986996167648922463}
   - component: {fileID: 4406738673489262731}
   - component: {fileID: 5887458975810820580}
-  - component: {fileID: -4235938381245114250}
   - component: {fileID: -737242756977397214}
   m_Layer: 0
   m_Name: FantasyHammer
@@ -108,18 +107,6 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 5193462549946522430, guid: 5600d0e359e32d54c9ecd43a2ad8b7c4, type: 3}
---- !u!114 &-4235938381245114250
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4354565540095283748}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d79733c235be6694888a3bad15273f3e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &-737242756977397214
 MonoBehaviour:
   m_ObjectHideFlags: 0

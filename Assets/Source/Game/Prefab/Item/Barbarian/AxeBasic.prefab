@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 9205874659058432573}
   - component: {fileID: 5219124063539934616}
   - component: {fileID: 8037512354770796882}
-  - component: {fileID: 5682485563633640812}
   - component: {fileID: -108846339144735249}
   m_Layer: 0
   m_Name: AxeBasic
@@ -85,18 +84,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &5682485563633640812
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8397531700145610887}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d79733c235be6694888a3bad15273f3e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &-108846339144735249
 MonoBehaviour:
   m_ObjectHideFlags: 0

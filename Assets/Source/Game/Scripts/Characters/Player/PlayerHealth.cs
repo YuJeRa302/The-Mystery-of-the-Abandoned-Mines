@@ -7,13 +7,15 @@ namespace Assets.Source.Game.Scripts
     public class PlayerHealth : IDisposable
     {
         private readonly int _minHealth = 0;
-        private readonly int _delayHealing = 1;
 
         private Player _player;
         private ICoroutineRunner _coroutineRunner;
 
         private int _maxHealth = 100;
         private int _currentHealth = 0;
+        private int _delayHealing = 1;
+        private int _regenerationHealing = 1;
+        private int _armor = 2;
         private Coroutine _regeneration;
         private LevelObserver _levelObserver;
 
@@ -43,7 +45,7 @@ namespace Assets.Source.Game.Scripts
             {
                 DamageTaked?.Invoke();
 
-                var currentDamage = (damage - _player.PlayerStats.Armor);
+                var currentDamage = (damage - _armor);
 
                 if (currentDamage < _minHealth)
                     currentDamage = _minHealth;
@@ -53,17 +55,27 @@ namespace Assets.Source.Game.Scripts
             }
         }
 
+        public void MaxHealthChanged(int value)
+        {
+            _maxHealth = value;
+        }
+
+        public void ChangeRegeniration(int regeniration)
+        {
+            _regenerationHealing = regeniration;
+        }
+
+        public void ChangeArmor(int armor)
+        {
+            _armor = armor;
+        }
+
         private void AddListener() 
         {
             _levelObserver.GamePaused += OnPauseGame;
             _levelObserver.GameResumed += OnResumeGame;
-            _player.PlayerStats.MaxHealthChanged += OnMaxHealthChanged;
+            //_player.PlayerStats.MaxHealthChanged += OnMaxHealthChanged;
             HealthChanged += OnHealthChanged;
-        }
-
-        private void OnMaxHealthChanged(int value) 
-        {
-            _maxHealth = value;
         }
 
         private void OnPauseGame()
@@ -95,7 +107,7 @@ namespace Assets.Source.Game.Scripts
             while (_currentHealth < _maxHealth)
             {
                 yield return new WaitForSeconds(_delayHealing);
-                _currentHealth += _player.PlayerStats.Regeneration;
+                _currentHealth += _regenerationHealing;
                 HealthChanged?.Invoke(_currentHealth);
             }
 
@@ -112,7 +124,7 @@ namespace Assets.Source.Game.Scripts
         {
             _levelObserver.GamePaused -= OnPauseGame;
             _levelObserver.GameResumed -= OnResumeGame;
-            _player.PlayerStats.MaxHealthChanged -= OnMaxHealthChanged;
+            //_player.PlayerStats.MaxHealthChanged -= OnMaxHealthChanged;
             HealthChanged -= OnHealthChanged;
 
             if (_regeneration != null)

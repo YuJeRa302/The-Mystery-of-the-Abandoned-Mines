@@ -16,10 +16,6 @@ public class PlayerFactory
         _classData = classData;
         _playerPrefab = playerPrefab;
         spawnedPlayer = GameObject.Instantiate(_playerPrefab, _spawnPoint.position, Quaternion.identity);
-        //_weaponData = inventory.WarlockWeapons[0];//
-        //spawnedPlayer.Equipment.Initialize(spawnedPlayer, inventory.WarlockWeapons[0]);
-        //spawnedPlayer.PlayerAnimation.Initialize(_classData);
-        spawnedPlayer.CreateStats(observer, classData, inventory.WarlockWeapons[0]);
-        spawnedPlayer.PlayerStats.Initialize(0, null, observer, abilityFactory, abilityPresenterFactory);
+        spawnedPlayer.CreateStats(observer, classData, inventory.WarlockWeapons[0], abilityFactory, abilityPresenterFactory);
     }
 }

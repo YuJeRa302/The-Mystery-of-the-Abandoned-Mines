@@ -22,6 +22,7 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private Transform[] _trapSpawnpoints;
         [SerializeField] private Transform[] _enemySpawnPoints;
         [SerializeField] private Transform _bossSpawnPoint;
+        [SerializeField] private PlateDiscovery _plateDiscovery;
         [Header("Confiner Zone")]
         [SerializeField] private BoxCollider _confiner;
         [Header("NavMesh")]
@@ -41,6 +42,7 @@ namespace Assets.Source.Game.Scripts
         public Transform[] TrapSpawnPoints => _trapSpawnpoints;
         public Transform[] EnemySpawnPoints => _enemySpawnPoints;
         public Transform BossSpawnPoint => _bossSpawnPoint;
+        public PlateDiscovery PlateDiscovery => _plateDiscovery;
         public BoxCollider Confiner => _confiner;
         public NavMeshSurface NavSurface => _navSurface;
         public RoomData RoomData { get; private set; }

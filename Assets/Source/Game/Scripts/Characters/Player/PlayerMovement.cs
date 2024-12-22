@@ -49,6 +49,8 @@ public class PlayerMovement : IDisposable
 
         if (_movment != null)
             _coroutineRunner.StopCoroutine(_movment);
+
+        GC.SuppressFinalize(this);
     }
 
     private void MobileMove()
@@ -70,27 +72,6 @@ public class PlayerMovement : IDisposable
         else
             _rigidbody.angularVelocity = Vector3.zero;
     }
-
-    //private void DekstopMove()
-    //{
-    //    _direction += _move.ReadValue<Vector2>().x * GetCameraRight(_camera) * _moveSpeed;
-    //    _direction += _move.ReadValue<Vector2>().y * GetCameraForward(_camera) * _moveSpeed;
-
-    //    _rigidbody.AddForce(_direction, ForceMode.Impulse);
-    //    _direction = Vector3.zero;
-
-    //    if (_rigidbody.velocity.y < 0f)
-    //        _rigidbody.velocity -= Vector3.down * Physics.gravity.y * Time.fixedDeltaTime;
-
-    //    Vector3 horizontalVelocity = _rigidbody.velocity;
-    //    horizontalVelocity.y = 0;
-
-    //    if (horizontalVelocity.sqrMagnitude > _maxMoveSpeed * _maxMoveSpeed)
-    //        _rigidbody.velocity = horizontalVelocity.normalized * _maxMoveSpeed + Vector3.up * _rigidbody.velocity.y;
-
-    //    _rigidbody.velocity = new Vector3(_rigidbody.velocity.x, 0, _rigidbody.velocity.z);
-    //    DekstopLookAt();
-    //}
 
     private Vector3 GetCameraRight(Camera camera)
     {

@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2bf4e7565ed04304ba72d9831d3ab542, type: 3}
+  m_Name: StandartHammer
+  m_EditorClassIdentifier: 
+  _targetClass: 0
+  _weaponPrefab: {fileID: 9213339794923256004, guid: dbe5a519df1331947a8a98fdf73929a6, type: 3}
+  _bonusDamage: 4
+  _bonusArmor: 2
+  _additionalWeapon: {fileID: 5634621666115186438, guid: f798da3c4940da64b8c5734b563cd48e, type: 3}

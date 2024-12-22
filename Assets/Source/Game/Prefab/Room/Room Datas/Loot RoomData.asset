@@ -39,5 +39,10 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  _enemyDatas:
-  - {fileID: 11400000, guid: c09a3c0740e3502468be820b02f1d026, type: 2}
+  _enemyDatas: []
+  _traps:
+  - {fileID: 5501110779660946596, guid: af92dc372babe964585dbcd46a3e6f99, type: 3}
+  - {fileID: 881391800726880042, guid: 557e0a64dad6d2c4bab583ff958d77ec, type: 3}
+  - {fileID: 4699667135979270254, guid: 1865b06fe0b3f7648866fa3cf0dc8804, type: 3}
+  - {fileID: 1512387571578294354, guid: 355e22e86afc0684b9e17b64a811a887, type: 3}
+  - {fileID: 7292573048194938277, guid: 73fcaf85b37e13d4fa546922db2108b8, type: 3}

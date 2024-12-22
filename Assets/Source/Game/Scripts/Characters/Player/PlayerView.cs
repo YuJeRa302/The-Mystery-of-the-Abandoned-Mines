@@ -14,7 +14,6 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private Slider _sliderXP;
         [SerializeField] private Slider _sliderUpgradePoints;
         [Space(20)]
-        [SerializeField] private Player _player;
         [SerializeField] private Text _textPlayerLevel;
         [SerializeField] private Text _textUpgradePoints;
         [SerializeField] private Text _killCount;
@@ -24,6 +23,7 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private Transform _weaponEffectsContainer;
         [SerializeField] private Transform _throwPoint;
 
+        private Player _player;
         private ParticleSystem _abilityEffect;
 
         public event Action<AbilityView, ParticleSystem, Transform> AbilityViewCreated;
@@ -37,21 +37,21 @@ namespace Assets.Source.Game.Scripts
             _player.PlayerHealth.HealthChanged -= OnChangeHealth;
             _player.PlayerStats.ExperienceValueChanged -= OnChangeExperience;
             _player.PlayerStats.UpgradeExperienceValueChanged -= OnChangeUpgradeExperience;
-            _player.PlayerStats.PlayerAbilityCaster.AbilityTaked -= OnAbilityTaked;
+            _player.PlayerAbilityCaster.AbilityTaked -= OnAbilityTaked;
             _player.PlayerStats.KillCountChanged -= OnChangeKillCount;
         }
 
-        public void Initialize(Player player, int maxLevelValue, int levelExperience, int maxUpgradeValue, int upgradeExperience, int currentLevel, int currentUpgradePoints)
+        public void Initialize(Player player)
         {
             _player = player;
             SubscribePlayerEvent();
             _sliderHP.maxValue = _player.PlayerHealth.MaxHealth;
             _sliderHP.value = _player.PlayerHealth.CurrentHealth;
-            _sliderXP.maxValue = maxLevelValue;
-            _sliderXP.value = levelExperience;
-            _sliderUpgradePoints.maxValue = maxUpgradeValue;
-            _sliderUpgradePoints.value = upgradeExperience;
-            _textPlayerLevel.text = currentLevel.ToString();
+            _sliderXP.maxValue = _player.PlayerStats.MaxLevelValue;
+            _sliderXP.value = _player.PlayerStats.CurrentExperience;
+            _sliderUpgradePoints.maxValue = _player.PlayerStats.MaxUpgradeValue;
+            _sliderUpgradePoints.value = _player.PlayerStats.UpgradeExperience;
+            _textPlayerLevel.text = _player.PlayerStats.CurrentLevel.ToString();
             _textUpgradePoints.text = _player.PlayerStats.UpgradePoints.ToString();
             _killCount.text = _player.PlayerStats.CountKillEnemy.ToString();
         }
@@ -88,7 +88,7 @@ namespace Assets.Source.Game.Scripts
             _player.PlayerHealth.HealthChanged += OnChangeHealth;
             _player.PlayerStats.ExperienceValueChanged += OnChangeExperience;
             _player.PlayerStats.UpgradeExperienceValueChanged += OnChangeUpgradeExperience;
-            _player.PlayerStats.PlayerAbilityCaster.AbilityTaked += OnAbilityTaked;
+            _player.PlayerAbilityCaster.AbilityTaked += OnAbilityTaked;
             _player.PlayerStats.KillCountChanged += OnChangeKillCount;
         }
 

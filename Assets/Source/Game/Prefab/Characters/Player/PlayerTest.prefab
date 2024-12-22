@@ -488,9 +488,6 @@ GameObject:
   - component: {fileID: 1331979722624184602}
   - component: {fileID: 5129466093622292130}
   - component: {fileID: 116321836545481359}
-  - component: {fileID: 546374387721671116}
-  - component: {fileID: 1928279005320493959}
-  - component: {fileID: 6640039334682548513}
   - component: {fileID: 3665270091436053377}
   m_Layer: 0
   m_Name: PlayerTest
@@ -611,52 +608,6 @@ MonoBehaviour:
   _weaponPoint: {fileID: 2490256430192700955}
   _additionalWeaponPoint: {fileID: 8998010172795856166}
   _poolBullet: {fileID: 3665270091436053377}
-  _playerStats: {fileID: 1928279005320493959}
-  _cardDeck: {fileID: 6640039334682548513}
---- !u!114 &546374387721671116
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3060439647535226261}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d45b7a643328814aa2c01fa433ee4d8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _player: {fileID: 116321836545481359}
---- !u!114 &1928279005320493959
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3060439647535226261}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 48298227d405902408c8640d19d33415, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _player: {fileID: 116321836545481359}
-  _playerAbilityCaster: {fileID: 546374387721671116}
-  _playerMovment: {fileID: 0}
-  _speed: 2
-  _maxPlayerLevel: 0
-  _maxUpgradeLevel: 0
---- !u!114 &6640039334682548513
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3060439647535226261}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7ff884e7a47cd684eb869528c065518c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _playerStats: {fileID: 1928279005320493959}
 --- !u!114 &3665270091436053377
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -4,48 +4,39 @@ using UnityEngine;
 
 namespace Assets.Source.Game.Scripts
 {
-    public class PlayerAbilityCaster : MonoBehaviour
+    public class PlayerAbilityCaster : IDisposable
     {
-        [SerializeField] private Player _player;
+        private Player _player;
         private PlayerView _playerView;
 
-        private AbilityAttributeData _abilityAttributeData;
         private List<Ability> _abilities = new();
+        private AbilityAttributeData _abilityAttributeData;
+        private AbilityPresenterFactory _abilityPresenterFactory;
+        private AbilityFactory _abilityFactory;
+
         private int _abilityDuration = 0;
         private int _abilityDamage = 0;
         private int _abilityCooldownReduction = 0;
-        private AbilityFactory _abilityFactory;
-        private AbilityPresenterFactory _abilityPresenterFactory;
         private int _currentAbilityLevel;
 
         public event Action<AbilityAttributeData, int> AbilityTaked;
         public event Action<Ability> AbilityRemoved;
-        public event Action<Ability> AbilityUsed;
-        public event Action<Ability> AbilityEnded;
-
-        private void Awake()
-        {
-        }
+        public event Action<Ability> AbilityUsed;//++
+        public event Action<Ability> AbilityEnded;//++
 
         private void OnDestroy()
         {
-            _player.PlayerStats.AbilityDurationChanged -= OnAbilityDurationChanged;
-            _player.PlayerStats.AbilityDamageChanged -= OnAbilityDamageChanged;
-            _player.PlayerStats.AbilityCooldownReductionChanged -= OnAbilityCooldownReductionChanged;
             _playerView.AbilityViewCreated -= OnAbilityViewCreated;
             DestroyAbilities();
         }
 
-        public void Initialize(AbilityFactory abilityFactory, AbilityPresenterFactory abilityPresenterFactory, Player player, PlayerView playerView) 
+        public PlayerAbilityCaster(AbilityFactory abilityFactory, AbilityPresenterFactory abilityPresenterFactory, Player player, PlayerView playerView) 
         {
             _abilityFactory = abilityFactory;
             _abilityPresenterFactory = abilityPresenterFactory;
             _player = player;
             _playerView = playerView;
-            ///
-            _player.PlayerStats.AbilityDurationChanged += OnAbilityDurationChanged;
-            _player.PlayerStats.AbilityDamageChanged += OnAbilityDamageChanged;
-            _player.PlayerStats.AbilityCooldownReductionChanged += OnAbilityCooldownReductionChanged;
+
             _playerView.AbilityViewCreated += OnAbilityViewCreated;
         }
 
@@ -83,17 +74,17 @@ namespace Assets.Source.Game.Scripts
             _abilities.Add(newAbility);
         }
 
-        private void OnAbilityDurationChanged(int value)
+        public void AbilityDurationChanged(int value)
         {
             _abilityDuration = value;
         }
 
-        private void OnAbilityDamageChanged(int value)
+        public void AbilityDamageChanged(int value)
         {
             _abilityDamage = value;
         }
 
-        private void OnAbilityCooldownReductionChanged(int value)
+        public void AbilityCooldownReductionChanged(int value)
         {
             _abilityCooldownReduction = value;
         }
@@ -149,6 +140,11 @@ namespace Assets.Source.Game.Scripts
             }
 
             return isFind;
+        }
+
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
         }
     }
 }

@@ -4,9 +4,7 @@ using UnityEngine;
 
 namespace Assets.Source.Game.Scripts
 {
-    [RequireComponent(typeof(PlayerAbilityCaster))]
-
-    public class PlayerStats : MonoBehaviour
+    public class PlayerStats : IDisposable
     {
         private readonly Dictionary<int, int> _levels = new();
         private readonly Dictionary<int, int> _upgradeLevels = new();
@@ -14,15 +12,11 @@ namespace Assets.Source.Game.Scripts
         private readonly int _maxUpgradeExperience = 1000;
         private readonly int _minValue = 0;
 
-        [SerializeField] private Player _player;
-        [SerializeField] private PlayerAbilityCaster _playerAbilityCaster;
-        [SerializeField] private PlayerAttacker _playerAttakcer;
-        [SerializeField] private float _speed;
-        [SerializeField] private int _maxPlayerLevel;
-        [SerializeField] private int _maxUpgradeLevel;
+        //[SerializeField] private float _speed;
+        private int _maxPlayerLevel;//
+        private int _maxUpgradeLevel;//
 
-        private PlayerMovement _playerMovment;
-        //private PlayerHealth _playerHealth;
+        private Player _player;
         private PlayerView _playerView;
         private int _currentLevel = 1;
         private int _currentUpgradeLevel = 0;
@@ -35,16 +29,32 @@ namespace Assets.Source.Game.Scripts
         private int _armor = 2;
         private int _regeneration = 1;
         private int _countKillEnemy = 0;
+        private int _maxLevelValue;
+        private int _maxUpgradeValue;
 
-        public event Action<int> MaxHealthChanged;
-        public event Action<int> ExperienceValueChanged;
-        public event Action<int> UpgradeExperienceValueChanged;
-        public event Action<int> AbilityDurationChanged;
-        public event Action<int> AbilityDamageChanged;
-        public event Action<int> AbilityCooldownReductionChanged;
-        public event Action<int> KillCountChanged;
+        public event Action<int> MaxHealthChanged;//+
+        public event Action<int> RegenerationChanged;//+
+        public event Action<int> ArmorChanged;//+
+        public event Action<int> ExperienceValueChanged;//view
+        public event Action<int> UpgradeExperienceValueChanged;//view
+        public event Action<int> AbilityDurationChanged;//+
+        public event Action<int> AbilityDamageChanged;//+
+        public event Action<int> AbilityCooldownReductionChanged;//+
+        public event Action<int> KillCountChanged;//view
 
-        public float Speed => _speed;
+        public PlayerStats(Player player, int score, UpgradeState[] upgradeState, LevelObserver levelObserver, 
+            AbilityFactory abilityFactory, AbilityPresenterFactory abilityPresenterFactory)
+        {
+            //UpgradePlayerStats(upgradeState, levelObserver.UpgradeDatas);
+            _player = player;
+            _playerView = levelObserver.PlayerView;
+
+            GenerateLevelPlayer(_maxPlayerLevel);
+            GenerateUpgradeLevel(_maxUpgradeLevel);
+            SetPlayerStats(score);
+        }
+
+        //public float Speed => _speed;
         public int Armor => _armor;
         public int UpgradePoints => _currentUpgradePoints;
         public int Damage => _damage;
@@ -52,29 +62,14 @@ namespace Assets.Source.Game.Scripts
         public int CountKillEnemy => _countKillEnemy;
         public int Regeneration => _regeneration;
         public int UpgradeExperience => _currentUpgradeExperience;
-        public PlayerAbilityCaster PlayerAbilityCaster => _playerAbilityCaster;
-        //public PlayerHealth PlayerHealth => _playerHealth;
+        public int CurrentExperience => _currentExperience;
+        public int MaxLevelValue => _maxLevelValue;
+        public int MaxUpgradeValue => _maxUpgradeValue;
+        public int CurrentLevel => _currentLevel;
 
-        private void OnDestroy()
+        public void Dispose()
         {
-            _playerAbilityCaster.AbilityUsed -= OnAbilityUsed;
-            _playerAbilityCaster.AbilityEnded -= OnAbilityEnded;
-        }
-
-        public void Initialize(int score, UpgradeState[] upgradeState, LevelObserver levelObserver, AbilityFactory abilityFactory, AbilityPresenterFactory abilityPresenterFactory)
-        {
-            //UpgradePlayerStats(upgradeState, levelObserver.UpgradeDatas);
-            _playerView = levelObserver.PlayerView;
-            //_playerAttakcer.Initialize(_player.Equipment.WeaponData);
-            //_playerHealth.Initialize(levelObserver);
-            //_playerMovment.Initialize(levelObserver.CameraControiler.Camera, levelObserver.CameraControiler.VariableJoystick, _speed);
-            _playerAbilityCaster.Initialize(abilityFactory, abilityPresenterFactory, _player, _playerView);
-
-            GenerateLevelPlayer(_maxPlayerLevel);
-            GenerateUpgradeLevel(_maxUpgradeLevel);
-            SetPlayerStats(score);
-            _playerAbilityCaster.AbilityUsed += OnAbilityUsed;
-            _playerAbilityCaster.AbilityEnded += OnAbilityEnded;
+            GC.SuppressFinalize(this);
         }
 
         public void EnemyDied(Enemy enemy)
@@ -104,12 +99,14 @@ namespace Assets.Source.Game.Scripts
                 {
                     case TypeParameter.Armor:
                         _armor += parameter.Value;
+                        ArmorChanged?.Invoke(_armor);
                         break;
                     case TypeParameter.Damage:
                         _damage += parameter.Value;
                         break;
                     case TypeParameter.Regeneration:
                         _regeneration += parameter.Value;
+                        RegenerationChanged?.Invoke(_regeneration);
                         break;
                     case TypeParameter.Health:
                         MaxHealthChanged?.Invoke(parameter.Value);
@@ -130,7 +127,6 @@ namespace Assets.Source.Game.Scripts
 
         public void SetNewAbility(CardView cardView)
         {
-            _playerAbilityCaster.TakeAbility(cardView);
             cardView.CardState.CurrentLevel++;
             cardView.CardState.Weight++;
         }
@@ -184,7 +180,7 @@ namespace Assets.Source.Game.Scripts
             }
         }
 
-        private void OnAbilityUsed(Ability ability)
+        public void AbilityUsed(Ability ability)
         {
             if (ability.TypeAbility == TypeAbility.PlayerDamageAmplifier)
                 _damage += ability.CurrentAbilityValue;
@@ -194,7 +190,7 @@ namespace Assets.Source.Game.Scripts
                 _regeneration += ability.CurrentAbilityValue;
         }
 
-        private void OnAbilityEnded(Ability ability)
+        public void AbilityEnded(Ability ability)
         {
             if (ability.TypeAbility == TypeAbility.PlayerDamageAmplifier)
                 _damage -= ability.CurrentAbilityValue;
@@ -240,8 +236,9 @@ namespace Assets.Source.Game.Scripts
         {
             _score = score;
             _levels.TryGetValue(_currentLevel, out int levelValue);
+            _maxLevelValue = levelValue;
             _upgradeLevels.TryGetValue(_currentUpgradeLevel, out int upgradeValue);
-            _playerView.Initialize(_player, levelValue, _currentExperience, upgradeValue, _currentUpgradeExperience, _currentLevel, _currentUpgradeLevel);
+            _maxUpgradeValue = upgradeValue;
         }
 
         private void GenerateLevelPlayer(int level)

@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2bf4e7565ed04304ba72d9831d3ab542, type: 3}
+  m_Name: ElvenHammer
+  m_EditorClassIdentifier: 
+  _targetClass: 0
+  _weaponPrefab: {fileID: 6099861517617901994, guid: 1ccd5db60b4176b4f92e70ddba7b1152, type: 3}
+  _bonusDamage: 6
+  _bonusArmor: 7
+  _additionalWeapon: {fileID: 661457950468938053, guid: a04a172c38142d24e806034ea0dc5eb5, type: 3}

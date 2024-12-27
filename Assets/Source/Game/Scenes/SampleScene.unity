@@ -4667,9 +4667,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 63e2a65505f8ce544a0b8b2c71298602, type: 2}
   - {fileID: 11400000, guid: 99d9d6275d4c5fe4c8b96443bf10203c, type: 2}
   _warlockWeapons:
+  - {fileID: 11400000, guid: 48f332a793d8f5d43b07c8c22fd2094e, type: 2}
   - {fileID: 11400000, guid: 5d53dc4dce8fa2b459fd473012659e4c, type: 2}
   - {fileID: 11400000, guid: 064b50bc516d0d140a45c008d5a588b7, type: 2}
-  - {fileID: 11400000, guid: 48f332a793d8f5d43b07c8c22fd2094e, type: 2}
   - {fileID: 11400000, guid: 8d00eb8a94cc76f43b2e776fe62013d7, type: 2}
   - {fileID: 11400000, guid: 20106646bd78bbc40978f5eb1f317423, type: 2}
 --- !u!1 &1648141229

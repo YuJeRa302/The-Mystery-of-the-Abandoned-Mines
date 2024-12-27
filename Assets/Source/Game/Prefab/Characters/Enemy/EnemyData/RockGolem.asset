@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46298075006e7674bb48a2417b651218, type: 3}
+  m_Name: RockGolem
+  m_EditorClassIdentifier: 
+  _id: 3
+  _level: 0
+  _damage: 0
+  _health: 0
+  _experienceReward: 0
+  _upgradeExperienceReward: 0
+  _score: 0
+  _timeSpawn: 0
+  _enemyCount: 0
+  _abilityCoolDown: []
+  _abilityDamage: 
+  _enemyHitParticleSystem: {fileID: 0}
+  _enemyDieParticleSystem: {fileID: 0}
+  _enemyAbilityParticleSystem: {fileID: 0}
+  _audioClipDie: {fileID: 0}
+  _hit: {fileID: 0}
+  _prefabEnemy: {fileID: 7325963965973126357, guid: 7dd3d0aba3fc8bb45b48176fb16041c8, type: 3}

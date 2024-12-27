@@ -46,7 +46,7 @@ namespace Assets.Source.Game.Scripts
         private void Awake()
         {
             _cameraControiler.ChengeConfiner(_roomPlacer.StartRoom);
-            Initialize();
+           // Initialize();
             AddPanelListener();
             LoadGamePanels();
         }
@@ -60,7 +60,7 @@ namespace Assets.Source.Game.Scripts
             _trapsSpawner.Dispose();
         }
 
-        private void Initialize()
+        public void Initialize(TemporaryData temporaryData)
         {
             bool canSeeDoor = _cameraControiler.TrySeeDoor(_roomPlacer.StartRoom.WallLeft);
 

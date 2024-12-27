@@ -12,7 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7754334e413173545945811a2689ddfc, type: 3}
   m_Name: ElvenAxe
   m_EditorClassIdentifier: 
+  _id: 4
+  _tier: 2
+  _tierColor:
+  - {r: 1, g: 1, b: 1, a: 0}
+  - {r: 0.23921569, g: 1, b: 0.21568628, a: 0}
+  - {r: 0, g: 0.5411765, b: 1, a: 0}
+  - {r: 0.5686275, g: 0.14509805, b: 1, a: 0}
+  - {r: 1, g: 0.22745098, b: 0.14509805, a: 0}
   _targetClass: 2
   _weaponPrefab: {fileID: 6156501401705760353, guid: 157854261440dd0469718d639c93e8e0, type: 3}
   _bonusDamage: 8
   _bonusArmor: 0
+  _translationName: 
+  _icon: {fileID: 21300000, guid: 6489dab9ee1cd2b4da7528b07652aa76, type: 3}

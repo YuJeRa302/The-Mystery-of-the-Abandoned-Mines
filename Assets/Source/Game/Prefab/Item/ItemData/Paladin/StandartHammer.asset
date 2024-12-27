@@ -12,8 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2bf4e7565ed04304ba72d9831d3ab542, type: 3}
   m_Name: StandartHammer
   m_EditorClassIdentifier: 
+  _id: 1
+  _tier: 0
+  _tierColor:
+  - {r: 1, g: 1, b: 1, a: 0}
+  - {r: 0.23921569, g: 1, b: 0.21568628, a: 0}
+  - {r: 0, g: 0.5411765, b: 1, a: 0}
+  - {r: 0.5686275, g: 0.14509805, b: 1, a: 0}
+  - {r: 1, g: 0.22745098, b: 0.14509805, a: 0}
   _targetClass: 0
   _weaponPrefab: {fileID: 9213339794923256004, guid: dbe5a519df1331947a8a98fdf73929a6, type: 3}
   _bonusDamage: 4
   _bonusArmor: 2
+  _translationName: 
+  _icon: {fileID: 21300000, guid: 1164c5bc367f5fe4fa8dd3c163a526d3, type: 3}
   _additionalWeapon: {fileID: 5634621666115186438, guid: f798da3c4940da64b8c5734b563cd48e, type: 3}

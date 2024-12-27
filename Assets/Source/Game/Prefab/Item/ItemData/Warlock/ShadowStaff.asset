@@ -12,8 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d01db19974d612e4ca71e3619df19276, type: 3}
   m_Name: ShadowStaff
   m_EditorClassIdentifier: 
+  _id: 14
+  _tier: 4
+  _tierColor:
+  - {r: 1, g: 1, b: 1, a: 0}
+  - {r: 0.23921569, g: 1, b: 0.21568628, a: 0}
+  - {r: 0, g: 0.5411765, b: 1, a: 0}
+  - {r: 0.5686275, g: 0.14509805, b: 1, a: 0}
+  - {r: 1, g: 0.22745098, b: 0.14509805, a: 0}
   _targetClass: 1
   _weaponPrefab: {fileID: -7749122113997493264, guid: 4595828148523a845a989d81ed358aff, type: 3}
   _bonusDamage: 12
   _bonusArmor: 2
+  _translationName: 
+  _icon: {fileID: 21300000, guid: 8f295ba1dbd6eb74186bf6af890769be, type: 3}
   _bulletPrefab: {fileID: 3313245958628326766, guid: f898f1bb203d5ae4897c223078d3d974, type: 3}

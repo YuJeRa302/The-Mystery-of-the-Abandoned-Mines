@@ -17,10 +17,8 @@ namespace Assets.Source.Game.Scripts
 
         private UpgradeState _upgradeState;
         private UpgradeData _upgradeData;
-        private UpgradeMenuLoad _upgradeMenuLoad;
-        private AudioClip _hover;
-        private AudioClip _click;
-        private AudioSource _audioSource;
+        private UpgradeViewModel _upgradeViewModel;
+        private IAudioPlayerService _audioPlayerService;
 
         public event Action<UpgradeDataView> StatsSelected;
 
@@ -30,32 +28,30 @@ namespace Assets.Source.Game.Scripts
         private void OnDestroy()
         {
             _button.onClick.RemoveListener(OnSelected);
-            _upgradeMenuLoad.StatsUpgraded -= OnStateChanged;
-            _upgradeMenuLoad.StatsReseted -= OnResetState;
+            _upgradeViewModel.InvokedStatsUpgrade -= OnStateUpgraded;
+            _upgradeViewModel.InvokedStatsReset -= OnResetState;
         }
 
-        public void Initialize(UpgradeData upgradeData, UpgradeState upgradeState, UpgradeMenuLoad upgradeMenuLoad, AudioSource audioSource, AudioClip click, AudioClip hover)
+        public void Initialize(UpgradeData upgradeData, UpgradeState upgradeState, UpgradeViewModel upgradeViewModel, IAudioPlayerService audioPlayerService)
         {
-            _audioSource = audioSource;
-            _hover = hover;
-            _click = click;
-            _upgradeMenuLoad = upgradeMenuLoad;
+            _audioPlayerService = audioPlayerService;
+            _upgradeViewModel = upgradeViewModel;
             _upgradeData = upgradeData;
             _upgradeState = upgradeState;
             _button.onClick.AddListener(OnSelected);
-            _upgradeMenuLoad.StatsUpgraded += OnStateChanged;
-            _upgradeMenuLoad.StatsReseted += OnResetState;
+            _upgradeViewModel.InvokedStatsUpgrade += OnStateUpgraded;
+            _upgradeViewModel.InvokedStatsReset += OnResetState;
             Fill(upgradeData);
         }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            _audioSource.PlayOneShot(_hover);
+            //_audioPlayerService.PlayOneShotButtonHoverSound();
         }
 
         public void OnPointerDown(PointerEventData eventData)
         {
-            _audioSource.PlayOneShot(_click);
+           // _audioPlayerService.PlayOneShotButtonClickSound();
         }
 
         private void OnResetState()
@@ -66,7 +62,7 @@ namespace Assets.Source.Game.Scripts
             _upgradeState.CurrentLevel = _minValue;
         }
 
-        private void OnStateChanged(UpgradeState upgradeState)
+        private void OnStateUpgraded(UpgradeState upgradeState)
         {
             if (_upgradeState.Id == upgradeState.Id)
                 _upgradeState = upgradeState;

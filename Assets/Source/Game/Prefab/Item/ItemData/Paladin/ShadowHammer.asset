@@ -12,8 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2bf4e7565ed04304ba72d9831d3ab542, type: 3}
   m_Name: ShadowHammer
   m_EditorClassIdentifier: 
+  _id: 10
+  _tier: 4
+  _tierColor:
+  - {r: 1, g: 1, b: 1, a: 0}
+  - {r: 0.23921569, g: 1, b: 0.21568628, a: 0}
+  - {r: 0, g: 0.5411765, b: 1, a: 0}
+  - {r: 0.5686275, g: 0.14509805, b: 1, a: 0}
+  - {r: 1, g: 0.22745098, b: 0.14509805, a: 0}
   _targetClass: 0
   _weaponPrefab: {fileID: 9170008755644550648, guid: 60f2c0cd94305784b9aeab140bcf764f, type: 3}
   _bonusDamage: 8
   _bonusArmor: 8
+  _translationName: 
+  _icon: {fileID: 21300000, guid: 1164c5bc367f5fe4fa8dd3c163a526d3, type: 3}
   _additionalWeapon: {fileID: 8098896844911473184, guid: 759b76270e745944ba9c090e0d0d431e, type: 3}

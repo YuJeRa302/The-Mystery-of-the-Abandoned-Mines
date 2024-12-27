@@ -12,5 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b148528afe47c340a2634e2eb9c843e, type: 3}
   m_Name: Barbarian
   m_EditorClassIdentifier: 
+  _icon: {fileID: 21300000, guid: 2b0d318e826772f41a51a4d543e85a7e, type: 3}
+  _translationName: Barbarian
+  _translationDescription: BarbarianDescription
   _className: 2
   _animatorController: {fileID: 9100000, guid: 69e68a005490dbd418915df6910be143, type: 2}

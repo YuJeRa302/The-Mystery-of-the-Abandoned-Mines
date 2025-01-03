@@ -22,6 +22,10 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private Transform _playerEffectsContainer;
         [SerializeField] private Transform _weaponEffectsContainer;
         [SerializeField] private Transform _throwPoint;
+        [Space(20)]
+        [SerializeField] private Button _minimapButton;
+        [SerializeField] private Button _minimapCloseButton;
+        [SerializeField] private GameObject _minimap;
 
         private Player _player;
         private ParticleSystem _abilityEffect;
@@ -39,6 +43,9 @@ namespace Assets.Source.Game.Scripts
             _player.PlayerStats.UpgradeExperienceValueChanged -= OnChangeUpgradeExperience;
             _player.PlayerAbilityCaster.AbilityTaked -= OnAbilityTaked;
             _player.PlayerStats.KillCountChanged -= OnChangeKillCount;
+
+            _minimapButton.onClick.RemoveListener(OnMinimapButtonClick);
+            _minimapCloseButton.onClick.RemoveListener(OnMinimapButtonClick);
         }
 
         public void Initialize(Player player)
@@ -90,6 +97,15 @@ namespace Assets.Source.Game.Scripts
             _player.PlayerStats.UpgradeExperienceValueChanged += OnChangeUpgradeExperience;
             _player.PlayerAbilityCaster.AbilityTaked += OnAbilityTaked;
             _player.PlayerStats.KillCountChanged += OnChangeKillCount;
+
+            _minimapButton.onClick.AddListener(OnMinimapButtonClick);
+            _minimapCloseButton.onClick.AddListener(OnMinimapButtonClick);
+        }
+
+        private void OnMinimapButtonClick()
+        {
+            bool isActive = _minimap.activeSelf;
+            _minimap.SetActive(!isActive);
         }
 
         private void OnAbilityTaked(AbilityAttributeData abilityAttributeData, int currentLevel)

@@ -7,7 +7,8 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private EnemyBullet _bullet;
         [SerializeField] private Transform _shootPoint;
         [SerializeField] private Pool _poolBullet;
-        [SerializeField] private BulletSpawner _bulletSpawner;
+        
+        private BulletSpawner _bulletSpawner;
 
         public BulletSpawner BulletSpawner => _bulletSpawner;
 
@@ -17,7 +18,7 @@ namespace Assets.Source.Game.Scripts
 
         private void OnEnable()
         {
-            _bulletSpawner.Initialize(_bullet, _poolBullet, _shootPoint, _damage);
+            _bulletSpawner = new BulletSpawner(_bullet, _poolBullet, _shootPoint, _damage);
         }
     }
 }

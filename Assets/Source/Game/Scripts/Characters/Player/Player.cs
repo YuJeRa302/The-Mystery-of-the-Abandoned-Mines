@@ -51,7 +51,7 @@ namespace Assets.Source.Game.Scripts
             _playerAnimation = new PlayerAnimation(_animator, _rigidbody, 2, playerClassData, this);
             _playerAttacker = new PlayerAttacker(_shotPoint, this, weaponData, this, _poolBullet);
             _playerWeapons = new PlayerWeapons(this, weaponData);
-            _playerMovment = new PlayerMovement(levelObserver.CameraControiler.Camera, levelObserver.CameraControiler.VariableJoystick, _rigidbody, 1f, this);
+            _playerMovment = new PlayerMovement(levelObserver.CameraControiler.Camera, levelObserver.CameraControiler.VariableJoystick, _rigidbody, 2f, this);
             _cardDeck = new CardDeck();
             _playerStats = new PlayerStats(this, 1, null, levelObserver, abilityFactory, abilityPresenter);
             _playerAbilityCaster = new PlayerAbilityCaster(abilityFactory,abilityPresenter,this, levelObserver.PlayerView);

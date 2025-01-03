@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 387098061562441741}
   - component: {fileID: 6732808919276108745}
   - component: {fileID: 4203616043986754138}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Glow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4788,7 +4788,7 @@ GameObject:
   - component: {fileID: 2289934744774632350}
   - component: {fileID: 2230949138465168004}
   - component: {fileID: 8831912491529428033}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: SnowflakeTrail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9556,7 +9556,7 @@ GameObject:
   - component: {fileID: 1816494723264942437}
   - component: {fileID: 4823296489630681094}
   - component: {fileID: 339596723524815777}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: GlowTrail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14320,7 +14320,7 @@ GameObject:
   - component: {fileID: 3111543781133324409}
   - component: {fileID: 8020690343062761539}
   - component: {fileID: -3771606035605123692}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: FrostMissileBlue
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19361,7 +19361,7 @@ GameObject:
   - component: {fileID: 4086197508173873862}
   - component: {fileID: 8360456060989012589}
   - component: {fileID: 8903663915283684078}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: FrostSpikes
   m_TagString: Untagged
   m_Icon: {fileID: 0}

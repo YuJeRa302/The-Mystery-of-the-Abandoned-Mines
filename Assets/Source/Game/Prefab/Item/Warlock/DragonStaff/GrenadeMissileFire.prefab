@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3623676734272699723}
   - component: {fileID: 6559103750004810025}
   - component: {fileID: 1935088438506923803}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: GrenadeMissileFire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4952,7 +4952,7 @@ GameObject:
   - component: {fileID: 2282895362659839139}
   - component: {fileID: 8248528240784531856}
   - component: {fileID: 1420481897293396707}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: SmokeTrail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9711,7 +9711,7 @@ GameObject:
   - component: {fileID: 3456057068846450701}
   - component: {fileID: 1001253866770588405}
   - component: {fileID: 6827116051577495642}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: WhiteGlobe
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -12,10 +12,8 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private RoomPlacer _roomPlacer;
         [SerializeField] private Pool _enemuPool;
         [Space(20)]
-        [SerializeField] private PlayerInventory _playerInventory;
         [SerializeField] private Transform _spawnPlayerPoint;
         [SerializeField] private Player _playerPrefab;
-        [SerializeField] private PlayerClassData _classData; //test
         [SerializeField] private PlayerView _playerView;
         [SerializeField] private CameraControiler _cameraControiler;
         [SerializeField] private NavMeshSurface _navSurface;
@@ -70,7 +68,8 @@ namespace Assets.Source.Game.Scripts
             _trapsSpawner = new TrapsSpawner();
 
             _roomPlacer.Initialize(_currentRoomLevel, canSeeDoor);
-            _playerFactory = new PlayerFactory(_playerInventory, this, _abilityFactory, _abilityPresenterFactory, _playerPrefab, _spawnPlayerPoint, _classData, out Player player);
+            _playerFactory = new PlayerFactory(temporaryData.WeaponData, this, _abilityFactory, _abilityPresenterFactory, 
+                _playerPrefab, _spawnPlayerPoint, temporaryData.PlayerClassData, out Player player);
             _player = player;
             _playerView.Initialize(_player);
             _cameraControiler.SetLookTarget(_player.transform);

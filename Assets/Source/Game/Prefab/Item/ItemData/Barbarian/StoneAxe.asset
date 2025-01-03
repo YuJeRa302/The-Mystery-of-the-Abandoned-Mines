@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7754334e413173545945811a2689ddfc, type: 3}
   m_Name: StoneAxe
   m_EditorClassIdentifier: 
-  _id: 6
-  _tier: 1
+  _id: 0
+  _tier: 0
   _tierColor:
   - {r: 1, g: 1, b: 1, a: 0}
   - {r: 0.23921569, g: 1, b: 0.21568628, a: 0}

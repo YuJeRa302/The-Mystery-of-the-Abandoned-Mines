@@ -1794,7 +1794,6 @@ GameObject:
   - component: {fileID: 8179925320564646343}
   - component: {fileID: 3794714034718622113}
   - component: {fileID: 6439788766985780000}
-  - component: {fileID: 2879000868000784678}
   m_Layer: 0
   m_Name: IceElemental
   m_TagString: Untagged
@@ -1862,7 +1861,6 @@ MonoBehaviour:
   _bullet: {fileID: 4261990515010931713, guid: 7c389110460ce774b8a91f72db95f17f, type: 3}
   _shootPoint: {fileID: 1382350811528635735}
   _poolBullet: {fileID: 6439788766985780000}
-  _bulletSpawner: {fileID: 2879000868000784678}
 --- !u!136 &6017599394734013305
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1943,18 +1941,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9a1b8de054ce0d948ae6d85146409c99, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &2879000868000784678
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8274263747867456238}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a325c1b1ea8507b449ea33c7a183c5af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &8768565547114480000

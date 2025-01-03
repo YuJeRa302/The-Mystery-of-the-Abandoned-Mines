@@ -14,8 +14,6 @@ namespace Assets.Source.Game.Scripts
         protected Enemy _enemy;
         protected EnemyAnimation _animationController;
 
-        protected bool _canTransit = true;
-
         public AttackState(StateMashine stateMashine, Player target, Enemy enemy) : base(stateMashine)
         {
             _enemy = enemy;

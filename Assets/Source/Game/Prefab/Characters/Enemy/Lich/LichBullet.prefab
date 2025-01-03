@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1939971252858991779}
   - component: {fileID: 1614445987431725720}
   - component: {fileID: 2213280656891550814}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Glow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4788,7 +4788,7 @@ GameObject:
   - component: {fileID: 5624755216330898479}
   - component: {fileID: 7280540117464517880}
   - component: {fileID: 388593842656135245}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: MagicNova
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9538,7 +9538,7 @@ GameObject:
   - component: {fileID: 7407258391830597544}
   - component: {fileID: 3286303890052509907}
   - component: {fileID: 5625437408269972129}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: GlowTrail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14297,7 +14297,7 @@ GameObject:
   - component: {fileID: 6498617559565283043}
   - component: {fileID: 4021890123545506971}
   - component: {fileID: 922496332092083402}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: SparkleTrail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19069,7 +19069,8 @@ GameObject:
   - component: {fileID: 743627191261533919}
   - component: {fileID: -1335520857732936479}
   - component: {fileID: 2609243879868201077}
-  m_Layer: 0
+  - component: {fileID: -498375793682004219}
+  m_Layer: 8
   m_Name: LichBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23979,3 +23980,26 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 4
   m_CollisionDetection: 0
+--- !u!136 &-498375793682004219
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8903557129577982880}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.56800014
+  m_Height: 1.1360003
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}

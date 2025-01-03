@@ -47,7 +47,6 @@ GameObject:
   - component: {fileID: 1366531873766497782}
   - component: {fileID: 190874258655281799}
   - component: {fileID: 6197596675293197854}
-  - component: {fileID: 8957740864070520519}
   m_Layer: 0
   m_Name: FreeLichPBR
   m_TagString: Untagged
@@ -141,8 +140,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 031adfffe299c4a4f9aa118c2cd62a29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 3
-  _attackDistance: 11
 --- !u!136 &1366531873766497782
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -188,7 +185,6 @@ MonoBehaviour:
   _bullet: {fileID: -1335520857732936479, guid: 61c908ef79d4154468ad9a56433bf629, type: 3}
   _shootPoint: {fileID: 183278518815668641}
   _poolBullet: {fileID: 6197596675293197854}
-  _bulletSpawner: {fileID: 8957740864070520519}
 --- !u!114 &6197596675293197854
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -199,18 +195,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9a1b8de054ce0d948ae6d85146409c99, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &8957740864070520519
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 179196348292612535}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a325c1b1ea8507b449ea33c7a183c5af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &855392557006201181

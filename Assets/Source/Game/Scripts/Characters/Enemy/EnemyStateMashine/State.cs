@@ -6,8 +6,11 @@ namespace Assets.Source.Game.Scripts
     {
         protected readonly StateMashine _stateMashine;
 
+        protected bool _canTransit = true;
+
         public event Action Attacking;
         public event Action AdditionalAttacking;
+        public event Action SpetiallAttacking;
         public event Action Moving;
         public event Action TakedDamage;
         public event Action PlayerLose;
@@ -25,14 +28,14 @@ namespace Assets.Source.Game.Scripts
 
         protected void AttackEvent() => Attacking?.Invoke();
         protected void AdditionalAttackEvent() => AdditionalAttacking?.Invoke();
+        protected void SpetiallAttackEvent() => SpetiallAttacking?.Invoke();
 
-        protected void MoveEvent()
-        {
-            Moving?.Invoke();
-        }
+        protected void MoveEvent() => Moving?.Invoke();
 
         protected void TakeDamageEvent() => TakedDamage?.Invoke();
 
         protected void EnemyWinEvent() => PlayerLose?.Invoke();
+
+        protected void OnAllowTransition() => _canTransit = true;
     }
 }

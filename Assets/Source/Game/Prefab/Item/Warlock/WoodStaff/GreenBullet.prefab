@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4363616630304684390}
   - component: {fileID: 6767741077210291589}
   - component: {fileID: 6901395210888100854}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: SparkTrail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4779,7 +4779,7 @@ GameObject:
   - component: {fileID: 8280884849160701893}
   - component: {fileID: 2294086956327354636}
   - component: {fileID: 945031525641887267}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Glow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9560,7 +9560,7 @@ GameObject:
   - component: {fileID: -5360257195637026073}
   - component: {fileID: 6138664525892674742}
   - component: {fileID: -8979001810310791697}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: GreenBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}

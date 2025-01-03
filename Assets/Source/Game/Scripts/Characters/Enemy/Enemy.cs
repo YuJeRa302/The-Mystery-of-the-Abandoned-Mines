@@ -23,6 +23,7 @@ namespace Assets.Source.Game.Scripts
         public float Speed => _speed;
         public float AttackDistance => _attackDistance;
         public EnemyAnimation AnimationStateController => _animationController;
+        public EnemyStateMashineExample StateMashine => _stateMashine;
 
         public event Action Died;
 

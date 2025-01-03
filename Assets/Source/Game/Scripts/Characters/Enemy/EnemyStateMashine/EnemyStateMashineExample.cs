@@ -37,7 +37,17 @@ namespace Assets.Source.Game.Scripts
             if (_enemy.TryGetComponent(out Boss boss))
             {
                 _stateMashine.AddState(new BossAttackState(_stateMashine, _target, _enemy));
-                _stateMashine.AddState(new BossSpecialAttackState(_stateMashine));
+
+                if(_enemy.TryGetComponent(out GoldDragon goldDragon))
+                {
+                    _stateMashine.AddState(new AditionalAttackGoldDragon(_stateMashine, _target, _enemy));
+                    _stateMashine.AddState(new SpecialAttackGoldDragon(_stateMashine, _target, _enemy));
+                }
+
+                if (_enemy.TryGetComponent(out Beholder beholder))
+                {
+                    _stateMashine.AddState(new BeholderAdditionalAttackState(_stateMashine, _target, _enemy));
+                }
             }
             else if (_enemy.TryGetComponent(out RangeEnemy rangeEnemy))
             {

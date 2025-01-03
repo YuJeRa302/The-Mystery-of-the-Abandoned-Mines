@@ -13,6 +13,7 @@ namespace Assets.Source.Game.Scripts
 
         public event Action Attacked;
         public event Action AdditionalAttacked;
+        public event Action AnimationCompleted;
 
         private void Awake()
         {
@@ -35,15 +36,16 @@ namespace Assets.Source.Game.Scripts
                 events.Value.TakedDamage -= OnTakeDamage;
                 events.Value.PlayerLose -= OnWinGame;
                 events.Value.AdditionalAttacking -= OnAdditionalAttack;
+                events.Value.SpetiallAttacking -= OnSpetialAttack;
             }
         }
 
-        public void TryAttackPlayer()
+        private void TryAttackPlayer()
         {
            Attacked?.Invoke();
         }
 
-        public void TryAdditionAtacked()
+        private void TryAdditionAtacked()
         {
             AdditionalAttacked?.Invoke();
         }
@@ -57,6 +59,7 @@ namespace Assets.Source.Game.Scripts
                 events.Value.TakedDamage += OnTakeDamage;
                 events.Value.PlayerLose += OnWinGame;
                 events.Value.AdditionalAttacking += OnAdditionalAttack;
+                events.Value.SpetiallAttacking += OnSpetialAttack;
             }
         }
 
@@ -66,8 +69,15 @@ namespace Assets.Source.Game.Scripts
 
         private void OnAdditionalAttack() => _animator.SetTrigger(_animationEnemy.AdditionalAttackAnimation);
 
+        private void OnSpetialAttack() => _animator.SetTrigger(_animationEnemy.SpecialAttackAnimation);
+
         private void OnTakeDamage() => _animator.SetTrigger(_animationEnemy.TakeDamageAnimation);
 
         private void OnWinGame() => _animator.SetTrigger(_animationEnemy.WinDanceAnimation);
+
+        private void EndAnimation()
+        {
+            AnimationCompleted?.Invoke();
+        }
     }
 }

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4638077287147561082}
   - component: {fileID: 2689945312377463364}
   - component: {fileID: 6312401606941291112}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Glow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4811,7 +4811,7 @@ GameObject:
   - component: {fileID: 95040212254115490}
   - component: {fileID: 8519972553871219752}
   - component: {fileID: 3313245958628326766}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: LightningMissilePink
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9812,7 +9812,7 @@ GameObject:
   - component: {fileID: 4441142248524149238}
   - component: {fileID: 5970826080038030472}
   - component: {fileID: 8150288829690488342}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: GlowTrail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14580,7 +14580,7 @@ GameObject:
   - component: {fileID: 4038608934311081078}
   - component: {fileID: 5904529030406724127}
   - component: {fileID: 5125241463278823522}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: LightningTrail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19357,7 +19357,7 @@ GameObject:
   - component: {fileID: 8779101468176453980}
   - component: {fileID: 466417564372885159}
   - component: {fileID: 7917755057150535383}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Lightning
   m_TagString: Untagged
   m_Icon: {fileID: 0}

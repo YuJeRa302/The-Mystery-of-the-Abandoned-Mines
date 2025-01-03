@@ -17,26 +17,34 @@ namespace Assets.Source.Game.Scripts
 
         [SerializeField] private RoomData[] _roomDatas;
         [SerializeField] private RoomData _defaultRoomData;
-        [SerializeField] private Room _startRoom;
+        [SerializeField] private RoomView _startRoom;
         [SerializeField] private Transform _playerSpawnPoint;
 
-        private Room[,] _spawnedRooms;
-        private List<Room> _createdRooms = new ();
+        private RoomView[,] _spawnedRooms;
+        private List<RoomView> _createdRooms = new ();
         private int _allEnemyCount;
 
-        public List<Room> CreatedRooms => _createdRooms;
-        public Room StartRoom => _startRoom;
+        public List<RoomView> CreatedRooms => _createdRooms;
+        public RoomView StartRoom => _startRoom;
         public int AllEnemyCount => _allEnemyCount;
 
         public void Initialize(int currentRoomLevel, bool canSeeDoor)
         {
-            _spawnedRooms = new Room[_massRoomSize, _massRoomSize];
+            _spawnedRooms = new RoomView[_massRoomSize, _massRoomSize];
             _spawnedRooms[_spawnCenterCoordinate, _spawnCenterCoordinate] = _startRoom;
             _startRoom.SetCameraArial(canSeeDoor);
 
             for (int index = 0; index < _maxRoomCount; index++)
             {
                 PlaceOneRoom(currentRoomLevel, canSeeDoor);
+            }
+        }
+
+        public void Clear() 
+        {
+            foreach (var room in _createdRooms) 
+            {
+                Destroy(room.gameObject);
             }
         }
 
@@ -73,13 +81,12 @@ namespace Assets.Source.Game.Scripts
             if (TryGetBossRoom(randomRoomData))
                 randomRoomData = _defaultRoomData;
 
-            Room newRoom = Instantiate(randomRoomData.Room);
-            int limit = 500; //значение для теста
+            RoomView newRoom = Instantiate(randomRoomData.Room);
+            int limit = 500;
 
             while (limit-- > 0)
             {
                 Vector2Int position = freeSpawnSpace.ElementAt(_rnd.Next(0, freeSpawnSpace.Count));
-                //newRoom.RotateWallRandomly(); // временно убран
 
                 if (ConnectRooms(newRoom, position))
                 {
@@ -95,7 +102,7 @@ namespace Assets.Source.Game.Scripts
             Destroy(newRoom.gameObject);
         }
 
-        private bool ConnectRooms(Room room, Vector2Int vector2)
+        private bool ConnectRooms(RoomView room, Vector2Int vector2)
         {
             int maxX = _spawnedRooms.GetLength(_minValue) - _shiftIndex;
             int maxY = _spawnedRooms.GetLength(_shiftIndex) - _shiftIndex;
@@ -118,7 +125,7 @@ namespace Assets.Source.Game.Scripts
                 return false;
 
             Vector2Int selectedDirection = neighbours[_rnd.Next(0, neighbours.Count)];
-            Room selectedRoom = _spawnedRooms[vector2.x + selectedDirection.x, vector2.y + selectedDirection.y];
+            RoomView selectedRoom = _spawnedRooms[vector2.x + selectedDirection.x, vector2.y + selectedDirection.y];
 
             if (selectedDirection == Vector2Int.up)
             {

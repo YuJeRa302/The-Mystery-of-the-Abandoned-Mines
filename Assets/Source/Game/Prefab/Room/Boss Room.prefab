@@ -3710,7 +3710,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8275037830214055370}
-  - component: {fileID: 7416874074565796790}
   - component: {fileID: 212087709391035175}
   m_Layer: 6
   m_Name: Boss Room
@@ -3744,42 +3743,6 @@ Transform:
   - {fileID: 7690863211947321187}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7416874074565796790
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8275037830214055373}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29d9bc2efd0b537468a785616200de51, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _wallUpper: {fileID: 0}
-  _wallRight: {fileID: 0}
-  _wallDown: {fileID: 4875321999106761829}
-  _wallLeft: {fileID: 0}
-  _doorwayUpper: {fileID: 0}
-  _doorwayRight: {fileID: 0}
-  _doorwayDown: {fileID: 6432206750226128205}
-  _doorwayLeft: {fileID: 0}
-  _doors:
-  - {fileID: 2719643318968475828}
-  _trapSpawnpoints:
-  - {fileID: 9110897248566829397}
-  - {fileID: 8169497967386908201}
-  - {fileID: 6009425886860947290}
-  - {fileID: 645194130301371935}
-  _enemySpawnPoints:
-  - {fileID: 4331716340336891904}
-  - {fileID: 2710105295332868035}
-  - {fileID: 4879765594661310759}
-  - {fileID: 6535840213529880211}
-  _bossSpawnPoint: {fileID: 3959812300484828081}
-  _plateDiscovery: {fileID: 0}
-  _confiner: {fileID: 3492189227342795360}
-  _navSurface: {fileID: 6904272139552806835}
 --- !u!65 &212087709391035175
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3801,6 +3764,41 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 38, y: 2, z: 38}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &7754323460198337123
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8275037830214055373}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea9f33ab5237ccd449293e7432c5d028, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _wallUpper: {fileID: 0}
+  _wallRight: {fileID: 0}
+  _wallDown: {fileID: 4875321999106761829}
+  _wallLeft: {fileID: 0}
+  _doorwayUpper: {fileID: 0}
+  _doorwayRight: {fileID: 0}
+  _doorwayDown: {fileID: 6432206750226128205}
+  _doorwayLeft: {fileID: 0}
+  _trapSpawnpoints:
+  - {fileID: 9110897248566829397}
+  - {fileID: 8169497967386908201}
+  - {fileID: 6009425886860947290}
+  - {fileID: 645194130301371935}
+  _enemySpawnPoints:
+  - {fileID: 4331716340336891904}
+  - {fileID: 2710105295332868035}
+  - {fileID: 4879765594661310759}
+  - {fileID: 6535840213529880211}
+  _doors:
+  - {fileID: 2719643318968475828}
+  _confiner: {fileID: 3492189227342795360}
+  _navSurface: {fileID: 6904272139552806835}
+  _bossSpawnPoint: {fileID: 3959812300484828081}
 --- !u!1 &8323974846283987430
 GameObject:
   m_ObjectHideFlags: 0
@@ -6043,10 +6041,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6094463002039396450}
     m_Modifications:
-    - target: {fileID: 2056697015055953696, guid: da389f98d36554042874cf88abbff5ef, type: 3}
-      propertyPath: _room
-      value: 
-      objectReference: {fileID: 7416874074565796790}
     - target: {fileID: 5786555726001780566, guid: da389f98d36554042874cf88abbff5ef, type: 3}
       propertyPath: m_RootOrder
       value: 0

@@ -5,7 +5,6 @@ namespace Assets.Source.Game.Scripts
 {
     public class RoomDoor : MonoBehaviour
     {
-        [SerializeField] private Room _room;
         [SerializeField] private Animator _animator;
         [SerializeField] private Outline _outline;
         [SerializeField] private BoxCollider _colider;

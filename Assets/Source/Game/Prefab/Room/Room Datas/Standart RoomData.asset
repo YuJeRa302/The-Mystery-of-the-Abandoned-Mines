@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _id: 0
   _roomName: Room 1
-  _room: {fileID: 8234881999620521735, guid: 7b1c697bf7e9d6d4899a09334c62ce74, type: 3}
+  _room: {fileID: 6577346141303521551, guid: 7b1c697bf7e9d6d4899a09334c62ce74, type: 3}
   _chanceFromDistance:
     serializedVersion: 2
     m_Curve:

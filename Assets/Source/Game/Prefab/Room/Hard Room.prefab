@@ -7306,7 +7306,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8434575785932242325}
-  - component: {fileID: 8234881999620521735}
   - component: {fileID: 2903723207138026876}
   m_Layer: 6
   m_Name: Hard Room
@@ -7338,45 +7337,6 @@ Transform:
   - {fileID: 1761990278049439283}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8234881999620521735
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8434575785932242322}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29d9bc2efd0b537468a785616200de51, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _wallUpper: {fileID: 2682498801767873996}
-  _wallRight: {fileID: 218548483252904153}
-  _wallDown: {fileID: 4090501418034814114}
-  _wallLeft: {fileID: 5642573201275088612}
-  _doorwayUpper: {fileID: 4979073349140553936}
-  _doorwayRight: {fileID: 8714691312528451148}
-  _doorwayDown: {fileID: 466016010825306445}
-  _doorwayLeft: {fileID: 1902534959899136917}
-  _doors:
-  - {fileID: 1116380775684544078}
-  - {fileID: 3362850000458995556}
-  - {fileID: 6380520028170178453}
-  - {fileID: 4780567432622940708}
-  _trapSpawnpoints:
-  - {fileID: 5784064389974395904}
-  - {fileID: 3657855397644489550}
-  - {fileID: 7202372996048291079}
-  - {fileID: 3993004424116584585}
-  _enemySpawnPoints:
-  - {fileID: 2223525510339560329}
-  - {fileID: 5471090469281117812}
-  - {fileID: 5113859644146266109}
-  - {fileID: 3835386418249015869}
-  _bossSpawnPoint: {fileID: 0}
-  _plateDiscovery: {fileID: 0}
-  _confiner: {fileID: 810772158712742615}
-  _navSurface: {fileID: 7270544330635659012}
 --- !u!65 &2903723207138026876
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7398,6 +7358,43 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 38, y: 1, z: 38}
   m_Center: {x: 0, y: 1, z: 0}
+--- !u!114 &884456003023716184
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8434575785932242322}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce5234a554f3e134c8e5d22a455c4359, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _wallUpper: {fileID: 2682498801767873996}
+  _wallRight: {fileID: 218548483252904153}
+  _wallDown: {fileID: 4090501418034814114}
+  _wallLeft: {fileID: 5642573201275088612}
+  _doorwayUpper: {fileID: 4979073349140553936}
+  _doorwayRight: {fileID: 8714691312528451148}
+  _doorwayDown: {fileID: 466016010825306445}
+  _doorwayLeft: {fileID: 1902534959899136917}
+  _trapSpawnpoints:
+  - {fileID: 5784064389974395904}
+  - {fileID: 3657855397644489550}
+  - {fileID: 7202372996048291079}
+  - {fileID: 3993004424116584585}
+  _enemySpawnPoints:
+  - {fileID: 2223525510339560329}
+  - {fileID: 5471090469281117812}
+  - {fileID: 5113859644146266109}
+  - {fileID: 3835386418249015869}
+  _doors:
+  - {fileID: 4780567432622940708}
+  - {fileID: 3362850000458995556}
+  - {fileID: 6380520028170178453}
+  - {fileID: 1116380775684544078}
+  _confiner: {fileID: 810772158712742615}
+  _navSurface: {fileID: 7270544330635659012}
 --- !u!1 &8532074305551155924
 GameObject:
   m_ObjectHideFlags: 0
@@ -9184,10 +9181,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1902534959899037621}
     m_Modifications:
-    - target: {fileID: 2056697015055953696, guid: da389f98d36554042874cf88abbff5ef, type: 3}
-      propertyPath: _room
-      value: 
-      objectReference: {fileID: 8234881999620521735}
     - target: {fileID: 5786555726001780566, guid: da389f98d36554042874cf88abbff5ef, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -10099,10 +10092,6 @@ PrefabInstance:
     m_TransformParent: {fileID: 7661124689868597601}
     m_Modifications:
     - target: {fileID: 2056697015055953696, guid: da389f98d36554042874cf88abbff5ef, type: 3}
-      propertyPath: _room
-      value: 
-      objectReference: {fileID: 8234881999620521735}
-    - target: {fileID: 2056697015055953696, guid: da389f98d36554042874cf88abbff5ef, type: 3}
       propertyPath: _outline
       value: 
       objectReference: {fileID: 6872491400977813580}
@@ -10803,10 +10792,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7769413890198740352}
     m_Modifications:
-    - target: {fileID: 2056697015055953696, guid: da389f98d36554042874cf88abbff5ef, type: 3}
-      propertyPath: _room
-      value: 
-      objectReference: {fileID: 8234881999620521735}
     - target: {fileID: 2056697015055953696, guid: da389f98d36554042874cf88abbff5ef, type: 3}
       propertyPath: _outline
       value: 
@@ -12384,10 +12369,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1685966165166070399}
     m_Modifications:
-    - target: {fileID: 2056697015055953696, guid: da389f98d36554042874cf88abbff5ef, type: 3}
-      propertyPath: _room
-      value: 
-      objectReference: {fileID: 8234881999620521735}
     - target: {fileID: 2056697015055953696, guid: da389f98d36554042874cf88abbff5ef, type: 3}
       propertyPath: _outline
       value: 

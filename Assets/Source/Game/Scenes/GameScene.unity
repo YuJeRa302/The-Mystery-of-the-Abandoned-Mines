@@ -2975,7 +2975,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -0.00011570329}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &924770272
@@ -3195,8 +3195,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 955147710}
-  - component: {fileID: 955147711}
   - component: {fileID: 955147712}
+  - component: {fileID: 955147713}
   m_Layer: 0
   m_Name: Room 1
   m_TagString: Untagged
@@ -3238,33 +3238,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &955147711
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 955147709}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29d9bc2efd0b537468a785616200de51, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _wallUpper: {fileID: 81439978}
-  _wallRight: {fileID: 1716279319}
-  _wallDown: {fileID: 1502684593}
-  _wallLeft: {fileID: 1115231740}
-  _doorwayUpper: {fileID: 0}
-  _doorwayRight: {fileID: 0}
-  _doorwayDown: {fileID: 0}
-  _doorwayLeft: {fileID: 0}
-  _doors: []
-  _trapSpawnpoints: []
-  _enemySpawnPoints: []
-  _bossSpawnPoint: {fileID: 0}
-  _plateDiscovery: {fileID: 0}
-  _confiner: {fileID: 964151455}
-  _navSurface: {fileID: 964151454}
 --- !u!65 &955147712
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3286,6 +3259,31 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 38, y: 1, z: 38}
   m_Center: {x: 0, y: 1, z: 0}
+--- !u!114 &955147713
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 955147709}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce5234a554f3e134c8e5d22a455c4359, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _wallUpper: {fileID: 81439978}
+  _wallRight: {fileID: 1716279319}
+  _wallDown: {fileID: 1502684593}
+  _wallLeft: {fileID: 1115231740}
+  _doorwayUpper: {fileID: 0}
+  _doorwayRight: {fileID: 0}
+  _doorwayDown: {fileID: 0}
+  _doorwayLeft: {fileID: 0}
+  _trapSpawnpoints: []
+  _enemySpawnPoints: []
+  _doors: []
+  _confiner: {fileID: 964151455}
+  _navSurface: {fileID: 964151454}
 --- !u!1001 &964151453
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3523,7 +3521,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 469e1d55d32f99b49b2da6f8fb432dae, type: 2}
   - {fileID: 11400000, guid: 66da06b1247ebf74bb4954ab561ddb24, type: 2}
   _defaultRoomData: {fileID: 11400000, guid: 9fbdca82811956f4197d510ad42c6c8a, type: 2}
-  _startRoom: {fileID: 955147711}
+  _startRoom: {fileID: 955147713}
   _playerSpawnPoint: {fileID: 351478385}
 --- !u!4 &987033777
 Transform:
@@ -5992,7 +5990,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.0002715636, y: -0.00033224103}
+  m_AnchoredPosition: {x: 0.0002715636, y: 1.2143003}
   m_SizeDelta: {x: 0, y: 268.94}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1663293698

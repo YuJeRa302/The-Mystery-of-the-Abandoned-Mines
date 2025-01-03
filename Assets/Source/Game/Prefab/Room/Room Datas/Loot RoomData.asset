@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _id: 2
   _roomName: Loot Room
-  _room: {fileID: 8234881999620521735, guid: 738f9ea6447543e4a8c93c99eb26efaf, type: 3}
+  _room: {fileID: 5290419408085186937, guid: 738f9ea6447543e4a8c93c99eb26efaf, type: 3}
   _chanceFromDistance:
     serializedVersion: 2
     m_Curve:

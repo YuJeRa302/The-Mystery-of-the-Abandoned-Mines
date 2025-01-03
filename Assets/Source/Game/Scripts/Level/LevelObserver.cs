@@ -24,14 +24,16 @@ namespace Assets.Source.Game.Scripts
         [Space(20)]
         [SerializeField] private CardPanel _cardPanel;
 
+        private bool _canSeeDoor;
         private EnemySpawner _enemySpawner;
         private TrapsSpawner _trapsSpawner;
         private PlayerFactory _playerFactory;
         private Player _player;
-        private Room _currentRoom;
+        private RoomView _currentRoom;
         private int _currentRoomLevel = 0;
         private AbilityFactory _abilityFactory;
         private AbilityPresenterFactory _abilityPresenterFactory;
+        private TemporaryData _temporaryData;//test
 
         public event Action GameEnded;
         public event Action GameClosed;
@@ -46,30 +48,26 @@ namespace Assets.Source.Game.Scripts
         private void Awake()
         {
             _cameraControiler.ChengeConfiner(_roomPlacer.StartRoom);
-           // Initialize();
-            AddPanelListener();
+            Initialize(_temporaryData); //test
             LoadGamePanels();
         }
 
         private void OnDestroy()
         {
             RemoveListener();
-            RemovePanelListener();
-
             _enemySpawner.Dispose();
             _trapsSpawner.Dispose();
         }
 
         public void Initialize(TemporaryData temporaryData)
         {
-            bool canSeeDoor = _cameraControiler.TrySeeDoor(_roomPlacer.StartRoom.WallLeft);
+            _canSeeDoor = _cameraControiler.TrySeeDoor(_roomPlacer.StartRoom.WallLeft);
 
             RegisterServices();
             _enemySpawner = new EnemySpawner(_enemuPool, this);
-            _enemySpawner.AllEnemyRoomDied += OnEnemyRoomDied;
             _trapsSpawner = new TrapsSpawner();
 
-            _roomPlacer.Initialize(_currentRoomLevel, canSeeDoor);
+            _roomPlacer.Initialize(_currentRoomLevel, _canSeeDoor);
             _playerFactory = new PlayerFactory(_playerInventory, this, _abilityFactory, _abilityPresenterFactory, _playerPrefab, _spawnPlayerPoint, _classData, out Player player);
             _player = player;
             _playerView.Initialize(_player);
@@ -114,23 +112,30 @@ namespace Assets.Source.Game.Scripts
 
         private void AddListener()
         {
-            foreach (var room in _roomPlacer.CreatedRooms)
-            {
-                room.RoomEntering += OnRoomEntering;
-            }
-
+            AddRoomListener();
+            AddPanelListener();
             _roomPlacer.StartRoom.SetRoomStatus();//
             _roomPlacer.StartRoom.RoomEntering += OnRoomEntering;//test
+            _enemySpawner.AllEnemyRoomDied += OnRoomCompleted;
         }
 
         private void RemoveListener()
         {
+            RemoveRoomListener();
+            RemovePanelListener();
+            _roomPlacer.StartRoom.RoomEntering -= OnRoomEntering;
+            _enemySpawner.AllEnemyRoomDied -= OnRoomCompleted;
+        }
+
+        private void AddRoomListener() 
+        {
             foreach (var room in _roomPlacer.CreatedRooms)
             {
-                room.RoomEntering -= OnRoomEntering;
-            }
+                room.RoomEntering += OnRoomEntering;
 
-            _roomPlacer.StartRoom.RoomEntering -= OnRoomEntering;
+                if (room == room as LootRoomView)
+                    (room as LootRoomView).RoomCompleted += OnRoomCompleted;
+            }
         }
 
         private void AddPanelListener()
@@ -139,6 +144,17 @@ namespace Assets.Source.Game.Scripts
             {
                 panel.PanelOpened += PauseByMenu;
                 panel.PanelClosed += ResumeByMenu;
+            }
+        }
+
+        private void RemoveRoomListener() 
+        {
+            foreach (var room in _roomPlacer.CreatedRooms)
+            {
+                room.RoomEntering -= OnRoomEntering;
+
+                if (room == room as LootRoomView)
+                    (room as LootRoomView).RoomCompleted -= OnRoomCompleted;
             }
         }
 
@@ -163,7 +179,7 @@ namespace Assets.Source.Game.Scripts
                 panel.gameObject.SetActive(false);
         }
 
-        private void OnRoomEntering(Room room)
+        private void OnRoomEntering(RoomView room)
         {
             _currentRoom = room;
             _cameraControiler.ChengeConfiner(room);
@@ -191,20 +207,35 @@ namespace Assets.Source.Game.Scripts
         {
             foreach (var room in _roomPlacer.CreatedRooms)
             {
-                room.UnlockRoom();
+                if (room == room as BossRoomView)
+                    (room as BossRoomView).UnlockBossRoom(_roomPlacer.CreatedRooms.TrueForAll(completeRoom => completeRoom.IsComplete));
+                else
+                    room.UnlockRoom();
             }
         }
 
-        private void OnEnemyRoomDied()
+        private void OnRoomCompleted()
         {
             _currentRoom.SetComplete();
             UnlockAllDoors();
+
+            if (_currentRoom == _currentRoom as BossRoomView)
+                LevelCompleted();
         }
 
         private void RegisterServices()
         {
             _abilityFactory = new AbilityFactory(this);
             _abilityPresenterFactory = new AbilityPresenterFactory(this, this);
+        }
+
+        private void LevelCompleted() 
+        {
+            RemoveRoomListener();
+            _roomPlacer.Clear();
+            _currentRoomLevel++;
+            _roomPlacer.Initialize(_currentRoomLevel, _canSeeDoor);
+            AddRoomListener();
         }
     }
 }

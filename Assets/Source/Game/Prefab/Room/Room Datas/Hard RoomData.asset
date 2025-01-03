@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _id: 3
   _roomName: Hard Room
-  _room: {fileID: 8234881999620521735, guid: 121d98fbecfcf814e82b98d1c4669e80, type: 3}
+  _room: {fileID: 884456003023716184, guid: 121d98fbecfcf814e82b98d1c4669e80, type: 3}
   _chanceFromDistance:
     serializedVersion: 2
     m_Curve:
@@ -42,3 +42,4 @@ MonoBehaviour:
   _enemyDatas:
   - {fileID: 11400000, guid: c09a3c0740e3502468be820b02f1d026, type: 2}
   - {fileID: 11400000, guid: e88a5ccc8245ee745b4fc75cb3a9a14b, type: 2}
+  _traps: []

@@ -44,7 +44,7 @@ namespace Assets.Source.Game.Scripts
             GC.SuppressFinalize(this);
         }
 
-        public void Initialize(Room currentRoom)
+        public void Initialize(RoomView currentRoom)
         {
             if (_spawn != null)
                 _coroutineRunner.StopCoroutine(_spawn);

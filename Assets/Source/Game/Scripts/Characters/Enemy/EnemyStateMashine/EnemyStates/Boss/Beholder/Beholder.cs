@@ -7,9 +7,11 @@ public class Beholder : Boss
     [SerializeField] private Pool _pool;
     [SerializeField] private Transform _baseShotPoint;
     [SerializeField] private Transform[] _shotPoints;
+    [SerializeField] private DragonFlame _dragonFlame;
 
     public Transform BaseShotPoint => _baseShotPoint;
     public Transform[] ShotPoints => _shotPoints;
     public Bullet Bullet => _bullet;
     public Pool Pool => _pool;
+    public DragonFlame DragonFlame => _dragonFlame;
 }

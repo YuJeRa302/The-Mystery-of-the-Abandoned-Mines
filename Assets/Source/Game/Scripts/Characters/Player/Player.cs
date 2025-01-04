@@ -10,6 +10,7 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private Transform _weaponPoint;
         [SerializeField] private Transform _additionalWeaponPoint;
         [SerializeField] private Pool _poolBullet;
+        [SerializeField] private SpriteRenderer _miniMapIcon;
 
         private PlayerAbilityCaster _playerAbilityCaster;
         private PlayerStats _playerStats;
@@ -47,6 +48,7 @@ namespace Assets.Source.Game.Scripts
 
         public void CreateStats(LevelObserver levelObserver, PlayerClassData playerClassData, WeaponData weaponData, AbilityFactory abilityFactory, AbilityPresenterFactory abilityPresenter)
         {
+            _miniMapIcon.sprite = playerClassData.Icon;
             _playerHealth = new PlayerHealth(levelObserver, this,this);
             _playerAnimation = new PlayerAnimation(_animator, _rigidbody, 2, playerClassData, this);
             _playerAttacker = new PlayerAttacker(_shotPoint, this, weaponData, this, _poolBullet);

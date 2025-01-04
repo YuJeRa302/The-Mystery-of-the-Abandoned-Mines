@@ -8,7 +8,8 @@ namespace Assets.Source.Game.Scripts
 
         private void OnEnable()
         {
-            LockRoom();
+            //LockRoom();
+            base.UnlockRoom();
         }
 
         public void UnlockBossRoom(bool state)

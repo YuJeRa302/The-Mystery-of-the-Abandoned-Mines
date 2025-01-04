@@ -26,6 +26,7 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private Button _minimapButton;
         [SerializeField] private Button _minimapCloseButton;
         [SerializeField] private GameObject _minimap;
+        [SerializeField] private Image _playerIcon;
 
         private Player _player;
         private ParticleSystem _abilityEffect;
@@ -48,9 +49,10 @@ namespace Assets.Source.Game.Scripts
             _minimapCloseButton.onClick.RemoveListener(OnMinimapButtonClick);
         }
 
-        public void Initialize(Player player)
+        public void Initialize(Player player, Sprite iconPlayer)
         {
             _player = player;
+            _playerIcon.sprite = iconPlayer;
             SubscribePlayerEvent();
             _sliderHP.maxValue = _player.PlayerHealth.MaxHealth;
             _sliderHP.value = _player.PlayerHealth.CurrentHealth;

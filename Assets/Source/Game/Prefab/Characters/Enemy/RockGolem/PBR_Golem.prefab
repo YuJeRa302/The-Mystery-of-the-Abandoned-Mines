@@ -630,7 +630,7 @@ MonoBehaviour:
   _animationController: {fileID: 3276298443664825324}
   _health: 20
   _speed: 2
-  _attackDistance: 4
+  _attackDistance: 3
 --- !u!195 &5406089231354819195
 NavMeshAgent:
   m_ObjectHideFlags: 0

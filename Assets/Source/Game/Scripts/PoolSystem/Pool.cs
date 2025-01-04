@@ -41,6 +41,7 @@ public class Pool : MonoBehaviour
         }
 
         poolObject = result;
+        _poolObjects.Remove(result);
         return poolObject != null;
     }
 }

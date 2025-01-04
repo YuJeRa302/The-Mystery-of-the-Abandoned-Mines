@@ -46,7 +46,7 @@ namespace Assets.Source.Game.Scripts
         private void Awake()
         {
             _cameraControiler.ChengeConfiner(_roomPlacer.StartRoom);
-            Initialize(_temporaryData); //test
+            //Initialize(_temporaryData); //test
             LoadGamePanels();
         }
 
@@ -70,7 +70,7 @@ namespace Assets.Source.Game.Scripts
                 _playerPrefab, _spawnPlayerPoint, temporaryData.PlayerClassData, out Player player);
 
             _player = player;
-            _playerView.Initialize(_player);
+            _playerView.Initialize(_player, temporaryData.PlayerClassData.Icon);
             _cameraControiler.SetLookTarget(_player.transform);
             _cardPanel.Initialize(_player);
             AddListener();
@@ -207,10 +207,10 @@ namespace Assets.Source.Game.Scripts
         {
             foreach (var room in _roomPlacer.CreatedRooms)
             {
-                if (room == room as BossRoomView)
-                    (room as BossRoomView).UnlockBossRoom(_roomPlacer.CreatedRooms.TrueForAll(completeRoom => completeRoom.IsComplete));
-                else
-                    room.UnlockRoom();
+                //if (room == room as BossRoomView)
+                //    (room as BossRoomView).UnlockBossRoom(_roomPlacer.CreatedRooms.TrueForAll(completeRoom => completeRoom.IsComplete));
+                //else
+                room.UnlockRoom();
             }
         }
 

@@ -609,6 +609,7 @@ MonoBehaviour:
   _weaponPoint: {fileID: 2490256430192700955}
   _additionalWeaponPoint: {fileID: 8998010172795856166}
   _poolBullet: {fileID: 3665270091436053377}
+  _miniMapIcon: {fileID: 3362340721220924443}
 --- !u!114 &3665270091436053377
 MonoBehaviour:
   m_ObjectHideFlags: 0

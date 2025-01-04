@@ -47,6 +47,7 @@ namespace Assets.Source.Game.Scripts
                 if (_enemy.TryGetComponent(out Beholder beholder))
                 {
                     _stateMashine.AddState(new BeholderAdditionalAttackState(_stateMashine, _target, _enemy));
+                    _stateMashine.AddState(new BeholderSpecialAttackState(_stateMashine, _target, _enemy));
                 }
             }
             else if (_enemy.TryGetComponent(out RangeEnemy rangeEnemy))

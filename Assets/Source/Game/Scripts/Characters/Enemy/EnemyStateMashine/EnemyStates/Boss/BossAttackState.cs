@@ -69,6 +69,11 @@ namespace Assets.Source.Game.Scripts
                     {
                         _stateMashine.SetState<SpecialAttackGoldDragon>();
                     }
+
+                    if (_enemy.TryGetComponent(out Beholder beholder))
+                    {
+                        _stateMashine.SetState<BeholderSpecialAttackState>();
+                    }
                 }
             }
         }

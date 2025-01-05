@@ -6,11 +6,13 @@ public class PlayerWeapons : IDisposable
 {
     private Player _player;
     private WeaponData _weapon;
+    private WeponPrefab _weponPrefab;
 
     public PlayerWeapons(Player player, WeaponData weaponData)
     {
         _player = player;
         _weapon = weaponData;
+        _weponPrefab = _weapon.WeaponPrefab;
 
         CreateWeaponView();
     }
@@ -20,6 +22,12 @@ public class PlayerWeapons : IDisposable
     public void Dispose()
     {
         GC.SuppressFinalize(this);
+    }
+
+    public void ChangeTrailEffect()
+    {
+        if(_weponPrefab.KickEffect != null)
+            GameObject.Instantiate(_weponPrefab.KickEffect, _player.transform);
     }
 
     private void CreateWeaponView()

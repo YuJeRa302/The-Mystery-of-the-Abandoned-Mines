@@ -150,3 +150,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be5d8b205f2012c40bcbfed1001b018d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _kickEffect: {fileID: 19872524, guid: b2fc69acc3a4e6840addd2fbe6f1aecd, type: 3}

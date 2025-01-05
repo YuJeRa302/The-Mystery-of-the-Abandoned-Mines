@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2bf4e7565ed04304ba72d9831d3ab542, type: 3}
   m_Name: StandartHammer
   m_EditorClassIdentifier: 
-  _id: 10
-  _tier: 4
+  _id: 1
+  _tier: 0
   _tierColor:
   - {r: 1, g: 1, b: 1, a: 0}
   - {r: 0.23921569, g: 1, b: 0.21568628, a: 0}

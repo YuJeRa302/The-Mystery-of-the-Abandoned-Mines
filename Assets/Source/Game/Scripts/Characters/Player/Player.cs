@@ -140,6 +140,7 @@ namespace Assets.Source.Game.Scripts
         private void TryAttackEnemy()
         {
             _playerAttacker.AttackEnemy();
+            _playerWeapons.ChangeTrailEffect();
         }
 
         private void OnAttack()

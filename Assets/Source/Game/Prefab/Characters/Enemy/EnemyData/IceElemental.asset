@@ -23,9 +23,7 @@ MonoBehaviour:
   _enemyCount: 0
   _abilityCoolDown: []
   _abilityDamage: 
-  _enemyHitParticleSystem: {fileID: 0}
-  _enemyDieParticleSystem: {fileID: 0}
-  _enemyAbilityParticleSystem: {fileID: 0}
+  _enemyDieParticleSystem: {fileID: 19832984, guid: 8efa0e91da9b04c47ae96c863ac855e9, type: 3}
   _audioClipDie: {fileID: 0}
   _hit: {fileID: 0}
   _prefabEnemy: {fileID: 8075443872590198991, guid: 6b6170f56e215ae459092616fee34505, type: 3}

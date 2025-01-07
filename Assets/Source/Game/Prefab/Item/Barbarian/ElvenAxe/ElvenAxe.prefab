@@ -67,6 +67,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be5d8b205f2012c40bcbfed1001b018d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _kickEffect: {fileID: 198110730807727184, guid: 490660ee8070ba244b43d0fa7810e85c, type: 3}
 --- !u!1 &8757470832290443903
 GameObject:
   m_ObjectHideFlags: 0

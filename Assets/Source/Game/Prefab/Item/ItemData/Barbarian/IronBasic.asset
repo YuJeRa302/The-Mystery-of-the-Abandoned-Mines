@@ -25,4 +25,4 @@ MonoBehaviour:
   _bonusDamage: 5
   _bonusArmor: 0
   _translationName: Axe iron
-  _icon: {fileID: 21300000, guid: 6489dab9ee1cd2b4da7528b07652aa76, type: 3}
+  _icon: {fileID: 21300000, guid: 0652f9f0f786c00419b69a9a6fbac662, type: 3}

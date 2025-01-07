@@ -22,7 +22,7 @@ MonoBehaviour:
   - {r: 1, g: 0.22745098, b: 0.14509805, a: 0}
   _targetClass: 2
   _weaponPrefab: {fileID: 8414030926381791721, guid: cb67ea4d56206bf4d836e7c83415c96f, type: 3}
-  _bonusDamage: 20
+  _bonusDamage: 15
   _bonusArmor: 0
   _translationName: 
-  _icon: {fileID: 21300000, guid: 6489dab9ee1cd2b4da7528b07652aa76, type: 3}
+  _icon: {fileID: 21300000, guid: 7530538932fd6a34c9f22c1495d9c8a9, type: 3}

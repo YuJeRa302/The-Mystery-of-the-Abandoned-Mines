@@ -25,4 +25,4 @@ MonoBehaviour:
   _bonusDamage: 10
   _bonusArmor: 0
   _translationName: Axe Evolving
-  _icon: {fileID: 21300000, guid: 6489dab9ee1cd2b4da7528b07652aa76, type: 3}
+  _icon: {fileID: 21300000, guid: 7e58436bdcbdd034d997f68b7cac4d7a, type: 3}

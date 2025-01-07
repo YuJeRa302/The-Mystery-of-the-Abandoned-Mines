@@ -25,7 +25,7 @@ namespace Assets.Source.Game.Scripts
         public EnemyAnimation AnimationStateController => _animationController;
         public EnemyStateMashineExample StateMashine => _stateMashine;
 
-        public event Action Died;
+        public event Action<Enemy> Died;
 
         public void Initialize(Player player, int id)
         {
@@ -55,7 +55,7 @@ namespace Assets.Source.Game.Scripts
             {
                 _currentHealth = 0;
                 _isDead = true;
-                Died?.Invoke();
+                Died?.Invoke(this);
                 ReturnToPool();
             }
         }

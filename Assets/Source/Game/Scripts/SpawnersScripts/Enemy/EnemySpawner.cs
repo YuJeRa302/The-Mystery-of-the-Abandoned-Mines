@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Assets.Source.Game.Scripts
@@ -9,7 +10,6 @@ namespace Assets.Source.Game.Scripts
     {
         private readonly System.Random _rnd = new ();
         private readonly float _delaySpawn = 1.0f;
-        private readonly int _minValue = 0;
 
         private Pool _enemuPool;
         private Transform[] _spawnPoints;
@@ -18,11 +18,7 @@ namespace Assets.Source.Game.Scripts
         private Coroutine _spawn;
         private ICoroutineRunner _coroutineRunner;
         private List<Enemy> _enemies = new List<Enemy>();
-        private int _currentWaveNumber = 0;
-        private int _countWaves;
-        private float _timeAfterLastSpawn;
-        private float _delay = 5f;
-        private int _waveLenght = 1;
+        private Dictionary<string, ParticleSystem> _deadParticles = new Dictionary<string, ParticleSystem>();
         private int _spawnedEnemy;
         private int _deadEnemy = 0;
         private int _countEnemyRoom = 1;//временное значение
@@ -49,6 +45,9 @@ namespace Assets.Source.Game.Scripts
             if (_spawn != null)
                 _coroutineRunner.StopCoroutine(_spawn);
 
+            if (_deadParticles != null)
+                _deadParticles.Clear();
+
             if(currentRoom.EnemySpawnPoints.Length == 0)
             {
                 AllEnemyRoomDied?.Invoke();
@@ -72,13 +71,6 @@ namespace Assets.Source.Game.Scripts
 
         private IEnumerator Spawn()
         {
-            //while (_maxGameTime > _minValue)
-            //{
-            //    yield return new WaitForSeconds(_delaySpawn);
-            //    EnemyCreate(_enemyDatas[_rnd.Next(_enemyDatas.Length)], _rnd.Next(_spawnPoints.Length));
-            //    _maxGameTime--;
-            //}
-
             while (_spawnedEnemy < _countEnemyRoom)
             {
                 yield return new WaitForSeconds(_delaySpawn);
@@ -106,6 +98,12 @@ namespace Assets.Source.Game.Scripts
                 enemy.Initialize(_player, enemyData.Id);
                 enemy.Died += OnEnemyDead;
                 _enemies.Add(enemy);
+
+                if (_deadParticles.ContainsKey(enemyData.PrefabEnemy.name) == false)
+                {
+                    _deadParticles.Add(enemyData.PrefabEnemy.name, enemyData.EnemyDieParticleSystem);
+                }
+
             }
         }
 
@@ -121,9 +119,15 @@ namespace Assets.Source.Game.Scripts
             return poolEnemy != null;
         }
 
-        private void OnEnemyDead()
+        private void OnEnemyDead(Enemy enemy)
         {
             _deadEnemy++;
+
+            if (_deadParticles.TryGetValue(enemy.NameObject, out ParticleSystem particle))
+            {
+                GameObject.Instantiate(particle, enemy.transform.position, Quaternion.identity);
+                Debug.Log(enemy.NameObject);
+            }
 
             if (_deadEnemy == Convert.ToInt32(_countEnemyRoom))
             {

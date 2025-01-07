@@ -25,5 +25,5 @@ MonoBehaviour:
   _bonusDamage: 7
   _bonusArmor: 0
   _translationName: 
-  _icon: {fileID: 21300000, guid: 8f295ba1dbd6eb74186bf6af890769be, type: 3}
+  _icon: {fileID: 21300000, guid: f110587d930787a4fb59d53b3a1fe93b, type: 3}
   _bulletPrefab: {fileID: 1066673279660128375, guid: e26ce005b170b884b9515c88b5641b2a, type: 3}

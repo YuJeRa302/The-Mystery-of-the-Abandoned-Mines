@@ -12,8 +12,8 @@ namespace Assets.Source.Game.Scripts
                 ReturObjectPool();
             }
 
-            //if (collision.collider.TryGetComponent(out Wall wall))
-            //    ReturObjectPool();
+            if (collision.collider.TryGetComponent(out Wall wall))
+                ReturObjectPool();
         }
     }
 }

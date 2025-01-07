@@ -19,9 +19,9 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private float[] _abilityCoolDown;
         [SerializeField] private int[] _abilityDamage;
         [Header("[ParticleSystem]")]
-        [SerializeField] private ParticleSystem _enemyHitParticleSystem;
+        //[SerializeField] private ParticleSystem _enemyHitParticleSystem;
         [SerializeField] private ParticleSystem _enemyDieParticleSystem;
-        [SerializeField] private ParticleSystem _enemyAbilityParticleSystem;
+        //[SerializeField] private ParticleSystem _enemyAbilityParticleSystem;
         [Header("[Enemy Sound]")]
         [SerializeField] private AudioClip _audioClipDie;
         [SerializeField] private AudioClip _hit;
@@ -39,9 +39,9 @@ namespace Assets.Source.Game.Scripts
         public int Score => _score;
         public float[] AbilityCoolDown => _abilityCoolDown;
         public int[] AbilityDamage => _abilityDamage;
-        public ParticleSystem EnemyHitParticleSystem => _enemyHitParticleSystem;
+        //public ParticleSystem EnemyHitParticleSystem => _enemyHitParticleSystem;
         public ParticleSystem EnemyDieParticleSystem => _enemyDieParticleSystem;
-        public ParticleSystem EnemyAbilityParticleSystem => _enemyAbilityParticleSystem;
+        //public ParticleSystem EnemyAbilityParticleSystem => _enemyAbilityParticleSystem;
         public AudioClip AudioClipDie => _audioClipDie;
         public AudioClip Hit => _hit;
         public Enemy PrefabEnemy => _prefabEnemy;

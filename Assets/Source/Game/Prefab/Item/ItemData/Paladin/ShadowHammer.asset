@@ -25,5 +25,5 @@ MonoBehaviour:
   _bonusDamage: 8
   _bonusArmor: 8
   _translationName: 
-  _icon: {fileID: 21300000, guid: 1164c5bc367f5fe4fa8dd3c163a526d3, type: 3}
+  _icon: {fileID: 21300000, guid: 4b2b7deec6636b84b87f6d436ccc9a2d, type: 3}
   _additionalWeapon: {fileID: 8098896844911473184, guid: 759b76270e745944ba9c090e0d0d431e, type: 3}

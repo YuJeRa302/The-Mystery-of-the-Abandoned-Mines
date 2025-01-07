@@ -34,7 +34,6 @@ public class BeholderAdditionalAttackState : BossAdditionalAttackState
     protected override void AditionalAttackAppalyDamage()
     {
         _bulletSpawner.SpawnBullet();
-        Debug.Log("SPAWNBULLET");
         _currentShotPointIndex++;
 
         if (_currentShotPointIndex == _maxShotPointIndex)

@@ -188,6 +188,8 @@ namespace Assets.Source.Game.Scripts
                 _armor += ability.CurrentAbilityValue;
             else if (ability.TypeAbility == TypeAbility.PlayerRegenerationAmplifier)
                 _regeneration += ability.CurrentAbilityValue;
+
+            //отдельный метод для классовых умений!!
         }
 
         public void AbilityEnded(Ability ability)

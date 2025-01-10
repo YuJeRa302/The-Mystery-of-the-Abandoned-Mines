@@ -20,6 +20,7 @@ public class LevelsViewModel
     public void Show() => _menuModel.InvokeLevelsShow();
     public void Hide() => _menuModel.InvokeLevelsHide();
 
+    public bool TryUnlockContractButton(int index) => _levelsModel.TryUnlockContractButton(index);
     public LevelState[] GetLevels() => _levelsModel.LevelStates;
     public LevelState GetLevelState(LevelData levelData) => _levelsModel.GetLevelState(levelData);
     public WeaponState GetWeaponState(WeaponData weaponData) => _levelsModel.GetWeaponState(weaponData);

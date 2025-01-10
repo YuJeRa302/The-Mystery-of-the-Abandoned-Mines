@@ -8,6 +8,8 @@ namespace Assets.Source.Game.Scripts
 {
     public class LevelsView : MonoBehaviour
     {
+        private readonly int _indexUnlockContractButton = 2;
+
         [SerializeField] private Image _levelImage;
         [SerializeField] private LeanLocalizedText _textNextButton;
         [Space(20)]
@@ -60,8 +62,11 @@ namespace Assets.Source.Game.Scripts
         {
             _levelsViewModel = levelsViewModel;
             _audioPlayerService = audioPlayerService;
+            _contractButton.interactable = _levelsViewModel.TryUnlockContractButton(_indexUnlockContractButton);
             AddListener();
-            SortElementsByTier();
+            SortWeaponsByTier();
+            SortContractsByTier();
+            SortLevelsByTier();
             gameObject.SetActive(false);
         }
 
@@ -146,7 +151,17 @@ namespace Assets.Source.Game.Scripts
             }
         }
 
-        private void SortElementsByTier()
+        private void SortContractsByTier()
+        {
+            _contractLevelDatas.Sort(delegate (LevelData x, LevelData y) { return y.Tier.CompareTo(x.Tier); });
+        }
+
+        private void SortLevelsByTier()
+        {
+            _levelDatas.Sort(delegate (LevelData x, LevelData y) { return y.Tier.CompareTo(x.Tier); });
+        }
+
+        private void SortWeaponsByTier()
         {
             _weaponDatas.Sort(delegate (WeaponData x, WeaponData y) { return y.Tier.CompareTo(x.Tier); });
         }

@@ -71,6 +71,11 @@ public class UpgradeModel
         }
     }
 
+    public void UpdateTemporaryData() 
+    {
+        //доделать Upgrade State
+    }
+
     private UpgradeState InitState(UpgradeData upgradeData)
     {
         UpgradeState upgradeState = new();

@@ -413,8 +413,8 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 416
-        y: 417
-        width: 69
+        y: 412
+        width: 70
         height: 70
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -433,10 +433,10 @@ TextureImporter:
       name: button_white_14
       rect:
         serializedVersion: 2
-        x: 539
-        y: 420
-        width: 68
-        height: 55
+        x: 537
+        y: 413
+        width: 66
+        height: 66
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -451,34 +451,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: button_white_15
-      rect:
-        serializedVersion: 2
-        x: 677
-        y: 421
-        width: 29
-        height: 53
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: ab977bf731daed848a446f69588e4148
-      internalID: 269806340
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: button_white_16
       rect:
         serializedVersion: 2
-        x: 699
-        y: 417
-        width: 43
-        height: 63
+        x: 670
+        y: 415
+        width: 66
+        height: 66
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -496,10 +475,10 @@ TextureImporter:
       name: button_white_17
       rect:
         serializedVersion: 2
-        x: 802
-        y: 411
+        x: 799
+        y: 413
         width: 66
-        height: 67
+        height: 66
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -517,10 +496,10 @@ TextureImporter:
       name: button_white_18
       rect:
         serializedVersion: 2
-        x: 929
-        y: 412
-        width: 60
-        height: 67
+        x: 927
+        y: 413
+        width: 66
+        height: 66
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -916,8 +895,8 @@ TextureImporter:
       name: button_white_40
       rect:
         serializedVersion: 2
-        x: 931
-        y: 155
+        x: 925
+        y: 158
         width: 68
         height: 68
       alignment: 0
@@ -1202,6 +1181,27 @@ TextureImporter:
       bones: []
       spriteID: 86879932eed3544409cc5acef822c26f
       internalID: 2124614761
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: button_white_25
+      rect:
+        serializedVersion: 2
+        x: 894
+        y: 161
+        width: 21
+        height: 19
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b5032aaa1c6d53047a792eb082f29315
+      internalID: -504733815
       vertices: []
       indices: 
       edges: []

@@ -371,8 +371,8 @@ MonoBehaviour:
   - {fileID: 4656389227963689035}
   - {fileID: 7087617792312448699}
   - {fileID: 173439928498871791}
-  _defaultSprite: {fileID: 21300000, guid: 2c935adc7b86c8146913df4253311a59, type: 3}
-  _upgradeSprite: {fileID: 21300000, guid: a5ec0078ad25fd1479ec50f04f6737d1, type: 3}
+  _defaultSprite: {fileID: 21300000, guid: 010a6e5305fa7004f89c5d317b7b47d4, type: 3}
+  _upgradeSprite: {fileID: 21300000, guid: 0ff1ba841bb94594f97122dc624a60f2, type: 3}
   _button: {fileID: 239940771038940697}
 --- !u!1 &6101824378481618405
 GameObject:

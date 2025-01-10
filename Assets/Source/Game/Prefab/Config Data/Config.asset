@@ -29,4 +29,8 @@ MonoBehaviour:
   _defaultLevelState:
   - Id: 0
     IsComplete: 0
+  - Id: 1
+    IsComplete: 0
+  - Id: 2
+    IsComplete: 0
   _upgradePoints: 3

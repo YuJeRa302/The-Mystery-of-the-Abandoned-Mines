@@ -7,7 +7,7 @@ public class BeholderSpecialAttackState : BossSpecialAttackState
     private float _maxTimeCastSpel = 6f;
     private float _currentTimeCastSpel = 0;
     private Transform _transformEnemy;
-    DG.Tweening.Sequence _sequence = DOTween.Sequence();
+    DG.Tweening.Sequence _sequence;
 
     public BeholderSpecialAttackState(StateMashine stateMashine, Player player, Enemy enemy) : base(stateMashine, player, enemy)
     {
@@ -23,7 +23,12 @@ public class BeholderSpecialAttackState : BossSpecialAttackState
         _currentTimeCastSpel = 0f;
         Beholder beholder = _enemy as Beholder;
         beholder.DragonFlame.gameObject.SetActive(true);
-        _sequence.Append(_transformEnemy.DORotate(new Vector3(0, 360f, 0), _maxTimeCastSpel, RotateMode.FastBeyond360).SetRelative().SetEase(Ease.Linear));
+        _sequence = DOTween.Sequence();
+        //_sequence.Append(_transformEnemy.DORotate(new Vector3(0, 360f, 0), _maxTimeCastSpel, RotateMode.FastBeyond360).SetRelative().SetEase(Ease.Linear));
+
+        _sequence.Append(_transformEnemy.DORotate(new Vector3(0, 90f, 0), 2f));
+        _sequence.Append(_transformEnemy.DORotate(new Vector3(0, 180f, 0), 4f));
+       
         SpetiallAttackEvent();
     }
 

@@ -119,4 +119,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be5d8b205f2012c40bcbfed1001b018d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _kickEffect: {fileID: 198110730807727184, guid: 8020dd1ce1ef5b344aac2323c919c8a4, type: 3}
+  _kickEffect: {fileID: 2854563468033500628, guid: 8020dd1ce1ef5b344aac2323c919c8a4, type: 3}

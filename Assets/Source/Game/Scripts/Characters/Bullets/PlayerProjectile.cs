@@ -10,7 +10,6 @@ public class PlayerProjectile : PoolObject
     private Coroutine _coroutine;
     private Rigidbody _rigidbody;
     private float _moveSpeedBoost;
-    private bool _isActive;
     private float _projectaleMoveSpeed = 2f;
 
     private void OnEnable()
@@ -41,12 +40,11 @@ public class PlayerProjectile : PoolObject
         if (collision.collider.TryGetComponent(out Enemy enemy))
         {
             enemy.TakeDamage(_damage);
-            _isActive = false;
             ReturObjectPool();
         }
 
-        //if (collision.collider.TryGetComponent(out Wall wall))
-        //    ReturObjectPool();
+        if (collision.collider.TryGetComponent(out Wall wall))
+            ReturObjectPool();
     }
 
     public void Initialaze(Enemy target, float damage, float moveSpeedBoost)
@@ -63,8 +61,6 @@ public class PlayerProjectile : PoolObject
 
     private IEnumerator BackToPlayer()
     {
-        _isActive = true;
-
         while (Vector3.Magnitude(transform.position - _target.transform.position) >= 1f)
         {
             yield return null;

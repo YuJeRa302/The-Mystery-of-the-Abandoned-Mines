@@ -18,7 +18,7 @@ namespace Assets.Source.Game.Scripts
         private Coroutine _spawn;
         private ICoroutineRunner _coroutineRunner;
         private List<Enemy> _enemies = new List<Enemy>();
-        private Dictionary<string, ParticleSystem> _deadParticles = new Dictionary<string, ParticleSystem>();
+        private Dictionary<string, PoolParticle> _deadParticles = new Dictionary<string, PoolParticle>();
         private int _spawnedEnemy;
         private int _deadEnemy = 0;
         private int _countEnemyRoom = 1;//временное значение
@@ -45,8 +45,8 @@ namespace Assets.Source.Game.Scripts
             if (_spawn != null)
                 _coroutineRunner.StopCoroutine(_spawn);
 
-            if (_deadParticles != null)
-                _deadParticles.Clear();
+            //if (_deadParticles != null)
+            //    _deadParticles.Clear();
 
             if(currentRoom.EnemySpawnPoints.Length == 0)
             {
@@ -121,13 +121,29 @@ namespace Assets.Source.Game.Scripts
 
         private void OnEnemyDead(Enemy enemy)
         {
-            _deadEnemy++;
-
-            if (_deadParticles.TryGetValue(enemy.NameObject, out ParticleSystem particle))
+            if (_deadParticles.TryGetValue(enemy.NameObject, out PoolParticle particlePrefab))
             {
-                GameObject.Instantiate(particle, enemy.transform.position, Quaternion.identity);
-                Debug.Log(enemy.NameObject);
+                PoolParticle particle;
+
+                if (_enemuPool.TryPoolObject(particlePrefab.gameObject, out PoolObject pollParticle))
+                {
+                    particle = pollParticle as PoolParticle;
+                    particle.transform.position = enemy.transform.position;
+                    particle.gameObject.SetActive(true);
+                }
+                else
+                {
+                    particle = GameObject.Instantiate(particlePrefab, enemy.transform.position, Quaternion.identity);
+                    _enemuPool.InstantiatePoolObject(particle, particlePrefab.name);
+                }
             }
+
+            EnemyDeadCounter();
+        }
+
+        private void EnemyDeadCounter()
+        {
+            _deadEnemy++;
 
             if (_deadEnemy == Convert.ToInt32(_countEnemyRoom))
             {
@@ -136,7 +152,7 @@ namespace Assets.Source.Game.Scripts
 
             _totalEnemyCount--;
 
-            if(_totalEnemyCount <= 0)
+            if (_totalEnemyCount <= 0)
             {
                 Debug.Log("!WIN!");
             }

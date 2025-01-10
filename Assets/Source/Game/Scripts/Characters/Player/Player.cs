@@ -34,6 +34,7 @@ namespace Assets.Source.Game.Scripts
         private void OnDestroy()
         {
             _playerAttacker.Attacked -= OnAttack;
+            _playerAttacker.EnemyFinded -= OnRotateToTarget;
             _cardDeck.SetNewAbility -= OnSetNewAbility;
             _cardDeck.RerollPointsUpdated -= OnUpdateRerollPoints;
             _cardDeck.PlayerStatsUpdated -= OnStatsUpdate;
@@ -52,7 +53,7 @@ namespace Assets.Source.Game.Scripts
             _playerHealth = new PlayerHealth(levelObserver, this,this);
             _playerAnimation = new PlayerAnimation(_animator, _rigidbody, 2, playerClassData, this);
             _playerAttacker = new PlayerAttacker(_shotPoint, this, weaponData, this, _poolBullet);
-            _playerWeapons = new PlayerWeapons(this, weaponData);
+            _playerWeapons = new PlayerWeapons(this, weaponData, _poolBullet);
             _playerMovment = new PlayerMovement(levelObserver.CameraControiler.Camera, levelObserver.CameraControiler.VariableJoystick, _rigidbody, 2f, this);
             _cardDeck = new CardDeck();
             _playerStats = new PlayerStats(this, 1, null, levelObserver, abilityFactory, abilityPresenter);
@@ -64,6 +65,7 @@ namespace Assets.Source.Game.Scripts
         private void SubscribeAction()
         {
             _playerAttacker.Attacked += OnAttack;
+            _playerAttacker.EnemyFinded += OnRotateToTarget;
 
             _cardDeck.SetNewAbility += OnSetNewAbility;
             _cardDeck.RerollPointsUpdated += OnUpdateRerollPoints;
@@ -79,6 +81,12 @@ namespace Assets.Source.Game.Scripts
 
             _playerAbilityCaster.AbilityUsed += OnAbilityUsed;
             _playerAbilityCaster.AbilityEnded += OnAbilityEnded;
+        }
+
+        private void OnRotateToTarget(Transform transform)
+        {
+            _playerMovment.ChengeRotate();
+            _playerMovment.LookAtEnemy(transform);
         }
 
         private void OnAbilityCooldownReductionChanged(int value)
@@ -141,6 +149,11 @@ namespace Assets.Source.Game.Scripts
         {
             _playerAttacker.AttackEnemy();
             _playerWeapons.ChangeTrailEffect();
+        }
+
+        private void AttackEnd()
+        {
+            _playerMovment.ChengeRotate();
         }
 
         private void OnAttack()

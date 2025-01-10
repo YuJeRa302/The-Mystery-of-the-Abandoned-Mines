@@ -25,6 +25,7 @@ namespace Assets.Source.Game.Scripts
         private Dictionary<float, Enemy> _enemies = new Dictionary<float, Enemy>();
 
         public event Action Attacked;
+        public event Action<Transform> EnemyFinded;
 
         public PlayerAttacker(Transform shoPoint, Player player, WeaponData weaponData, ICoroutineRunner coroutineRunner, Pool pool)
         {
@@ -37,7 +38,7 @@ namespace Assets.Source.Game.Scripts
 
             if (_weaponData.TargetClass == TypePlayerClass.Warlock)
             {
-                _searchRadius = 25f;
+                _searchRadius = 10f;
                 WarlockWeaponData paladinWeaponData = weaponData as WarlockWeaponData;
                 _bulletSpawner = new ProjectileSpawner(paladinWeaponData.BulletPrafab, _poolBullet, _shotPoint, _damage);
             }
@@ -111,6 +112,7 @@ namespace Assets.Source.Game.Scripts
 
                     if (_currentTarget != null && _currentTarget.isActiveAndEnabled == true)
                     {
+                        EnemyFinded?.Invoke(_currentTarget.transform);
                         GetHit();
                     }
                 }

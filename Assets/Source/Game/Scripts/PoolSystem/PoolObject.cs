@@ -9,12 +9,12 @@ public class PoolObject : MonoBehaviour
 
     public event Action<PoolObject> PoolReturned;
 
-    public void InitializeObject(string name)
+    public virtual void InitializeObject(string name)
     {
         _nameObject = name;
     }
 
-    public void ReturObjectPool()
+    public virtual void ReturObjectPool()
     {
         ReturnToPool();
     }

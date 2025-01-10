@@ -7,12 +7,14 @@ public class PlayerWeapons : IDisposable
     private Player _player;
     private WeaponData _weapon;
     private WeponPrefab _weponPrefab;
+    private Pool _pool;
 
-    public PlayerWeapons(Player player, WeaponData weaponData)
+    public PlayerWeapons(Player player, WeaponData weaponData, Pool pool)
     {
         _player = player;
         _weapon = weaponData;
         _weponPrefab = _weapon.WeaponPrefab;
+        _pool = pool;
 
         CreateWeaponView();
     }
@@ -27,7 +29,20 @@ public class PlayerWeapons : IDisposable
     public void ChangeTrailEffect()
     {
         if(_weponPrefab.KickEffect != null)
-            GameObject.Instantiate(_weponPrefab.KickEffect, _player.transform);
+        {
+            PoolParticle particle;
+
+            if (_pool.TryPoolObject(_weponPrefab.KickEffect.gameObject, out PoolObject pollParticle))
+            {
+                particle = pollParticle as PoolParticle;
+                particle.gameObject.SetActive(true);
+            }
+            else
+            {
+                particle = GameObject.Instantiate(_weponPrefab.KickEffect, _player.transform);
+                _pool.InstantiatePoolObject(particle, _weponPrefab.KickEffect.name);
+            }
+        }
     }
 
     private void CreateWeaponView()

@@ -19,10 +19,12 @@ public class PlayerMovement : IDisposable
     private Coroutine _movment;
     private ICoroutineRunner _coroutineRunner;
     private bool _isModile = false;
+    private bool _canRotate = true;
+    private bool _isDecstop = true; //
 
     public float MaxMoveSpeed => _maxMoveSpeed;
 
-    public PlayerMovement(Camera camera, VariableJoystick variableJoystick, Rigidbody rigidbody,float moveSpeed, Player coroutineRunner)
+    public PlayerMovement(Camera camera, VariableJoystick variableJoystick, Rigidbody rigidbody, float moveSpeed, Player coroutineRunner)
     {
         _moveSpeed = moveSpeed;
         _rigidbody = rigidbody;
@@ -53,24 +55,42 @@ public class PlayerMovement : IDisposable
         GC.SuppressFinalize(this);
     }
 
-    private void MobileMove()
+    public void ChengeRotate()
     {
-        float mobileSpeed = _moveSpeed * 12.7f;
-        _direction = Vector3.forward * _variableJoystick.Vertical + Vector3.right * _variableJoystick.Horizontal;
-        _rigidbody.AddForce(_direction * mobileSpeed * Time.fixedDeltaTime, ForceMode.VelocityChange);
-        MobileLookAt();
+        _canRotate = !_canRotate;
+    }
+
+    public void LookAtEnemy(Transform target)
+    {
+        _rigidbody.transform.LookAt(target);
+    }
+
+    private IEnumerator MobileMove()
+    {
+        while (_variableJoystick != null)
+        {
+            float mobileSpeed = _moveSpeed * 12.7f;
+            _direction = Vector3.forward * _variableJoystick.Vertical + Vector3.right * _variableJoystick.Horizontal;
+            _rigidbody.AddForce(_direction * mobileSpeed * Time.fixedDeltaTime, ForceMode.VelocityChange);
+            MobileLookAt();
+
+            yield return null;
+        }
     }
 
     private void MobileLookAt()
     {
-        Vector3 direction = _rigidbody.velocity;
-        direction.y = 0;
-        Vector2 turn = new Vector2(_variableJoystick.Horizontal, _variableJoystick.Vertical);
+        if (_canRotate)
+        {
+            Vector3 direction = _rigidbody.velocity;
+            direction.y = 0;
+            Vector2 turn = new Vector2(_variableJoystick.Horizontal, _variableJoystick.Vertical);
 
-        if (turn.sqrMagnitude > 0.1f && direction.sqrMagnitude > 0.1f)
-            _rigidbody.rotation = Quaternion.LookRotation(direction, Vector3.up);
-        else
-            _rigidbody.angularVelocity = Vector3.zero;
+            if (turn.sqrMagnitude > 0.1f && direction.sqrMagnitude > 0.1f)
+                _rigidbody.rotation = Quaternion.LookRotation(direction, Vector3.up);
+            else
+                _rigidbody.angularVelocity = Vector3.zero;
+        }
     }
 
     private Vector3 GetCameraRight(Camera camera)
@@ -91,13 +111,16 @@ public class PlayerMovement : IDisposable
 
     private void DekstopLookAt()
     {
-        Vector3 direction = _rigidbody.velocity;
-        direction.y = 0;
+        if (_canRotate)
+        {
+            Vector3 direction = _rigidbody.velocity;
+            direction.y = 0;
 
-        if (_move.ReadValue<Vector2>().sqrMagnitude > 0.1f && direction.sqrMagnitude > 0.1f)
-            _rigidbody.rotation = Quaternion.LookRotation(direction, Vector3.up);
-        else
-            _rigidbody.angularVelocity = Vector3.zero;
+            if (_move.ReadValue<Vector2>().sqrMagnitude > 0.1f && direction.sqrMagnitude > 0.1f)
+                _rigidbody.rotation = Quaternion.LookRotation(direction, Vector3.up);
+            else
+                _rigidbody.angularVelocity = Vector3.zero;
+        }
     }
 
     private IEnumerator DekstopMove()

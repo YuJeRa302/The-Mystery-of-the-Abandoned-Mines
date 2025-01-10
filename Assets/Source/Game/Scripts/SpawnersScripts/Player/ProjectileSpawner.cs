@@ -34,6 +34,5 @@ public class ProjectileSpawner
         }
 
         playerProjectile.Initialaze(enemy, _damage, 1f);
-       // playerProjectile.GetComponent<Rigidbody>().AddForce(_shotPoint.forward * 5f, ForceMode.Impulse);
     }
 }

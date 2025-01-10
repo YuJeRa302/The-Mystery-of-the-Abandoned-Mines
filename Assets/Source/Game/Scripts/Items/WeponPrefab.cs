@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class WeponPrefab : MonoBehaviour
 {
-    [SerializeField] private ParticleSystem _kickEffect;
+    [SerializeField] private PoolParticle _kickEffect;
 
-    public ParticleSystem KickEffect => _kickEffect;
+    public PoolParticle KickEffect => _kickEffect;
 }

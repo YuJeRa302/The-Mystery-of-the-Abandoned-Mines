@@ -29058,6 +29058,7 @@ GameObject:
   - component: {fileID: 19862180}
   - component: {fileID: 19985476}
   - component: {fileID: 8220856}
+  - component: {fileID: 5565692519334350932}
   m_Layer: 0
   m_Name: GoldDragonDeath
   m_TagString: Untagged
@@ -33957,6 +33958,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
+--- !u!114 &5565692519334350932
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 172590}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c978ce2c674dfa46bc2c70edaf9eca7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &186676
 GameObject:
   m_ObjectHideFlags: 0

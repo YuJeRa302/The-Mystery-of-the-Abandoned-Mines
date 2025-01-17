@@ -38,9 +38,11 @@ namespace Assets.Source.Game.Scripts
             _playerView = playerView;
 
             _playerView.AbilityViewCreated += OnAbilityViewCreated;
+            _playerView.SummonViewCreated += OnSummonAbilityCreatedTESTED;
+            _playerView.ThrowAxeViewCreated += OnThrowAxeAcilityCreated;
         }
 
-        public void TakeAbility(CardView cardView)
+        public void TakeAbility(CardView cardView)//
         {
             if (cardView.CardData.AttributeData == null)
                 return;
@@ -54,12 +56,28 @@ namespace Assets.Source.Game.Scripts
                 AbilityTaked?.Invoke(_abilityAttributeData, cardView.CardState.CurrentLevel);
         }
 
+        private void OnSummonAbilityCreatedTESTED(AbilityView abilityView, SummonSkeletonAbility summonSkeletonAbility, Player player)
+        {
+            Ability newAbility = _abilityFactory.Create(_abilityAttributeData, _currentAbilityLevel, _abilityCooldownReduction, _abilityDuration, _abilityDamage, false);
+
+            _abilityPresenterFactory.CreateSummonAbilityPresenter(newAbility, abilityView, player.ShotPoint, player, summonSkeletonAbility.SummonPrefab, _player.Pool);
+        }
+
+        private void OnThrowAxeAcilityCreated(AbilityView abilityView, Player player, ParticleSystem particleSystem, ThrowAxeAbility throwAxeAbility)///
+        {
+            Ability newAbility = _abilityFactory.Create(_abilityAttributeData, _currentAbilityLevel, _abilityCooldownReduction, _abilityDuration, _abilityDamage, false);
+
+            _abilityPresenterFactory.CreateThrowAxe(newAbility, abilityView, player, particleSystem, (_abilityAttributeData as AttackAbilityData).Spell, throwAxeAbility.AxemMssile);
+        }
+
         private void OnAbilityViewCreated(AbilityView abilityView, ParticleSystem particleSystem, Transform throwPoint)
         {
-            Ability newAbility = _abilityFactory.Create(_abilityAttributeData, _currentAbilityLevel, _abilityCooldownReduction, _abilityDuration, _abilityDamage);
+            Ability newAbility = _abilityFactory.Create(_abilityAttributeData, _currentAbilityLevel, _abilityCooldownReduction, _abilityDuration, _abilityDamage, true);
 
             if (_abilityAttributeData.TypeAbility != TypeAbility.AttackAbility)
+            {
                 _abilityPresenterFactory.CreateAmplifierAbilityPresenter(newAbility, abilityView, particleSystem);
+            }
             else
                 _abilityPresenterFactory.CreateAttackAbilityPresenter(
                     newAbility,

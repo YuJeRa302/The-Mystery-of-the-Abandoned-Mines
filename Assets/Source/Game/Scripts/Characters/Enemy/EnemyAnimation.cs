@@ -9,7 +9,7 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private EnemyStateMashineExample _enemyStateMashine;
 
         private Animator _animator;
-        private HashAnimationEnemy _animationEnemy = new HashAnimationEnemy();
+        private HashAnimation _animationEnemy = new HashAnimation();
 
         public event Action Attacked;
         public event Action AdditionalAttacked;

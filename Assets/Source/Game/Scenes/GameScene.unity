@@ -281,7 +281,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 226.705, y: -260.56003}
-  m_SizeDelta: {x: 0, y: 110.3301}
+  m_SizeDelta: {x: 453.41, y: 110.3301}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &30246837
 MonoBehaviour:
@@ -2181,7 +2181,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 226.705, y: -434.2667}
-  m_SizeDelta: {x: 0, y: 110.3301}
+  m_SizeDelta: {x: 453.41, y: 110.3301}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &402901977
 MonoBehaviour:
@@ -3316,7 +3316,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 226.705, y: -86.85334}
-  m_SizeDelta: {x: 0, y: 110.3301}
+  m_SizeDelta: {x: 453.41, y: 110.3301}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &702040003
 MonoBehaviour:
@@ -4541,13 +4541,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _cardState:
-  - Id: 0
+  - Id: 2
+    IsTaked: 0
+    IsLocked: 0
+    Weight: 1
+    CurrentLevel: 0
+  - Id: 3
     IsTaked: 0
     IsLocked: 0
     Weight: 1
     CurrentLevel: 0
   _cardData:
-  - {fileID: 11400000, guid: 3c68c34c6cc44fd49a10d039e6a455e1, type: 2}
+  - {fileID: 11400000, guid: 4502012fd0d819a4fb38711fec29840e, type: 2}
+  - {fileID: 11400000, guid: ec619836fa0f636458ca4d0a0a982bfe, type: 2}
 --- !u!114 &987033773
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4595,7 +4601,8 @@ MonoBehaviour:
   _playerView: {fileID: 1346848991}
   _cameraControiler: {fileID: 987033774}
   _navSurface: {fileID: 964151454}
-  _panels: []
+  _panels:
+  - {fileID: 1130110336}
   _cardPanel: {fileID: 1130110336}
 --- !u!114 &987033776
 MonoBehaviour:
@@ -5473,7 +5480,7 @@ MonoBehaviour:
   m_Spacing: 0
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
-  m_ChildControlWidth: 0
+  m_ChildControlWidth: 1
   m_ChildControlHeight: 0
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
@@ -7147,7 +7154,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 226.705, y: -607.9734}
-  m_SizeDelta: {x: 0, y: 110.3301}
+  m_SizeDelta: {x: 453.41, y: 110.3301}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1508133210
 MonoBehaviour:

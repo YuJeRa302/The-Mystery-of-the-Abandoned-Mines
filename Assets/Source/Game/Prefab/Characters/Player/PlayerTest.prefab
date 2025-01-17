@@ -610,6 +610,9 @@ MonoBehaviour:
   _additionalWeaponPoint: {fileID: 8998010172795856166}
   _poolBullet: {fileID: 3665270091436053377}
   _miniMapIcon: {fileID: 3362340721220924443}
+  _throwPoint: {fileID: 5186116703229223242}
+  _weaponEffectConteiner: {fileID: 2490256430192700955}
+  _playerEffectConteiner: {fileID: 3131744272062703345}
 --- !u!114 &3665270091436053377
 MonoBehaviour:
   m_ObjectHideFlags: 0

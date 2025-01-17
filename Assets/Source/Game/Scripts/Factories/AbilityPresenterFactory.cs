@@ -39,5 +39,27 @@ namespace Assets.Source.Game.Scripts
             AmplifierAbilityPresenter amplifierAbilityPresenter = new (ability, abilityView, particleSystem, _gameLoopService);
             return amplifierAbilityPresenter;
         }
+
+        public SummonAbillityPresenter CreateSummonAbilityPresenter(Ability ability, 
+            AbilityView abilityView,
+            Transform spawnPoint,
+            Player player,
+            Summon summonPrefab,
+            Pool pool)
+        {
+            SummonAbillityPresenter summonAbillityPresenter = new SummonAbillityPresenter(ability, abilityView, spawnPoint, player, _gameLoopService, _coroutineRunner, summonPrefab, pool);
+            return summonAbillityPresenter;
+        }
+
+        public ThrowAxeAbilityPresenter CreateThrowAxe(Ability ability,
+            AbilityView abilityView,
+            Player player,
+            ParticleSystem particleSystem,
+            Spell spell, AxemMssile axemMssile)
+        {
+            ThrowAxeAbilityPresenter throwAxeAbilityPresenter = new ThrowAxeAbilityPresenter(ability, abilityView, player, player.ThrowPoint, 
+                particleSystem, _gameLoopService, _coroutineRunner, spell, axemMssile);
+            return throwAxeAbilityPresenter;
+        }
     }
 }

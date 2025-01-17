@@ -3,5 +3,6 @@ public enum TypeAbility
     PlayerDamageAmplifier,
     PlayerArmorAmplifier,
     PlayerRegenerationAmplifier,
-    AttackAbility
+    AttackAbility,
+    Summon
 }

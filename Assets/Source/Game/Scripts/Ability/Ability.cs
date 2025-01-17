@@ -23,6 +23,7 @@ namespace Assets.Source.Game.Scripts
         private Coroutine _coolDown;
         private Coroutine _duration;
         private bool _isAbilityUsed = false;
+        private bool _isAutoCast = false;
 
         public event Action AbilityRemoved;
         public event Action<Ability> AbilityUsed;
@@ -43,6 +44,7 @@ namespace Assets.Source.Game.Scripts
             float abilityCooldownReduction,
             float abilityDuration,
             int abilityValue,
+            bool isAutoCast,
             ICoroutineRunner coroutineRunner)
         {
             FillAbilityParameters(abilityAttributeData, currentLevel);
@@ -53,6 +55,7 @@ namespace Assets.Source.Game.Scripts
             _abilityCooldownReduction = abilityCooldownReduction;
             _abilityDuration = abilityDuration;
             _abilityValue = abilityValue;
+            _isAutoCast = isAutoCast;
             UpdateAbilityParamters();
         }
 
@@ -119,7 +122,7 @@ namespace Assets.Source.Game.Scripts
             AbilityUsed?.Invoke(this);
         }
 
-        private void ResumeCoroutine()
+        public void ResumeCoroutine()
         {
             if (_coolDown != null)
                 _coroutineRunner.StopCoroutine(_coolDown);
@@ -170,7 +173,9 @@ namespace Assets.Source.Game.Scripts
             }
 
             UpdateAbility(false, _minValue);
-            Use();
+
+            if (_isAutoCast)
+                Use();
         }
     }
 }

@@ -32,6 +32,8 @@ namespace Assets.Source.Game.Scripts
         private ParticleSystem _abilityEffect;
 
         public event Action<AbilityView, ParticleSystem, Transform> AbilityViewCreated;
+        public event Action<AbilityView, SummonSkeletonAbility, Player> SummonViewCreated;
+        public event Action<AbilityView, Player , ParticleSystem, ThrowAxeAbility> ThrowAxeViewCreated;
 
         private void Awake()
         {
@@ -63,6 +65,9 @@ namespace Assets.Source.Game.Scripts
             _textPlayerLevel.text = _player.PlayerStats.CurrentLevel.ToString();
             _textUpgradePoints.text = _player.PlayerStats.UpgradePoints.ToString();
             _killCount.text = _player.PlayerStats.CountKillEnemy.ToString();
+            _playerEffectsContainer = _player.PlayerEffectConteiner;
+            _weaponEffectsContainer = _player.WeaponEffectConteiner;
+            _throwPoint = _player.ThrowPoint;
         }
 
         public void SetNewLevelValue(int value)
@@ -112,6 +117,24 @@ namespace Assets.Source.Game.Scripts
 
         private void OnAbilityTaked(AbilityAttributeData abilityAttributeData, int currentLevel)
         {
+            AbilityView abilityView;
+
+            if (abilityAttributeData.TypeAbility == TypeAbility.Summon)
+            {
+                SummonSkeletonAbility summonSkeletonAbility = abilityAttributeData as SummonSkeletonAbility;
+                abilityView = Instantiate(abilityAttributeData.AbilityView, _abilityObjectContainer);
+                (abilityView as ClassSkillView).Initialize(abilityAttributeData.Icon, abilityAttributeData.CardParameters[currentLevel].CardParameters[_indexAbilityDelay].Value);
+                SummonViewCreated?.Invoke(abilityView,  summonSkeletonAbility, _player);
+                return;
+            }
+
+            if (abilityAttributeData as ThrowAxeAbility)
+            {
+                abilityView = Instantiate(abilityAttributeData.AbilityView, _abilityObjectContainer);
+                (abilityView as ClassSkillView).Initialize(abilityAttributeData.Icon, abilityAttributeData.CardParameters[currentLevel].CardParameters[_indexAbilityDelay].Value);
+                ThrowAxeViewCreated?.Invoke(abilityView, _player, abilityAttributeData.ParticleSystem, abilityAttributeData as ThrowAxeAbility);
+            }
+
             if (abilityAttributeData.TypeAbility != TypeAbility.AttackAbility)
             {
                 if ((abilityAttributeData as DefaultAbilityData).TypeEffect == TypeEffect.Weapon)
@@ -124,7 +147,7 @@ namespace Assets.Source.Game.Scripts
                 _abilityEffect = abilityAttributeData.ParticleSystem;
             }
 
-            AbilityView abilityView = Instantiate(abilityAttributeData.AbilityView, _abilityObjectContainer);
+            abilityView = Instantiate(abilityAttributeData.AbilityView, _abilityObjectContainer);
             abilityView.Initialize(abilityAttributeData.Icon, abilityAttributeData.CardParameters[currentLevel].CardParameters[_indexAbilityDelay].Value);
             AbilityViewCreated?.Invoke(abilityView, _abilityEffect, _throwPoint);
         }

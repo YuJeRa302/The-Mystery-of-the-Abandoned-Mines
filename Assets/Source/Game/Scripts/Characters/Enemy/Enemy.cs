@@ -41,6 +41,12 @@ namespace Assets.Source.Game.Scripts
             _stateMashine.ResetState();
         }
 
+        public void UpdateEnemyStats(int lvlRoom)
+        {
+            _health = _health * (1 + lvlRoom / 10);
+            _damage = _damage * (1 + lvlRoom / 10);
+        }
+
         public void TakeDamage(float damage)
         {
             if (damage < 0)

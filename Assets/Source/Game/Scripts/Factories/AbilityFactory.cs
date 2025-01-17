@@ -9,9 +9,9 @@ namespace Assets.Source.Game.Scripts
             _coroutineRunner = coroutineRunner;
         }
 
-        public Ability Create(AbilityAttributeData abilityAttributeData, int currentLevel, float abilityCooldownReduction, float abilityDuration, int abilityValue)
+        public Ability Create(AbilityAttributeData abilityAttributeData, int currentLevel, float abilityCooldownReduction, float abilityDuration, int abilityValue, bool isAutoCast)
         {
-            Ability ability = new(abilityAttributeData, currentLevel, abilityCooldownReduction, abilityDuration, abilityValue, _coroutineRunner);
+            Ability ability = new(abilityAttributeData, currentLevel, abilityCooldownReduction, abilityDuration, abilityValue, isAutoCast, _coroutineRunner);
             return ability;
         }
     }

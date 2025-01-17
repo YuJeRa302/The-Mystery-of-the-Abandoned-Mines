@@ -52,7 +52,7 @@ namespace Assets.Source.Game.Scripts
             GC.SuppressFinalize(this);
         }
 
-        private void AddListener()
+        protected virtual void AddListener()
         {
             _ability.AbilityUsed += OnAbilityUsed;
             _ability.AbilityEnded += OnAbilityEnded;
@@ -65,7 +65,7 @@ namespace Assets.Source.Game.Scripts
             _gameLoopService.GameClosed += OnGameClosed;
         }
 
-        private void RemoveListener()
+        protected virtual void RemoveListener()
         {
             _ability.AbilityUsed -= OnAbilityUsed;
             _ability.AbilityEnded -= OnAbilityEnded;

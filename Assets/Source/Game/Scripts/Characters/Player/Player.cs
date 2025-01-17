@@ -11,6 +11,9 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private Transform _additionalWeaponPoint;
         [SerializeField] private Pool _poolBullet;
         [SerializeField] private SpriteRenderer _miniMapIcon;
+        [SerializeField] private Transform _throwPoint;
+        [SerializeField] private Transform _weaponEffectConteiner;
+        [SerializeField] private Transform _playerEffectConteiner;
 
         private PlayerAbilityCaster _playerAbilityCaster;
         private PlayerStats _playerStats;
@@ -21,6 +24,7 @@ namespace Assets.Source.Game.Scripts
         private PlayerHealth _playerHealth;
         private PlayerMovement _playerMovment;
 
+        public Pool Pool => _poolBullet;
         public CardDeck CardDeck => _cardDeck;
         public PlayerAttacker PlayerAttacker => _playerAttacker;
         public PlayerStats PlayerStats => _playerStats;
@@ -30,6 +34,10 @@ namespace Assets.Source.Game.Scripts
         public PlayerAnimation PlayerAnimation => _playerAnimation;
         public PlayerHealth PlayerHealth => _playerHealth;
         public PlayerAbilityCaster PlayerAbilityCaster => _playerAbilityCaster;
+        public Transform ThrowPoint => _throwPoint;
+        public Transform WeaponEffectConteiner => _weaponEffectConteiner;
+        public Transform PlayerEffectConteiner => _playerEffectConteiner;
+        public Transform ShotPoint => _shotPoint;
 
         private void OnDestroy()
         {

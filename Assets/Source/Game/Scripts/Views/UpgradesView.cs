@@ -48,11 +48,11 @@ public class UpgradesView : MonoBehaviour
         _audioPlayerService = audioPlayerService;
         _upgradeViewModel = upgradeViewModel;
         _countUpgradePoints.text = _upgradeViewModel.GetUpgradePoints().ToString();
-        //_statsImage.sprite = _defaultSprite;
-        //_nameStats.TranslationName = _nameText;
-        //_description.TranslationName = _descriptionText;
-        //_namePanel.TranslationName = _upgradeNameText;
-        //_resetButtonText.TranslationName = _buttonResetText;
+        _statsImage.sprite = _defaultSprite;
+        _nameStats.TranslationName = _nameText;
+        _description.TranslationName = _descriptionText;
+        _namePanel.TranslationName = _upgradeNameText;
+        _resetButtonText.TranslationName = _buttonResetText;
         AddListener();
         gameObject.SetActive(false);
     }
@@ -151,6 +151,7 @@ public class UpgradesView : MonoBehaviour
 
     private void OnExitButtonClicked()
     {
+        _upgradeViewModel.UpdateTemporaryData();
         gameObject.SetActive(false);
         StopCoroutine(SetUpgradeViewsAnimation());
         Clear();

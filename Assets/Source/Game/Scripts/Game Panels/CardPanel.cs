@@ -32,8 +32,8 @@ namespace Assets.Source.Game.Scripts
             _buttonReroll.onClick.AddListener(Reroll);
             _buttonSkip.onClick.AddListener(Skip);
             _cardLoader.CardPoolCreated += Fill;
-            _buttonSkipText.TranslationName = _skipTextTranslationName;
-            _buttonRerollText.TranslationName = _rerollTextTranslationName;
+            //_buttonSkipText.TranslationName = _skipTextTranslationName;
+            //_buttonRerollText.TranslationName = _rerollTextTranslationName;
         }
 
         private void OnDestroy()

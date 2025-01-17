@@ -15,11 +15,11 @@ MonoBehaviour:
   _id: 4
   _typeParameter: 5
   _upgradeParameters:
-  - Cost: 0
+  - Cost: 1
     Value: 0
-  - Cost: 0
+  - Cost: 3
     Value: 0
-  - Cost: 0
+  - Cost: 6
     Value: 0
   _name: AbilityDuration
   _icon: {fileID: 21300000, guid: bf0bc6402719fe6448a63c28470a3949, type: 3}

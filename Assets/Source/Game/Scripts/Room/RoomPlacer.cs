@@ -14,6 +14,7 @@ namespace Assets.Source.Game.Scripts
         private readonly int _minValue = 0;
         private readonly int _shiftIndex = 1;
         private readonly int _roomBossId = 1;
+        private readonly int _roomLootId = 2;
 
         [SerializeField] private RoomData[] _roomDatas;
         [SerializeField] private RoomData _defaultRoomData;
@@ -79,6 +80,9 @@ namespace Assets.Source.Game.Scripts
             RoomData randomRoomData = GetRandomRoom();
 
             if (TryGetBossRoom(randomRoomData))
+                randomRoomData = _defaultRoomData;
+
+            if (TryGetLootRoom(randomRoomData))
                 randomRoomData = _defaultRoomData;
 
             RoomView newRoom = Instantiate(randomRoomData.Room);
@@ -154,6 +158,20 @@ namespace Assets.Source.Game.Scripts
         private bool TryGetBossRoom(RoomData randomRoomData) 
         {
             if (randomRoomData.Id == _roomBossId)
+            {
+                foreach (var room in _createdRooms)
+                {
+                    if (room.RoomData.Id == randomRoomData.Id)
+                        return true;
+                }
+            }
+
+            return false;
+        }
+
+        private bool TryGetLootRoom(RoomData randomRoomData)
+        {
+            if (randomRoomData.Id == _roomLootId)
             {
                 foreach (var room in _createdRooms)
                 {

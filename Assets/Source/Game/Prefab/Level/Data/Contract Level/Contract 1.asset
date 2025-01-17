@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b396784c4833524b92283bc772aca66, type: 3}
+  m_Name: Contract 1
+  m_EditorClassIdentifier: 
+  _id: 0
+  _tier: 0
+  _countLevels: 2
+  _isContractLevel: 1
+  _translationName: 
+  _translationDescription: 
+  _icon: {fileID: 0}

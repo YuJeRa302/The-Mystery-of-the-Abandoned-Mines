@@ -22,6 +22,16 @@ public class LevelsModel
 
     public LevelState[] LevelStates { get; private set; }
 
+    public bool TryUnlockContractButton(int index) 
+    {
+        LevelState levelState = _temporaryData.GetLevelState(index);
+
+        if (levelState != null)
+            return levelState.IsComplete;
+
+        return false;
+    }
+
     public LevelState GetLevelState(LevelData levelData) 
     {
         LevelState levelState = _temporaryData.GetLevelState(levelData.Id);

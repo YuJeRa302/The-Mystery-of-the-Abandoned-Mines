@@ -82,7 +82,7 @@ namespace Assets.Source.Game.Scripts
 
         private void SortElementsByTier() 
         {
-            _weaponDatas.Sort(delegate (WeaponData x, WeaponData y) { return y.Tier.CompareTo(x.Tier); });
+            _weaponDatas.Sort(delegate (WeaponData x, WeaponData y) { return x.Tier.CompareTo(y.Tier); });
         }
 
         private void ClearWeapons()

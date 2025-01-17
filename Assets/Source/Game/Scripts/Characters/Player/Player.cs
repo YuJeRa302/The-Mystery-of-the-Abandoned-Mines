@@ -11,9 +11,9 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private Transform _additionalWeaponPoint;
         [SerializeField] private Pool _poolBullet;
         [SerializeField] private SpriteRenderer _miniMapIcon;
-        [SerializeField] private Transform _throwPoint;
-        [SerializeField] private Transform _weaponEffectConteiner;
-        [SerializeField] private Transform _playerEffectConteiner;
+        [SerializeField] private Transform _throwAbilityPoint;
+        [SerializeField] private Transform _playerAbilityContainer;
+        [SerializeField] private Transform _weaponAbilityContainer;
 
         private PlayerAbilityCaster _playerAbilityCaster;
         private PlayerStats _playerStats;
@@ -25,6 +25,9 @@ namespace Assets.Source.Game.Scripts
         private PlayerMovement _playerMovment;
 
         public Pool Pool => _poolBullet;
+        public Transform WeaponAbilityContainer => _weaponAbilityContainer;
+        public Transform PlayerAbilityContainer => _playerAbilityContainer;
+        public Transform ThrowAbilityPoint => _throwAbilityPoint;
         public CardDeck CardDeck => _cardDeck;
         public PlayerAttacker PlayerAttacker => _playerAttacker;
         public PlayerStats PlayerStats => _playerStats;

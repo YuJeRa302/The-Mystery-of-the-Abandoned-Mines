@@ -16,5 +16,6 @@ public class MainMenuViewModel
     public void InvokeSettingsShow() => _menuModel.InvokeSettingsShow();
     public void InvokeUpgradesShow() => _menuModel.InvokeUpgradesShow();
     public void InvokeWeaponsShow() => _menuModel.InvokeWeaponsShow();
+    public void InvokeClassAbilityShow() => _menuModel.InvokeClassAbilityShow();
     public void InvokeMainMenuShow() => _menuModel.InvokeMainMenuShow();
 }

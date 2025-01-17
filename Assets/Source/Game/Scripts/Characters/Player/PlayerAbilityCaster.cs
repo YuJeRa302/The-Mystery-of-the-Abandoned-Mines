@@ -9,7 +9,7 @@ namespace Assets.Source.Game.Scripts
         private Player _player;
         private PlayerView _playerView;
 
-        private List<Ability> _abilities = new();
+        private List<Ability> _abilities = new ();
         private AbilityAttributeData _abilityAttributeData;
         private AbilityPresenterFactory _abilityPresenterFactory;
         private AbilityFactory _abilityFactory;
@@ -36,7 +36,6 @@ namespace Assets.Source.Game.Scripts
             _abilityPresenterFactory = abilityPresenterFactory;
             _player = player;
             _playerView = playerView;
-
             _playerView.AbilityViewCreated += OnAbilityViewCreated;
             _playerView.SummonViewCreated += OnSummonAbilityCreatedTESTED;
             _playerView.ThrowAxeViewCreated += OnThrowAxeAcilityCreated;

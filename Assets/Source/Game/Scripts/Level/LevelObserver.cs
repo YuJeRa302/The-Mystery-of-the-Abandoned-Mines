@@ -59,20 +59,27 @@ namespace Assets.Source.Game.Scripts
 
         public void Initialize(TemporaryData temporaryData)
         {
-            _canSeeDoor = _cameraControiler.TrySeeDoor(_roomPlacer.StartRoom.WallLeft);
-
             RegisterServices();
+
+            _canSeeDoor = _cameraControiler.TrySeeDoor(_roomPlacer.StartRoom.WallLeft);
             _enemySpawner = new EnemySpawner(_enemuPool, this);
             _trapsSpawner = new TrapsSpawner();
-
             _roomPlacer.Initialize(_currentRoomLevel, _canSeeDoor);
-            _playerFactory = new PlayerFactory(temporaryData.WeaponData, this, _abilityFactory, _abilityPresenterFactory, 
-                _playerPrefab, _spawnPlayerPoint, temporaryData.PlayerClassData, out Player player);
+
+            _playerFactory = new PlayerFactory(
+                temporaryData.WeaponData, 
+                this, 
+                _abilityFactory, 
+                _abilityPresenterFactory,
+                _playerPrefab, 
+                _spawnPlayerPoint, 
+                temporaryData.PlayerClassData, 
+                out Player player);
 
             _player = player;
+            _cardPanel.Initialize(_player);
             _playerView.Initialize(_player, temporaryData.PlayerClassData.Icon);
             _cameraControiler.SetLookTarget(_player.transform);
-            _cardPanel.Initialize(_player);
             AddListener();
             _enemySpawner.SetTotalEnemyCount(_roomPlacer.AllEnemyCount, _player);
             _navSurface.BuildNavMesh();

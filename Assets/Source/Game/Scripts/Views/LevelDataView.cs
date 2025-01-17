@@ -38,8 +38,12 @@ namespace Assets.Source.Game.Scripts
             _levelsViewModel = levelsViewModel;
             _button.onClick.AddListener(OnSelected);
             Fill(levelData);
-            LoadCompletePlayerLevels(levelState);
-            CheckLevelState(levelState);
+
+            if (levelData.IsContractLevel == false) 
+            {
+                LoadCompletePlayerLevels(levelState);
+                CheckLevelState(levelState);
+            }
         }
 
         public void OnPointerEnter(PointerEventData eventData)

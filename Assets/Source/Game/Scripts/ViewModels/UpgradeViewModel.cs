@@ -22,10 +22,10 @@ public class UpgradeViewModel
     public event Action<UpgradeState> InvokedStatsUpgrade;
 
     public void Hide() => _menuModel.InvokeUpgradesHide();
-
     public int GetUpgradePoints() => _upgradeModel.UpgradePoints;
     public UpgradeState GetUpgradeState(UpgradeData upgradeData) => _upgradeModel.GetUpgradeState(upgradeData);
     public void ResetUpgrades(int value) => _upgradeModel.ResetUpgrade(value);
     public void SelectStats(UpgradeDataView upgradeDataView) => _upgradeModel.SelectStats(upgradeDataView);
     public void UpgradeStats() => _upgradeModel.UpgradeStats();
+    public void UpdateTemporaryData() => _upgradeModel.UpdateTemporaryData();
 }

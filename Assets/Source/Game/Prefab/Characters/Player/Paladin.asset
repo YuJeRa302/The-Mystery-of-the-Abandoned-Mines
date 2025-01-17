@@ -17,3 +17,7 @@ MonoBehaviour:
   _translationDescription: PaladinDescription
   _className: 0
   _animatorController: {fileID: 9100000, guid: 19de88611daf4084a8258f1d110d3655, type: 2}
+  _classAbilityDatas:
+  - {fileID: 11400000, guid: 25053fc9b0bbfe746a89511aaf214b02, type: 2}
+  - {fileID: 11400000, guid: b1f7f6ff328dfcb49ae22616ac26f7b8, type: 2}
+  - {fileID: 11400000, guid: 8b8c545e34fa6df44bf6a3a0cafe5cd9, type: 2}

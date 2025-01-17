@@ -9,6 +9,7 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private Button _openSettingsButton;
         [SerializeField] private Button _openLevelsButton;
         [SerializeField] private Button _openWeaponsButton;
+        [SerializeField] private Button _openClassAbilityButton;
 
         private MainMenuViewModel _menuViewModel;
 
@@ -18,6 +19,7 @@ namespace Assets.Source.Game.Scripts
             _openSettingsButton.onClick.RemoveListener(ShowSettings);
             _openLevelsButton.onClick.RemoveListener(ShowLevels);
             _openWeaponsButton.onClick.RemoveListener(ShowWeapons);
+            _openClassAbilityButton.onClick.RemoveListener(ShowClassAbility);
             _menuViewModel.InvokedShow -= Show;
         }
 
@@ -28,6 +30,7 @@ namespace Assets.Source.Game.Scripts
             _openSettingsButton.onClick.AddListener(ShowSettings);
             _openLevelsButton.onClick.AddListener(ShowLevels);
             _openWeaponsButton.onClick.AddListener(ShowWeapons);
+            _openClassAbilityButton.onClick.AddListener(ShowClassAbility);
             _menuViewModel.InvokedShow += Show;
         }
 
@@ -52,6 +55,12 @@ namespace Assets.Source.Game.Scripts
         private void ShowWeapons() 
         {
             _menuViewModel.InvokeWeaponsShow();
+            gameObject.SetActive(false);
+        }
+
+        private void ShowClassAbility()
+        {
+            _menuViewModel.InvokeClassAbilityShow();
             gameObject.SetActive(false);
         }
 

@@ -60,6 +60,7 @@ namespace Assets.Source.Game.Scripts
         public void Initialize(TemporaryData temporaryData)
         {
             RegisterServices();
+
             _canSeeDoor = _cameraControiler.TrySeeDoor(_roomPlacer.StartRoom.WallLeft);
             _enemySpawner = new EnemySpawner(_enemuPool, this);
             _trapsSpawner = new TrapsSpawner();
@@ -76,9 +77,9 @@ namespace Assets.Source.Game.Scripts
                 out Player player);
 
             _player = player;
+            _cardPanel.Initialize(_player);
             _playerView.Initialize(_player, temporaryData.PlayerClassData.Icon);
             _cameraControiler.SetLookTarget(_player.transform);
-            _cardPanel.Initialize(_player);
             AddListener();
             _enemySpawner.SetTotalEnemyCount(_roomPlacer.AllEnemyCount, _player);
             _navSurface.BuildNavMesh();

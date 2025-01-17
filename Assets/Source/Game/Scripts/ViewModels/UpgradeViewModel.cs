@@ -27,4 +27,5 @@ public class UpgradeViewModel
     public void ResetUpgrades(int value) => _upgradeModel.ResetUpgrade(value);
     public void SelectStats(UpgradeDataView upgradeDataView) => _upgradeModel.SelectStats(upgradeDataView);
     public void UpgradeStats() => _upgradeModel.UpgradeStats();
+    public void UpdateTemporaryData() => _upgradeModel.UpdateTemporaryData();
 }

@@ -12,10 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b22ca00d89a92044eade06e0da6c3c27, type: 3}
   m_Name: Config
   m_EditorClassIdentifier: 
-  _ambientVolume: 50
-  _sfxVolumeVolume: 50
+  _upgradePoints: 3
+  _coins: 2000
+  _ambientVolume: 40
+  _sfxVolumeVolume: 40
   _isMuted: 0
   _defaultLanguage: ru
+  _upgradeStates: []
+  _classAbilityStates:
+  - Id: 0
+    CurrentLevel: 0
   _defaultWeaponState:
   - Id: 0
     IsEquip: 0
@@ -33,4 +39,3 @@ MonoBehaviour:
     IsComplete: 0
   - Id: 2
     IsComplete: 0
-  _upgradePoints: 3

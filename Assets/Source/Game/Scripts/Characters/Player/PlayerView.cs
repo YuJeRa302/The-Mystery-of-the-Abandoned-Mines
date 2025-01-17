@@ -54,6 +54,9 @@ namespace Assets.Source.Game.Scripts
             _player = player;
             _playerIcon.sprite = iconPlayer;
             SubscribePlayerEvent();
+            _weaponEffectsContainer = player.WeaponAbilityContainer;
+            _playerEffectsContainer = player.PlayerAbilityContainer;
+            _throwPoint = player.ThrowAbilityPoint;
             _sliderHP.maxValue = _player.PlayerHealth.MaxHealth;
             _sliderHP.value = _player.PlayerHealth.CurrentHealth;
             _sliderXP.maxValue = _player.PlayerStats.MaxLevelValue;

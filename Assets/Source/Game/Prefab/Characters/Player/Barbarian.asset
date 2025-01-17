@@ -17,3 +17,7 @@ MonoBehaviour:
   _translationDescription: BarbarianDescription
   _className: 2
   _animatorController: {fileID: 9100000, guid: 69e68a005490dbd418915df6910be143, type: 2}
+  _classAbilityDatas:
+  - {fileID: 11400000, guid: 3702a2191d4291245b3a57376b134947, type: 2}
+  - {fileID: 11400000, guid: 69393a1596cb9284a965f814fad1062d, type: 2}
+  - {fileID: 11400000, guid: 6d8f68c20e84b02418980f1901b30c87, type: 2}

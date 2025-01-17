@@ -7,6 +7,8 @@ public class SettingsModel
     public SettingsModel(TemporaryData temporaryData)
     {
         _temporaryData = temporaryData;
+        AmbientVolumeValue = _temporaryData.AmbientVolume;
+        SfxVolumeValue = _temporaryData.InterfaceVolume;
     }
 
     public string LanguageTag { get; private set; }

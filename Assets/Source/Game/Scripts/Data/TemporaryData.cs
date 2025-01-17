@@ -1,16 +1,15 @@
 using Assets.Source.Game.Scripts;
+using System.Collections.Generic;
+using UnityEngine;
 
 public class TemporaryData
 {
-    private UpgradeState[] _upgradeState;
     private LevelState[] _levelStates;
     private WeaponState[] _weaponStates;
     private int _countLevels;
     private int _upgradePoints;
     private int _playerScore;
     private string _language;
-    private float _interfaceVolume;
-    private float _ambientVolume;
     private bool _muteStateSound;
 
     public TemporaryData(ConfigData configData) 
@@ -18,22 +17,39 @@ public class TemporaryData
         InitData(configData);
     }
 
-    public WeaponData WeaponData { get; private set; }
+    public int Coins { get; private set; }
+    public float AmbientVolume { get; private set; }
+    public float InterfaceVolume { get; private set; }
     public PlayerClassData PlayerClassData { get; private set; }
+    public WeaponData WeaponData { get; private set; }
+    public UpgradeState[] UpgradeStates { get; private set; }
+    public ClassAbilityState[] ClassAbilityStates { get; private set; }
     public LevelData LevelData { get; private set; }
     public bool MuteStateSound => _muteStateSound;
     public int UpgradePoints => _upgradePoints;
     public int PlayerScore => _playerScore;
     public int CountLevels => _countLevels;
     public string Language => _language;
-    public float InterfaceVolume => _interfaceVolume;
-    public float AmbientVolume => _ambientVolume;
+
+    public ClassAbilityState GetClassAbilityState(int id)
+    {
+        if (ClassAbilityStates != null)
+        {
+            foreach (ClassAbilityState classAbilityState in ClassAbilityStates)
+            {
+                if (classAbilityState.Id == id)
+                    return classAbilityState;
+            }
+        }
+
+        return null;
+    }
 
     public UpgradeState GetUpgradeState(int id)
     {
-        if (_upgradeState != null)
+        if (UpgradeStates != null)
         {
-            foreach (UpgradeState upgradeState in _upgradeState)
+            foreach (UpgradeState upgradeState in UpgradeStates)
             {
                 if (upgradeState.Id == id)
                     return upgradeState;
@@ -96,9 +112,29 @@ public class TemporaryData
         _upgradePoints = value;
     }
 
-    public void SetUpgradeState(UpgradeState[] upgradeStates)
+    public void SetUpgradeState(List<UpgradeState> upgradeStates)
     {
-        _upgradeState = upgradeStates;
+        UpgradeStates = new UpgradeState[upgradeStates.Count];
+
+        for (int index = 0; index < upgradeStates.Count; index++)
+        {
+            UpgradeStates[index] = upgradeStates[index];
+        }
+    }
+
+    public void SetClassAbilityState(List<ClassAbilityState> classAbilityStates)
+    {
+        ClassAbilityStates = new ClassAbilityState[classAbilityStates.Count];
+
+        for (int index = 0; index < classAbilityStates.Count; index++) 
+        {
+            ClassAbilityStates[index] = classAbilityStates[index];
+        }
+    }
+
+    public void SetCoinsCount(int value) 
+    {
+        Coins = value;
     }
 
     public void SetCountLevels(int value)
@@ -113,12 +149,12 @@ public class TemporaryData
 
     public void SetAmbientVolume(float value)
     {
-        _ambientVolume = value;
+        AmbientVolume = value;
     }
 
     public void SetInterfaceVolume(float value)
     {
-        _interfaceVolume = value;
+        InterfaceVolume = value;
     }
 
     public void SetMuteStateSound(bool value) 
@@ -133,6 +169,9 @@ public class TemporaryData
         SetCurrentLanguage(configData.DefaultLanguage);
         SetUpgradePoints(configData.UpgradePoints);
         SetMuteStateSound(configData.IsMuted);
+        SetCoinsCount(configData.Coins);
+        SetClassAbilityState(configData.ClassAbilityStates);
+        SetUpgradeState(configData.UpgradeStates);
         _levelStates = configData.DefaultLevelState;
         _weaponStates = configData.DefaultWeaponState;
     }

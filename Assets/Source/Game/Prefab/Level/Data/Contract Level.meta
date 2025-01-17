@@ -1,8 +1,14 @@
 fileFormatVersion: 2
+<<<<<<<< Updated upstream:Assets/Source/Game/Prefab/Level/Data/Contract Level.meta
 guid: b59fd9f33fb126d4f9f0be62f8916f81
 folderAsset: yes
 DefaultImporter:
+========
+guid: 76e9d87342265ce4d9a226c43c97b948
+NativeFormatImporter:
+>>>>>>>> Stashed changes:Assets/Source/Game/Prefab/Level/Data/Contract Level/Contract 2.asset.meta
   externalObjects: {}
+  mainObjectFileID: 11400000
   userData: 
   assetBundleName: 
   assetBundleVariant: 

@@ -1,5 +1,6 @@
 using Assets.Source.Game.Scripts;
 using System;
+using System.Collections.Generic;
 
 public class UpgradeModel
 {
@@ -9,11 +10,15 @@ public class UpgradeModel
 
     private UpgradeState _currentStats;
     private UpgradeData _currentUpgradeData;
+    private List<UpgradeState> _upgradeStates = new ();
 
     public UpgradeModel(TemporaryData temporaryData) 
     {
         _temporaryData = temporaryData;
         SetUpgradePoints(_temporaryData.UpgradePoints);
+
+        if (_temporaryData.UpgradeStates != null)
+            SetUpgradeState(_temporaryData.UpgradeStates);
     }
 
     public event Action<UpgradeState> InvokedStatsUpgrade;
@@ -28,7 +33,7 @@ public class UpgradeModel
 
     public void ResetUpgrade(int value) 
     {
-        UpgradePoints = value;
+        UpgradePoints += value;
         InvokedStatsReset?.Invoke();
     }
 
@@ -73,7 +78,15 @@ public class UpgradeModel
 
     public void UpdateTemporaryData() 
     {
-        //доделать Upgrade State
+        _temporaryData.SetUpgradeState(_upgradeStates);
+    }
+
+    private void SetUpgradeState(UpgradeState[] upgradeStates) 
+    {
+        foreach (UpgradeState state in upgradeStates)
+        {
+            _upgradeStates.Add(state);
+        }
     }
 
     private UpgradeState InitState(UpgradeData upgradeData)
@@ -81,6 +94,7 @@ public class UpgradeModel
         UpgradeState upgradeState = new();
         upgradeState.Id = upgradeData.Id;
         upgradeState.CurrentLevel = _minValue;
+        _upgradeStates.Add(upgradeState);
         return upgradeState;
     }
 }

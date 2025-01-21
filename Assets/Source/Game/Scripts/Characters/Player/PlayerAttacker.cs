@@ -24,6 +24,8 @@ namespace Assets.Source.Game.Scripts
         private Enemy _currentTarget;
         private Dictionary<float, Enemy> _enemies = new Dictionary<float, Enemy>();
 
+        public float Damage => _damage;
+
         public event Action Attacked;
         public event Action<Transform> EnemyFinded;
 
@@ -55,6 +57,11 @@ namespace Assets.Source.Game.Scripts
                 _coroutineRunner.StopCoroutine(_coolDownAttack);
 
             GC.SuppressFinalize(this);
+        }
+
+        public void ÑhangeDamage(float value)
+        {
+            _damage += value;
         }
 
         public void AttackEnemy()

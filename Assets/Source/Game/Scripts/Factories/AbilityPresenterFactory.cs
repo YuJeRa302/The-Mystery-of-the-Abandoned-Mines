@@ -1,3 +1,4 @@
+using UnityEditor.Playables;
 using UnityEngine;
 
 namespace Assets.Source.Game.Scripts
@@ -40,7 +41,8 @@ namespace Assets.Source.Game.Scripts
             return amplifierAbilityPresenter;
         }
 
-        public SummonAbillityPresenter CreateSummonAbilityPresenter(Ability ability, 
+        public SummonAbillityPresenter CreateSummonAbilityPresenter(
+            Ability ability, 
             AbilityView abilityView,
             Transform spawnPoint,
             Player player,
@@ -51,15 +53,26 @@ namespace Assets.Source.Game.Scripts
             return summonAbillityPresenter;
         }
 
-        public ThrowAxeAbilityPresenter CreateThrowAxe(Ability ability,
+        public ThrowAxeAbilityPresenter CreateThrowAxePresenter(
+            Ability ability,
             AbilityView abilityView,
             Player player,
-            ParticleSystem particleSystem,
-            Spell spell, AxemMssile axemMssile)
+            AxemMssile axemMssile)
         {
-            ThrowAxeAbilityPresenter throwAxeAbilityPresenter = new ThrowAxeAbilityPresenter(ability, abilityView, player, player.ThrowPoint, 
-                particleSystem, _gameLoopService, _coroutineRunner, spell, axemMssile);
+            ThrowAxeAbilityPresenter throwAxeAbilityPresenter = new ThrowAxeAbilityPresenter(ability, abilityView, player.ShotPoint, player, _gameLoopService, _coroutineRunner, axemMssile, player.Pool);
             return throwAxeAbilityPresenter;
+        }
+
+        public JerkFrontAbillityPresenter CreateJerkFrontAnillityPresenter(Ability ability, AbilityView abilityView, Player player, PoolParticle abilityEffect)
+        {
+            JerkFrontAbillityPresenter jerkFrontAbillityPresenter = new JerkFrontAbillityPresenter(ability, abilityView, player, _gameLoopService, _coroutineRunner, abilityEffect);
+            return jerkFrontAbillityPresenter;
+        }
+
+        public RageAbillityPresenter CreateRageAbilityPresenter(Ability ability, AbilityView abilityView, Player player, int boostDamage, float boostMoveSpeed, int boosArmor, PoolParticle abilityEffect)
+        {
+            RageAbillityPresenter rageAbillityPresenter = new RageAbillityPresenter(ability, abilityView, player, boostDamage, boostMoveSpeed, boosArmor, _gameLoopService, _coroutineRunner, abilityEffect);
+            return rageAbillityPresenter;
         }
     }
 }

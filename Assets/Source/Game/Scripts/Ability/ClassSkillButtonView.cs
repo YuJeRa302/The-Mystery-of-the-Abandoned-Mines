@@ -3,7 +3,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ClassSkillView : AbilityView
+public class ClassSkillButtonView : AbilityView
 {
     [SerializeField] private Button _button;
 

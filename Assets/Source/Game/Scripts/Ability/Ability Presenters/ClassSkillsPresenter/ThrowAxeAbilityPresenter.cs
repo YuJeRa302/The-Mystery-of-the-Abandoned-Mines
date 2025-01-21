@@ -2,52 +2,36 @@ using Assets.Source.Game.Scripts;
 using System;
 using UnityEngine;
 
-public class ThrowAxeAbilityPresenter : AttackAbilityPresenter
+public class ThrowAxeAbilityPresenter : IDisposable
 {
-    private readonly float _delayAttack = 0.3f;
-    private readonly float _blastSpeed = 0.2f;
     private readonly ICoroutineRunner _coroutineRunner;
     private readonly IGameLoopService _gameLoopService;
 
     private Ability _ability;
     private AbilityView _abilityView;
-    private Spell _spellPrefab;
-    private Spell _spell;
     private Player _player;
-    private Vector3 _direction;
-    private Coroutine _blastThrowingCoroutine;
-    private Coroutine _damageDealCoroutine;
     private Transform _throwPoint;
-    private ParticleSystem _particleSystem;
     private Pool _pool;
     private AxemMssile _axemMssile;
     private bool _isAbilityUse;
 
-    public ThrowAxeAbilityPresenter(Ability ability, 
-        AbilityView abilityView, 
-        Player player, 
-        Transform throwPoint, 
-        ParticleSystem particleSystem, 
-        IGameLoopService gameLoopService, 
-        ICoroutineRunner coroutineRunner, 
-        Spell spellPrefab, AxemMssile axemMssile) : base(ability, abilityView, player, throwPoint, particleSystem, gameLoopService, coroutineRunner, spellPrefab)
+    public ThrowAxeAbilityPresenter(Ability ability, AbilityView abilityView, Transform spawnPoint, Player player,
+        IGameLoopService gameLoopService, ICoroutineRunner coroutineRunner, AxemMssile axemMssile, Pool pool)
     {
         _ability = ability;
         _abilityView = abilityView;
-        _throwPoint = throwPoint;
-        _particleSystem = particleSystem;
+        _throwPoint = spawnPoint;
         _player = player;
-        _spellPrefab = spellPrefab;
-        _gameLoopService = gameLoopService;
         _coroutineRunner = coroutineRunner;
-        _pool = _player.Pool;
+        _gameLoopService = gameLoopService;
         _axemMssile = axemMssile;
+        _pool = pool;
         AddListener();
     }
 
-    protected override void AddListener()
+    private void AddListener()
     {
-        (_abilityView as ClassSkillView).AbilityUsed += OnButtonSkillClick;
+        (_abilityView as ClassSkillButtonView).AbilityUsed += OnButtonSkillClick;
         _ability.AbilityUsed += OnAbilityUsed;
         _ability.AbilityEnded += OnAbilityEnded;
         //_ability.AbilityUpgraded += OnAbilityUpgraded;
@@ -59,9 +43,9 @@ public class ThrowAxeAbilityPresenter : AttackAbilityPresenter
         _gameLoopService.GameClosed += OnGameClosed;
     }
 
-    protected override void RemoveListener()
+    private void RemoveListener()
     {
-        (_abilityView as ClassSkillView).AbilityUsed -= OnButtonSkillClick;
+        (_abilityView as ClassSkillButtonView).AbilityUsed -= OnButtonSkillClick;
         _ability.AbilityUsed -= OnAbilityUsed;
         _ability.AbilityEnded -= OnAbilityEnded;
         //_ability.AbilityUpgraded -= OnAbilityUpgraded;
@@ -111,10 +95,9 @@ public class ThrowAxeAbilityPresenter : AttackAbilityPresenter
     private void Spawn()
     {
         AxemMssile axemMssile = null;
-
+        Debug.Log(_ability.CurrentDuration);
         if (TryFindSummon(_axemMssile.gameObject, out AxemMssile poolAxe))
         {
-            Debug.Log("Нашел в пуле");
             axemMssile = poolAxe;
             axemMssile.transform.position = _throwPoint.position;
             axemMssile.gameObject.SetActive(true);
@@ -122,22 +105,24 @@ public class ThrowAxeAbilityPresenter : AttackAbilityPresenter
         }
         else
         {
-            axemMssile = GameObject.Instantiate(_axemMssile, _throwPoint.position, _throwPoint.rotation);
+            axemMssile = GameObject.Instantiate(_axemMssile, _throwPoint.position, UnityEngine.Quaternion.identity);
 
             _pool.InstantiatePoolObject(axemMssile, _axemMssile.name);
-            axemMssile.Initialaze(_player, 10, 3);
+            axemMssile.Initialaze(_player, _player.PlayerAttacker.Damage, _player.PlayerMovment.MoveSpeed);
 
             //if (_deadParticles.ContainsKey(enemyData.PrefabEnemy.name) == false)
             //{
             //    _deadParticles.Add(enemyData.PrefabEnemy.name, enemyData.EnemyDieParticleSystem);
             //}
         }
+
+        axemMssile.GetComponent<Rigidbody>().AddForce(_throwPoint.forward * _ability.CurrentDuration, ForceMode.Impulse);
     }
 
     private bool TryFindSummon(GameObject type, out AxemMssile poolObj)
     {
         poolObj = null;
-        Debug.Log(type.name);
+
         if (_pool.TryPoolObject(type, out PoolObject axePool))
         {
             poolObj = axePool as AxemMssile;
@@ -154,5 +139,10 @@ public class ThrowAxeAbilityPresenter : AttackAbilityPresenter
     private void OnCooldownValueReseted(float value)
     {
         _abilityView.ResetCooldownValue(value);
+    }
+
+    public void Dispose()
+    {
+        RemoveListener();
     }
 }

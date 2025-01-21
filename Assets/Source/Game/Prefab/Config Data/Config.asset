@@ -21,7 +21,7 @@ MonoBehaviour:
   _upgradeStates: []
   _classAbilityStates:
   - Id: 0
-    CurrentLevel: 0
+    CurrentLevel: 1
   _defaultWeaponState:
   - Id: 0
     IsEquip: 0

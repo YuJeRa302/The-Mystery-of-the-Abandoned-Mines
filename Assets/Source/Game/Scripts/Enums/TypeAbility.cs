@@ -4,5 +4,8 @@ public enum TypeAbility
     PlayerArmorAmplifier,
     PlayerRegenerationAmplifier,
     AttackAbility,
-    Summon
+    Summon,
+    ThrowAxe,
+    JerkFront,
+    Rage
 }

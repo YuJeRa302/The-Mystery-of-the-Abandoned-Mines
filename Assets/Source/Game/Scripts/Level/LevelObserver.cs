@@ -158,6 +158,9 @@ namespace Assets.Source.Game.Scripts
         {
             foreach (var room in _roomPlacer.CreatedRooms)
             {
+                if (room == null)
+                    continue;
+
                 room.RoomEntering -= OnRoomEntering;
 
                 if (room == room as LootRoomView)

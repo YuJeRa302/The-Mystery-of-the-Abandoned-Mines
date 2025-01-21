@@ -23,6 +23,7 @@ public class PlayerMovement : IDisposable
     private bool _isDecstop = true; //
 
     public float MaxMoveSpeed => _maxMoveSpeed;
+    public float MoveSpeed => _moveSpeed;
 
     public PlayerMovement(Camera camera, VariableJoystick variableJoystick, Rigidbody rigidbody, float moveSpeed, Player coroutineRunner)
     {
@@ -53,6 +54,14 @@ public class PlayerMovement : IDisposable
             _coroutineRunner.StopCoroutine(_movment);
 
         GC.SuppressFinalize(this);
+    }
+
+    public void ChangeMoveSpeed(float value)
+    {
+        _moveSpeed += value;
+        Debug.Log(_moveSpeed);
+        _maxMoveSpeed = _moveSpeed * 2f;
+
     }
 
     public void ChengeRotate()

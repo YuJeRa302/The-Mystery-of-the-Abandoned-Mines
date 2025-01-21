@@ -13,11 +13,14 @@ namespace Assets.Source.Game.Scripts
         private AbilityAttributeData _abilityAttributeData;
         private AbilityPresenterFactory _abilityPresenterFactory;
         private AbilityFactory _abilityFactory;
+        private List<ClassAbilityData> _classAbilityDatas = new();
 
         private int _abilityDuration = 0;
         private int _abilityDamage = 0;
         private int _abilityCooldownReduction = 0;
         private int _currentAbilityLevel;
+
+        public List<ClassAbilityData> ClassAbilityDatas => _classAbilityDatas;
 
         public event Action<AbilityAttributeData, int> AbilityTaked;
         public event Action<Ability> AbilityRemoved;
@@ -36,12 +39,17 @@ namespace Assets.Source.Game.Scripts
             _abilityPresenterFactory = abilityPresenterFactory;
             _player = player;
             _playerView = playerView;
+
+            foreach (var skill in _player.ClassAbilityDatas)
+            {
+                _classAbilityDatas.Add(skill);
+            }
+
             _playerView.AbilityViewCreated += OnAbilityViewCreated;
-            _playerView.SummonViewCreated += OnSummonAbilityCreatedTESTED;
-            _playerView.ThrowAxeViewCreated += OnThrowAxeAcilityCreated;
+            _playerView.CreatedClassSkill += OnClassSkillsCreated;
         }
 
-        public void TakeAbility(CardView cardView)//
+        public void TakeAbility(CardView cardView)
         {
             if (cardView.CardData.AttributeData == null)
                 return;
@@ -55,18 +63,47 @@ namespace Assets.Source.Game.Scripts
                 AbilityTaked?.Invoke(_abilityAttributeData, cardView.CardState.CurrentLevel);
         }
 
-        private void OnSummonAbilityCreatedTESTED(AbilityView abilityView, SummonSkeletonAbility summonSkeletonAbility, Player player)
+        private void OnClassSkillsCreated(ClassAbilityData classAbilityData, ClassSkillButtonView classSkillButtonView)
         {
-            Ability newAbility = _abilityFactory.Create(_abilityAttributeData, _currentAbilityLevel, _abilityCooldownReduction, _abilityDuration, _abilityDamage, false);
+            Ability newAbility;
+            newAbility = _abilityFactory.CreateClassSkill(classAbilityData, false);
 
-            _abilityPresenterFactory.CreateSummonAbilityPresenter(newAbility, abilityView, player.ShotPoint, player, summonSkeletonAbility.SummonPrefab, _player.Pool);
-        }
+            if (classAbilityData.TypeAbility == TypeAbility.Summon)
+            {
+                _abilityPresenterFactory.CreateSummonAbilityPresenter(newAbility, classSkillButtonView, _player.ShotPoint, _player, (classAbilityData as SummonAbilityData).Summon.Summon, _player.Pool);
+            }
+            
+            if (classAbilityData.TypeAbility == TypeAbility.ThrowAxe)
+            {
+                _abilityPresenterFactory.CreateThrowAxePresenter(newAbility, classSkillButtonView, _player, (classAbilityData as ThrowAxeClassAbility).AxemMssile);
+            }
 
-        private void OnThrowAxeAcilityCreated(AbilityView abilityView, Player player, ParticleSystem particleSystem, ThrowAxeAbility throwAxeAbility)///
-        {
-            Ability newAbility = _abilityFactory.Create(_abilityAttributeData, _currentAbilityLevel, _abilityCooldownReduction, _abilityDuration, _abilityDamage, false);
+            if (classAbilityData.TypeAbility == TypeAbility.JerkFront)
+            {
+                _abilityPresenterFactory.CreateJerkFrontAnillityPresenter(newAbility, classSkillButtonView, _player, (classAbilityData as JerkFrontAbilityData).PoolParticle);
+            }
 
-            _abilityPresenterFactory.CreateThrowAxe(newAbility, abilityView, player, particleSystem, (_abilityAttributeData as AttackAbilityData).Spell, throwAxeAbility.AxemMssile);
+            if (classAbilityData.TypeAbility == TypeAbility.Rage)
+            {
+                int boostDamage = 0;
+                float boosMoveSpeed = 0;
+                int boosArmor = 0;
+
+                foreach (CardParameter parameter in classAbilityData.Parameters[0].CardParameters)//так же нужен текущий уровень абики
+                {
+                    if (parameter.TypeParameter == TypeParameter.Damage)
+                        boostDamage = parameter.Value;
+
+                    if (parameter.TypeParameter == TypeParameter.MoveSpeed)
+                        boosMoveSpeed = parameter.Value;
+
+                    if (parameter.TypeParameter == TypeParameter.Armor)
+                        boosArmor = parameter.Value;
+                }
+
+                _abilityPresenterFactory.CreateRageAbilityPresenter(newAbility, 
+                    classSkillButtonView, _player, boostDamage, boosMoveSpeed, boosArmor, (classAbilityData as RageClassAbilityData).RageEffect);
+            }
         }
 
         private void OnAbilityViewCreated(AbilityView abilityView, ParticleSystem particleSystem, Transform throwPoint)

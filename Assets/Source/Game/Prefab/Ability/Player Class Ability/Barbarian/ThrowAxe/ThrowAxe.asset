@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62e3a24455c3a1140a17dccc8ee2b257, type: 3}
+  m_Name: ThrowAxe
+  m_EditorClassIdentifier: 
+  _id: 10
+  _name: Throw Axe
+  _icon: {fileID: 21300000, guid: 2820b2e4880bb924da42e15982d02033, type: 3}
+  _description: Throw Axe
+  _buttonView: {fileID: 7547704264931708372, guid: 226be77f080a72f41b3a154b64b3d4ae, type: 3}
+  _abilityClassParameters:
+  - Id: 0
+    Cost: 1000
+    Value: 0
+    Delay: 0
+    Duration: 0
+  - Id: 0
+    Cost: 2500
+    Value: 0
+    Delay: 0
+    Duration: 0
+  - Id: 0
+    Cost: 5000
+    Value: 0
+    Delay: 0
+    Duration: 0
+  _parameters:
+  - CardParameters:
+    - Value: 5
+      TypeParameter: 5
+    - Value: 10
+      TypeParameter: 6
+  - CardParameters:
+    - Value: 3
+      TypeParameter: 5
+    - Value: 8
+      TypeParameter: 6
+  - CardParameters:
+    - Value: 4
+      TypeParameter: 5
+    - Value: 7
+      TypeParameter: 6
+  - CardParameters:
+    - Value: 5
+      TypeParameter: 5
+    - Value: 7
+      TypeParameter: 6
+  _typeAbility: 5
+  _axemMssile: {fileID: 943455661545071742, guid: 2b72f1a7a98694a47b2b0e7e19d8a7d2, type: 3}

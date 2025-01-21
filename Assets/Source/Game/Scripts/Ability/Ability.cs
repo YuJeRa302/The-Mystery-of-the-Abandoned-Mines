@@ -15,6 +15,7 @@ namespace Assets.Source.Game.Scripts
         private float _abilityCooldownReduction;
         private float _abilityDuration;
         private int _abilityValue;
+        private int _defailtDamage;
         private TypeAbility _typeAbility;
         private TypeAttackAbility _typeAttackAbility;
         private float _defaultDelay;
@@ -35,6 +36,7 @@ namespace Assets.Source.Game.Scripts
         public bool IsAbilityEnded { get; private set; } = false;
         public float CurrentDuration => _currentDuration;
         public int CurrentAbilityValue => _currentAbilityValue;
+        public int DefailtDamage => _defailtDamage;
         public TypeAbility TypeAbility => _typeAbility;
         public TypeAttackAbility TypeAttackAbility => _typeAttackAbility;
 
@@ -57,6 +59,13 @@ namespace Assets.Source.Game.Scripts
             _abilityValue = abilityValue;
             _isAutoCast = isAutoCast;
             UpdateAbilityParamters();
+        }
+
+        public Ability(ClassAbilityData classAbilityData, bool isAutoCast, ICoroutineRunner coroutineRunner)
+        {
+            FillClassSkillParametr(classAbilityData, 0);
+            _isAutoCast = isAutoCast;
+            _coroutineRunner = coroutineRunner;
         }
 
         public void Dispose()
@@ -100,6 +109,21 @@ namespace Assets.Source.Game.Scripts
                     _currentAbilityValue = parameter.Value;
                 else
                     _defaultDuration = parameter.Value;
+            }
+        }
+
+        private void FillClassSkillParametr(ClassAbilityData abilityAttributeData, int currentLevel)
+        {
+            foreach (CardParameter parameter in abilityAttributeData.Parameters[currentLevel].CardParameters)
+            {
+                if (parameter.TypeParameter == TypeParameter.AbilityCooldown)
+                    _defaultDelay = parameter.Value;
+                else if (parameter.TypeParameter == TypeParameter.AbilityValue)
+                    _currentAbilityValue = parameter.Value;
+                else if (parameter.TypeParameter == TypeParameter.AbilityDuration)
+                    _defaultDuration = parameter.Value;
+                else if (parameter.TypeParameter == TypeParameter.Damage)
+                    _defailtDamage = parameter.Value;
             }
         }
 
@@ -157,8 +181,11 @@ namespace Assets.Source.Game.Scripts
                 yield return null;
             }
 
-            if(IsAbilityEnded == false)
+            if (IsAbilityEnded == false)
+            {
                 AbilityEnded?.Invoke(this);
+                Debug.Log("End Ability");
+            }
 
             IsAbilityEnded = true;
         }
@@ -173,7 +200,7 @@ namespace Assets.Source.Game.Scripts
             }
 
             UpdateAbility(false, _minValue);
-
+            Debug.Log("cooldown Ability");
             if (_isAutoCast)
                 Use();
         }

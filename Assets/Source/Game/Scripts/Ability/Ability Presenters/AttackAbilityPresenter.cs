@@ -34,6 +34,7 @@ namespace Assets.Source.Game.Scripts
         {
             _ability = ability;
             _abilityView = abilityView;
+            Debug.Log(_abilityView == null);
             _throwPoint = throwPoint;
             _particleSystem = particleSystem;
             _player = player;

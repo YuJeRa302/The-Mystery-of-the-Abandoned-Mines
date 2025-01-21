@@ -1,4 +1,6 @@
 using System;
+using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,6 +21,7 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private Text _killCount;
         [Space(20)]
         [SerializeField] private Transform _abilityObjectContainer;
+        [SerializeField] private Transform _classSkillsContainer;
         [SerializeField] private Transform _playerEffectsContainer;
         [SerializeField] private Transform _weaponEffectsContainer;
         [SerializeField] private Transform _throwPoint;
@@ -30,10 +33,12 @@ namespace Assets.Source.Game.Scripts
 
         private Player _player;
         private ParticleSystem _abilityEffect;
+        private float _delay;
 
         public event Action<AbilityView, ParticleSystem, Transform> AbilityViewCreated;
         public event Action<AbilityView, SummonSkeletonAbility, Player> SummonViewCreated;
         public event Action<AbilityView, Player , ParticleSystem, ThrowAxeAbility> ThrowAxeViewCreated;
+        public event Action<ClassAbilityData, ClassSkillButtonView> CreatedClassSkill;
 
         private void Awake()
         {
@@ -68,9 +73,10 @@ namespace Assets.Source.Game.Scripts
             _textPlayerLevel.text = _player.PlayerStats.CurrentLevel.ToString();
             _textUpgradePoints.text = _player.PlayerStats.UpgradePoints.ToString();
             _killCount.text = _player.PlayerStats.CountKillEnemy.ToString();
-            _playerEffectsContainer = _player.PlayerEffectConteiner;
-            _weaponEffectsContainer = _player.WeaponEffectConteiner;
-            _throwPoint = _player.ThrowPoint;
+            _playerEffectsContainer = _player.PlayerAbilityContainer;
+            _weaponEffectsContainer = _player.WeaponAbilityContainer;
+            _throwPoint = _player.ThrowAbilityPoint;
+            TakeClassSkillView();
         }
 
         public void SetNewLevelValue(int value)
@@ -100,6 +106,28 @@ namespace Assets.Source.Game.Scripts
             _mobileInterface.SetActive(true);
         }
 
+        private void TakeClassSkillView()//нужно поучать текущий уровень абики из темпори дата.
+        {
+            ClassSkillButtonView abilityView;
+
+            foreach (var skill in _player.ClassAbilityDatas)
+            {
+                abilityView = Instantiate(skill.ButtonView, _classSkillsContainer);
+
+                foreach (var value in skill.Parameters[0].CardParameters)
+                {
+                    if (value.TypeParameter == TypeParameter.AbilityCooldown)
+                    {
+                        _delay = value.Value;
+                        break;
+                    }
+                }
+
+                abilityView.Initialize(skill.Icon, _delay);
+                CreatedClassSkill?.Invoke(skill, abilityView);
+            }
+        }
+
         private void SubscribePlayerEvent()
         {
             _player.PlayerHealth.HealthChanged += OnChangeHealth;
@@ -122,21 +150,21 @@ namespace Assets.Source.Game.Scripts
         {
             AbilityView abilityView;
 
-            if (abilityAttributeData.TypeAbility == TypeAbility.Summon)
-            {
-                SummonSkeletonAbility summonSkeletonAbility = abilityAttributeData as SummonSkeletonAbility;
-                abilityView = Instantiate(abilityAttributeData.AbilityView, _abilityObjectContainer);
-                (abilityView as ClassSkillView).Initialize(abilityAttributeData.Icon, abilityAttributeData.CardParameters[currentLevel].CardParameters[_indexAbilityDelay].Value);
-                SummonViewCreated?.Invoke(abilityView,  summonSkeletonAbility, _player);
-                return;
-            }
+            //if (abilityAttributeData.TypeAbility == TypeAbility.Summon)
+            //{
+            //    SummonSkeletonAbility summonSkeletonAbility = abilityAttributeData as SummonSkeletonAbility;
+            //    abilityView = Instantiate(abilityAttributeData.AbilityView, _abilityObjectContainer);
+            //    (abilityView as ClassSkillButtonView).Initialize(abilityAttributeData.Icon, abilityAttributeData.CardParameters[currentLevel].CardParameters[_indexAbilityDelay].Value);
+            //    SummonViewCreated?.Invoke(abilityView,  summonSkeletonAbility, _player);
+            //    return;
+            //}
 
-            if (abilityAttributeData as ThrowAxeAbility)
-            {
-                abilityView = Instantiate(abilityAttributeData.AbilityView, _abilityObjectContainer);
-                (abilityView as ClassSkillView).Initialize(abilityAttributeData.Icon, abilityAttributeData.CardParameters[currentLevel].CardParameters[_indexAbilityDelay].Value);
-                ThrowAxeViewCreated?.Invoke(abilityView, _player, abilityAttributeData.ParticleSystem, abilityAttributeData as ThrowAxeAbility);
-            }
+            //if (abilityAttributeData as ThrowAxeAbility)
+            //{
+            //    abilityView = Instantiate(abilityAttributeData.AbilityView, _abilityObjectContainer);
+            //    (abilityView as ClassSkillButtonView).Initialize(abilityAttributeData.Icon, abilityAttributeData.CardParameters[currentLevel].CardParameters[_indexAbilityDelay].Value);
+            //    ThrowAxeViewCreated?.Invoke(abilityView, _player, abilityAttributeData.ParticleSystem, abilityAttributeData as ThrowAxeAbility);
+            //}
 
             if (abilityAttributeData.TypeAbility != TypeAbility.AttackAbility)
             {

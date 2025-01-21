@@ -36,7 +36,7 @@ public class SummonAbillityPresenter : IDisposable
 
     private void AddListener()
     {
-        (_abilityView as ClassSkillView).AbilityUsed += OnButtonSkillClick;
+        (_abilityView as ClassSkillButtonView).AbilityUsed += OnButtonSkillClick;
         _ability.AbilityUsed += OnAbilityUsed;
         _ability.AbilityEnded += OnAbilityEnded;
         //_ability.AbilityUpgraded += OnAbilityUpgraded;
@@ -50,7 +50,7 @@ public class SummonAbillityPresenter : IDisposable
 
     private void RemoveListener()
     {
-        (_abilityView as ClassSkillView).AbilityUsed -= OnButtonSkillClick;
+        (_abilityView as ClassSkillButtonView).AbilityUsed -= OnButtonSkillClick;
         _ability.AbilityUsed -= OnAbilityUsed;
         _ability.AbilityEnded -= OnAbilityEnded;
         //_ability.AbilityUpgraded -= OnAbilityUpgraded;
@@ -75,6 +75,7 @@ public class SummonAbillityPresenter : IDisposable
 
     private void OnButtonSkillClick()
     {
+        Debug.Log("Clik");
         if (_isAbilityUse)
             return;
 

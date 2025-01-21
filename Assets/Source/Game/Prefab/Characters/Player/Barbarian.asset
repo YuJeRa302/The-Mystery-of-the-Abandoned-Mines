@@ -18,6 +18,6 @@ MonoBehaviour:
   _className: 2
   _animatorController: {fileID: 9100000, guid: 69e68a005490dbd418915df6910be143, type: 2}
   _classAbilityDatas:
-  - {fileID: 11400000, guid: 3702a2191d4291245b3a57376b134947, type: 2}
-  - {fileID: 11400000, guid: 69393a1596cb9284a965f814fad1062d, type: 2}
-  - {fileID: 11400000, guid: 6d8f68c20e84b02418980f1901b30c87, type: 2}
+  - {fileID: 11400000, guid: e87995169eecbc145b41d4f7c245263a, type: 2}
+  - {fileID: 11400000, guid: 06ced82e6f03de74786d204f8525c319, type: 2}
+  - {fileID: 11400000, guid: 1101a0e702bdc6444a0f9bc4c677e32b, type: 2}

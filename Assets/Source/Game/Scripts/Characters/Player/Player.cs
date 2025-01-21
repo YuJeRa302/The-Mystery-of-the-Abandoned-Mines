@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.Source.Game.Scripts
@@ -23,12 +24,15 @@ namespace Assets.Source.Game.Scripts
         private PlayerAnimation _playerAnimation;
         private PlayerHealth _playerHealth;
         private PlayerMovement _playerMovment;
+        private List<ClassAbilityData> _classAbilityDatas = new ();
 
+        public List<ClassAbilityData> ClassAbilityDatas => _classAbilityDatas;
         public Pool Pool => _poolBullet;
         public Transform WeaponAbilityContainer => _weaponAbilityContainer;
         public Transform PlayerAbilityContainer => _playerAbilityContainer;
         public Transform ThrowAbilityPoint => _throwAbilityPoint;
         public CardDeck CardDeck => _cardDeck;
+        public PlayerMovement PlayerMovment => _playerMovment;
         public PlayerAttacker PlayerAttacker => _playerAttacker;
         public PlayerStats PlayerStats => _playerStats;
         public Transform WeaponPoint => _weaponPoint;
@@ -37,9 +41,6 @@ namespace Assets.Source.Game.Scripts
         public PlayerAnimation PlayerAnimation => _playerAnimation;
         public PlayerHealth PlayerHealth => _playerHealth;
         public PlayerAbilityCaster PlayerAbilityCaster => _playerAbilityCaster;
-        public Transform ThrowPoint => _throwPoint;
-        public Transform WeaponEffectConteiner => _weaponEffectConteiner;
-        public Transform PlayerEffectConteiner => _playerEffectConteiner;
         public Transform ShotPoint => _shotPoint;
 
         private void OnDestroy()
@@ -61,7 +62,7 @@ namespace Assets.Source.Game.Scripts
         public void CreateStats(LevelObserver levelObserver, PlayerClassData playerClassData, WeaponData weaponData, AbilityFactory abilityFactory, AbilityPresenterFactory abilityPresenter)
         {
             _miniMapIcon.sprite = playerClassData.Icon;
-            _playerHealth = new PlayerHealth(levelObserver, this,this);
+            _playerHealth = new PlayerHealth(levelObserver, this, weaponData, this);
             _playerAnimation = new PlayerAnimation(_animator, _rigidbody, 2, playerClassData, this);
             _playerAttacker = new PlayerAttacker(_shotPoint, this, weaponData, this, _poolBullet);
             _playerWeapons = new PlayerWeapons(this, weaponData, _poolBullet);
@@ -70,7 +71,20 @@ namespace Assets.Source.Game.Scripts
             _playerStats = new PlayerStats(this, 1, null, levelObserver, abilityFactory, abilityPresenter);
             _playerAbilityCaster = new PlayerAbilityCaster(abilityFactory,abilityPresenter,this, levelObserver.PlayerView);
 
+            foreach (var skill in playerClassData.ClassAbilityDatas)
+            {
+                _classAbilityDatas.Add(skill);
+            }
+
             SubscribeAction();
+        }
+
+        public void ChengeStats(int damage, float moveSpeed, int armor)
+        {
+            _playerAttacker.ÑhangeDamage(damage);
+            _playerMovment.ChangeMoveSpeed(moveSpeed);
+            _playerHealth.ChangeArmor(armor);
+
         }
 
         private void SubscribeAction()

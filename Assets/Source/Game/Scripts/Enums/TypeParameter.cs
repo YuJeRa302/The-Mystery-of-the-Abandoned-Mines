@@ -7,5 +7,7 @@ public enum TypeParameter
     AbilityValue,
     AbilityDuration,
     AbilityCooldown,
-    Reroll
+    Reroll,
+    Quantity,
+    MoveSpeed
 }

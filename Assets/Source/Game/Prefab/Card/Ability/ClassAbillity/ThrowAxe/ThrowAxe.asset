@@ -29,3 +29,4 @@ MonoBehaviour:
   _particleSystem: {fileID: 19820634, guid: 2d051abfebeda054eac2b6a15edf6d4e, type: 3}
   _audioClip: {fileID: 0}
   _axemMssile: {fileID: 943455661545071742, guid: 2b72f1a7a98694a47b2b0e7e19d8a7d2, type: 3}
+  _spell: {fileID: 1654424239186438959, guid: 081f8bf11483ab544842add8457b3c62, type: 3}

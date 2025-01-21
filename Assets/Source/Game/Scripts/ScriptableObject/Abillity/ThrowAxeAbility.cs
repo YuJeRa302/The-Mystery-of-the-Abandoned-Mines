@@ -5,6 +5,8 @@ using UnityEngine;
 public class ThrowAxeAbility : AbilityAttributeData
 {
     [SerializeField] private AxemMssile _axemMssile;
+    [SerializeField] private Spell _spell;
 
+    public Spell Spell => _spell;
     public AxemMssile AxemMssile => _axemMssile;
 }

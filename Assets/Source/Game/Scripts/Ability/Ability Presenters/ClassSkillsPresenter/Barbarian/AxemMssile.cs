@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class AxemMssile : PoolObject
 {
+    [SerializeField] private Transform _viewConteiner;
+
     private Rigidbody _rigidbody;
     private WeponPrefab _weponPrefab;
     private Coroutine _coroutine;
@@ -12,6 +14,7 @@ public class AxemMssile : PoolObject
     private Vector3 _direction;
     private float _damage;
     private float _moveSpeed = 2f;
+    private float _moveSpeedBoost = 2f;
     private bool _isReturn = false;
 
     private void OnEnable()
@@ -24,20 +27,20 @@ public class AxemMssile : PoolObject
     {
         if (_isReturn)
         {
-            transform.position = Vector3.Lerp(transform.position, _player.transform.position, 5f * _moveSpeed * Time.fixedDeltaTime);
-            _rigidbody.velocity = Vector3.zero;
-            _direction = new Vector3(_player.transform.position.x, _player.transform.position.y, _player.transform.position.z).normalized;
-            _rigidbody.AddForce(_direction * _moveSpeed * _moveSpeed);
-            _direction = Vector3.zero;
+            transform.position = Vector3.Lerp(transform.position, _player.transform.position, 5f * _moveSpeedBoost * Time.fixedDeltaTime);
+                _rigidbody.velocity = Vector3.zero;
+                _direction = new Vector3(_player.transform.position.x, _player.transform.position.y, _player.transform.position.z).normalized;
+                _rigidbody.AddForce(_direction * _moveSpeed * _moveSpeedBoost);
+                _direction = Vector3.zero;
 
-            if (_rigidbody.velocity.y < 0f)
-                _rigidbody.velocity -= Vector3.down * Physics.gravity.y * Time.fixedDeltaTime;
+                if (_rigidbody.velocity.y < 0f)
+                    _rigidbody.velocity -= Vector3.down * Physics.gravity.y * Time.fixedDeltaTime;
 
-            Vector3 horizontalVelocity = _rigidbody.velocity;
-            horizontalVelocity.y = 0;
+                Vector3 horizontalVelocity = _rigidbody.velocity;
+                horizontalVelocity.y = 0;
 
-            if (horizontalVelocity.sqrMagnitude > _moveSpeed * _moveSpeed)
-                _rigidbody.velocity = horizontalVelocity.normalized * _moveSpeed + Vector3.up * _rigidbody.velocity.y;
+                if (horizontalVelocity.sqrMagnitude > _moveSpeed * _moveSpeed)
+                    _rigidbody.velocity = horizontalVelocity.normalized * _moveSpeed + Vector3.up * _rigidbody.velocity.y;
         }
     }
 
@@ -56,8 +59,13 @@ public class AxemMssile : PoolObject
     {
         _player = player;
         _weponPrefab = _player.PlayerWeapons.WeaponData.WeaponPrefab;
-        Instantiate(_weponPrefab, transform);
-        //_damage = damage;
+        _moveSpeedBoost = moveSpeedBoost;
+        _damage = damage;
+
+        _weponPrefab = Instantiate(_player.PlayerWeapons.WeaponData.WeaponPrefab, transform);
+        Vector3 rotate = _weponPrefab.transform.eulerAngles;
+        rotate.x = 90;
+        _weponPrefab.transform.rotation = Quaternion.Euler(rotate);
         CorountineStart(Throw());
     }
 

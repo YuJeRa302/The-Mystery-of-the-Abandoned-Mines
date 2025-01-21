@@ -26,11 +26,12 @@ namespace Assets.Source.Game.Scripts
         public int MaxHealth => _maxHealth;
         public int CurrentHealth => _currentHealth;
 
-        public PlayerHealth(LevelObserver levelObserver, Player player,ICoroutineRunner coroutineRunner)
+        public PlayerHealth(LevelObserver levelObserver, Player player, WeaponData weapon, ICoroutineRunner coroutineRunner)
         {
             _coroutineRunner = coroutineRunner;
             _levelObserver = levelObserver;
             _player = player;
+            _armor += weapon.BonusArmor;
             _currentHealth = 50;
             _regeneration = _coroutineRunner.StartCoroutine(RegenerationHealth());
             AddListener();

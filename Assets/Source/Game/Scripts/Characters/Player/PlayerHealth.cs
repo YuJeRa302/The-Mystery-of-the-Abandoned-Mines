@@ -37,6 +37,12 @@ namespace Assets.Source.Game.Scripts
             AddListener();
         }
 
+        public void ReduceHealth(float reduce)
+        {
+            _currentHealth -= Convert.ToInt32(_currentHealth * (reduce/100));
+            HealthChanged?.Invoke(_currentHealth);
+        }
+
         public void TakeDamage(int damage)
         {
             if (_currentHealth == _minHealth)
@@ -54,6 +60,19 @@ namespace Assets.Source.Game.Scripts
                 _currentHealth = Mathf.Clamp(_currentHealth - currentDamage, _minHealth, _maxHealth);
                 HealthChanged?.Invoke(_currentHealth);
             }
+        }
+
+        public void TakeHealing(int heal)
+        {
+            if (heal < _minHealth)
+                return;
+
+            _currentHealth += heal;
+
+            if (_currentHealth > _maxHealth)
+                _currentHealth = _maxHealth;
+
+            HealthChanged?.Invoke(_currentHealth);
         }
 
         public void MaxHealthChanged(int value)

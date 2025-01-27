@@ -1,11 +1,17 @@
 public enum TypeAbility
 {
-    PlayerDamageAmplifier,
-    PlayerArmorAmplifier,
-    PlayerRegenerationAmplifier,
+    DamageAmplifier,
+    ArmorAmplifier,
+    MoveSpeedAmplifier,
+    RegenerationAmplifier,
+    Healing,
     AttackAbility,
     Summon,
     ThrowAxe,
     JerkFront,
-    Rage
+    Rage,
+    Epiphany,
+    ShieldUp,
+    SoulExplosion,
+    DarkPact
 }

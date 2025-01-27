@@ -55,11 +55,16 @@ namespace Assets.Source.Game.Scripts
             _playerStats.ArmorChanged -= OnArmorChenge;
             _playerAbilityCaster.AbilityUsed -= OnAbilityUsed;
             _playerAbilityCaster.AbilityEnded -= OnAbilityEnded;
+            _playerStats.DamageChenged -= OnDamageChenged;
+            _playerStats.MoveSpeedChanged -= OnMoveSpeedChanged;
+            _playerStats.Healed -= OnHealing;
+            _playerStats.HealthReduced -= OnReduceHealth;
 
             DisposeStats();
         }
 
-        public void CreateStats(LevelObserver levelObserver, PlayerClassData playerClassData, WeaponData weaponData, AbilityFactory abilityFactory, AbilityPresenterFactory abilityPresenter)
+        public void CreateStats(LevelObserver levelObserver, PlayerClassData playerClassData, WeaponData weaponData, AbilityFactory abilityFactory, 
+            AbilityPresenterFactory abilityPresenter, TemporaryData temporaryData)
         {
             _miniMapIcon.sprite = playerClassData.Icon;
             _playerHealth = new PlayerHealth(levelObserver, this, weaponData, this);
@@ -69,22 +74,9 @@ namespace Assets.Source.Game.Scripts
             _playerMovment = new PlayerMovement(levelObserver.CameraControiler.Camera, levelObserver.CameraControiler.VariableJoystick, _rigidbody, 2f, this);
             _cardDeck = new CardDeck();
             _playerStats = new PlayerStats(this, 1, null, levelObserver, abilityFactory, abilityPresenter);
-            _playerAbilityCaster = new PlayerAbilityCaster(abilityFactory,abilityPresenter,this, levelObserver.PlayerView);
-
-            foreach (var skill in playerClassData.ClassAbilityDatas)
-            {
-                _classAbilityDatas.Add(skill);
-            }
+            _playerAbilityCaster = new PlayerAbilityCaster(abilityFactory,abilityPresenter,this, levelObserver.PlayerView, temporaryData);
 
             SubscribeAction();
-        }
-
-        public void ChengeStats(int damage, float moveSpeed, int armor)
-        {
-            _playerAttacker.ÑhangeDamage(damage);
-            _playerMovment.ChangeMoveSpeed(moveSpeed);
-            _playerHealth.ChangeArmor(armor);
-
         }
 
         private void SubscribeAction()
@@ -99,6 +91,10 @@ namespace Assets.Source.Game.Scripts
             _playerStats.MaxHealthChanged += OnMaxHealthChanged;
             _playerStats.RegenerationChanged += OnRegenerationChanged;
             _playerStats.ArmorChanged += OnArmorChenge;
+            _playerStats.DamageChenged += OnDamageChenged;
+            _playerStats.MoveSpeedChanged += OnMoveSpeedChanged;
+            _playerStats.Healed += OnHealing;
+            _playerStats.HealthReduced += OnReduceHealth;
 
             _playerStats.AbilityDurationChanged += OnAbilityDurationChange;
             _playerStats.AbilityDamageChanged += OnAbilityDamageChanged;
@@ -106,6 +102,27 @@ namespace Assets.Source.Game.Scripts
 
             _playerAbilityCaster.AbilityUsed += OnAbilityUsed;
             _playerAbilityCaster.AbilityEnded += OnAbilityEnded;
+        }
+
+        private void OnReduceHealth(float reduce)
+        {
+            _playerHealth.ReduceHealth(reduce);
+        }
+
+        private void OnHealing(int heal)
+        {
+            _playerHealth.TakeHealing(heal);
+        }
+
+        private void OnMoveSpeedChanged(float value)
+        {
+            _playerMovment.ChangeMoveSpeed(value);
+            Debug.Log(value);
+        }
+
+        private void OnDamageChenged(int value)
+        {
+            _playerAttacker.ÑhangeDamage(value);
         }
 
         private void OnRotateToTarget(Transform transform)

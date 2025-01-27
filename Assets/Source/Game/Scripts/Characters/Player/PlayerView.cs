@@ -36,9 +36,7 @@ namespace Assets.Source.Game.Scripts
         private float _delay;
 
         public event Action<AbilityView, ParticleSystem, Transform> AbilityViewCreated;
-        public event Action<AbilityView, SummonSkeletonAbility, Player> SummonViewCreated;
-        public event Action<AbilityView, Player , ParticleSystem, ThrowAxeAbility> ThrowAxeViewCreated;
-        public event Action<ClassAbilityData, ClassSkillButtonView> CreatedClassSkill;
+        public event Action<ClassAbilityData, ClassSkillButtonView, int> CreatedClassSkillView;
 
         private void Awake()
         {
@@ -51,7 +49,7 @@ namespace Assets.Source.Game.Scripts
             _player.PlayerStats.UpgradeExperienceValueChanged -= OnChangeUpgradeExperience;
             _player.PlayerAbilityCaster.AbilityTaked -= OnAbilityTaked;
             _player.PlayerStats.KillCountChanged -= OnChangeKillCount;
-
+            _player.PlayerAbilityCaster.ClassSkillInitialized -= OnClassSkillViewCreate;
             _minimapButton.onClick.RemoveListener(OnMinimapButtonClick);
             _minimapCloseButton.onClick.RemoveListener(OnMinimapButtonClick);
         }
@@ -76,7 +74,6 @@ namespace Assets.Source.Game.Scripts
             _playerEffectsContainer = _player.PlayerAbilityContainer;
             _weaponEffectsContainer = _player.WeaponAbilityContainer;
             _throwPoint = _player.ThrowAbilityPoint;
-            TakeClassSkillView();
         }
 
         public void SetNewLevelValue(int value)
@@ -106,26 +103,22 @@ namespace Assets.Source.Game.Scripts
             _mobileInterface.SetActive(true);
         }
 
-        private void TakeClassSkillView()//нужно поучать текущий уровень абики из темпори дата.
+        private void OnClassSkillViewCreate(ClassAbilityData abilityData, int currentLvl)//нужно поучать текущий уровень абики из темпори дата.
         {
             ClassSkillButtonView abilityView;
 
-            foreach (var skill in _player.ClassAbilityDatas)
+            abilityView = Instantiate(abilityData.ButtonView, _classSkillsContainer);
+
+            foreach (var parametr in abilityData.Parameters[currentLvl].CardParameters)
             {
-                abilityView = Instantiate(skill.ButtonView, _classSkillsContainer);
-
-                foreach (var value in skill.Parameters[0].CardParameters)
+                if (parametr.TypeParameter == TypeParameter.AbilityCooldown)
                 {
-                    if (value.TypeParameter == TypeParameter.AbilityCooldown)
-                    {
-                        _delay = value.Value;
-                        break;
-                    }
+                    _delay = parametr.Value;
                 }
-
-                abilityView.Initialize(skill.Icon, _delay);
-                CreatedClassSkill?.Invoke(skill, abilityView);
             }
+
+            abilityView.Initialize(abilityData.Icon, _delay);
+            CreatedClassSkillView?.Invoke(abilityData, abilityView, currentLvl);
         }
 
         private void SubscribePlayerEvent()
@@ -135,7 +128,7 @@ namespace Assets.Source.Game.Scripts
             _player.PlayerStats.UpgradeExperienceValueChanged += OnChangeUpgradeExperience;
             _player.PlayerAbilityCaster.AbilityTaked += OnAbilityTaked;
             _player.PlayerStats.KillCountChanged += OnChangeKillCount;
-
+            _player.PlayerAbilityCaster.ClassSkillInitialized += OnClassSkillViewCreate;
             _minimapButton.onClick.AddListener(OnMinimapButtonClick);
             _minimapCloseButton.onClick.AddListener(OnMinimapButtonClick);
         }
@@ -150,33 +143,17 @@ namespace Assets.Source.Game.Scripts
         {
             AbilityView abilityView;
 
-            //if (abilityAttributeData.TypeAbility == TypeAbility.Summon)
+            //if (abilityAttributeData.AbilityTypes != TypeAbility.AttackAbility)
             //{
-            //    SummonSkeletonAbility summonSkeletonAbility = abilityAttributeData as SummonSkeletonAbility;
-            //    abilityView = Instantiate(abilityAttributeData.AbilityView, _abilityObjectContainer);
-            //    (abilityView as ClassSkillButtonView).Initialize(abilityAttributeData.Icon, abilityAttributeData.CardParameters[currentLevel].CardParameters[_indexAbilityDelay].Value);
-            //    SummonViewCreated?.Invoke(abilityView,  summonSkeletonAbility, _player);
-            //    return;
+            //    if ((abilityAttributeData as DefaultAbilityData).TypeEffect == TypeEffect.Weapon)
+            //        _abilityEffect = Instantiate(abilityAttributeData.ParticleSystem, _weaponEffectsContainer);
+            //    else
+            //        _abilityEffect = Instantiate(abilityAttributeData.ParticleSystem, _playerEffectsContainer);
             //}
-
-            //if (abilityAttributeData as ThrowAxeAbility)
+            //else
             //{
-            //    abilityView = Instantiate(abilityAttributeData.AbilityView, _abilityObjectContainer);
-            //    (abilityView as ClassSkillButtonView).Initialize(abilityAttributeData.Icon, abilityAttributeData.CardParameters[currentLevel].CardParameters[_indexAbilityDelay].Value);
-            //    ThrowAxeViewCreated?.Invoke(abilityView, _player, abilityAttributeData.ParticleSystem, abilityAttributeData as ThrowAxeAbility);
+            //    _abilityEffect = abilityAttributeData.ParticleSystem;
             //}
-
-            if (abilityAttributeData.TypeAbility != TypeAbility.AttackAbility)
-            {
-                if ((abilityAttributeData as DefaultAbilityData).TypeEffect == TypeEffect.Weapon)
-                    _abilityEffect = Instantiate(abilityAttributeData.ParticleSystem, _weaponEffectsContainer);
-                else
-                    _abilityEffect = Instantiate(abilityAttributeData.ParticleSystem, _playerEffectsContainer);
-            }
-            else
-            {
-                _abilityEffect = abilityAttributeData.ParticleSystem;
-            }
 
             abilityView = Instantiate(abilityAttributeData.AbilityView, _abilityObjectContainer);
             abilityView.Initialize(abilityAttributeData.Icon, abilityAttributeData.CardParameters[currentLevel].CardParameters[_indexAbilityDelay].Value);

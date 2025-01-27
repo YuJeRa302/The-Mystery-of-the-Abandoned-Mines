@@ -11,17 +11,17 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private Sprite _icon;
         [SerializeField] private string _description;
         [SerializeField] private ClassSkillButtonView _buttonView;
-        [SerializeField] private List<AbilityClassParameter> _abilityClassParameters;
+        [SerializeField] private List<UpgradeParameter> _abilityClassParameters;
         [SerializeField] private List<Parameters> _parameters;
-        [SerializeField] private TypeAbility _typeAbility;
+        [SerializeField] private TypeAbility _abilityType;
 
         public int Id => _id;
-        public List<AbilityClassParameter> AbilityClassParameters => _abilityClassParameters;
+        public List<UpgradeParameter> AbilityClassParameters => _abilityClassParameters;
         public List<Parameters> Parameters => _parameters;
         public string Name => _name;
         public string Description => _description;
         public Sprite Icon => _icon;
         public ClassSkillButtonView ButtonView => _buttonView;
-        public TypeAbility TypeAbility => _typeAbility;
+        public TypeAbility AbilityType => _abilityType;
     }
 }

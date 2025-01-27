@@ -18,21 +18,14 @@ MonoBehaviour:
   _description: Skelleton
   _buttonView: {fileID: 7547704264931708372, guid: 226be77f080a72f41b3a154b64b3d4ae, type: 3}
   _abilityClassParameters:
-  - Id: 0
-    Cost: 1000
+  - Cost: 0
     Value: 0
-    Delay: 0
-    Duration: 0
-  - Id: 0
-    Cost: 2500
+  - Cost: 1000
     Value: 0
-    Delay: 0
-    Duration: 0
-  - Id: 0
-    Cost: 5000
+  - Cost: 2500
     Value: 0
-    Delay: 0
-    Duration: 0
+  - Cost: 5000
+    Value: 0
   _parameters:
   - CardParameters:
     - Value: 1
@@ -62,5 +55,5 @@ MonoBehaviour:
       TypeParameter: 5
     - Value: 10
       TypeParameter: 6
-  _typeAbility: 4
+  _abilityType: 6
   _summonData: {fileID: 11400000, guid: 26e4bd4476e87af49b6012ade3e6eaf3, type: 2}

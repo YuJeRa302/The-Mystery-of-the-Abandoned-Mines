@@ -18,57 +18,50 @@ MonoBehaviour:
   _description: JerkFront
   _buttonView: {fileID: 7547704264931708372, guid: 226be77f080a72f41b3a154b64b3d4ae, type: 3}
   _abilityClassParameters:
-  - Id: 0
-    Cost: 1000
+  - Cost: 0
     Value: 0
-    Delay: 0
-    Duration: 0
-  - Id: 0
-    Cost: 2500
+  - Cost: 1000
     Value: 0
-    Delay: 0
-    Duration: 0
-  - Id: 0
-    Cost: 5000
+  - Cost: 2500
     Value: 0
-    Delay: 0
-    Duration: 0
+  - Cost: 5000
+    Value: 0
   _parameters:
   - CardParameters:
     - Value: 8
-      TypeParameter: 0
+      TypeParameter: 11
     - Value: 10
       TypeParameter: 6
-    - Value: 8
+    - Value: 2
       TypeParameter: 4
     - Value: 1
       TypeParameter: 5
   - CardParameters:
     - Value: 10
-      TypeParameter: 0
+      TypeParameter: 11
     - Value: 9
       TypeParameter: 6
-    - Value: 6
-      TypeParameter: 5
-    - Value: 120
+    - Value: 4
       TypeParameter: 4
+    - Value: 2
+      TypeParameter: 5
   - CardParameters:
-    - Value: 12
-      TypeParameter: 0
+    - Value: 50
+      TypeParameter: 11
     - Value: 8
       TypeParameter: 6
-    - Value: 7
-      TypeParameter: 5
-    - Value: 150
+    - Value: 6
       TypeParameter: 4
+    - Value: 1
+      TypeParameter: 5
   - CardParameters:
     - Value: 15
-      TypeParameter: 0
+      TypeParameter: 11
     - Value: 7
       TypeParameter: 6
     - Value: 8
-      TypeParameter: 5
-    - Value: 180
       TypeParameter: 4
-  _typeAbility: 6
+    - Value: 2
+      TypeParameter: 5
+  _abilityType: 8
   _poolParticle: {fileID: 8376752317659841032, guid: e11bc8fcee5f0604ebdb25d119704cf4, type: 3}

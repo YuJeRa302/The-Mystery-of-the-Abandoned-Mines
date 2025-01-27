@@ -1,4 +1,5 @@
 using Assets.Source.Game.Scripts;
+using UnityEngine;
 
 public class EnemyRangeAttackState : EnemyAttackState
 {
@@ -16,13 +17,49 @@ public class EnemyRangeAttackState : EnemyAttackState
         _animationController.Attacked += LaunchBullet;
     }
 
+    public override void SubscrabeIvent()
+    {
+        _animationController.Attacked += LaunchBullet;
+    }
+
     public override void UpdateState()
     {
-        base.UpdateState();
+        if (_canTransit)
+        {
+            _directionToTarget = _enemy.transform.position - _target.transform.position;
+            _distanceToTarget = _directionToTarget.magnitude;
+
+            if (_distanceToTarget > _attackRange)
+                _stateMashine.SetState<EnemyMoveState>();
+
+            if (Attack())
+            {
+                AttackEvent();
+            }
+        }
+    }
+
+    protected override bool Attack()
+    {
+        if (_distanceToTarget <= _attackRange)
+        {
+            _enemy.transform.LookAt(_target.transform.position);
+
+            if (_lastAttackTime <= 0)
+            {
+                _lastAttackTime = _attackDelay;
+                _canTransit = false;
+                return true;
+            }
+        }
+
+        _lastAttackTime -= Time.deltaTime;
+        return false;
     }
 
     private void LaunchBullet()
     {
         _bulletSpawner.SpawnBullet();
+        _canTransit = true;
     }
 }

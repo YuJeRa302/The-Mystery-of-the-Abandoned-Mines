@@ -7,6 +7,7 @@ public class DamageParticle : PoolParticle
 
     public void Initialaze(float damage)
     {
+        Debug.Log("Init");
         _damage = damage;
     }
 
@@ -14,6 +15,7 @@ public class DamageParticle : PoolParticle
     {
         if (other.gameObject.TryGetComponent(out Enemy enemy))
         {
+            Debug.Log("Enter");
             enemy.TakeDamage(_damage);
         }
     }

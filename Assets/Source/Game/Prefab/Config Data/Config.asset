@@ -20,8 +20,22 @@ MonoBehaviour:
   _defaultLanguage: ru
   _upgradeStates: []
   _classAbilityStates:
-  - Id: 0
-    CurrentLevel: 1
+  - Id: 12
+    CurrentLevel: 0
+  - Id: 11
+    CurrentLevel: 0
+  - Id: 10
+    CurrentLevel: 0
+  - Id: 13
+    CurrentLevel: 0
+  - Id: 14
+    CurrentLevel: 0
+  - Id: 9
+    CurrentLevel: 0
+  - Id: 15
+    CurrentLevel: 0
+  - Id: 16
+    CurrentLevel: 0
   _defaultWeaponState:
   - Id: 0
     IsEquip: 0

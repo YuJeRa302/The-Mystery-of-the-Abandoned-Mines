@@ -12,12 +12,12 @@ namespace Assets.Source.Game.Scripts
         private readonly int _maxUpgradeExperience = 1000;
         private readonly int _minValue = 0;
 
-        //[SerializeField] private float _speed;
         private int _maxPlayerLevel;//
         private int _maxUpgradeLevel;//
 
         private Player _player;
         private PlayerView _playerView;
+        private float _speed = 2;
         private int _currentLevel = 1;
         private int _currentUpgradeLevel = 0;
         private int _currentUpgradePoints = 0;
@@ -32,14 +32,18 @@ namespace Assets.Source.Game.Scripts
         private int _maxLevelValue;
         private int _maxUpgradeValue;
 
-        public event Action<int> MaxHealthChanged;//+
-        public event Action<int> RegenerationChanged;//+
-        public event Action<int> ArmorChanged;//+
-        public event Action<int> ExperienceValueChanged;//view
+        public event Action<int> MaxHealthChanged;
+        public event Action<int> RegenerationChanged;
+        public event Action<int> ArmorChanged;
+        public event Action<int> DamageChenged;
+        public event Action<float> MoveSpeedChanged;
+        public event Action<float> HealthReduced;
+        public event Action<int> Healed;
+        public event Action<int> ExperienceValueChanged;
         public event Action<int> UpgradeExperienceValueChanged;//view
-        public event Action<int> AbilityDurationChanged;//+
-        public event Action<int> AbilityDamageChanged;//+
-        public event Action<int> AbilityCooldownReductionChanged;//+
+        public event Action<int> AbilityDurationChanged;
+        public event Action<int> AbilityDamageChanged;
+        public event Action<int> AbilityCooldownReductionChanged;
         public event Action<int> KillCountChanged;//view
 
         public PlayerStats(Player player, int score, UpgradeState[] upgradeState, LevelObserver levelObserver, 
@@ -48,13 +52,13 @@ namespace Assets.Source.Game.Scripts
             //UpgradePlayerStats(upgradeState, levelObserver.UpgradeDatas);
             _player = player;
             _playerView = levelObserver.PlayerView;
-
+            _damage = Convert.ToInt32(_player.PlayerAttacker.Damage);
             GenerateLevelPlayer(_maxPlayerLevel);
             GenerateUpgradeLevel(_maxUpgradeLevel);
             SetPlayerStats(score);
         }
 
-        //public float Speed => _speed;
+        public float Speed => _speed;
         public int Armor => _armor;
         public int UpgradePoints => _currentUpgradePoints;
         public int Damage => _damage;
@@ -182,24 +186,122 @@ namespace Assets.Source.Game.Scripts
 
         public void AbilityUsed(Ability ability)
         {
-            if (ability.TypeAbility == TypeAbility.PlayerDamageAmplifier)
-                _damage += ability.CurrentAbilityValue;
-            else if (ability.TypeAbility == TypeAbility.PlayerArmorAmplifier)
-                _armor += ability.CurrentAbilityValue;
-            else if (ability.TypeAbility == TypeAbility.PlayerRegenerationAmplifier)
-                _regeneration += ability.CurrentAbilityValue;
-
-            //отдельный метод для классовых умений!!
+            if (ability.IsAutoCast)
+            {
+                if (ability.TypeAbility == TypeAbility.DamageAmplifier)
+                {
+                    _damage += ability.CurrentAbilityValue;
+                    DamageChenged?.Invoke(_damage);
+                }
+                else if (ability.TypeAbility == TypeAbility.ArmorAmplifier)
+                {
+                    _armor += ability.CurrentAbilityValue;
+                    ArmorChanged?.Invoke(_armor);
+                }
+                else if (ability.TypeAbility == TypeAbility.RegenerationAmplifier)
+                {
+                    _regeneration += ability.CurrentAbilityValue;
+                }
+                else if (ability.TypeAbility == TypeAbility.MoveSpeedAmplifier)
+                {
+                    _speed += ability.CurrentAbilityValue;
+                    MoveSpeedChanged?.Invoke(_speed);
+                }
+                else if (ability.TypeAbility == TypeAbility.Healing)
+                {
+                    _regeneration += ability.CurrentAbilityValue;
+                }
+            }
+            else
+            {
+                foreach (CardParameter parameter in ability.AmplifierParametrs)
+                {
+                    if (parameter.TypeParameter == TypeParameter.Damage)
+                    {
+                        _damage += parameter.Value;
+                        DamageChenged?.Invoke(_damage);
+                    }
+                    else if (parameter.TypeParameter == TypeParameter.Armor)
+                    {
+                        _armor += parameter.Value;
+                        ArmorChanged?.Invoke(_armor);
+                    }
+                    else if (parameter.TypeParameter == TypeParameter.MoveSpeed)
+                    {
+                        _speed += parameter.Value;
+                        MoveSpeedChanged?.Invoke(_speed);
+                    }
+                    else if (parameter.TypeParameter == TypeParameter.HealtReduce)
+                    {
+                        HealthReduced?.Invoke(parameter.Value);
+                    }
+                    else if (parameter.TypeParameter == TypeParameter.Healing)
+                    {
+                        Healed?.Invoke(parameter.Value);
+                    }
+                    else if (parameter.TypeParameter == TypeParameter.Regeneration)
+                    {
+                        _regeneration += parameter.Value;
+                        RegenerationChanged?.Invoke(_regeneration);
+                    }
+                }
+            }
         }
 
         public void AbilityEnded(Ability ability)
         {
-            if (ability.TypeAbility == TypeAbility.PlayerDamageAmplifier)
-                _damage -= ability.CurrentAbilityValue;
-            else if (ability.TypeAbility == TypeAbility.PlayerArmorAmplifier)
-                _armor -= ability.CurrentAbilityValue;
-            else if (ability.TypeAbility == TypeAbility.PlayerRegenerationAmplifier)
-                _regeneration -= ability.CurrentAbilityValue;
+            if (ability.IsAutoCast)
+            {
+                if (ability.TypeAbility == TypeAbility.DamageAmplifier)
+                {
+                    _damage -= ability.CurrentAbilityValue;
+                    DamageChenged?.Invoke(_damage);
+                }
+                else if (ability.TypeAbility == TypeAbility.ArmorAmplifier)
+                {
+                    _armor -= ability.CurrentAbilityValue;
+                    ArmorChanged?.Invoke(_armor);
+                }
+                else if (ability.TypeAbility == TypeAbility.RegenerationAmplifier)
+                {
+                    _regeneration -= ability.CurrentAbilityValue;
+                }
+                else if (ability.TypeAbility == TypeAbility.MoveSpeedAmplifier)
+                {
+                    _speed -= ability.CurrentAbilityValue;
+                    MoveSpeedChanged?.Invoke(_speed);
+                }
+                else if (ability.TypeAbility == TypeAbility.Healing)
+                {
+                    _regeneration -= ability.CurrentAbilityValue;
+                }
+            }
+            else
+            {
+                foreach (CardParameter parameter in ability.AmplifierParametrs)
+                {
+                    if (parameter.TypeParameter == TypeParameter.Damage)
+                    {
+                        _damage -= parameter.Value;
+                        DamageChenged?.Invoke(_damage);
+                    }
+                    else if (parameter.TypeParameter == TypeParameter.Armor)
+                    {
+                        _armor -= parameter.Value;
+                        ArmorChanged?.Invoke(_armor);
+                    }
+                    else if (parameter.TypeParameter == TypeParameter.MoveSpeed)
+                    {
+                        _speed -= parameter.Value;
+                        MoveSpeedChanged?.Invoke(_speed);
+                    }
+                    else if (parameter.TypeParameter == TypeParameter.Regeneration)
+                    {
+                        _regeneration -= parameter.Value;
+                        RegenerationChanged?.Invoke(_regeneration);
+                    }
+                }
+            }
         }
 
         private void SetNewUpgradePoints(int level)

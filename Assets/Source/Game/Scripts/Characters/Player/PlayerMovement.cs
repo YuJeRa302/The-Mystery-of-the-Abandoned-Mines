@@ -58,7 +58,7 @@ public class PlayerMovement : IDisposable
 
     public void ChangeMoveSpeed(float value)
     {
-        _moveSpeed += value;
+        _moveSpeed = value;
         Debug.Log(_moveSpeed);
         _maxMoveSpeed = _moveSpeed * 2f;
 

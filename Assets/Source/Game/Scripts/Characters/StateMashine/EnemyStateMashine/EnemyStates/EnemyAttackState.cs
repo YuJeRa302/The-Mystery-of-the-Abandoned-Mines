@@ -23,13 +23,18 @@ namespace Assets.Source.Game.Scripts
             _damage = _enemy.Damage;
             _attackDelay = _enemy.AttackDelay;
             _animationController = _enemy.AnimationStateController;
-            _animationController.Attacked += ApplyDamage;
+            SubscrabeIvent();
         }
 
         public override void EnterState()
         {
             base.EnterState();
             _canTransit = true;
+        }
+
+        public virtual void SubscrabeIvent()
+        {
+            _animationController.Attacked += ApplyDamage;
         }
 
         public override void UpdateState()
@@ -49,7 +54,7 @@ namespace Assets.Source.Game.Scripts
             }
         }
 
-        protected bool Attack()
+        protected virtual bool Attack()
         {
             if (_distanceToTarget <= _attackRange)
             {

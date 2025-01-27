@@ -74,11 +74,12 @@ namespace Assets.Source.Game.Scripts
                 _playerPrefab, 
                 _spawnPlayerPoint, 
                 temporaryData.PlayerClassData, 
-                out Player player);
+                temporaryData, out Player player);
 
             _player = player;
             _cardPanel.Initialize(_player);
             _playerView.Initialize(_player, temporaryData.PlayerClassData.Icon);
+            _player.PlayerAbilityCaster.Initialize();
             _cameraControiler.SetLookTarget(_player.transform);
             AddListener();
             _enemySpawner.SetTotalEnemyCount(_roomPlacer.AllEnemyCount, _player);

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.Source.Game.Scripts
@@ -11,13 +12,22 @@ namespace Assets.Source.Game.Scripts
 
         private float _currentDuration;
         private float _defaultDuration;
+        
         private int _currentAbilityValue;
         private float _abilityCooldownReduction;
         private float _abilityDuration;
+        private float _moveSpeed;
+        private float _reduceHealth;
         private int _abilityValue;
+        private int _regeneration;
         private int _defailtDamage;
+        private int _abilityDamage;
+        private int _defailtArmor;
+        private int _defailyHealing;
+
         private TypeAbility _typeAbility;
         private TypeAttackAbility _typeAttackAbility;
+        
         private float _defaultDelay;
         private float _currentDelay;
         private AudioClip _audioClip;
@@ -33,10 +43,18 @@ namespace Assets.Source.Game.Scripts
         public event Action<float> CooldownValueChanged;
         public event Action<float> CooldownValueReseted;
 
+        public List<CardParameter> AmplifierParametrs { get; private set; } = new List<CardParameter>();
         public bool IsAbilityEnded { get; private set; } = false;
+        public bool IsAutoCast => _isAutoCast;
         public float CurrentDuration => _currentDuration;
+        public float MoveSpeed => _moveSpeed;
+        public float ReduceHealth => _reduceHealth;
         public int CurrentAbilityValue => _currentAbilityValue;
         public int DefailtDamage => _defailtDamage;
+        public int Regeneration => _regeneration;
+        public int DefailtArmor => _defailtArmor;
+        public int AbilityDamage => _abilityDamage;
+        public int DefailyHealing => _defailyHealing;
         public TypeAbility TypeAbility => _typeAbility;
         public TypeAttackAbility TypeAttackAbility => _typeAttackAbility;
 
@@ -50,7 +68,7 @@ namespace Assets.Source.Game.Scripts
             ICoroutineRunner coroutineRunner)
         {
             FillAbilityParameters(abilityAttributeData, currentLevel);
-            _typeAbility = abilityAttributeData.TypeAbility;
+            _typeAbility = abilityAttributeData.AbilityType;
             _audioClip = abilityAttributeData.AudioClip;
             _typeAttackAbility = (abilityAttributeData as AttackAbilityData) != null ? (abilityAttributeData as AttackAbilityData).TypeAttackAbility : 0;
             _coroutineRunner = coroutineRunner;
@@ -61,11 +79,13 @@ namespace Assets.Source.Game.Scripts
             UpdateAbilityParamters();
         }
 
-        public Ability(ClassAbilityData classAbilityData, bool isAutoCast, ICoroutineRunner coroutineRunner)
+        public Ability(ClassAbilityData classAbilityData, bool isAutoCast, int currentLvl, ICoroutineRunner coroutineRunner)
         {
-            FillClassSkillParametr(classAbilityData, 0);
+            FillClassSkillParametr(classAbilityData, currentLvl);
+            _typeAbility = classAbilityData.AbilityType;
             _isAutoCast = isAutoCast;
             _coroutineRunner = coroutineRunner;
+            AmplifierParametrs = classAbilityData.Parameters[currentLvl].CardParameters;
         }
 
         public void Dispose()
@@ -124,6 +144,18 @@ namespace Assets.Source.Game.Scripts
                     _defaultDuration = parameter.Value;
                 else if (parameter.TypeParameter == TypeParameter.Damage)
                     _defailtDamage = parameter.Value;
+                else if (parameter.TypeParameter == TypeParameter.Armor)
+                    _defailtArmor = parameter.Value;
+                else if (parameter.TypeParameter == TypeParameter.MoveSpeed)
+                    _moveSpeed = parameter.Value;
+                else if (parameter.TypeParameter == TypeParameter.Healing)
+                    _defailyHealing = parameter.Value;
+                else if (parameter.TypeParameter == TypeParameter.AbilityDamage)
+                    _abilityDamage = parameter.Value;
+                else if (parameter.TypeParameter == TypeParameter.HealtReduce)
+                    _reduceHealth = parameter.Value;
+                else if (parameter.TypeParameter == TypeParameter.Regeneration)
+                    _regeneration = parameter.Value;
             }
         }
 
@@ -182,10 +214,7 @@ namespace Assets.Source.Game.Scripts
             }
 
             if (IsAbilityEnded == false)
-            {
                 AbilityEnded?.Invoke(this);
-                Debug.Log("End Ability");
-            }
 
             IsAbilityEnded = true;
         }
@@ -200,7 +229,7 @@ namespace Assets.Source.Game.Scripts
             }
 
             UpdateAbility(false, _minValue);
-            Debug.Log("cooldown Ability");
+
             if (_isAutoCast)
                 Use();
         }

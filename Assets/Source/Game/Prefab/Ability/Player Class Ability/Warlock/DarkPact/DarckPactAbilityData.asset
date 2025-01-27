@@ -1,0 +1,67 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fa205f893cf3e2448f6e584bb9b017d, type: 3}
+  m_Name: DarckPactAbilityData
+  m_EditorClassIdentifier: 
+  _id: 16
+  _name: DarkPact
+  _icon: {fileID: 21300000, guid: e21783b9009bb3e40aac9f7487d624f7, type: 3}
+  _description: DarkPact
+  _buttonView: {fileID: 7547704264931708372, guid: 226be77f080a72f41b3a154b64b3d4ae, type: 3}
+  _abilityClassParameters:
+  - Cost: 0
+    Value: 0
+  - Cost: 1000
+    Value: 0
+  - Cost: 2500
+    Value: 0
+  - Cost: 5000
+    Value: 0
+  _parameters:
+  - CardParameters:
+    - Value: 10
+      TypeParameter: 6
+    - Value: 5
+      TypeParameter: 5
+    - Value: 2
+      TypeParameter: 2
+    - Value: 0
+      TypeParameter: 9
+  - CardParameters:
+    - Value: 10
+      TypeParameter: 6
+    - Value: 5
+      TypeParameter: 5
+    - Value: 3
+      TypeParameter: 2
+    - Value: 0
+      TypeParameter: 9
+  - CardParameters:
+    - Value: 9
+      TypeParameter: 6
+    - Value: 5
+      TypeParameter: 5
+    - Value: 4
+      TypeParameter: 2
+    - Value: 0
+      TypeParameter: 9
+  - CardParameters:
+    - Value: 8
+      TypeParameter: 6
+    - Value: 6
+      TypeParameter: 5
+    - Value: 5
+      TypeParameter: 2
+    - Value: 0
+      TypeParameter: 9
+  _abilityType: 13
+  _poolParticle: {fileID: 7425594545007167068, guid: d2fb527ba5068ff469ce64c846a41a5f, type: 3}

@@ -9,5 +9,8 @@ public enum TypeParameter
     AbilityCooldown,
     Reroll,
     Quantity,
-    MoveSpeed
+    MoveSpeed,
+    Healing,
+    AbilityDamage,
+    HealtReduce
 }

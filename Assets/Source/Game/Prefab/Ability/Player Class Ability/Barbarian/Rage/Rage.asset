@@ -18,21 +18,14 @@ MonoBehaviour:
   _description: Rage
   _buttonView: {fileID: 7547704264931708372, guid: 226be77f080a72f41b3a154b64b3d4ae, type: 3}
   _abilityClassParameters:
-  - Id: 0
-    Cost: 1000
+  - Cost: 0
     Value: 0
-    Delay: 0
-    Duration: 0
-  - Id: 0
-    Cost: 1500
+  - Cost: 1000
     Value: 0
-    Delay: 0
-    Duration: 0
-  - Id: 0
-    Cost: 5000
+  - Cost: 1500
     Value: 0
-    Delay: 0
-    Duration: 0
+  - Cost: 5000
+    Value: 0
   _parameters:
   - CardParameters:
     - Value: 10
@@ -78,5 +71,5 @@ MonoBehaviour:
       TypeParameter: 6
     - Value: 9
       TypeParameter: 5
-  _typeAbility: 7
+  _abilityType: 9
   _rageEffect: {fileID: 1869056104995865337, guid: 12aa6d89f37fe0b41ab0da8adc26824b, type: 3}

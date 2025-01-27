@@ -74,5 +74,29 @@ namespace Assets.Source.Game.Scripts
             RageAbillityPresenter rageAbillityPresenter = new RageAbillityPresenter(ability, abilityView, player, boostDamage, boostMoveSpeed, boosArmor, _gameLoopService, _coroutineRunner, abilityEffect);
             return rageAbillityPresenter;
         }
+
+        public EpiphanyAbilityPresenter CreateEpiphanyAbilityPresenter(Ability ability, AbilityView abilityView, Player player, PoolParticle abilityEffect)
+        {
+            EpiphanyAbilityPresenter epiphanyAbilityPresenter = new EpiphanyAbilityPresenter(ability, abilityView, player, _gameLoopService, _coroutineRunner, abilityEffect);
+            return epiphanyAbilityPresenter;
+        }
+
+        public ShildUpAbilityPresenter CreateShieldUpAbility(Ability ability, AbilityView abilityView, Player player, PoolParticle poolParticle)
+        {
+            ShildUpAbilityPresenter shildUpAbility = new ShildUpAbilityPresenter(ability,abilityView, player, _gameLoopService, _coroutineRunner, poolParticle);
+            return shildUpAbility;
+        }
+
+        public SoulExplosionAbilityPresenter CreateSoulExplosionAbilityPresenter(Ability ability, AbilityView abilityView, Player player, PoolParticle poolParticle)
+        {
+            SoulExplosionAbilityPresenter soulExplosionAbilityPresenter = new SoulExplosionAbilityPresenter(ability, abilityView, player, _gameLoopService, _coroutineRunner, poolParticle);
+            return soulExplosionAbilityPresenter;
+        }
+
+        public DarkPactAbilityPresenter CreateDarkPactAbilityPresenter(Ability ability, AbilityView abilityView, Player player, PoolParticle poolParticle)
+        {
+            DarkPactAbilityPresenter darkPactAbilityPresenter = new DarkPactAbilityPresenter(ability, abilityView, player, _gameLoopService, _coroutineRunner, poolParticle);
+            return darkPactAbilityPresenter;
+        }
     }
 }

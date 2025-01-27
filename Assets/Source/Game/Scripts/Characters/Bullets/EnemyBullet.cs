@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Assets.Source.Game.Scripts
@@ -8,7 +9,7 @@ namespace Assets.Source.Game.Scripts
         {
             if (collision.collider.TryGetComponent(out Player player))
             {
-                //player.TakeDamage(_damage);
+                player.PlayerHealth.TakeDamage(Convert.ToInt32(_damage));
                 ReturObjectPool();
             }
 

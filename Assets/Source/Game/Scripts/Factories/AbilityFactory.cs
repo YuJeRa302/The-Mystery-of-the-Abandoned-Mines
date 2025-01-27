@@ -15,9 +15,9 @@ namespace Assets.Source.Game.Scripts
             return ability;
         }
 
-        public Ability CreateClassSkill(ClassAbilityData classAbilityData, bool isAutoCast)
+        public Ability CreateClassSkill(ClassAbilityData classAbilityData, bool isAutoCast, int currentLvl)
         {
-            Ability ability = new Ability(classAbilityData, isAutoCast, _coroutineRunner);
+            Ability ability = new Ability(classAbilityData, isAutoCast, currentLvl, _coroutineRunner);
             return ability;
         }
     }

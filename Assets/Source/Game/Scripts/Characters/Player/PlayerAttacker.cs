@@ -61,7 +61,7 @@ namespace Assets.Source.Game.Scripts
 
         public void ÑhangeDamage(float value)
         {
-            _damage += value;
+            _damage = value;
         }
 
         public void AttackEnemy()
@@ -143,6 +143,7 @@ namespace Assets.Source.Game.Scripts
                 _coroutineRunner.StopCoroutine(_coolDownAttack);
 
             _coolDownAttack = _coroutineRunner.StartCoroutine(CoolDownAttack());
+            Debug.Log(_damage);
         }
 
         private void InstantiateBullet()

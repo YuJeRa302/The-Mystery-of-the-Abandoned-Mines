@@ -47,7 +47,7 @@ namespace Assets.Source.Game.Scripts
             _damage = _damage * (1 + lvlRoom / 10);
         }
 
-        public void TakeDamage(float damage)
+        public void TakeDamage(float damage)//+тип урона
         {
             if (damage < 0)
                 return;

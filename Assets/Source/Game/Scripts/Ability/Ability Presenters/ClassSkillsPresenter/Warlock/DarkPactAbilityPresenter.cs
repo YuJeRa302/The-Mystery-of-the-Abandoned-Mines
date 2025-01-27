@@ -1,9 +1,8 @@
 using Assets.Source.Game.Scripts;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RageAbillityPresenter : IDisposable
+public class DarkPactAbilityPresenter : MonoBehaviour
 {
     private readonly ICoroutineRunner _coroutineRunner;
     private readonly IGameLoopService _gameLoopService;
@@ -11,31 +10,24 @@ public class RageAbillityPresenter : IDisposable
     private Ability _ability;
     private AbilityView _abilityView;
     private Player _player;
-    private List<Transform> _effectConteiner = new List<Transform>();
-    private List<PoolObject> _spawnedEffects = new ();
+    private Coroutine _coroutine;
+    private Transform _effectConteiner;
     private Pool _pool;
-    private PoolParticle _particleEffectPrefab;
-    private int _bonusDamage;
-    private float _bonusMoveSpeed;
-    private int _bonusArmor;
+    private PoolParticle _poolParticle;
+    private List<PoolObject> _spawnedEffects = new();
     private bool _isAbilityUse;
 
-    public RageAbillityPresenter(Ability ability, AbilityView abilityView, Player player, int boostDamage, float boostMoveSpeed, int boosArmor,
+    public DarkPactAbilityPresenter(Ability ability, AbilityView abilityView, Player player,
         IGameLoopService gameLoopService, ICoroutineRunner coroutineRunner, PoolParticle abilityEffect)
     {
         _ability = ability;
         _abilityView = abilityView;
         _player = player;
-        _pool = _player.Pool;
-        _particleEffectPrefab = abilityEffect;
-        _bonusDamage = boostDamage;
-        _bonusMoveSpeed = boostMoveSpeed;
-        _bonusArmor = boosArmor;
         _coroutineRunner = coroutineRunner;
         _gameLoopService = gameLoopService;
-        _effectConteiner.Add(_player.WeaponPoint);
-        _effectConteiner.Add(_player.AdditionalWeaponPoint);
-
+        _pool = _player.Pool;
+        _poolParticle = abilityEffect;
+        _effectConteiner = _player.PlayerAbilityContainer;
         AddListener();
     }
 
@@ -69,8 +61,12 @@ public class RageAbillityPresenter : IDisposable
 
     private void OnAbilityEnded(Ability ability)
     {
+        if (_coroutine != null)
+            _coroutineRunner.StopCoroutine(_coroutine);
+
         _isAbilityUse = false;
-        BoostPlayer(true);
+        ChandeAbilityEffect(_isAbilityUse);
+        _player.PlayerAnimation.UsedAbilityEnd();
     }
 
     private void OnButtonSkillClick()
@@ -78,43 +74,32 @@ public class RageAbillityPresenter : IDisposable
         if (_isAbilityUse)
             return;
 
-        _isAbilityUse = true;
+        // _isAbilityUse = true;
         _ability.Use();
     }
 
     private void OnAbilityUsed(Ability ability)
     {
-        BoostPlayer(false);
+        _isAbilityUse = true;
+        ChandeAbilityEffect(_isAbilityUse);
     }
 
-    private void BoostPlayer(bool isAbilityEnded)
+    private void ChandeAbilityEffect(bool isAbilityEnded)
     {
         if (isAbilityEnded)
-            _player.ChengeStats(-_bonusDamage, -_bonusMoveSpeed, -_bonusArmor);
-        else
-            _player.ChengeStats(_bonusDamage, _bonusMoveSpeed, _bonusArmor);
-
-        foreach (var conteiner in _effectConteiner)
-        {
-            ChangeEffectEneble(isAbilityEnded, conteiner);
-        }
-    }
-
-    private void ChangeEffectEneble(bool isAbilityEnded, Transform conteiner)
-    {
-        if (isAbilityEnded == false)
         {
             PoolParticle particle;
 
-            if (_pool.TryPoolObject(_particleEffectPrefab.gameObject, out PoolObject pollParticle))
+            if (_pool.TryPoolObject(_poolParticle.gameObject, out PoolObject pollParticle))
             {
                 particle = pollParticle as PoolParticle;
                 particle.gameObject.SetActive(true);
             }
             else
             {
-                particle = GameObject.Instantiate(_particleEffectPrefab, conteiner);
-                _pool.InstantiatePoolObject(particle, _particleEffectPrefab.name);
+                particle = GameObject.Instantiate(_poolParticle, _effectConteiner);
+                // particle = GameObject.Instantiate(_poolParticle, _effectConteiner.position, Quaternion.identity);
+                _pool.InstantiatePoolObject(particle, _poolParticle.name);
                 _spawnedEffects.Add(particle);
             }
         }
@@ -144,7 +129,6 @@ public class RageAbillityPresenter : IDisposable
             _ability.ResumeCoroutine();
     }
 
-   
     private void OnCooldownValueChanged(float value)
     {
         _abilityView.ChangeCooldownValue(value);

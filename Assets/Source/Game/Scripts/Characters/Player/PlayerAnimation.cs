@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Assets.Source.Game.Scripts
@@ -37,6 +38,16 @@ namespace Assets.Source.Game.Scripts
         public void AttackAnimation()
         {
             _animator.SetTrigger(_animationPlayer.AttackAnimation);
+        }
+
+        public void UseCoverAbility()
+        {
+            _animator.SetTrigger(_animationPlayer.CoverAnimation);
+        }
+
+        public void UsedAbilityEnd()
+        {
+            _animator.SetTrigger(_animationPlayer.EndAnimation);
         }
 
         private IEnumerator PlayingAnimationMove()

@@ -10,10 +10,12 @@ namespace Assets.Source.Game.Scripts
         private PlayerView _playerView;
 
         private List<Ability> _abilities = new ();
+        private List<Ability> _classAbilities = new ();
         private AbilityAttributeData _abilityAttributeData;
         private AbilityPresenterFactory _abilityPresenterFactory;
         private AbilityFactory _abilityFactory;
-        private List<ClassAbilityData> _classAbilityDatas = new();
+        private List<ClassAbilityData> _classAbilityDatas = new ();
+        private TemporaryData _temporaryData;
 
         private int _abilityDuration = 0;
         private int _abilityDamage = 0;
@@ -23,30 +25,32 @@ namespace Assets.Source.Game.Scripts
         public List<ClassAbilityData> ClassAbilityDatas => _classAbilityDatas;
 
         public event Action<AbilityAttributeData, int> AbilityTaked;
+        public event Action<ClassAbilityData, int> ClassSkillInitialized;
         public event Action<Ability> AbilityRemoved;
         public event Action<Ability> AbilityUsed;//++
         public event Action<Ability> AbilityEnded;//++
+        public event Action<Ability> ClassAbilityUsed;
+        public event Action<Ability> ClassAbilityEnded;
 
-        private void OnDestroy()
-        {
-            _playerView.AbilityViewCreated -= OnAbilityViewCreated;
-            DestroyAbilities();
-        }
-
-        public PlayerAbilityCaster(AbilityFactory abilityFactory, AbilityPresenterFactory abilityPresenterFactory, Player player, PlayerView playerView) 
+        public PlayerAbilityCaster(AbilityFactory abilityFactory, AbilityPresenterFactory abilityPresenterFactory, 
+            Player player, PlayerView playerView, TemporaryData temporaryData) 
         {
             _abilityFactory = abilityFactory;
             _abilityPresenterFactory = abilityPresenterFactory;
             _player = player;
             _playerView = playerView;
-
-            foreach (var skill in _player.ClassAbilityDatas)
-            {
-                _classAbilityDatas.Add(skill);
-            }
+            _temporaryData = temporaryData;
 
             _playerView.AbilityViewCreated += OnAbilityViewCreated;
-            _playerView.CreatedClassSkill += OnClassSkillsCreated;
+            _playerView.CreatedClassSkillView += OnClassSkillsCreated;
+        }
+
+        public void Initialize()
+        {
+            foreach (var skill in _temporaryData.PlayerClassData.ClassAbilityDatas)
+            {
+                CreateClassSkill(skill);
+            }
         }
 
         public void TakeAbility(CardView cardView)
@@ -63,33 +67,40 @@ namespace Assets.Source.Game.Scripts
                 AbilityTaked?.Invoke(_abilityAttributeData, cardView.CardState.CurrentLevel);
         }
 
-        private void OnClassSkillsCreated(ClassAbilityData classAbilityData, ClassSkillButtonView classSkillButtonView)
+        private void CreateClassSkill(ClassAbilityData abilityData)
+        {
+            ClassAbilityState classAbilityState = _temporaryData.GetClassAbilityState(abilityData.Id);
+
+            ClassSkillInitialized?.Invoke(abilityData, classAbilityState.CurrentLevel);
+        }
+
+        private void OnClassSkillsCreated(ClassAbilityData classAbilityData, ClassSkillButtonView classSkillButtonView, int currentLvl)
         {
             Ability newAbility;
-            newAbility = _abilityFactory.CreateClassSkill(classAbilityData, false);
+            newAbility = _abilityFactory.CreateClassSkill(classAbilityData, false, currentLvl);
 
-            if (classAbilityData.TypeAbility == TypeAbility.Summon)
+            if (classAbilityData.AbilityType == TypeAbility.Summon)
             {
                 _abilityPresenterFactory.CreateSummonAbilityPresenter(newAbility, classSkillButtonView, _player.ShotPoint, _player, (classAbilityData as SummonAbilityData).Summon.Summon, _player.Pool);
             }
-            
-            if (classAbilityData.TypeAbility == TypeAbility.ThrowAxe)
+
+            if (classAbilityData.AbilityType == TypeAbility.ThrowAxe)
             {
                 _abilityPresenterFactory.CreateThrowAxePresenter(newAbility, classSkillButtonView, _player, (classAbilityData as ThrowAxeClassAbility).AxemMssile);
             }
 
-            if (classAbilityData.TypeAbility == TypeAbility.JerkFront)
+            if (classAbilityData.AbilityType == TypeAbility.JerkFront)
             {
                 _abilityPresenterFactory.CreateJerkFrontAnillityPresenter(newAbility, classSkillButtonView, _player, (classAbilityData as JerkFrontAbilityData).PoolParticle);
             }
 
-            if (classAbilityData.TypeAbility == TypeAbility.Rage)
+            if (classAbilityData.AbilityType == TypeAbility.Rage)
             {
                 int boostDamage = 0;
                 float boosMoveSpeed = 0;
                 int boosArmor = 0;
 
-                foreach (CardParameter parameter in classAbilityData.Parameters[0].CardParameters)//так же нужен текущий уровень абики
+                foreach (CardParameter parameter in classAbilityData.Parameters[currentLvl].CardParameters)
                 {
                     if (parameter.TypeParameter == TypeParameter.Damage)
                         boostDamage = parameter.Value;
@@ -101,16 +112,41 @@ namespace Assets.Source.Game.Scripts
                         boosArmor = parameter.Value;
                 }
 
-                _abilityPresenterFactory.CreateRageAbilityPresenter(newAbility, 
+                _abilityPresenterFactory.CreateRageAbilityPresenter(newAbility,
                     classSkillButtonView, _player, boostDamage, boosMoveSpeed, boosArmor, (classAbilityData as RageClassAbilityData).RageEffect);
             }
+
+            if (classAbilityData.AbilityType == TypeAbility.Epiphany)
+            {
+                _abilityPresenterFactory.CreateEpiphanyAbilityPresenter(newAbility, classSkillButtonView, _player, (classAbilityData as EpiphanyClassAbilityData).EpiphanyParticle);
+            }
+
+            if (classAbilityData.AbilityType == TypeAbility.ShieldUp)
+            {
+                _abilityPresenterFactory.CreateShieldUpAbility(newAbility, classSkillButtonView, _player, (classAbilityData as ShieldUpAbility).PoolParticle);
+            }
+
+            if (classAbilityData.AbilityType == TypeAbility.SoulExplosion)
+            {
+                _abilityPresenterFactory.CreateSoulExplosionAbilityPresenter(newAbility, classSkillButtonView, _player, (classAbilityData as SoulExplosionAbilityData).DamageParticle);
+            }
+
+            if (classAbilityData.AbilityType == TypeAbility.DarkPact)
+            {
+                _abilityPresenterFactory.CreateDarkPactAbilityPresenter(newAbility, classSkillButtonView, _player, (classAbilityData as DarkPactAbilityData).PoolParticle);
+            }
+
+            newAbility.AbilityUsed += OnAbilityUsed;
+            newAbility.AbilityEnded += OnAbilityEnded;
+            _classAbilities.Add(newAbility);
         }
 
         private void OnAbilityViewCreated(AbilityView abilityView, ParticleSystem particleSystem, Transform throwPoint)
         {
             Ability newAbility = _abilityFactory.Create(_abilityAttributeData, _currentAbilityLevel, _abilityCooldownReduction, _abilityDuration, _abilityDamage, true);
 
-            if (_abilityAttributeData.TypeAbility != TypeAbility.AttackAbility)
+
+            if (_abilityAttributeData.AbilityType != TypeAbility.AttackAbility)
             {
                 _abilityPresenterFactory.CreateAmplifierAbilityPresenter(newAbility, abilityView, particleSystem);
             }
@@ -122,6 +158,7 @@ namespace Assets.Source.Game.Scripts
                     throwPoint,
                     particleSystem,
                     (_abilityAttributeData as AttackAbilityData).Spell);
+
 
             newAbility.AbilityUsed += OnAbilityUsed;
             newAbility.AbilityEnded += OnAbilityEnded;
@@ -163,6 +200,13 @@ namespace Assets.Source.Game.Scripts
 
             foreach (Ability ability in _abilities)
                 ability.Dispose();
+
+            foreach (var ability in _classAbilities)
+            {
+                ability.AbilityUsed -= OnAbilityUsed;
+                ability.AbilityEnded -= OnAbilityEnded;
+                ability.Dispose();
+            }
         }
 
         private bool TryGetAbility(AbilityAttributeData abilityAttributeData, out Ability oldAbility)
@@ -174,22 +218,26 @@ namespace Assets.Source.Game.Scripts
             {
                 foreach (Ability ability in _abilities)
                 {
-                    if (ability.TypeAbility == abilityAttributeData.TypeAbility)
-                    {
-                        if ((abilityAttributeData as AttackAbilityData) != null)
-                        {
-                            if (ability.TypeAttackAbility == (abilityAttributeData as AttackAbilityData).TypeAttackAbility)
-                            {
-                                oldAbility = ability;
-                                isFind = true;
-                            }
-                        }
-                        else
-                        {
-                            oldAbility = ability;
-                            isFind = true;
-                        }
-                    }
+                    //foreach (var type in ability.TypeAbility)
+                    //{
+                        
+                    //    //if (type == abilityAttributeData.AbilityTypes)
+                    //    //{
+                    //    //    if ((abilityAttributeData as AttackAbilityData) != null)
+                    //    //    {
+                    //    //        if (ability.TypeAttackAbility == (abilityAttributeData as AttackAbilityData).TypeAttackAbility)
+                    //    //        {
+                    //    //            oldAbility = ability;
+                    //    //            isFind = true;
+                    //    //        }
+                    //    //    }
+                    //    //    else
+                    //    //    {
+                    //    //        oldAbility = ability;
+                    //    //        isFind = true;
+                    //    //    }
+                    //    //}
+                    //}
                 }
             }
 
@@ -198,6 +246,8 @@ namespace Assets.Source.Game.Scripts
 
         public void Dispose()
         {
+            DestroyAbilities();
+            _playerView.AbilityViewCreated -= OnAbilityViewCreated;
             GC.SuppressFinalize(this);
         }
     }

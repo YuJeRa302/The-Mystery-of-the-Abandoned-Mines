@@ -36,7 +36,6 @@ public class Pool : MonoBehaviour
 
         foreach (var object1InPool in _poolObjects)
         {
-            Debug.Log(object1InPool.NameObject);
             if (object1InPool.NameObject == soughtObject.name)
                 result = object1InPool;
         }

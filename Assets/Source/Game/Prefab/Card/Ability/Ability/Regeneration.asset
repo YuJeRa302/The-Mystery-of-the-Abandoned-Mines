@@ -9,32 +9,32 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 02f9d96df1d2c444dbca494c7fd95bbc, type: 3}
-  m_Name: Blast
+  m_Script: {fileID: 11500000, guid: 2a494cf2680910546aed130036c1063c, type: 3}
+  m_Name: Regeneration
   m_EditorClassIdentifier: 
   _cardParameterView: {fileID: 1961483584371832456, guid: 6d57f6325ba58d6478a1fd35f1ba2831, type: 3}
   _parameters:
   - CardParameters:
-    - Value: 5
+    - Value: 3
       TypeParameter: 4
-    - Value: 2
+    - Value: 3
       TypeParameter: 5
-    - Value: 5
+    - Value: 10
       TypeParameter: 6
   - CardParameters:
     - Value: 5
       TypeParameter: 4
     - Value: 2
       TypeParameter: 5
-    - Value: 5
+    - Value: 15
       TypeParameter: 6
-  _name: Ability
-  _description: Ability
-  _icon: {fileID: 21300000, guid: a1abefe37b92e5c4681ef6ea75669835, type: 3}
-  _typeAbility: 3
+  _name: Regen
+  _description: REgen hp
+  _icon: {fileID: 21300000, guid: 853878fc3fe3c7943916a8701384ec62, type: 3}
+  _abilityType: 3
   _abilityView: {fileID: 7248082733305173889, guid: b41ccdfb932d3874d92c031e66d814ec, type: 3}
-  _particleSystem: {fileID: 19882774, guid: f6322404d6e3b914aa01ac044fb9415e, type: 3}
+  _particleSystem: {fileID: 19807068, guid: ee817f2a6f2d36f489f03cdf54902f0b, type: 3}
   _audioClip: {fileID: 0}
-  _spell: {fileID: 1654424239186438959, guid: 081f8bf11483ab544842add8457b3c62, type: 3}
-  _spellRadius: 2
-  _typeAttackAbility: 1
+  _typeMagic: 0
+  _legendaryParametersAbility: []
+  _typeEffect: 1

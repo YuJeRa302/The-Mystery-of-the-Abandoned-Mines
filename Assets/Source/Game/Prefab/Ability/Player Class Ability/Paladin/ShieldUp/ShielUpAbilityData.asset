@@ -63,5 +63,5 @@ MonoBehaviour:
       TypeParameter: 1
     - Value: -1
       TypeParameter: 9
-  _abilityType: 11
+  _abilityType: 12
   _poolParticle: {fileID: 6218049840532234276, guid: c3e43636e62735442b8f24f10242594e, type: 3}

@@ -9,6 +9,7 @@ namespace Assets.Source.Game.Scripts
     public class CardView : MonoBehaviour
     {
         [SerializeField] private Image _cardIcon;
+        [SerializeField] private Image _cardImage;
         [SerializeField] private Button _applyButton;
         [SerializeField] private LeanLocalizedText _cardName;
         [SerializeField] private LeanLocalizedText _description;
@@ -36,6 +37,12 @@ namespace Assets.Source.Game.Scripts
             _cardIcon.sprite = cardData.AttributeData.Icon;
             _cardName.TranslationName = cardData.AttributeData.NameCard;
             _description.TranslationName = cardData.AttributeData.Description;
+
+            _cardImage.color = new Color(
+                cardData.TypeCardColor[(int)cardData.TypeCardParameter].r,
+                cardData.TypeCardColor[(int)cardData.TypeCardParameter].g,
+                cardData.TypeCardColor[(int)cardData.TypeCardParameter].b);
+
             _applyButton.onClick.AddListener(TakeCard);
             CreateParameterField();
         }

@@ -34,7 +34,6 @@ namespace Assets.Source.Game.Scripts
         {
             _ability = ability;
             _abilityView = abilityView;
-            Debug.Log(_abilityView == null);
             _throwPoint = throwPoint;
             _particleSystem = particleSystem;
             _player = player;
@@ -172,9 +171,9 @@ namespace Assets.Source.Game.Scripts
             {
                 yield return new WaitForSeconds(_delayAttack);
 
-                if (_spellPrefab != null)
+                if (_spell != null)
                 {
-                    if (_spellPrefab.TryFindEnemy(out Enemy enemy))
+                    if (_spell.TryFindEnemy(out Enemy enemy))
                         enemy.TakeDamage(_ability.CurrentAbilityValue);
                 }
             }

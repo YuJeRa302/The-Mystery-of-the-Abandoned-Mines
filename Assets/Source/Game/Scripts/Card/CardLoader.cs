@@ -11,12 +11,11 @@ namespace Assets.Source.Game.Scripts
         private readonly int _shiftIndex = 1;
         private readonly int _maxCardsPool = 3;
 
-        [SerializeField] private List<CardState> _cardState;
         [SerializeField] private List<CardData> _cardData;
+        [SerializeField] private List<CardData> _defaultCardData;
 
         private CardDeck _cardDeck;
         private List<CardData> _mainCardsPool = new ();
-        private bool _isExtraAbilityLocked = false;
 
         public event Action CardPoolCreated;
 
@@ -29,10 +28,6 @@ namespace Assets.Source.Game.Scripts
 
         public void CreateCardPool()
         {
-            if (_cardDeck.CardDataAbility.Count == _maxCardsPool)
-                if(_isExtraAbilityLocked == false)
-                    LockAbilityCards();
-
             if (_mainCardsPool.Count > _minValue)
                 _mainCardsPool.Clear();
 
@@ -41,51 +36,14 @@ namespace Assets.Source.Game.Scripts
             GenerateMainPool(_cardData);
         }
 
-        public CardState GetCardStateById(int id)
-        {
-            foreach (var cardState in _cardState)
-            {
-                if (id == cardState.Id)
-                    return cardState;
-            }
-
-            return null;
-        }
-
-        private int GetMinWeightCards(List<CardState> cards)
-        {
-            int minWeight = 0;
-
-            foreach (var card in cards)
-            {
-                if (card.IsLocked == false)
-                    minWeight += card.Weight;
-            }
-
-            return _rnd.Next(_minValue, minWeight);
-        }
-
-        private int GetCountUnlockedCards(List<CardState> cards)
-        {
-            int countCards = 0;
-
-            foreach (var card in cards)
-            {
-                if (card.IsLocked == false)
-                    countCards++;
-            }
-
-            return countCards;
-        }
-
         private void GenerateMainPool(List<CardData> cardsData)
         {
             if (cardsData.Count > _minValue)
             {
                 int maxCardsPool;
                 int currentWeightCards = 0;
-                int controlWeight = GetMinWeightCards(_cardState);
-                int currentCountCards = GetCountUnlockedCards(_cardState);
+                int controlWeight = _cardDeck.GetMinWeightCards();
+                int currentCountCards = _cardDeck.GetCountUnlockedCards();
 
                 if (currentCountCards < _maxCardsPool)
                     maxCardsPool = currentCountCards;
@@ -98,9 +56,11 @@ namespace Assets.Source.Game.Scripts
 
                     if (newCard != null)
                         _mainCardsPool.Add(newCard);
+                    else
+                        _mainCardsPool.Add(AddDefaultCard());
                 }
 
-                ResetCardState();
+                _cardDeck.ResetCardState();
                 CardPoolCreated?.Invoke();
             }
         }
@@ -109,22 +69,18 @@ namespace Assets.Source.Game.Scripts
         {
             foreach (var card in cardsData)
             {
-                foreach (var cardState in _cardState)
-                {
-                    if (card.Id == cardState.Id)
-                    {
-                        if (cardState.IsLocked == false)
-                        {
-                            if (cardState.IsTaked == false)
-                            {
-                                currentWeightCards += cardState.Weight;
+                CardState cardState = _cardDeck.GetCardStateByData(card);
 
-                                if (currentWeightCards >= controlWeight)
-                                {
-                                    cardState.IsTaked = true;
-                                    return card;
-                                }
-                            }
+                if (cardState.IsLocked == false)
+                {
+                    if (cardState.IsTaked == false)
+                    {
+                        currentWeightCards += cardState.Weight;
+
+                        if (currentWeightCards >= controlWeight)
+                        {
+                            cardState.IsTaked = true;
+                            return card;
                         }
                     }
                 }
@@ -133,87 +89,21 @@ namespace Assets.Source.Game.Scripts
             return null;
         }
 
-        private void ResetCardState()
+        private CardData AddDefaultCard() 
         {
-            foreach (var card in _cardState)
-            {
-                card.IsTaked = false;
-            }
-        }
-        //private CardData AddCard(List<CardData> cardsData, int currentWeightCards, int controlWeight)
-        //{
-        //    foreach (var card in cardsData)
-        //    {
-        //        foreach (var cardState in _cardState)
-        //        {
-        //            if (card.Id == cardState.Id)
-        //            {
-        //                if (TryFindSameCard(cardState) == false)
-        //                {
-        //                    if (cardState.IsLocked == false)
-        //                    {
-        //                        currentWeightCards += cardState.Weight;
-
-        //                        if (currentWeightCards >= controlWeight)
-        //                            return card;
-        //                    }
-        //                }
-        //            }
-        //        }
-        //    }
-
-        //    return null;
-        //}
-
-        private bool TryFindSameCard(CardState cardState)
-        {
-            if (_mainCardsPool.Count > _minValue)
-            {
-                foreach (CardData card in _mainCardsPool)
-                {
-                    if (card.Id == cardState.Id)
-                        return true;
-                }
-            }
-
-            return false;
-        }
-
-        private void LockAbilityCards()
-        {
-            List<CardData> tempDatas = new ();
-            _cardData.ForEach(card => tempDatas.Add(card));
-
-            for (int index = 0; index < _cardDeck.CardDataAbility.Count; index++)
-            {
-                if (tempDatas.Contains(_cardDeck.CardDataAbility[index]))
-                    tempDatas.Remove(_cardDeck.CardDataAbility[index]);
-            }
-
-            foreach (var tempData in tempDatas)
-            {
-                foreach (var cardState in _cardState)
-                {
-                    if (tempData.Id == cardState.Id)
-                        if (tempData.TypeCardParameter == TypeCardParameter.Ability)
-                            cardState.IsLocked = true;
-                }
-            }
-
-            _isExtraAbilityLocked = true;
+            return _defaultCardData[_rnd.Next(_minValue, _defaultCardData.Count)];
         }
 
         private void LockUsedCards(List<CardData> cards)
         {
             foreach (var card in cards)
             {
-                foreach (var cardState in _cardState)
+                CardState cardState = _cardDeck.GetCardStateByData(card);
+
+                if (card.Id == cardState.Id)
                 {
-                    if (card.Id == cardState.Id)
-                    {
-                        if (card.AttributeData.CardParameters.Count <= cardState.CurrentLevel)
-                            cardState.IsLocked = true;
-                    }
+                    if (card.AttributeData.CardParameters.Count <= cardState.CurrentLevel)
+                        cardState.IsLocked = true;
                 }
             }
         }

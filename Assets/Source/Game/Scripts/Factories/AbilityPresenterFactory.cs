@@ -196,5 +196,24 @@ namespace Assets.Source.Game.Scripts
                     throw new ArgumentNullException("One or more arguments provided to the factory method are null.");
             }
         }
+
+        public GlobularLightningPresenter CreateGlobularLightningPresenter(
+            Ability ability,
+            AbilityView abilityView,
+            Player player,
+            ParticleSystem particleSystem,
+            LegendaryAbilitySpell spell)
+        {
+            GlobularLightningPresenter globularLightningPresenter = new(
+                ability,
+                abilityView,
+                player,
+                particleSystem,
+                _gameLoopService,
+                _coroutineRunner,
+                spell);
+
+            return globularLightningPresenter;
+        }
     }
 }

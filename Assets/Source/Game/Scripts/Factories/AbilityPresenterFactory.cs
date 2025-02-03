@@ -1,4 +1,5 @@
-using UnityEditor.Playables;
+using System;
+using System.Linq;
 using UnityEngine;
 
 namespace Assets.Source.Game.Scripts
@@ -8,10 +9,10 @@ namespace Assets.Source.Game.Scripts
         private readonly IGameLoopService _gameLoopService;
         private readonly ICoroutineRunner _coroutineRunner;
 
-        public AbilityPresenterFactory(IGameLoopService gameLoopService, ICoroutineRunner coroutineRunner) 
+        public AbilityPresenterFactory(IGameLoopService gameLoopService, ICoroutineRunner coroutineRunner)
         {
-            _gameLoopService = gameLoopService;
-            _coroutineRunner = coroutineRunner;
+            _gameLoopService = gameLoopService ?? throw new ArgumentNullException(nameof(gameLoopService));
+            _coroutineRunner = coroutineRunner ?? throw new ArgumentNullException(nameof(coroutineRunner));
         }
 
         public AttackAbilityPresenter CreateAttackAbilityPresenter(
@@ -20,9 +21,11 @@ namespace Assets.Source.Game.Scripts
             Player player,
             Transform throwPoint,
             ParticleSystem particleSystem,
-            Spell spell) 
+            Spell spell)
         {
-            AttackAbilityPresenter attackAbilityPresenter = new (
+            ValidateNotNull(ability, abilityView, player, throwPoint, particleSystem, spell);
+
+            return CreatePresenter<AttackAbilityPresenter>(
                 ability,
                 abilityView,
                 player,
@@ -31,26 +34,38 @@ namespace Assets.Source.Game.Scripts
                 _gameLoopService,
                 _coroutineRunner,
                 spell);
-
-            return attackAbilityPresenter;
         }
 
-        public AmplifierAbilityPresenter CreateAmplifierAbilityPresenter(Ability ability, AbilityView abilityView, ParticleSystem particleSystem) 
+        public AmplifierAbilityPresenter CreateAmplifierAbilityPresenter(Ability ability, AbilityView abilityView, ParticleSystem particleSystem)
         {
-            AmplifierAbilityPresenter amplifierAbilityPresenter = new (ability, abilityView, particleSystem, _gameLoopService);
-            return amplifierAbilityPresenter;
+            ValidateNotNull(ability, abilityView, particleSystem);
+
+            return CreatePresenter<AmplifierAbilityPresenter>(
+                ability,
+                abilityView,
+                particleSystem,
+                _gameLoopService);
         }
 
         public SummonAbillityPresenter CreateSummonAbilityPresenter(
-            Ability ability, 
+            Ability ability,
             AbilityView abilityView,
             Transform spawnPoint,
             Player player,
             Summon summonPrefab,
             Pool pool)
         {
-            SummonAbillityPresenter summonAbillityPresenter = new SummonAbillityPresenter(ability, abilityView, spawnPoint, player, _gameLoopService, _coroutineRunner, summonPrefab, pool);
-            return summonAbillityPresenter;
+            ValidateNotNull(ability, abilityView, spawnPoint, player, summonPrefab, pool);
+
+            return CreatePresenter<SummonAbillityPresenter>(
+                ability,
+                abilityView,
+                spawnPoint,
+                player,
+                _gameLoopService,
+                _coroutineRunner,
+                summonPrefab,
+                pool);
         }
 
         public ThrowAxeAbilityPresenter CreateThrowAxePresenter(
@@ -59,44 +74,127 @@ namespace Assets.Source.Game.Scripts
             Player player,
             AxemMssile axemMssile)
         {
-            ThrowAxeAbilityPresenter throwAxeAbilityPresenter = new ThrowAxeAbilityPresenter(ability, abilityView, player.ShotPoint, player, _gameLoopService, _coroutineRunner, axemMssile, player.Pool);
-            return throwAxeAbilityPresenter;
+            ValidateNotNull(ability, abilityView, player, axemMssile);
+
+            return CreatePresenter<ThrowAxeAbilityPresenter>(
+                ability,
+                abilityView,
+                player.ShotPoint,
+                player,
+                _gameLoopService,
+                _coroutineRunner,
+                axemMssile,
+                player.Pool);
         }
 
-        public JerkFrontAbillityPresenter CreateJerkFrontAnillityPresenter(Ability ability, AbilityView abilityView, Player player, PoolParticle abilityEffect)
+        public JerkFrontAbillityPresenter CreateJerkFrontAbilityPresenter(Ability ability, AbilityView abilityView, Player player, PoolParticle abilityEffect)
         {
-            JerkFrontAbillityPresenter jerkFrontAbillityPresenter = new JerkFrontAbillityPresenter(ability, abilityView, player, _gameLoopService, _coroutineRunner, abilityEffect);
-            return jerkFrontAbillityPresenter;
+            ValidateNotNull(ability, abilityView, player, abilityEffect);
+
+            return CreatePresenter<JerkFrontAbillityPresenter>(
+                ability,
+                abilityView,
+                player,
+                _gameLoopService,
+                _coroutineRunner,
+                abilityEffect);
         }
 
-        public RageAbillityPresenter CreateRageAbilityPresenter(Ability ability, AbilityView abilityView, Player player, int boostDamage, float boostMoveSpeed, int boosArmor, PoolParticle abilityEffect)
+        public RageAbillityPresenter CreateRageAbilityPresenter(Ability ability, AbilityView abilityView, Player player, int boostDamage, float boostMoveSpeed, int boostArmor, PoolParticle abilityEffect)
         {
-            RageAbillityPresenter rageAbillityPresenter = new RageAbillityPresenter(ability, abilityView, player, boostDamage, boostMoveSpeed, boosArmor, _gameLoopService, _coroutineRunner, abilityEffect);
-            return rageAbillityPresenter;
+            ValidateNotNull(ability, abilityView, player, abilityEffect);
+
+            return CreatePresenter<RageAbillityPresenter>(
+                ability,
+                abilityView,
+                player,
+                boostDamage,
+                boostMoveSpeed,
+                boostArmor,
+                _gameLoopService,
+                _coroutineRunner,
+                abilityEffect);
         }
 
         public EpiphanyAbilityPresenter CreateEpiphanyAbilityPresenter(Ability ability, AbilityView abilityView, Player player, PoolParticle abilityEffect)
         {
-            EpiphanyAbilityPresenter epiphanyAbilityPresenter = new EpiphanyAbilityPresenter(ability, abilityView, player, _gameLoopService, _coroutineRunner, abilityEffect);
-            return epiphanyAbilityPresenter;
+            ValidateNotNull(ability, abilityView, player, abilityEffect);
+
+            return CreatePresenter<EpiphanyAbilityPresenter>(
+                ability,
+                abilityView,
+                player,
+                _gameLoopService,
+                _coroutineRunner,
+                abilityEffect);
         }
 
         public ShildUpAbilityPresenter CreateShieldUpAbility(Ability ability, AbilityView abilityView, Player player, PoolParticle poolParticle)
         {
-            ShildUpAbilityPresenter shildUpAbility = new ShildUpAbilityPresenter(ability,abilityView, player, _gameLoopService, _coroutineRunner, poolParticle);
-            return shildUpAbility;
+            ValidateNotNull(ability, abilityView, player, poolParticle);
+
+            return CreatePresenter<ShildUpAbilityPresenter>(
+                ability,
+                abilityView,
+                player,
+                _gameLoopService,
+                _coroutineRunner,
+                poolParticle);
         }
 
         public SoulExplosionAbilityPresenter CreateSoulExplosionAbilityPresenter(Ability ability, AbilityView abilityView, Player player, PoolParticle poolParticle)
         {
-            SoulExplosionAbilityPresenter soulExplosionAbilityPresenter = new SoulExplosionAbilityPresenter(ability, abilityView, player, _gameLoopService, _coroutineRunner, poolParticle);
-            return soulExplosionAbilityPresenter;
+            ValidateNotNull(ability, abilityView, player, poolParticle);
+
+            return CreatePresenter<SoulExplosionAbilityPresenter>(
+                ability,
+                abilityView,
+                player,
+                _gameLoopService,
+                _coroutineRunner,
+                poolParticle);
         }
 
         public DarkPactAbilityPresenter CreateDarkPactAbilityPresenter(Ability ability, AbilityView abilityView, Player player, PoolParticle poolParticle)
         {
-            DarkPactAbilityPresenter darkPactAbilityPresenter = new DarkPactAbilityPresenter(ability, abilityView, player, _gameLoopService, _coroutineRunner, poolParticle);
-            return darkPactAbilityPresenter;
+            ValidateNotNull(ability, abilityView, player, poolParticle);
+
+            return CreatePresenter<DarkPactAbilityPresenter>(
+                ability,
+                abilityView,
+                player,
+                _gameLoopService,
+                _coroutineRunner,
+                poolParticle);
+        }
+
+        public StunningBlowAbilityPresenter CreateStunningBlowAbilityPresenter(Ability ability, AbilityView abilityView, Player player, PoolParticle poolParticle)
+        {
+            ValidateNotNull(ability, abilityView, player, poolParticle);
+
+            return CreatePresenter<StunningBlowAbilityPresenter>(
+                ability,
+                abilityView,
+                player,
+                _gameLoopService,
+                _coroutineRunner,
+                poolParticle);
+        }
+
+        private T CreatePresenter<T>(params object[] parameters) where T : class
+        {
+            var constructor = typeof(T).GetConstructor(parameters.Select(p => p.GetType()).ToArray());
+
+            return constructor?.Invoke(parameters) as T;
+        }
+
+        private void ValidateNotNull(params object[] objects)
+        {
+            foreach (var obj in objects)
+            {
+                if (obj == null)
+                    throw new ArgumentNullException("One or more arguments provided to the factory method are null.");
+            }
         }
     }
 }

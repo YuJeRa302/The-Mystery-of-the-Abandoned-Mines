@@ -9,6 +9,7 @@ public class PlayerProjectile : PoolObject
     private Vector3 _direction;
     private Coroutine _coroutine;
     private Rigidbody _rigidbody;
+    private DamageParametr _damageParametr;
     private float _moveSpeedBoost;
     private float _projectaleMoveSpeed = 2f;
 
@@ -39,7 +40,7 @@ public class PlayerProjectile : PoolObject
     {
         if (collision.collider.TryGetComponent(out Enemy enemy))
         {
-            enemy.TakeDamage(_damage);
+            enemy.TakeDamageTest(_damageParametr);
             ReturObjectPool();
         }
 
@@ -47,11 +48,12 @@ public class PlayerProjectile : PoolObject
             ReturObjectPool();
     }
 
-    public void Initialaze(Enemy target, float damage, float moveSpeedBoost)
+    public void Initialaze(Enemy target, float damage, float moveSpeedBoost, DamageParametr damageParametr)
     {
         _target = target;
         _damage = damage;
         _moveSpeedBoost = moveSpeedBoost;
+        _damageParametr = damageParametr;
 
         if (_coroutine != null)
             StopCoroutine(_coroutine);

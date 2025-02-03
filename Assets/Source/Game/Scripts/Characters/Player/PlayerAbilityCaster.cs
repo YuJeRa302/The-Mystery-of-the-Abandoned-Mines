@@ -91,7 +91,7 @@ namespace Assets.Source.Game.Scripts
 
             if (classAbilityData.AbilityType == TypeAbility.JerkFront)
             {
-                _abilityPresenterFactory.CreateJerkFrontAnillityPresenter(newAbility, classSkillButtonView, _player, (classAbilityData as JerkFrontAbilityData).PoolParticle);
+                _abilityPresenterFactory.CreateJerkFrontAbilityPresenter(newAbility, classSkillButtonView, _player, (classAbilityData as JerkFrontAbilityData).PoolParticle);
             }
 
             if (classAbilityData.AbilityType == TypeAbility.Rage)
@@ -134,6 +134,11 @@ namespace Assets.Source.Game.Scripts
             if (classAbilityData.AbilityType == TypeAbility.DarkPact)
             {
                 _abilityPresenterFactory.CreateDarkPactAbilityPresenter(newAbility, classSkillButtonView, _player, (classAbilityData as DarkPactAbilityData).PoolParticle);
+            }
+
+            if (classAbilityData.AbilityType == TypeAbility.StunningBlow)
+            {
+                _abilityPresenterFactory.CreateStunningBlowAbilityPresenter(newAbility, classSkillButtonView, _player, (classAbilityData as StunningBlowClassAbilityData).PoolParticle);
             }
 
             newAbility.AbilityUsed += OnAbilityUsed;

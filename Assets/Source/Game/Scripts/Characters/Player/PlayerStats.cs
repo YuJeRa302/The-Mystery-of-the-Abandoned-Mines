@@ -18,6 +18,7 @@ namespace Assets.Source.Game.Scripts
         private Player _player;
         private PlayerView _playerView;
         private float _speed = 2;
+        private float _ownSpeed;
         private int _currentLevel = 1;
         private int _currentUpgradeLevel = 0;
         private int _currentUpgradePoints = 0;
@@ -244,6 +245,12 @@ namespace Assets.Source.Game.Scripts
                         _regeneration += parameter.Value;
                         RegenerationChanged?.Invoke(_regeneration);
                     }
+                    else if (parameter.TypeParameter == TypeParameter.TargetMoveSpeed)
+                    {
+                        _ownSpeed = _speed;
+                        _speed = parameter.Value;
+                        MoveSpeedChanged?.Invoke(_speed);
+                    }
                 }
             }
         }
@@ -299,6 +306,11 @@ namespace Assets.Source.Game.Scripts
                     {
                         _regeneration -= parameter.Value;
                         RegenerationChanged?.Invoke(_regeneration);
+                    }
+                    else if (parameter.TypeParameter == TypeParameter.TargetMoveSpeed)
+                    {
+                        _speed = _ownSpeed;
+                        MoveSpeedChanged?.Invoke(_speed);
                     }
                 }
             }

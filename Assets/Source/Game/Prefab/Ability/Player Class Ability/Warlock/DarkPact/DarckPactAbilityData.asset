@@ -35,7 +35,7 @@ MonoBehaviour:
     - Value: 2
       TypeParameter: 2
     - Value: 0
-      TypeParameter: 9
+      TypeParameter: 13
   - CardParameters:
     - Value: 10
       TypeParameter: 6
@@ -44,7 +44,7 @@ MonoBehaviour:
     - Value: 3
       TypeParameter: 2
     - Value: 0
-      TypeParameter: 9
+      TypeParameter: 13
   - CardParameters:
     - Value: 9
       TypeParameter: 6
@@ -53,7 +53,7 @@ MonoBehaviour:
     - Value: 4
       TypeParameter: 2
     - Value: 0
-      TypeParameter: 9
+      TypeParameter: 13
   - CardParameters:
     - Value: 8
       TypeParameter: 6
@@ -62,6 +62,13 @@ MonoBehaviour:
     - Value: 5
       TypeParameter: 2
     - Value: 0
-      TypeParameter: 9
+      TypeParameter: 13
   _abilityType: 13
+  _typeDamage:
+    TypeDamage: 0
+    Damage: 0
+    SupportivePatametr: 0
+    Value: 0
+    Duration: 0
+    Particle: {fileID: 0}
   _poolParticle: {fileID: 7425594545007167068, guid: d2fb527ba5068ff469ce64c846a41a5f, type: 3}

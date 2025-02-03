@@ -42,7 +42,7 @@ namespace Assets.Source.Game.Scripts
             {
                 _searchRadius = 10f;
                 WarlockWeaponData paladinWeaponData = weaponData as WarlockWeaponData;
-                _bulletSpawner = new ProjectileSpawner(paladinWeaponData.BulletPrafab, _poolBullet, _shotPoint, _damage);
+                _bulletSpawner = new ProjectileSpawner(paladinWeaponData.BulletPrafab, _poolBullet, _shotPoint, _damage, _weaponData.DamageParametrs[0]);
             }
 
             _coolDownAttack = _coroutineRunner.StartCoroutine(CoolDownAttack());
@@ -137,13 +137,14 @@ namespace Assets.Source.Game.Scripts
         private void ApplyDamage()
         {
             if (_currentTarget != null)
-                _currentTarget.TakeDamage(_damage);
+            {
+               _currentTarget.TakeDamage(_damage);
+            }
 
             if (_coolDownAttack != null)
                 _coroutineRunner.StopCoroutine(_coolDownAttack);
 
             _coolDownAttack = _coroutineRunner.StartCoroutine(CoolDownAttack());
-            Debug.Log(_damage);
         }
 
         private void InstantiateBullet()

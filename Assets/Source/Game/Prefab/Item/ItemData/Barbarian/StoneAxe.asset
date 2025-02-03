@@ -26,3 +26,10 @@ MonoBehaviour:
   _bonusArmor: 0
   _translationName: 
   _icon: {fileID: 21300000, guid: e7ec2aa2eb8cbf94f85195933d1a98bb, type: 3}
+  _damageParametrs:
+  - TypeDamage: 1
+    Damage: 4
+    SupportivePatametr: 1
+    Value: 100
+    Duration: 2
+    Particle: {fileID: 19864276, guid: 2ed06ab528b7c474eb9246421cd7c791, type: 3}

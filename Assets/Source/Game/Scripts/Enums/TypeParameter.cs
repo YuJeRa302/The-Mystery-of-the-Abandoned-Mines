@@ -12,5 +12,7 @@ public enum TypeParameter
     MoveSpeed,
     Healing,
     AbilityDamage,
-    HealtReduce
+    HealtReduce,
+    TargetMoveSpeed,
+    Chance
 }

@@ -20,3 +20,4 @@ MonoBehaviour:
   _classAbilityDatas:
   - {fileID: 11400000, guid: b7a67ac52f7b1ce43a00dca1a164f82a, type: 2}
   - {fileID: 11400000, guid: 60b47b4c6c7e39648b9cb79507e92806, type: 2}
+  - {fileID: 11400000, guid: 228e1c59ac5ba974db1112fcbd8fe3bb, type: 2}

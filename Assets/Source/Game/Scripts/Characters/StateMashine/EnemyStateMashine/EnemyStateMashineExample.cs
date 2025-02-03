@@ -24,15 +24,24 @@ namespace Assets.Source.Game.Scripts
                 _stateMashine.UpdateStateMashine();
         }
 
+        private void OnDestroy()
+        {
+            _enemy.Stuned -= OnEnemyStuned;
+            _enemy.EndedStun -= OnEnemyEndedStun;
+        }
+
         public void InitializeStateMashine(Player target)
         {
             _meshAgent = GetComponent<NavMeshAgent>();
             _enemy = GetComponent<Enemy>();
+            _enemy.Stuned += OnEnemyStuned;
+            _enemy.EndedStun += OnEnemyEndedStun;
             _target = target;
             _stateMashine = new StateMashine();
 
             _stateMashine.AddState(new EnemyIdleState(_stateMashine, _target));
             _stateMashine.AddState(new EnemyMoveState(_stateMashine, _target, _meshAgent, _enemy));
+            _stateMashine.AddState(new EnemyStunedState(_stateMashine));
 
             if (_enemy.TryGetComponent(out Boss boss))
             {
@@ -65,6 +74,16 @@ namespace Assets.Source.Game.Scripts
         }
 
         public void ResetState()
+        {
+            _stateMashine.SetState<EnemyIdleState>();
+        }
+
+        private void OnEnemyStuned()
+        {
+            _stateMashine.SetState<EnemyStunedState>();
+        }
+
+        private void OnEnemyEndedStun()
         {
             _stateMashine.SetState<EnemyIdleState>();
         }

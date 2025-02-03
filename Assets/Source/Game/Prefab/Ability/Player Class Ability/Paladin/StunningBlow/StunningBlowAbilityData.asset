@@ -9,13 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b3d16deb986f8f43b7fd8096545d78d, type: 3}
-  m_Name: SoulExplosion
+  m_Script: {fileID: 11500000, guid: 840a534f1bd072048a5a6e2073d05d14, type: 3}
+  m_Name: StunningBlowAbilityData
   m_EditorClassIdentifier: 
-  _id: 15
-  _name: SoulExplosion
-  _icon: {fileID: 21300000, guid: 9c1bd758ff5093a428bf7013bb9aac33, type: 3}
-  _description: SoulExplosion
+  _id: 17
+  _name: StunningBlow
+  _icon: {fileID: 21300000, guid: b915a7ee8a2712a43a9ed2e24541c454, type: 3}
+  _description: StunningBlow
   _buttonView: {fileID: 7547704264931708372, guid: 226be77f080a72f41b3a154b64b3d4ae, type: 3}
   _abilityClassParameters:
   - Cost: 0
@@ -30,48 +30,48 @@ MonoBehaviour:
   - CardParameters:
     - Value: 10
       TypeParameter: 6
-    - Value: 4
+    - Value: 10
       TypeParameter: 5
-    - Value: 15
+    - Value: 5
       TypeParameter: 11
-    - Value: 20
-      TypeParameter: 12
-    - Value: 1
+    - Value: 100
       TypeParameter: 14
   - CardParameters:
     - Value: 10
       TypeParameter: 6
-    - Value: 4
-      TypeParameter: 5
-    - Value: 15
-      TypeParameter: 11
-    - Value: 20
-      TypeParameter: 12
-  - CardParameters:
-    - Value: 8
-      TypeParameter: 6
-    - Value: 4
-      TypeParameter: 5
-    - Value: 17
-      TypeParameter: 11
-    - Value: 15
-      TypeParameter: 12
-  - CardParameters:
-    - Value: 8
-      TypeParameter: 6
-    - Value: 4
-      TypeParameter: 5
-    - Value: 20
-      TypeParameter: 11
-    - Value: 10
-      TypeParameter: 12
-  _abilityType: 12
-  _damageParametr:
-    TypeDamage: 4
-    DamageSupportivePatametrs:
-    - Value: 15
-      SupportivePatametr: 0
     - Value: 1
-      SupportivePatametr: 3
-    Particle: {fileID: 0}
-  _damageParticle: {fileID: -174222988902138114, guid: c2d6d10a71d2fc742a1041abfd34b88a, type: 3}
+      TypeParameter: 5
+    - Value: 5
+      TypeParameter: 11
+    - Value: 25
+      TypeParameter: 14
+  - CardParameters:
+    - Value: 8
+      TypeParameter: 6
+    - Value: 1
+      TypeParameter: 5
+    - Value: 5
+      TypeParameter: 11
+    - Value: 25
+      TypeParameter: 14
+  - CardParameters:
+    - Value: 8
+      TypeParameter: 6
+    - Value: 2
+      TypeParameter: 5
+    - Value: 10
+      TypeParameter: 11
+    - Value: 50
+      TypeParameter: 14
+  _abilityType: 14
+  _damageParametr:
+    TypeDamage: 1
+    DamageSupportivePatametrs:
+    - Value: 5
+      SupportivePatametr: 0
+    - Value: 100
+      SupportivePatametr: 1
+    - Value: 10
+      SupportivePatametr: 2
+    Particle: {fileID: -8818530760380164550, guid: 2ed06ab528b7c474eb9246421cd7c791, type: 3}
+  _poolParticle: {fileID: 2488866898889339437, guid: 1a78f5ed4c5a86543a38af1e9c5773db, type: 3}

@@ -13,5 +13,6 @@ public enum TypeAbility
     Epiphany,
     ShieldUp,
     SoulExplosion,
-    DarkPact
+    DarkPact,
+    StunningBlow
 }

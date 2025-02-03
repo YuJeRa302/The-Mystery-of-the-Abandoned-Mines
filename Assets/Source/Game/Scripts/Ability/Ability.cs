@@ -18,6 +18,7 @@ namespace Assets.Source.Game.Scripts
         private float _abilityDuration;
         private float _moveSpeed;
         private float _reduceHealth;
+        private float _chance;
         private int _abilityValue;
         private int _regeneration;
         private int _defailtDamage;
@@ -35,6 +36,7 @@ namespace Assets.Source.Game.Scripts
         private Coroutine _duration;
         private bool _isAbilityUsed = false;
         private bool _isAutoCast = false;
+        private DamageParametr _damageParametr;
 
         public event Action AbilityRemoved;
         public event Action<Ability> AbilityUsed;
@@ -57,6 +59,7 @@ namespace Assets.Source.Game.Scripts
         public int DefailyHealing => _defailyHealing;
         public TypeAbility TypeAbility => _typeAbility;
         public TypeAttackAbility TypeAttackAbility => _typeAttackAbility;
+        public DamageParametr DamageParametr => _damageParametr;
 
         public Ability(
             AbilityAttributeData abilityAttributeData,
@@ -81,6 +84,7 @@ namespace Assets.Source.Game.Scripts
 
         public Ability(ClassAbilityData classAbilityData, bool isAutoCast, int currentLvl, ICoroutineRunner coroutineRunner)
         {
+            _damageParametr = classAbilityData.DamageParametr;
             FillClassSkillParametr(classAbilityData, currentLvl);
             _typeAbility = classAbilityData.AbilityType;
             _isAutoCast = isAutoCast;
@@ -156,6 +160,27 @@ namespace Assets.Source.Game.Scripts
                     _reduceHealth = parameter.Value;
                 else if (parameter.TypeParameter == TypeParameter.Regeneration)
                     _regeneration = parameter.Value;
+                else if (parameter.TypeParameter == TypeParameter.Chance)
+                    _chance = parameter.Value;
+            }
+
+            if (_damageParametr != null)
+            {
+                foreach (var parametr in _damageParametr.DamageSupportivePatametrs)
+                {
+                    if (parametr.SupportivePatametr == TypeSupportivePatametr.Damage)
+                    {
+                        parametr.Value = _abilityDamage;
+                    }
+                    else if (parametr.SupportivePatametr == TypeSupportivePatametr.Chence)
+                    {
+                        parametr.Value = _chance;
+                    }
+                    else if (parametr.SupportivePatametr == TypeSupportivePatametr.Duration)
+                    {
+                        parametr.Value = _defaultDuration;
+                    }
+                }
             }
         }
 

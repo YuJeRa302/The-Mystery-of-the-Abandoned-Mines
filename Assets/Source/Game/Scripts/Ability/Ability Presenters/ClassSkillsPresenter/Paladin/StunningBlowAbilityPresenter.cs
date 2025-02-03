@@ -1,10 +1,8 @@
 using Assets.Source.Game.Scripts;
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class JerkFrontAbillityPresenter : IDisposable
+public class StunningBlowAbilityPresenter : MonoBehaviour
 {
     private readonly ICoroutineRunner _coroutineRunner;
     private readonly IGameLoopService _gameLoopService;
@@ -13,14 +11,12 @@ public class JerkFrontAbillityPresenter : IDisposable
     private AbilityView _abilityView;
     private Player _player;
     private Coroutine _coroutine;
-    private Rigidbody _rigidbodyPlayer;
     private Transform _effectConteiner;
     private Pool _pool;
     private PoolParticle _poolParticle;
-    private List<PoolObject> _spawnedEffects = new();
     private bool _isAbilityUse;
 
-    public JerkFrontAbillityPresenter(Ability ability, AbilityView abilityView, Player player,
+    public StunningBlowAbilityPresenter(Ability ability, AbilityView abilityView, Player player,
         IGameLoopService gameLoopService, ICoroutineRunner coroutineRunner, PoolParticle abilityEffect)
     {
         _ability = ability;
@@ -31,7 +27,6 @@ public class JerkFrontAbillityPresenter : IDisposable
         _pool = _player.Pool;
         _poolParticle = abilityEffect;
         _effectConteiner = _player.PlayerAbilityContainer;
-        _rigidbodyPlayer = _player.GetComponent<Rigidbody>();
         AddListener();
     }
 
@@ -69,7 +64,6 @@ public class JerkFrontAbillityPresenter : IDisposable
             _coroutineRunner.StopCoroutine(_coroutine);
 
         _isAbilityUse = false;
-        ChandeAbilityEffect(_isAbilityUse);
     }
 
     private void OnButtonSkillClick()
@@ -77,15 +71,14 @@ public class JerkFrontAbillityPresenter : IDisposable
         if (_isAbilityUse)
             return;
 
-       // _isAbilityUse = true;
+        // _isAbilityUse = true;
         _ability.Use();
     }
 
     private void OnAbilityUsed(Ability ability)
     {
         _isAbilityUse = true;
-        ChandeAbilityEffect(_isAbilityUse);
-        Jerk();
+        CastBlow();
     }
 
     private void OnGameClosed()
@@ -104,55 +97,53 @@ public class JerkFrontAbillityPresenter : IDisposable
             _ability.ResumeCoroutine();
     }
 
-    private void Jerk()
+    private void CastBlow()
     {
-        if (_coroutine != null)
-            _coroutineRunner.StopCoroutine(_coroutine);
-
-        _coroutine = _coroutineRunner.StartCoroutine(JerkForward());
-
+        CreateParticle();
+        ApplayDamage();
     }
 
-    private void ChandeAbilityEffect(bool isAbilityEnded)
+    private void CreateParticle()
     {
-        if (isAbilityEnded)
-        {
-            PoolParticle particle;
+        PoolParticle particle;
 
-            if (_pool.TryPoolObject(_poolParticle.gameObject, out PoolObject pollParticle))
-            {
-                particle = pollParticle as PoolParticle;
-                particle.gameObject.SetActive(true);
-            }
-            else
-            {
-                particle = GameObject.Instantiate(_poolParticle, _effectConteiner);
-               // particle = GameObject.Instantiate(_poolParticle, _effectConteiner.position, Quaternion.identity);
-                _pool.InstantiatePoolObject(particle, _poolParticle.name);
-                _spawnedEffects.Add(particle);
-                (particle as DamageParticle).Initialaze(_ability.AbilityDamage, _ability.DamageParametr);
-            }
+        if (_pool.TryPoolObject(_poolParticle.gameObject, out PoolObject pollParticle))
+        {
+            particle = pollParticle as PoolParticle;
+            particle.transform.position = _effectConteiner.position;
+            particle.gameObject.SetActive(true);
         }
         else
         {
-            foreach (var patricle in _spawnedEffects)
+            particle = GameObject.Instantiate(_poolParticle, _effectConteiner);
+            _pool.InstantiatePoolObject(particle, _poolParticle.name);
+        }
+    }
+
+    private void ApplayDamage()
+    {
+        if (TryFindEnemy(out List<Enemy> findedEnemies))
+        {
+            foreach (var enemy in findedEnemies)
             {
-                if (patricle.isActiveAndEnabled)
-                    patricle.ReturObjectPool();
+                enemy.TakeDamageTest(_ability.DamageParametr);
             }
         }
     }
 
-    private IEnumerator JerkForward()
+    private bool TryFindEnemy(out List<Enemy> findedEnemies)
     {
-        float currentTime = 0;
+        Collider[] coliderEnemy = Physics.OverlapSphere(_player.transform.position, 4f);
+        List<Enemy> enemies = new ();
 
-        while (currentTime <= _ability.CurrentDuration)
+        foreach (Collider collider in coliderEnemy)
         {
-            _rigidbodyPlayer.AddForce(_player.transform.forward * _ability.CurrentAbilityValue, ForceMode.Impulse);
-            currentTime += Time.deltaTime;
-            yield return null;
+            if (collider.TryGetComponent(out Enemy enemy))
+                enemies.Add(enemy);
         }
+
+        findedEnemies = enemies;
+        return findedEnemies != null;
     }
 
     private void OnCooldownValueChanged(float value)

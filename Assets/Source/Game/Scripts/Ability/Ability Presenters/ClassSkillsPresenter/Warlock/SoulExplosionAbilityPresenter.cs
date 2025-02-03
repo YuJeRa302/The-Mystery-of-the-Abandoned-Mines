@@ -113,7 +113,7 @@ public class SoulExplosionAbilityPresenter : MonoBehaviour
         else
         {
             particle = GameObject.Instantiate(_poolParticle, _effectConteiner);
-            (particle as DamageParticle).Initialaze(_ability.AbilityDamage);
+            (particle as DamageParticle).Initialaze(_ability.AbilityDamage, _ability.DamageParametr);
             _pool.InstantiatePoolObject(particle, _poolParticle.name);
         }
     }

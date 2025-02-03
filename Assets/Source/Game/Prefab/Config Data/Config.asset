@@ -36,6 +36,8 @@ MonoBehaviour:
     CurrentLevel: 0
   - Id: 16
     CurrentLevel: 0
+  - Id: 17
+    CurrentLevel: 0
   _defaultWeaponState:
   - Id: 0
     IsEquip: 0

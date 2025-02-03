@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Weapon", menuName = "Create Weapon/Weapon", order = 51)]
@@ -12,6 +13,7 @@ public class WeaponData : ScriptableObject
     [SerializeField] private int _bonusArmor;
     [SerializeField] private string _translationName;
     [SerializeField] private Sprite _icon;
+    [SerializeField] private List<DamageParametr> _damageParametrs;
 
     public Color TierColor => _tierColor[_tier];
     public int Tier => _tier;
@@ -22,4 +24,5 @@ public class WeaponData : ScriptableObject
     public WeponPrefab WeaponPrefab => _weaponPrefab;
     public int BonusDamage => _bonusDamage;
     public int BonusArmor => _bonusArmor;
+    public List<DamageParametr> DamageParametrs => _damageParametrs;
 }

@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d01db19974d612e4ca71e3619df19276, type: 3}
   m_Name: DragonStaff
   m_EditorClassIdentifier: 
-  _id: 11
-  _tier: 3
+  _id: 2
+  _tier: 0
   _tierColor:
   - {r: 1, g: 1, b: 1, a: 0}
   - {r: 0.23921569, g: 1, b: 0.21568628, a: 0}
@@ -26,4 +26,14 @@ MonoBehaviour:
   _bonusArmor: 0
   _translationName: 
   _icon: {fileID: 21300000, guid: b6d2559a80abdf64b965a8b3afddf9b4, type: 3}
+  _damageParametrs:
+  - TypeDamage: 2
+    DamageSupportivePatametrs:
+    - Value: 10
+      SupportivePatametr: 0
+    - Value: 2
+      SupportivePatametr: 2
+    - Value: 0.56
+      SupportivePatametr: 5
+    Particle: {fileID: 1461602671872348846, guid: 0b5e7793d4d1e854385c5ce9b1e79f47, type: 3}
   _bulletPrefab: {fileID: 3623676734272699723, guid: 02610e2a098d59544b206043c820636a, type: 3}

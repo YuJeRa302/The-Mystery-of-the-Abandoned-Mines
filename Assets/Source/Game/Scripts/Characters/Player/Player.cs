@@ -24,9 +24,7 @@ namespace Assets.Source.Game.Scripts
         private PlayerAnimation _playerAnimation;
         private PlayerHealth _playerHealth;
         private PlayerMovement _playerMovment;
-        private List<ClassAbilityData> _classAbilityDatas = new ();
 
-        public List<ClassAbilityData> ClassAbilityDatas => _classAbilityDatas;
         public Pool Pool => _poolBullet;
         public Transform WeaponAbilityContainer => _weaponAbilityContainer;
         public Transform PlayerAbilityContainer => _playerAbilityContainer;
@@ -117,7 +115,6 @@ namespace Assets.Source.Game.Scripts
         private void OnMoveSpeedChanged(float value)
         {
             _playerMovment.ChangeMoveSpeed(value);
-            Debug.Log(value);
         }
 
         private void OnDamageChenged(int value)

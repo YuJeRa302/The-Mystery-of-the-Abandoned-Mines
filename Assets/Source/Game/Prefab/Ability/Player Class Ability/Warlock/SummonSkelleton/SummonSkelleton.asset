@@ -55,5 +55,5 @@ MonoBehaviour:
       TypeParameter: 5
     - Value: 10
       TypeParameter: 6
-  _abilityType: 6
+  _abilityType: 7
   _summonData: {fileID: 11400000, guid: 26e4bd4476e87af49b6012ade3e6eaf3, type: 2}

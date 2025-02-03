@@ -38,7 +38,7 @@ namespace Assets.Source.Game.Scripts
             {
                 _stateMashine.AddState(new BossAttackState(_stateMashine, _target, _enemy));
 
-                if(_enemy.TryGetComponent(out GoldDragon goldDragon))
+                if (_enemy.TryGetComponent(out GoldDragon goldDragon))
                 {
                     _stateMashine.AddState(new AditionalAttackGoldDragon(_stateMashine, _target, _enemy));
                     _stateMashine.AddState(new SpecialAttackGoldDragon(_stateMashine, _target, _enemy));

@@ -63,5 +63,5 @@ MonoBehaviour:
       TypeParameter: 11
     - Value: 10
       TypeParameter: 12
-  _abilityType: 12
+  _abilityType: 13
   _damageParticle: {fileID: -174222988902138114, guid: c2d6d10a71d2fc742a1041abfd34b88a, type: 3}

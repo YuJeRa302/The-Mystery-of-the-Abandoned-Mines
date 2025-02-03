@@ -67,7 +67,7 @@ namespace Assets.Source.Game.Scripts
             {
                 CardView view = Instantiate(_cardView, _cardContainer);
                 _cardViews.Add(view);
-                view.Initialize(_cardLoader.GetCardStateById(cardData.Id), cardData);
+                view.Initialize(_player.CardDeck.GetCardStateByData(cardData), cardData);
                 view.CardTaked += OnCardTaked;
             }
         }

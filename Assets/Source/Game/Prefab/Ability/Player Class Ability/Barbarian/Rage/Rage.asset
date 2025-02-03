@@ -71,5 +71,5 @@ MonoBehaviour:
       TypeParameter: 6
     - Value: 9
       TypeParameter: 5
-  _abilityType: 9
+  _abilityType: 10
   _rageEffect: {fileID: 1869056104995865337, guid: 12aa6d89f37fe0b41ab0da8adc26824b, type: 3}

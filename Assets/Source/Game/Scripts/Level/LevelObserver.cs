@@ -77,13 +77,13 @@ namespace Assets.Source.Game.Scripts
                 temporaryData, out Player player);
 
             _player = player;
-            _cardPanel.Initialize(_player);
             _playerView.Initialize(_player, temporaryData.PlayerClassData.Icon);
             _player.PlayerAbilityCaster.Initialize();
             _cameraControiler.SetLookTarget(_player.transform);
-            AddListener();
+            _cardPanel.Initialize(_player);
             _enemySpawner.SetTotalEnemyCount(_roomPlacer.AllEnemyCount, _player);
             _navSurface.BuildNavMesh();
+            AddListener();
         }
 
         public void ResumeByRewarded()

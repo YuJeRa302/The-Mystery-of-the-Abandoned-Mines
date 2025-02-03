@@ -9,10 +9,8 @@ namespace Assets.Source.Game.Scripts
     {
         private readonly int _minValue = 0;
         private readonly ICoroutineRunner _coroutineRunner;
-
         private float _currentDuration;
         private float _defaultDuration;
-        
         private int _currentAbilityValue;
         private float _abilityCooldownReduction;
         private float _abilityDuration;
@@ -24,12 +22,8 @@ namespace Assets.Source.Game.Scripts
         private int _abilityDamage;
         private int _defailtArmor;
         private int _defailyHealing;
-
-        private TypeAbility _typeAbility;
-        private TypeAttackAbility _typeAttackAbility;
-        
-        private float _defaultDelay;
-        private float _currentDelay;
+        private float _defaultCooldown;
+        private float _currentCooldown;
         private AudioClip _audioClip;
         private Coroutine _coolDown;
         private Coroutine _duration;
@@ -55,8 +49,11 @@ namespace Assets.Source.Game.Scripts
         public int DefailtArmor => _defailtArmor;
         public int AbilityDamage => _abilityDamage;
         public int DefailyHealing => _defailyHealing;
-        public TypeAbility TypeAbility => _typeAbility;
-        public TypeAttackAbility TypeAttackAbility => _typeAttackAbility;
+        public int CurrentLevel { get; private set; }
+        public int MaxLevel { get; private set; }
+        public TypeMagic TypeMagic { get; private set; }
+        public TypeAbility TypeAbility { get; private set; }
+        public TypeAttackAbility TypeAttackAbility { get; private set; }
 
         public Ability(
             AbilityAttributeData abilityAttributeData,
@@ -68,21 +65,46 @@ namespace Assets.Source.Game.Scripts
             ICoroutineRunner coroutineRunner)
         {
             FillAbilityParameters(abilityAttributeData, currentLevel);
-            _typeAbility = abilityAttributeData.AbilityType;
             _audioClip = abilityAttributeData.AudioClip;
-            _typeAttackAbility = (abilityAttributeData as AttackAbilityData) != null ? (abilityAttributeData as AttackAbilityData).TypeAttackAbility : 0;
             _coroutineRunner = coroutineRunner;
             _abilityCooldownReduction = abilityCooldownReduction;
             _abilityDuration = abilityDuration;
             _abilityValue = abilityValue;
             _isAutoCast = isAutoCast;
+            TypeAbility = abilityAttributeData.TypeAbility;
+            TypeAttackAbility = (abilityAttributeData as AttackAbilityData) != null ? (abilityAttributeData as AttackAbilityData).TypeAttackAbility : 0;
+            TypeMagic = abilityAttributeData.TypeMagic;
+            MaxLevel = abilityAttributeData.CardParameters.Count;
+            UpdateAbilityParamters();
+        }
+
+        public Ability(
+            LegendaryAbilityData legendaryAbilityData,
+            AbilityAttributeData abilityAttributeData,
+            float abilityCooldownReduction,
+            float abilityDuration,
+            int abilityValue,
+            bool isAutoCast,
+            ICoroutineRunner coroutineRunner)
+        {
+            FillLegendaryAbilityParameters(legendaryAbilityData);
+            _audioClip = abilityAttributeData.AudioClip;
+            _coroutineRunner = coroutineRunner;
+            _abilityCooldownReduction = abilityCooldownReduction;
+            _abilityDuration = abilityDuration;
+            _abilityValue = abilityValue;
+            _isAutoCast = isAutoCast;
+            TypeAbility = abilityAttributeData.TypeAbility;
+            TypeAttackAbility = (abilityAttributeData as AttackAbilityData) != null ? (abilityAttributeData as AttackAbilityData).TypeAttackAbility : 0;
+            TypeMagic = abilityAttributeData.TypeMagic;
+            MaxLevel = abilityAttributeData.CardParameters.Count;
             UpdateAbilityParamters();
         }
 
         public Ability(ClassAbilityData classAbilityData, bool isAutoCast, int currentLvl, ICoroutineRunner coroutineRunner)
         {
             FillClassSkillParametr(classAbilityData, currentLvl);
-            _typeAbility = classAbilityData.AbilityType;
+            TypeAbility = classAbilityData.AbilityType;
             _isAutoCast = isAutoCast;
             _coroutineRunner = coroutineRunner;
             AmplifierParametrs = classAbilityData.Parameters[currentLvl].CardParameters;
@@ -112,11 +134,12 @@ namespace Assets.Source.Game.Scripts
                 _coroutineRunner.StopCoroutine(_coolDown);
         }
 
-        public void Upgrade(AbilityAttributeData abilityAttributeData, int currentLevel) 
+        public void Upgrade(AbilityAttributeData abilityAttributeData, int currentLevel)
         {
             FillAbilityParameters(abilityAttributeData, currentLevel);
             UpdateAbilityParamters();
-            AbilityUpgraded?.Invoke(_defaultDelay);
+            CurrentLevel = currentLevel;
+            AbilityUpgraded?.Invoke(_defaultCooldown);
         }
 
         private void FillAbilityParameters(AbilityAttributeData abilityAttributeData, int currentLevel)
@@ -124,10 +147,23 @@ namespace Assets.Source.Game.Scripts
             foreach (CardParameter parameter in abilityAttributeData.CardParameters[currentLevel].CardParameters)
             {
                 if (parameter.TypeParameter == TypeParameter.AbilityCooldown)
-                    _defaultDelay = parameter.Value;
+                    _defaultCooldown = parameter.Value;
                 else if (parameter.TypeParameter == TypeParameter.AbilityValue)
                     _currentAbilityValue = parameter.Value;
-                else
+                else if (parameter.TypeParameter == TypeParameter.AbilityDuration)
+                    _defaultDuration = parameter.Value;
+            }
+        }
+
+        private void FillLegendaryAbilityParameters(LegendaryAbilityData legendaryAbilityData)
+        {
+            foreach (CardParameter parameter in legendaryAbilityData.LegendaryAbilityParameters[_minValue].CardParameters)
+            {
+                if (parameter.TypeParameter == TypeParameter.AbilityCooldown)
+                    _defaultCooldown = parameter.Value;
+                else if (parameter.TypeParameter == TypeParameter.AbilityValue)
+                    _currentAbilityValue = parameter.Value;
+                else if (parameter.TypeParameter == TypeParameter.AbilityDuration)
                     _defaultDuration = parameter.Value;
             }
         }
@@ -137,7 +173,7 @@ namespace Assets.Source.Game.Scripts
             foreach (CardParameter parameter in abilityAttributeData.Parameters[currentLevel].CardParameters)
             {
                 if (parameter.TypeParameter == TypeParameter.AbilityCooldown)
-                    _defaultDelay = parameter.Value;
+                    _defaultCooldown = parameter.Value;
                 else if (parameter.TypeParameter == TypeParameter.AbilityValue)
                     _currentAbilityValue = parameter.Value;
                 else if (parameter.TypeParameter == TypeParameter.AbilityDuration)
@@ -159,20 +195,20 @@ namespace Assets.Source.Game.Scripts
             }
         }
 
-        private void UpdateAbilityParamters() 
+        private void UpdateAbilityParamters()
         {
-            _defaultDelay -= _abilityCooldownReduction;
+            _defaultCooldown -= _abilityCooldownReduction;
             _defaultDuration += _abilityDuration;
             _currentAbilityValue += _abilityValue;
         }
 
         private void ApplyAbility()
         {
-            _currentDelay = _defaultDelay;
+            _currentCooldown = _defaultCooldown;
             _currentDuration = _defaultDuration;
             IsAbilityEnded = false;
             //Player.PlayerSounds.PlayAbilityAudio(_audioClip);
-            UpdateAbility(true, _currentDelay);
+            UpdateAbility(true, _currentCooldown);
             _duration = _coroutineRunner.StartCoroutine(DurationAbility());
             ResumeCoroutine();
             AbilityUsed?.Invoke(this);
@@ -221,10 +257,10 @@ namespace Assets.Source.Game.Scripts
 
         private IEnumerator CoolDown()
         {
-            while (_currentDelay > _minValue)
+            while (_currentCooldown > _minValue)
             {
-                _currentDelay -= Time.deltaTime;
-                CooldownValueChanged?.Invoke(_currentDelay);
+                _currentCooldown -= Time.deltaTime;
+                CooldownValueChanged?.Invoke(_currentCooldown);
                 yield return null;
             }
 

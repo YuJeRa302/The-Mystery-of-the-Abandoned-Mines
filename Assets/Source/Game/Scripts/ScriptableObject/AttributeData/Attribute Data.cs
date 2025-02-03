@@ -3,6 +3,7 @@ using UnityEngine;
 
 namespace Assets.Source.Game.Scripts
 {
+    [CreateAssetMenu(fileName = "New Attribute", menuName = "Create Attribute/Attribute  ", order = 51)]
     public abstract class AttributeData : ScriptableObject
     {
         [SerializeField] private CardParameterView _cardParameterView;

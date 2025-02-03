@@ -42,7 +42,7 @@ namespace Assets.Source.Game.Scripts
 
             _settingsView.Initialize(settingsViewModel, _audioPlayer);
             _upgradesView.Initialize(upgradeViewModel, _audioPlayer);
-            _mainMenuView.Initialize(mainMenuViewModel);
+            _mainMenuView.Initialize(mainMenuViewModel, _audioPlayer);
             _levelsView.Initialize(levelsViewModel, _audioPlayer);
             _weaponsView.Initialize(weaponsViewModel, _audioPlayer);
             _classAbilityView.Initialize(classAbilityViewModel, _audioPlayer);

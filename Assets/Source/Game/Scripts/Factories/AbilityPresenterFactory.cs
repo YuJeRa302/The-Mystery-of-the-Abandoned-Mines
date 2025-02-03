@@ -1,4 +1,3 @@
-using UnityEditor.Playables;
 using UnityEngine;
 
 namespace Assets.Source.Game.Scripts
@@ -8,7 +7,7 @@ namespace Assets.Source.Game.Scripts
         private readonly IGameLoopService _gameLoopService;
         private readonly ICoroutineRunner _coroutineRunner;
 
-        public AbilityPresenterFactory(IGameLoopService gameLoopService, ICoroutineRunner coroutineRunner) 
+        public AbilityPresenterFactory(IGameLoopService gameLoopService, ICoroutineRunner coroutineRunner)
         {
             _gameLoopService = gameLoopService;
             _coroutineRunner = coroutineRunner;
@@ -20,9 +19,9 @@ namespace Assets.Source.Game.Scripts
             Player player,
             Transform throwPoint,
             ParticleSystem particleSystem,
-            Spell spell) 
+            Spell spell)
         {
-            AttackAbilityPresenter attackAbilityPresenter = new (
+            AttackAbilityPresenter attackAbilityPresenter = new(
                 ability,
                 abilityView,
                 player,
@@ -35,14 +34,14 @@ namespace Assets.Source.Game.Scripts
             return attackAbilityPresenter;
         }
 
-        public AmplifierAbilityPresenter CreateAmplifierAbilityPresenter(Ability ability, AbilityView abilityView, ParticleSystem particleSystem) 
+        public AmplifierAbilityPresenter CreateAmplifierAbilityPresenter(Ability ability, AbilityView abilityView, ParticleSystem particleSystem)
         {
-            AmplifierAbilityPresenter amplifierAbilityPresenter = new (ability, abilityView, particleSystem, _gameLoopService);
+            AmplifierAbilityPresenter amplifierAbilityPresenter = new(ability, abilityView, particleSystem, _gameLoopService);
             return amplifierAbilityPresenter;
         }
 
         public SummonAbillityPresenter CreateSummonAbilityPresenter(
-            Ability ability, 
+            Ability ability,
             AbilityView abilityView,
             Transform spawnPoint,
             Player player,
@@ -83,7 +82,7 @@ namespace Assets.Source.Game.Scripts
 
         public ShildUpAbilityPresenter CreateShieldUpAbility(Ability ability, AbilityView abilityView, Player player, PoolParticle poolParticle)
         {
-            ShildUpAbilityPresenter shildUpAbility = new ShildUpAbilityPresenter(ability,abilityView, player, _gameLoopService, _coroutineRunner, poolParticle);
+            ShildUpAbilityPresenter shildUpAbility = new ShildUpAbilityPresenter(ability, abilityView, player, _gameLoopService, _coroutineRunner, poolParticle);
             return shildUpAbility;
         }
 
@@ -97,6 +96,25 @@ namespace Assets.Source.Game.Scripts
         {
             DarkPactAbilityPresenter darkPactAbilityPresenter = new DarkPactAbilityPresenter(ability, abilityView, player, _gameLoopService, _coroutineRunner, poolParticle);
             return darkPactAbilityPresenter;
+        }
+
+        public GlobularLightningPresenter CreateGlobularLightningPresenter(
+            Ability ability,
+            AbilityView abilityView,
+            Player player,
+            ParticleSystem particleSystem,
+            LegendaryAbilitySpell spell)
+        {
+            GlobularLightningPresenter globularLightningPresenter = new(
+                ability,
+                abilityView,
+                player,
+                particleSystem,
+                _gameLoopService,
+                _coroutineRunner,
+                spell);
+
+            return globularLightningPresenter;
         }
     }
 }

@@ -365,6 +365,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _cardIcon: {fileID: 325692580849942035}
+  _cardImage: {fileID: 573619192602463577}
   _applyButton: {fileID: 7955762831413705802}
   _cardName: {fileID: 3150708014576717024}
   _description: {fileID: 327234470653411526}

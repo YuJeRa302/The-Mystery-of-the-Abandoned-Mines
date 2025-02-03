@@ -6,6 +6,7 @@ public enum TypeAbility
     RegenerationAmplifier,
     Healing,
     AttackAbility,
+    PassiveAbility,
     Summon,
     ThrowAxe,
     JerkFront,

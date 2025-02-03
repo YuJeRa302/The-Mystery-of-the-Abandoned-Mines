@@ -1,6 +1,4 @@
 using System;
-using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,6 +6,7 @@ namespace Assets.Source.Game.Scripts
 {
     public class PlayerView : MonoBehaviour
     {
+        private readonly int _firstIndex = 0;
         private readonly int _indexAbilityDelay = 2;
 
         [SerializeField] private GameObject _mobileInterface;
@@ -22,25 +21,24 @@ namespace Assets.Source.Game.Scripts
         [Space(20)]
         [SerializeField] private Transform _abilityObjectContainer;
         [SerializeField] private Transform _classSkillsContainer;
+        [SerializeField] private Transform _passiveAbilityContainer;
         [SerializeField] private Transform _playerEffectsContainer;
         [SerializeField] private Transform _weaponEffectsContainer;
-        [SerializeField] private Transform _throwPoint;
         [Space(20)]
         [SerializeField] private Button _minimapButton;
         [SerializeField] private Button _minimapCloseButton;
         [SerializeField] private GameObject _minimap;
         [SerializeField] private Image _playerIcon;
 
+        private Transform _throwPoint;
         private Player _player;
         private ParticleSystem _abilityEffect;
         private float _delay;
 
         public event Action<AbilityView, ParticleSystem, Transform> AbilityViewCreated;
         public event Action<ClassAbilityData, ClassSkillButtonView, int> CreatedClassSkillView;
-
-        private void Awake()
-        {
-        }
+        public event Action<AbilityView, ParticleSystem, Transform> LegendaryAbilityViewCreated;
+        public event Action<PassiveAbilityView> PassiveAbilityViewCreated;
 
         private void OnDestroy()
         {
@@ -48,6 +46,8 @@ namespace Assets.Source.Game.Scripts
             _player.PlayerStats.ExperienceValueChanged -= OnChangeExperience;
             _player.PlayerStats.UpgradeExperienceValueChanged -= OnChangeUpgradeExperience;
             _player.PlayerAbilityCaster.AbilityTaked -= OnAbilityTaked;
+            _player.PlayerAbilityCaster.PassiveAbilityTaked -= OnPassiveAbilityTaked;
+            _player.PlayerAbilityCaster.LegendaryAbilityTaked -= OnLegendaryAbilityTaked;
             _player.PlayerStats.KillCountChanged -= OnChangeKillCount;
             _player.PlayerAbilityCaster.ClassSkillInitialized -= OnClassSkillViewCreate;
             _minimapButton.onClick.RemoveListener(OnMinimapButtonClick);
@@ -103,7 +103,7 @@ namespace Assets.Source.Game.Scripts
             _mobileInterface.SetActive(true);
         }
 
-        private void OnClassSkillViewCreate(ClassAbilityData abilityData, int currentLvl)//нужно поучать текущий уровень абики из темпори дата.
+        private void OnClassSkillViewCreate(ClassAbilityData abilityData, int currentLvl)
         {
             ClassSkillButtonView abilityView;
 
@@ -127,6 +127,8 @@ namespace Assets.Source.Game.Scripts
             _player.PlayerStats.ExperienceValueChanged += OnChangeExperience;
             _player.PlayerStats.UpgradeExperienceValueChanged += OnChangeUpgradeExperience;
             _player.PlayerAbilityCaster.AbilityTaked += OnAbilityTaked;
+            _player.PlayerAbilityCaster.PassiveAbilityTaked += OnPassiveAbilityTaked;
+            _player.PlayerAbilityCaster.LegendaryAbilityTaked += OnLegendaryAbilityTaked;
             _player.PlayerStats.KillCountChanged += OnChangeKillCount;
             _player.PlayerAbilityCaster.ClassSkillInitialized += OnClassSkillViewCreate;
             _minimapButton.onClick.AddListener(OnMinimapButtonClick);
@@ -139,21 +141,56 @@ namespace Assets.Source.Game.Scripts
             _minimap.SetActive(!isActive);
         }
 
+        private void OnPassiveAbilityTaked(PassiveAttributeData passiveAttributeData)
+        {
+            PassiveAbilityView view = Instantiate(passiveAttributeData.PassiveAbilityView, _passiveAbilityContainer);
+            view.Initialize(passiveAttributeData);
+            PassiveAbilityViewCreated?.Invoke(view);
+        }
+
+        private void OnLegendaryAbilityTaked(AbilityAttributeData abilityAttributeData)
+        {
+            float currentAbilityCooldown = 0f;
+
+            if (abilityAttributeData.TypeAbility != TypeAbility.AttackAbility)
+            {
+                if ((abilityAttributeData as DefaultAbilityData).TypeEffect == TypeEffect.Weapon)
+                    _abilityEffect = Instantiate(abilityAttributeData.ParticleSystem, _weaponEffectsContainer);
+                else
+                    _abilityEffect = Instantiate(abilityAttributeData.ParticleSystem, _playerEffectsContainer);
+            }
+            else
+            {
+                _abilityEffect = abilityAttributeData.ParticleSystem;
+            }
+
+            AbilityView abilityView = Instantiate(abilityAttributeData.AbilityView, _abilityObjectContainer);
+
+            foreach (var parametr in abilityAttributeData.LegendaryAbilityData.LegendaryAbilityParameters[_firstIndex].CardParameters)
+            {
+                if (parametr.TypeParameter == TypeParameter.AbilityCooldown)
+                    currentAbilityCooldown = parametr.Value;
+            }
+
+            abilityView.Initialize(abilityAttributeData.LegendaryAbilityData.Icon, currentAbilityCooldown);
+            LegendaryAbilityViewCreated?.Invoke(abilityView, _abilityEffect, _throwPoint);
+        }
+
         private void OnAbilityTaked(AbilityAttributeData abilityAttributeData, int currentLevel)
         {
             AbilityView abilityView;
 
-            //if (abilityAttributeData.AbilityTypes != TypeAbility.AttackAbility)
-            //{
-            //    if ((abilityAttributeData as DefaultAbilityData).TypeEffect == TypeEffect.Weapon)
-            //        _abilityEffect = Instantiate(abilityAttributeData.ParticleSystem, _weaponEffectsContainer);
-            //    else
-            //        _abilityEffect = Instantiate(abilityAttributeData.ParticleSystem, _playerEffectsContainer);
-            //}
-            //else
-            //{
-            //    _abilityEffect = abilityAttributeData.ParticleSystem;
-            //}
+            if (abilityAttributeData.TypeAbility != TypeAbility.AttackAbility)
+            {
+                if ((abilityAttributeData as DefaultAbilityData).TypeEffect == TypeEffect.Weapon)
+                    _abilityEffect = Instantiate(abilityAttributeData.ParticleSystem, _weaponEffectsContainer);
+                else
+                    _abilityEffect = Instantiate(abilityAttributeData.ParticleSystem, _playerEffectsContainer);
+            }
+            else
+            {
+                _abilityEffect = abilityAttributeData.ParticleSystem;
+            }
 
             abilityView = Instantiate(abilityAttributeData.AbilityView, _abilityObjectContainer);
             abilityView.Initialize(abilityAttributeData.Icon, abilityAttributeData.CardParameters[currentLevel].CardParameters[_indexAbilityDelay].Value);

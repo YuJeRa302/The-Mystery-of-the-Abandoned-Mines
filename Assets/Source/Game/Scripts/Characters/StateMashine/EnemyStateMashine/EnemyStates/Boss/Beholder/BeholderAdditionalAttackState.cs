@@ -18,7 +18,7 @@ public class BeholderAdditionalAttackState : BossAdditionalAttackState
         _shotPoints = boss.ShotPoints;
         _maxShotPointIndex = _shotPoints.Length;
         _currentShotPointIndex = 0;
-        _bulletSpawner = new BulletSpawner(boss.Bullet, boss.Pool, _shotPoints[_currentShotPointIndex], boss.Damage);
+        _bulletSpawner = new BulletSpawner(boss.Bullet, boss.Pool, _shotPoints[_currentShotPointIndex], _enemy);
 
         _animationController.AdditionalAttacked += AditionalAttackAppalyDamage;
         _animationController.AnimationCompleted += OnAllowTransition;

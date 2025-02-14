@@ -115,7 +115,7 @@ public class EpiphanyAbilityPresenter : IDisposable
         else
         {
             particle = GameObject.Instantiate(_poolParticle, _effectConteiner.position, Quaternion.identity);
-            (particle as DamageParticle).Initialaze(_ability.AbilityDamage, _ability.DamageParametr);
+            (particle as DamageParticle).Initialaze(_ability.DamageParametr);
             _pool.InstantiatePoolObject(particle, _poolParticle.name);
         }
     }

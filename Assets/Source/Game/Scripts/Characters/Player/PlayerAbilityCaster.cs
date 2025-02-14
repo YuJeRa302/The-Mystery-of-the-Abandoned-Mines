@@ -13,6 +13,7 @@ namespace Assets.Source.Game.Scripts
         private TemporaryData _temporaryData;
         private List<Ability> _abilities = new ();
         private List<Ability> _classAbilities = new ();
+        private List<Ability> _legendaryAbilities = new ();
         private List<ClassAbilityData> _classAbilityDatas = new ();
         private List<PassiveAbilityView> _passiveAbilityViews = new ();
         private AbilityAttributeData _abilityAttributeData;
@@ -28,10 +29,8 @@ namespace Assets.Source.Game.Scripts
         public event Action<AbilityAttributeData, int> AbilityTaked;
         public event Action<AbilityAttributeData> LegendaryAbilityTaked;
         public event Action<Ability> AbilityRemoved;
-        public event Action<Ability> AbilityUsed;//++
-        public event Action<Ability> AbilityEnded;//++
-        public event Action<Ability> ClassAbilityUsed;
-        public event Action<Ability> ClassAbilityEnded;
+        public event Action<Ability> AbilityUsed;
+        public event Action<Ability> AbilityEnded;
 
         public List<ClassAbilityData> ClassAbilityDatas => _classAbilityDatas;
 
@@ -74,13 +73,15 @@ namespace Assets.Source.Game.Scripts
                 _currentAbilityLevel = cardView.CardState.CurrentLevel;
 
                 if (TryGetAbility(_abilityAttributeData, out Ability ability))
-                    ability.Upgrade(_abilityAttributeData, _currentAbilityLevel);
+                    ability.Upgrade(ability.AbilityAttribute, _currentAbilityLevel);
                 else
                     AbilityTaked?.Invoke(_abilityAttributeData, cardView.CardState.CurrentLevel);
             }
 
+            _abilityAttributeData = null;
+
             if (TrySetLegendaryAbility(out Ability legendAbility))
-                CreateLegendaryAbility(legendAbility, _abilityAttributeData);
+                CreateLegendaryAbility(legendAbility, legendAbility.AbilityAttribute);
         }
 
         public void Dispose()
@@ -213,30 +214,42 @@ namespace Assets.Source.Game.Scripts
             _abilities.Add(newAbility);
         }
 
-        private void OnLegendaryAbilityViewCreated(AbilityView abilityView, ParticleSystem particleSystem, Transform throwPoint)
+        private void OnLegendaryAbilityViewCreated(AbilityView abilityView, ParticleSystem particleSystem, Transform throwPoint, AbilityAttributeData abilityAttributeData)
         {
             Ability newAbility = _abilityFactory.CreateLegendaryAbility(
-                (_abilityAttributeData as AttackAbilityData).LegendaryAbilityData,
-                _abilityAttributeData,
+                (abilityAttributeData as AttackAbilityData).LegendaryAbilityData,
+                abilityAttributeData,
                 _abilityCooldownReduction,
                 _abilityDuration,
                 _abilityDamage, 
                 true);
 
-            switch (_abilityAttributeData.TypeMagic)
+            switch (abilityAttributeData.TypeMagic)
             {
                 case TypeMagic.ElectricSphere:
                     _abilityPresenterFactory.CreateGlobularLightningPresenter(
                         newAbility,
                         abilityView,
                         _player,
-                        particleSystem, (_abilityAttributeData as AttackAbilityData).LegendaryAbilityData.LegendaryAbilitySpell);
+                        particleSystem, (abilityAttributeData as AttackAbilityData).LegendaryAbilityData.LegendaryAbilitySpell);
+                    break;
+                case TypeMagic.FireBall:
+                    //_abilityPresenterFactory.CreateFirestormPresenter(
+                    //    newAbility,
+                    //    abilityView,
+                    //    _player,
+                    //    particleSystem, (abilityAttributeData as AttackAbilityData).LegendaryAbilityData.LegendaryAbilitySpell);
+                    _abilityPresenterFactory.CreateMetiorSowerPresenter(newAbility,
+                        abilityView,
+                        _player,
+                        (abilityAttributeData as AttackAbilityData).LegendaryAbilityData.Particle, 
+                        (abilityAttributeData as AttackAbilityData).LegendaryAbilityData.LegendaryAbilitySpell);
                     break;
             }
 
             newAbility.AbilityUsed += OnAbilityUsed;
             newAbility.AbilityEnded += OnAbilityEnded;
-            _abilities.Add(newAbility);
+            _legendaryAbilities.Add(newAbility);
         }
 
         private void OnAbilityUsed(Ability ability)
@@ -285,6 +298,7 @@ namespace Assets.Source.Game.Scripts
                                 {
                                     newability = ability;
                                     isFind = true;
+                                    return isFind;
                                 }
                             }
                         }
@@ -306,18 +320,21 @@ namespace Assets.Source.Game.Scripts
                 {
                     if (ability.TypeAbility == abilityAttributeData.TypeAbility)
                     {
-                        if ((abilityAttributeData as AttackAbilityData) != null)
+                        if(ability.TypeMagic == abilityAttributeData.TypeMagic)
                         {
-                            if (ability.TypeAttackAbility == (abilityAttributeData as AttackAbilityData).TypeAttackAbility)
+                            if ((abilityAttributeData as AttackAbilityData) != null)
+                            {
+                                if (ability.TypeAttackAbility == (abilityAttributeData as AttackAbilityData).TypeAttackAbility)
+                                {
+                                    oldAbility = ability;
+                                    isFind = true;
+                                }
+                            }
+                            else
                             {
                                 oldAbility = ability;
                                 isFind = true;
                             }
-                        }
-                        else
-                        {
-                            oldAbility = ability;
-                            isFind = true;
                         }
                     }
                 }
@@ -328,6 +345,12 @@ namespace Assets.Source.Game.Scripts
 
         private void CreateLegendaryAbility(Ability ability, AbilityAttributeData abilityAttributeData)
         {
+            foreach (var item in _legendaryAbilities)
+            {
+                if (item.TypeMagic == ability.TypeMagic)
+                    return;
+            }
+
             ability.Dispose();
             LegendaryAbilityTaked?.Invoke(abilityAttributeData);
         }

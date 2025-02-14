@@ -108,7 +108,7 @@ public class ThrowAxeAbilityPresenter : IDisposable
             axemMssile = GameObject.Instantiate(_axemMssile, _throwPoint.position, UnityEngine.Quaternion.identity);
 
             _pool.InstantiatePoolObject(axemMssile, _axemMssile.name);
-            axemMssile.Initialaze(_player, _player.PlayerAttacker.Damage, _player.PlayerMovment.MoveSpeed);
+            axemMssile.Initialaze(_player, _player.PlayerAttacker.DamageParametr, _player.PlayerMovment.MoveSpeed);
 
             //if (_deadParticles.ContainsKey(enemyData.PrefabEnemy.name) == false)
             //{

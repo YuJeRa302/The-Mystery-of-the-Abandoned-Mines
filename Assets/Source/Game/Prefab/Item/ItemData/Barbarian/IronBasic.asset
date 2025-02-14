@@ -26,3 +26,15 @@ MonoBehaviour:
   _bonusArmor: 0
   _translationName: Axe iron
   _icon: {fileID: 21300000, guid: 0652f9f0f786c00419b69a9a6fbac662, type: 3}
+  _damageParametrs:
+  - TypeDamage: 0
+    DamageSupportivePatametrs:
+    - Value: 5
+      SupportivePatametr: 0
+    Particle: {fileID: 0}
+  _weaponPatametr:
+    WeaponSupportivePatametrs:
+    - Value: 100
+      SupportivePatametr: 3
+    - Value: 10
+      SupportivePatametr: 2

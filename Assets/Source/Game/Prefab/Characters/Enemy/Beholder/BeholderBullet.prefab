@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3615135354490148290}
   - component: {fileID: 3361599913625701133}
   - component: {fileID: 8553094871727607849}
-  m_Layer: 8
+  m_Layer: 9
   m_Name: SparkleTrail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4779,7 +4779,7 @@ GameObject:
   - component: {fileID: 8897072296481454812}
   - component: {fileID: 7459180664632576323}
   - component: {fileID: 8909898707149073432}
-  m_Layer: 8
+  m_Layer: 9
   m_Name: GlowTrail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9560,7 +9560,7 @@ GameObject:
   - component: {fileID: 1532001016508319374}
   - component: {fileID: 5343375161627747546}
   - component: {fileID: -7431796448912824277}
-  m_Layer: 8
+  m_Layer: 9
   m_Name: BeholderBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}

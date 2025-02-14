@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using UnityEditor.Playables;
 using UnityEngine;
 
 namespace Assets.Source.Game.Scripts
@@ -23,17 +24,8 @@ namespace Assets.Source.Game.Scripts
             ParticleSystem particleSystem,
             Spell spell)
         {
-            ValidateNotNull(ability, abilityView, player, throwPoint, particleSystem, spell);
-
-            return CreatePresenter<AttackAbilityPresenter>(
-                ability,
-                abilityView,
-                player,
-                throwPoint,
-                particleSystem,
-                _gameLoopService,
-                _coroutineRunner,
-                spell);
+            AttackAbilityPresenter attackAbilityPresenter = new AttackAbilityPresenter(ability, abilityView, player, throwPoint, particleSystem, _gameLoopService, _coroutineRunner, spell);
+            return attackAbilityPresenter;
         }
 
         public AmplifierAbilityPresenter CreateAmplifierAbilityPresenter(Ability ability, AbilityView abilityView, ParticleSystem particleSystem)
@@ -214,6 +206,27 @@ namespace Assets.Source.Game.Scripts
                 spell);
 
             return globularLightningPresenter;
+        }
+
+        public FirestormPresenter CreateFirestormPresenter(Ability ability,
+            AbilityView abilityView,
+            Player player,
+            ParticleSystem particleSystem,
+            LegendaryAbilitySpell spell)
+        {
+            FirestormPresenter firestormPresenter = new FirestormPresenter(ability, abilityView, player, player.ThrowAbilityPoint, particleSystem, _gameLoopService, _coroutineRunner, spell);
+
+            return firestormPresenter;
+        }
+
+        public MetiorSowerPresenter CreateMetiorSowerPresenter(Ability ability,
+            AbilityView abilityView,
+            Player player,
+            ParticleSystem particleSystem,
+            LegendaryAbilitySpell spell)
+        {
+            MetiorSowerPresenter metiorSower = new MetiorSowerPresenter(ability, abilityView, player, particleSystem, _gameLoopService, _coroutineRunner, spell);
+            return metiorSower;
         }
     }
 }

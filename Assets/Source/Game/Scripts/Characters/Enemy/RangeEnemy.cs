@@ -14,9 +14,10 @@ namespace Assets.Source.Game.Scripts
         public EnemyBullet Bullet => _bullet;
         public Transform ShootPoint => _shootPoint;
 
-        private void OnEnable()
+        public override void Initialize(Player player, int id, int lvlRoom, int damage, int health, float attackDelay, float attackDistance, float moveSpeed)
         {
-            _bulletSpawner = new BulletSpawner(_bullet, _pool, _shootPoint, _damage);
+            _bulletSpawner = new BulletSpawner(_bullet, _pool, _shootPoint, this);
+            base.Initialize(player, id, lvlRoom, damage, health, attackDelay, attackDistance, moveSpeed);
         }
     }
 }

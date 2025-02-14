@@ -613,6 +613,8 @@ MonoBehaviour:
   _throwAbilityPoint: {fileID: 5186116703229223242}
   _playerAbilityContainer: {fileID: 3131744272062703345}
   _weaponAbilityContainer: {fileID: 2490256430192700955}
+  _critDamageParticle: {fileID: 5731346321264051609, guid: a1786e11c65b34245acb9e7166bce3ba, type: 3}
+  _vampirismParticle: {fileID: 7431331362718704324, guid: 88e2ca157caa14e4db3df5e4ba13b8fd, type: 3}
 --- !u!114 &3665270091436053377
 MonoBehaviour:
   m_ObjectHideFlags: 0

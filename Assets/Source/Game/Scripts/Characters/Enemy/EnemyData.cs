@@ -15,6 +15,9 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private int _score;
         [SerializeField] private int _timeSpawn;
         [SerializeField] private int _enemyCount;
+        [SerializeField] private float _moveSpeed;
+        [SerializeField] private float _attackDistance;
+        [SerializeField] private float _attackDelay;
         [Header("[Ability Stats]")]
         [SerializeField] private float[] _abilityCoolDown;
         [SerializeField] private int[] _abilityDamage;
@@ -37,6 +40,9 @@ namespace Assets.Source.Game.Scripts
         public int Health => _health;
         public int ExperienceReward => _experienceReward;
         public int Score => _score;
+        public float MoveSpeed => _moveSpeed;
+        public float AttackDistance => _attackDistance;
+        public float AttackDelay => _attackDelay;
         public float[] AbilityCoolDown => _abilityCoolDown;
         public int[] AbilityDamage => _abilityDamage;
         //public ParticleSystem EnemyHitParticleSystem => _enemyHitParticleSystem;

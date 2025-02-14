@@ -113,6 +113,9 @@ namespace Assets.Source.Game.Scripts
             if (_ability.TypeAttackAbility == TypeAttackAbility.ProjectileAbility)
                 ThrowBlast();
 
+            if (_ability.TypeAttackAbility == TypeAttackAbility.TargetSpell)
+                CreateTargetSpell();
+
             if (_damageDealCoroutine != null)
                 _coroutineRunner.StopCoroutine(_damageDealCoroutine);
 
@@ -147,10 +150,19 @@ namespace Assets.Source.Game.Scripts
         {
             _spell = GameObject.Instantiate(
                 _spellPrefab,
-                new Vector3(_throwPoint.transform.position.x, _throwPoint.transform.position.y, _throwPoint.transform.position.z),
+                new Vector3(_throwPoint.transform.position.x, _spellPrefab.transform.position.y, _throwPoint.transform.position.z),
                 Quaternion.identity);
 
-            _direction = _throwPoint.transform.forward;
+            if (TryFindEnemy(out Enemy enemy))
+            {
+                Transform curretnTarget = enemy.transform;
+                _direction = (curretnTarget.position - _player.transform.position).normalized;
+            }
+            else
+            {
+                _direction = _throwPoint.forward;
+            }
+
             _spell.Initialize(_particleSystem, _ability.CurrentDuration);
             _blastThrowingCoroutine = _coroutineRunner.StartCoroutine(ThrowingBlast());
         }
@@ -165,8 +177,44 @@ namespace Assets.Source.Game.Scripts
             _spell.Initialize(_particleSystem, _ability.CurrentDuration);
         }
 
+        private void CreateTargetSpell()
+        {
+            Vector3 targetPosition;
+
+            if (TryFindEnemy(out Enemy enemy))
+            {
+                targetPosition = enemy.transform.position;
+            }
+            else
+            {
+                targetPosition = _player.transform.position;
+            }
+
+            _spell = GameObject.Instantiate(
+                _spellPrefab,
+                targetPosition,
+                Quaternion.identity);
+
+            _spell.Initialize(_particleSystem, _ability.CurrentDuration);
+        }
+
+        public bool TryFindEnemy(out Enemy enemy)
+        {
+            Collider[] coliderEnemy = Physics.OverlapSphere(_player.transform.position, 20);
+
+            foreach (Collider collider in coliderEnemy)
+            {
+                if (collider.TryGetComponent(out enemy))
+                    return true;
+            }
+
+            enemy = null;
+            return false;
+        }
+
         private IEnumerator DealDamage()
         {
+            Debug.Log("DealDamage");
             while (_ability.IsAbilityEnded == false)
             {
                 yield return new WaitForSeconds(_delayAttack);
@@ -174,7 +222,10 @@ namespace Assets.Source.Game.Scripts
                 if (_spell != null)
                 {
                     if (_spell.TryFindEnemy(out Enemy enemy))
-                        enemy.TakeDamage(_ability.CurrentAbilityValue);
+                    {
+                        //enemy.TakeDamage(_ability.CurrentAbilityValue);
+                        enemy.TakeDamageTest(_ability.DamageParametr);
+                    }
                 }
             }
         }

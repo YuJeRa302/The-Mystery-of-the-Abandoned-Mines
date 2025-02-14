@@ -58,6 +58,7 @@ namespace Assets.Source.Game.Scripts
         public TypeMagic TypeMagic { get; private set; }
         public TypeAbility TypeAbility { get; private set; }
         public TypeAttackAbility TypeAttackAbility { get; private set; }
+        public AbilityAttributeData AbilityAttribute { get; private set; }
 
         public Ability(
             AbilityAttributeData abilityAttributeData,
@@ -68,12 +69,13 @@ namespace Assets.Source.Game.Scripts
             bool isAutoCast,
             ICoroutineRunner coroutineRunner)
         {
+            AbilityAttribute = abilityAttributeData;
+            _abilityValue = abilityValue;
             FillAbilityParameters(abilityAttributeData, currentLevel);
             _audioClip = abilityAttributeData.AudioClip;
             _coroutineRunner = coroutineRunner;
             _abilityCooldownReduction = abilityCooldownReduction;
             _abilityDuration = abilityDuration;
-            _abilityValue = abilityValue;
             _isAutoCast = isAutoCast;
             TypeAbility = abilityAttributeData.TypeAbility;
             TypeAttackAbility = (abilityAttributeData as AttackAbilityData) != null ? (abilityAttributeData as AttackAbilityData).TypeAttackAbility : 0;
@@ -91,12 +93,12 @@ namespace Assets.Source.Game.Scripts
             bool isAutoCast,
             ICoroutineRunner coroutineRunner)
         {
+            _abilityValue = abilityValue;
             FillLegendaryAbilityParameters(legendaryAbilityData);
             _audioClip = abilityAttributeData.AudioClip;
             _coroutineRunner = coroutineRunner;
             _abilityCooldownReduction = abilityCooldownReduction;
             _abilityDuration = abilityDuration;
-            _abilityValue = abilityValue;
             _isAutoCast = isAutoCast;
             TypeAbility = abilityAttributeData.TypeAbility;
             TypeAttackAbility = (abilityAttributeData as AttackAbilityData) != null ? (abilityAttributeData as AttackAbilityData).TypeAttackAbility : 0;
@@ -145,6 +147,7 @@ namespace Assets.Source.Game.Scripts
             UpdateAbilityParamters();
             CurrentLevel = currentLevel;
             AbilityUpgraded?.Invoke(_defaultCooldown);
+            Debug.Log(TypeMagic + "Undate");
         }
 
         private void FillAbilityParameters(AbilityAttributeData abilityAttributeData, int currentLevel)
@@ -157,6 +160,30 @@ namespace Assets.Source.Game.Scripts
                     _currentAbilityValue = parameter.Value;
                 else if (parameter.TypeParameter == TypeParameter.AbilityDuration)
                     _defaultDuration = parameter.Value;
+            }
+
+            if (abilityAttributeData as AttackAbilityData)
+            {
+                _damageParametr = (abilityAttributeData as AttackAbilityData).DamageParametr;
+            }
+
+            if (_damageParametr != null)
+            {
+                foreach (var parametr in _damageParametr.DamageSupportivePatametrs)
+                {
+                    if (parametr.SupportivePatametr == TypeSupportivePatametr.Damage)
+                    {
+                        parametr.Value = _currentAbilityValue;
+                    }
+                    else if (parametr.SupportivePatametr == TypeSupportivePatametr.Chence)
+                    {
+                        parametr.Value = _chance;
+                    }
+                    else if (parametr.SupportivePatametr == TypeSupportivePatametr.Duration)
+                    {
+                        parametr.Value = _defaultDuration;
+                    }
+                }
             }
         }
 
@@ -207,7 +234,7 @@ namespace Assets.Source.Game.Scripts
                 {
                     if (parametr.SupportivePatametr == TypeSupportivePatametr.Damage)
                     {
-                        parametr.Value = _abilityDamage;
+                        parametr.Value = _currentAbilityValue;
                     }
                     else if (parametr.SupportivePatametr == TypeSupportivePatametr.Chence)
                     {

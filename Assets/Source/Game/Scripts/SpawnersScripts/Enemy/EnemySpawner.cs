@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Assets.Source.Game.Scripts
@@ -15,8 +14,10 @@ namespace Assets.Source.Game.Scripts
         private Transform[] _spawnPoints;
         private Player _player;
         private EnemyData[] _enemyDatas;
+        private EnemyData[] _epicEnemyDatas;
         private Coroutine _spawn;
         private ICoroutineRunner _coroutineRunner;
+        private RoomView _currentRoom;
         private List<Enemy> _enemies = new List<Enemy>();
         private Dictionary<string, PoolParticle> _deadParticles = new Dictionary<string, PoolParticle>();
         private int _spawnedEnemy;
@@ -42,6 +43,8 @@ namespace Assets.Source.Game.Scripts
 
         public void Initialize(RoomView currentRoom)
         {
+            _currentRoom = currentRoom;
+
             if (_spawn != null)
                 _coroutineRunner.StopCoroutine(_spawn);
 
@@ -59,6 +62,7 @@ namespace Assets.Source.Game.Scripts
                 _countEnemyRoom = currentRoom.CountEnemy;
                 _spawnPoints = currentRoom.EnemySpawnPoints;
                 _enemyDatas = currentRoom.RoomData.EnemyData;
+                _epicEnemyDatas = currentRoom.RoomData.EpicEnemyDatas;
                 _spawn = _coroutineRunner.StartCoroutine(Spawn());
             }
         }
@@ -74,7 +78,16 @@ namespace Assets.Source.Game.Scripts
             while (_spawnedEnemy < _countEnemyRoom)
             {
                 yield return new WaitForSeconds(_delaySpawn);
-                EnemyCreate(_enemyDatas[_rnd.Next(_enemyDatas.Length)], _rnd.Next(_spawnPoints.Length));
+                
+                if (_rnd.Next(0, 100) <= 90)
+                {
+                    EnemyCreate(_epicEnemyDatas[_rnd.Next(_epicEnemyDatas.Length)], _rnd.Next(_spawnPoints.Length));
+                }
+                else
+                {
+                    EnemyCreate(_enemyDatas[_rnd.Next(_enemyDatas.Length)], _rnd.Next(_spawnPoints.Length));
+                }
+
                 _spawnedEnemy++;
             }
         }
@@ -88,14 +101,14 @@ namespace Assets.Source.Game.Scripts
                 enemy = poolEnemy;
                 enemy.transform.position = _spawnPoints[value].position;
                 enemy.gameObject.SetActive(true);
-                enemy.ResetEnemy();
+                enemy.ResetEnemy(_currentRoom.CurrentLevel);
             }
             else
             {
                 enemy = GameObject.Instantiate(enemyData.PrefabEnemy, _spawnPoints[value].position, _spawnPoints[value].rotation);
 
                 _enemuPool.InstantiatePoolObject(enemy, enemyData.PrefabEnemy.name);
-                enemy.Initialize(_player, enemyData.Id);
+                enemy.Initialize(_player, enemyData.Id, _currentRoom.CurrentLevel, enemyData.Damage, enemyData.Health, enemyData.AttackDelay, enemyData.AttackDistance, enemyData.MoveSpeed);
                 enemy.Died += OnEnemyDead;
                 _enemies.Add(enemy);
 
@@ -103,7 +116,6 @@ namespace Assets.Source.Game.Scripts
                 {
                     _deadParticles.Add(enemyData.PrefabEnemy.name, enemyData.EnemyDieParticleSystem);
                 }
-
             }
         }
 

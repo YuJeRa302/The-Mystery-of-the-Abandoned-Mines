@@ -14,13 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _id: 0
   _level: 0
-  _damage: 0
-  _health: 0
+  _damage: 10
+  _health: 200
   _experienceReward: 0
   _upgradeExperienceReward: 0
   _score: 0
   _timeSpawn: 0
   _enemyCount: 0
+  _moveSpeed: 2
+  _attackDistance: 6
+  _attackDelay: 2
   _abilityCoolDown: []
   _abilityDamage: 
   _enemyDieParticleSystem: {fileID: 5565692519334350932, guid: c620a77f11212c143ab7370e095db9d8, type: 3}

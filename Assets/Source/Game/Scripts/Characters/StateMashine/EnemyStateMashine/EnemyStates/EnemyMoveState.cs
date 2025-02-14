@@ -22,6 +22,7 @@ namespace Assets.Source.Game.Scripts
 
         public override void EnterState()
         {
+            _moveSpeed = _enemy.Speed;
             _navMeshAgent.speed = _moveSpeed;
             MoveEvent();
         }

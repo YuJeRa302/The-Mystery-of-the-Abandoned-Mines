@@ -10,6 +10,7 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private RoomView _room;
         [SerializeField] private AnimationCurve _chanceFromDistance;
         [SerializeField] private EnemyData[] _enemyDatas;
+        [SerializeField] private EnemyData[] _epicEnemyDatas;
         [SerializeField] private GameObject[] _traps;
 
         public int Id => _id;
@@ -17,6 +18,7 @@ namespace Assets.Source.Game.Scripts
         public RoomView Room => _room;
         public AnimationCurve ChanceFromDistance => _chanceFromDistance;
         public EnemyData[] EnemyData => _enemyDatas;
+        public EnemyData[] EpicEnemyDatas => _epicEnemyDatas;
         public GameObject[] Traps => _traps;
     }
 }

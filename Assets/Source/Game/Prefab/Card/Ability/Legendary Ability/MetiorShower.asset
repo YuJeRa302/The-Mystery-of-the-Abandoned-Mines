@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: beb1b69ea56807a4592769cd98d16a55, type: 3}
+  m_Name: MetiorShower
+  m_EditorClassIdentifier: 
+  _legendarySpell: {fileID: 3443178031204434909, guid: 022848a3e9738f24d84efb0780c65671, type: 3}
+  _spellRadius: 11
+  _icon: {fileID: 21300000, guid: 57efc36efc19056429f9b62316ef73ae, type: 3}
+  _legendaryParametersAbility:
+  - CardParameters:
+    - Value: 5
+      TypeParameter: 4
+    - Value: 8
+      TypeParameter: 5
+    - Value: 10
+      TypeParameter: 6
+  _particle: {fileID: 5553868021664231359, guid: ec06f09611395954285986b40dcaa9db, type: 3}

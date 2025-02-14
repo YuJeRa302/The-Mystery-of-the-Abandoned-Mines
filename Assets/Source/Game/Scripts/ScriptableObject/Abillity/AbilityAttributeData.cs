@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Assets.Source.Game.Scripts
 {
-    [CreateAssetMenu(fileName = "New Ability Attribute", menuName = "Create Attribute/Ability Attribute", order = 51)]
+    [CreateAssetMenu(fileName = "New Ability Attribute", menuName = "Create Attribute/Ability Attribute ", order = 51)]
     public abstract class AbilityAttributeData : AttributeData
     {
         [SerializeField] private TypeAbility _abilityType;

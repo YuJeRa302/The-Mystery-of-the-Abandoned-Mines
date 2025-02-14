@@ -116,8 +116,23 @@ namespace Assets.Source.Game.Scripts
         private void OnWeaponSelected(WeaponDataView weaponDataView)
         {
             _nameWeapon.TranslationName = weaponDataView.WeaponData.TranslationName;
-            _damageValue.text = weaponDataView.WeaponData.BonusDamage.ToString();
-            _armorValue.text = weaponDataView.WeaponData.BonusArmor.ToString();
+
+            foreach (var parametr in weaponDataView.WeaponData.DamageParametrs[0].DamageSupportivePatametrs)
+            {
+                if (parametr.SupportivePatametr == TypeSupportivePatametr.Damage)
+                {
+                    _damageValue.text = parametr.Value.ToString();
+                }
+            }
+
+            foreach (var parametr in weaponDataView.WeaponData.WeaponPatametr.WeaponSupportivePatametrs)
+            {
+                if (parametr.SupportivePatametr == TypeWeaponSupportiveParametr.BonusArmor)
+                {
+                    _armorValue.text = Convert.ToInt32(parametr.Value).ToString();
+                }
+            }
+
             _weaponImage.sprite = weaponDataView.WeaponData.Icon;
         }
 

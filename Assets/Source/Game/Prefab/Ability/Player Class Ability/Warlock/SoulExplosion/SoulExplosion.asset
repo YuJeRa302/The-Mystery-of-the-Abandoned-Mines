@@ -65,13 +65,13 @@ MonoBehaviour:
       TypeParameter: 11
     - Value: 10
       TypeParameter: 12
-  _abilityType: 12
+  _abilityType: 13
   _damageParametr:
     TypeDamage: 4
     DamageSupportivePatametrs:
     - Value: 15
       SupportivePatametr: 0
-    - Value: 1
+    - Value: 2
       SupportivePatametr: 3
     Particle: {fileID: 0}
   _damageParticle: {fileID: -174222988902138114, guid: c2d6d10a71d2fc742a1041abfd34b88a, type: 3}

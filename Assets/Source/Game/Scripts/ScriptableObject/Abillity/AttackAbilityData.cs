@@ -7,12 +7,13 @@ namespace Assets.Source.Game.Scripts
     {
         [Space(20)]
         [SerializeField] private Spell _spell;
-        [SerializeField] private int _spellRadius;
+        [SerializeField] private float _spellRadius;
         [SerializeField] private TypeAttackAbility _typeAttackAbility;
-
+        [SerializeField] private DamageParametr _damageParametr;
 
         public Spell Spell => _spell;
-        public int SpellRadius => _spellRadius;
+        public float SpellRadius => _spellRadius;
         public TypeAttackAbility TypeAttackAbility => _typeAttackAbility;
+        public DamageParametr DamageParametr => _damageParametr;
     }
 }

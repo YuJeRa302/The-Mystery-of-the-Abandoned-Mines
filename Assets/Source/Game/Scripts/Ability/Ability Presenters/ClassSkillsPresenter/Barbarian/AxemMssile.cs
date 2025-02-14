@@ -12,7 +12,7 @@ public class AxemMssile : PoolObject
     private Coroutine _coroutine;
     private Player _player;
     private Vector3 _direction;
-    private float _damage;
+    private DamageParametr _damage;
     private float _moveSpeed = 2f;
     private float _moveSpeedBoost = 2f;
     private bool _isReturn = false;
@@ -48,19 +48,21 @@ public class AxemMssile : PoolObject
     {
         if (collision.collider.TryGetComponent(out Enemy enemy))
         {
-            enemy.TakeDamage(_damage);
+            Debug.Log("Axe");
+            Debug.Log(_damage.DamageSupportivePatametrs.Count);
+            enemy.TakeDamageTest(_damage);
             Vector3 direction = (enemy.transform.position - transform.position) * 5;
 
             CorountineStart(BackToPlayer());
         }
     }
 
-    public void Initialaze(Player player, float damage, float moveSpeedBoost)
+    public void Initialaze(Player player, DamageParametr damageParametr, float moveSpeedBoost)
     {
         _player = player;
         _weponPrefab = _player.PlayerWeapons.WeaponData.WeaponPrefab;
         _moveSpeedBoost = moveSpeedBoost;
-        _damage = damage;
+        _damage = damageParametr;
 
         _weponPrefab = Instantiate(_player.PlayerWeapons.WeaponData.WeaponPrefab, transform);
         Vector3 rotate = _weponPrefab.transform.eulerAngles;

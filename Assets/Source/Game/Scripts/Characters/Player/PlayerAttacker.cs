@@ -8,12 +8,16 @@ namespace Assets.Source.Game.Scripts
 {
     public class PlayerAttacker : IDisposable
     {
+        private readonly System.Random _rnd = new();
+
         private Transform _shotPoint;
         private ProjectileSpawner _bulletSpawner;
         private Pool _poolBullet;
 
         private float _damage;
+        private float _lastApplaedDamage;
         private float _searchRadius = 5f;//tests
+        private float _attackRange = 5f;//tests
         private float _attackDelay = 2f;
         private float _timeAfterLastAttack = 0f;
         private Player _player;
@@ -21,25 +25,51 @@ namespace Assets.Source.Game.Scripts
         private Coroutine _findTarget;
         private Coroutine _coolDownAttack;
         private WeaponData _weaponData;
+        private DamageParametr _damageParametr;
         private Enemy _currentTarget;
+        private float _chenceCritDamage;
+        private float _critDamageMultiplier;
+        private float _chenceVampirism;
+        private float _vampirismValue;
         private Dictionary<float, Enemy> _enemies = new Dictionary<float, Enemy>();
 
-        public float Damage => _damage;
-
         public event Action Attacked;
+        public event Action CritAttacked;
         public event Action<Transform> EnemyFinded;
+        public event Action<float> HealedVampirism;
 
         public PlayerAttacker(Transform shoPoint, Player player, WeaponData weaponData, ICoroutineRunner coroutineRunner, Pool pool)
         {
             _shotPoint = shoPoint;
             _player = player;
             _weaponData = weaponData;
+            _damageParametr = _weaponData.DamageParametrs[0];
             _coroutineRunner = coroutineRunner;
-            _damage = _weaponData.BonusDamage;
             _poolBullet = pool;
+
+            foreach (var parametr in _weaponData.WeaponPatametr.WeaponSupportivePatametrs)
+            {
+                if (parametr.SupportivePatametr == TypeWeaponSupportiveParametr.CritChence)
+                {
+                    _chenceCritDamage = parametr.Value;
+                }
+                else if (parametr.SupportivePatametr == TypeWeaponSupportiveParametr.CritDamage)
+                {
+                    _critDamageMultiplier = parametr.Value;
+                }
+                else if (parametr.SupportivePatametr == TypeWeaponSupportiveParametr.LifeStealChance)
+                {
+                    _chenceVampirism = parametr.Value;
+                }
+                else if (parametr.SupportivePatametr == TypeWeaponSupportiveParametr.LifeStealValue)
+                {
+                    _vampirismValue = parametr.Value;
+                }
+            }
 
             if (_weaponData.TargetClass == TypePlayerClass.Warlock)
             {
+                _attackRange = 10f;
                 _searchRadius = 10f;
                 WarlockWeaponData paladinWeaponData = weaponData as WarlockWeaponData;
                 _bulletSpawner = new ProjectileSpawner(paladinWeaponData.BulletPrafab, _poolBullet, _shotPoint, _damage, _weaponData.DamageParametrs[0]);
@@ -47,6 +77,10 @@ namespace Assets.Source.Game.Scripts
 
             _coolDownAttack = _coroutineRunner.StartCoroutine(CoolDownAttack());
         }
+
+        public float Damage => _damage;
+        public Enemy CurrentTarget => _currentTarget;
+        public DamageParametr  DamageParametr => _damageParametr;
 
         public void Dispose()
         {
@@ -128,7 +162,12 @@ namespace Assets.Source.Game.Scripts
 
         private void GetHit()
         {
-            Attacked?.Invoke();
+            float distanceToTarget = Vector3.Distance(_currentTarget.transform.position, _player.transform.position);
+
+            if (distanceToTarget <= _attackRange)
+            {
+                Attacked?.Invoke();
+            }
 
             if (_findTarget != null)
                 _coroutineRunner.StopCoroutine(_findTarget);
@@ -136,9 +175,37 @@ namespace Assets.Source.Game.Scripts
 
         private void ApplyDamage()
         {
-            if (_currentTarget != null)
+            Vector3 directionToTarget = _player.transform.position - _currentTarget.transform.position;
+            float distanceToTarget = directionToTarget.magnitude;
+
+            if (_currentTarget != null && distanceToTarget <= _attackRange)
             {
-               _currentTarget.TakeDamage(_damage);
+                foreach (var parametr in _damageParametr.DamageSupportivePatametrs)
+                {
+                    if (parametr.SupportivePatametr == TypeSupportivePatametr.Damage)
+                    {
+                        if (CalculatedChence(_chenceCritDamage))
+                        {
+                            _damage = parametr.Value;
+                            parametr.Value *= (1 + _critDamageMultiplier / 100);
+                            _currentTarget.TakeDamageTest(_damageParametr);
+                            _lastApplaedDamage = parametr.Value;
+                            parametr.Value = _damage;
+                            CritAttacked?.Invoke();
+                        }
+                        else
+                        {
+                            _currentTarget.TakeDamageTest(_damageParametr);
+                            _lastApplaedDamage = parametr.Value;
+                        }
+                    }
+                }
+
+                if (CalculatedChence(_chenceVampirism))
+                {
+                    float healing = _lastApplaedDamage * (_vampirismValue / 100);
+                    HealedVampirism?.Invoke(healing);
+                }
             }
 
             if (_coolDownAttack != null)
@@ -156,6 +223,18 @@ namespace Assets.Source.Game.Scripts
                 _coroutineRunner.StopCoroutine(_coolDownAttack);
 
             _coolDownAttack = _coroutineRunner.StartCoroutine(CoolDownAttack());
+        }
+
+        private bool CalculatedChence(float chence)
+        {
+            if (_rnd.Next(1, 100) <= chence)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

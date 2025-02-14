@@ -63,7 +63,7 @@ MonoBehaviour:
       TypeParameter: 11
     - Value: 50
       TypeParameter: 14
-  _abilityType: 14
+  _abilityType: 15
   _damageParametr:
     TypeDamage: 1
     DamageSupportivePatametrs:

@@ -8,22 +8,26 @@ namespace Assets.Source.Game.Scripts
     public class Enemy : PoolObject
     {
         [SerializeField] private EnemyStateMashineExample _stateMashine;
-        [SerializeField] private float _attackDelay;
-        [SerializeField] protected float _damage;
         [SerializeField] private EnemyAnimation _animationController;
-        [SerializeField] private float _health = 20f;
-        [SerializeField] private float _speed;
-        [SerializeField] private float _attackDistance;
         [SerializeField] private Transform _damageEffectConteiner;
         [SerializeField] protected Pool _pool;
 
         private readonly System.Random _rnd = new();
+        private float _attackDistance;
+        private float _attackDelay;
+        private int _health = 20;
+        protected int _damage;
+        private float _speed;
         private int _id;
+        private int _currentLvlRoom;
         private bool _isDead;
         private float _currentHealth;
         private Player _player;
         private Rigidbody _rigidbody;
-        private Coroutine _coroutine;
+        private Coroutine _stunDamage;
+        private Coroutine _burnDamage;
+        private Coroutine _slowDamage;
+        private Coroutine _repulsiveDamage;
         private List<PoolObject> _spawnedEffects = new();
 
         public int Id => _id;
@@ -38,26 +42,41 @@ namespace Assets.Source.Game.Scripts
         public event Action Stuned;
         public event Action EndedStun;
 
-        public void Initialize(Player player, int id)
+        private void OnDisable()
+        {
+            CorountineStop(_slowDamage);
+            CorountineStop(_stunDamage);
+            CorountineStop(_repulsiveDamage);
+            CorountineStop(_burnDamage);
+        }
+
+        public virtual void Initialize(Player player, int id, int lvlRoom, int damage, int health, float attackDelay, float attackDistance, float moveSpeed)
         {
             _player = player;
             _rigidbody = GetComponent<Rigidbody>();
+            _health = health;
             _currentHealth = _health;
+            _damage = damage;
+            _speed = moveSpeed;
+            _attackDelay = attackDelay;
+            _attackDistance = attackDistance;
             _id = id;
+            _currentLvlRoom = lvlRoom;
             _stateMashine.InitializeStateMashine(player);
         }
 
-        public void ResetEnemy()
+        public void ResetEnemy(int lvlRoom)
         {
-            _isDead = true;
+            _isDead = false;
             _currentHealth = _health;
-            _stateMashine.ResetState();
-        }
 
-        public void UpdateEnemyStats(int lvlRoom)
-        {
-            _health = _health * (1 + lvlRoom / 10);
-            _damage = _damage * (1 + lvlRoom / 10);
+            if(_currentLvlRoom < lvlRoom)
+            {
+                _health = _health * (1 + lvlRoom / 10);
+                _damage = _damage * (1 + lvlRoom / 10);
+            }
+
+            _stateMashine.ResetState();
         }
 
         public void TakeDamage(float damage)//+тип урона
@@ -86,6 +105,7 @@ namespace Assets.Source.Game.Scripts
             float duration = 0;
             float repulsive = 0;
             float gradualDamage = 0;
+            float slowDown = 0;
 
             foreach (var parametr in damage.DamageSupportivePatametrs)
             {
@@ -109,6 +129,10 @@ namespace Assets.Source.Game.Scripts
                 {
                     gradualDamage = parametr.Value;
                 }
+                else if (parametr.SupportivePatametr == TypeSupportivePatametr.Slowdown)
+                {
+                    slowDown = parametr.Value;
+                }
             }
 
             if (damage.TypeDamage== TypeDamage.PhysicalDamage)
@@ -126,27 +150,55 @@ namespace Assets.Source.Game.Scripts
             {
                 TakeDamage(damageValue);
 
+                if (_isDead)
+                    return;
+
                 if (_rnd.Next(0, 100) <= chance)
                 {
-                    _coroutine = StartCoroutine(Stun(duration, damage.Particle));
+                    CorountineStop(_stunDamage);
+                    _stunDamage = StartCoroutine(Stun(duration, damage.Particle));
                 }
             }
             else if (damage.TypeDamage == TypeDamage.RepulsiveDamage)
             {
                 TakeDamage(damageValue);
-                _coroutine = StartCoroutine(Repulsive(repulsive));
+                Debug.Log(damageValue);
+                if (_isDead)
+                    return;
+
+                CorountineStop(_repulsiveDamage);
+                _repulsiveDamage = StartCoroutine(Repulsive(repulsive));
             }
             else if (damage.TypeDamage == TypeDamage.BurningDamage)
             {
                 TakeDamage(damageValue);
-                _coroutine = StartCoroutine(Burn(gradualDamage, duration, damage.Particle));
+
+                if (_isDead)
+                    return;
+
+                CorountineStop(_burnDamage);
+                _burnDamage = StartCoroutine(Burn(gradualDamage, duration, damage.Particle));
+            }
+            else if (damage.TypeDamage == TypeDamage.SlowedDamage)
+            {
+                TakeDamage(damageValue);
+
+                if (_isDead)
+                    return;
+
+                CorountineStop(_slowDamage);
+                _slowDamage = StartCoroutine(Slowed(duration, slowDown, damage.Particle));
             }
         }
 
         protected override void ReturnToPool()
         {
+            CorountineStop(_slowDamage);
+            CorountineStop(_stunDamage);
+            CorountineStop(_repulsiveDamage);
+            CorountineStop(_burnDamage);
             base.ReturnToPool();
-            _isDead = false;
+            _isDead = true;
             _currentHealth = _health;
         }
 
@@ -178,16 +230,30 @@ namespace Assets.Source.Game.Scripts
             }
         }
 
+        private void CorountineStop(Coroutine corontine)
+        {
+            if (corontine != null)
+                StopCoroutine(corontine);
+        }
+
         private IEnumerator Burn(float damage, float time, PoolParticle particle)
         {
             float currentTime = 0;
+            float pastSeconds = 0;
 
             CreateDamageParticle(particle);
 
-            while (currentTime < time)
+            while (currentTime <= time)
             {
-                TakeDamage(damage);
-                currentTime += Time.deltaTime;
+                pastSeconds += Time.deltaTime;
+
+                if (pastSeconds >= 1)
+                {
+                    TakeDamage(damage);
+                    pastSeconds = 0;
+                    currentTime++;
+                }
+
                 yield return null;
             }
 
@@ -216,6 +282,24 @@ namespace Assets.Source.Game.Scripts
             Stuned?.Invoke();
             yield return new WaitForSeconds(duration);
             EndedStun?.Invoke();
+            DisableParticle(particle);
+        }
+
+        private IEnumerator Slowed(float duration, float valueSlowed, PoolParticle particle)
+        {
+            float currentTime = 0;
+            CreateDamageParticle(particle);
+            float baseMoveSpeed = _speed;
+            _speed = _speed * (1 - valueSlowed/100);
+            Debug.Log(_speed);
+
+            while (currentTime <= duration)
+            {
+                currentTime += Time.deltaTime;
+                yield return null;
+            }
+
+            _speed = baseMoveSpeed;
             DisableParticle(particle);
         }
     }

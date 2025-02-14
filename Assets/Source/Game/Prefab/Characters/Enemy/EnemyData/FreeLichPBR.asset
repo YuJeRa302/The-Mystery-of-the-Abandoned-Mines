@@ -14,16 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _id: 1
   _level: 0
-  _damage: 0
-  _health: 0
+  _damage: 10
+  _health: 20
   _experienceReward: 0
   _upgradeExperienceReward: 0
   _score: 0
   _timeSpawn: 0
   _enemyCount: 0
+  _moveSpeed: 3
+  _attackDistance: 11
+  _attackDelay: 3
   _abilityCoolDown: []
   _abilityDamage: 
   _enemyDieParticleSystem: {fileID: -8729764003642495447, guid: 090d6dbf1da29384393feb27736c7ec6, type: 3}
   _audioClipDie: {fileID: 0}
   _hit: {fileID: 0}
-  _prefabEnemy: {fileID: 190874258655281799, guid: 8a874ac03b442f94595eb25ecec1e2ff, type: 3}
+  _prefabEnemy: {fileID: 190874258655281799, guid: bb59f7770365d0744818bc49d86c625a, type: 3}

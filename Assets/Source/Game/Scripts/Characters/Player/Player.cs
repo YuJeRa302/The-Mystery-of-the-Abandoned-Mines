@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,6 +16,8 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private Transform _throwAbilityPoint;
         [SerializeField] private Transform _playerAbilityContainer;
         [SerializeField] private Transform _weaponAbilityContainer;
+        [SerializeField] private PoolParticle _critDamageParticle;
+        [SerializeField] private PoolParticle _vampirismParticle;
 
         private PlayerAbilityCaster _playerAbilityCaster;
         private PlayerStats _playerStats;
@@ -45,6 +48,8 @@ namespace Assets.Source.Game.Scripts
         {
             _playerAttacker.Attacked -= OnAttack;
             _playerAttacker.EnemyFinded -= OnRotateToTarget;
+            _playerAttacker.CritAttacked -= OnApplayCritDamage;
+            _playerAttacker.HealedVampirism -= OnHealingVampirism;
             _cardDeck.SetNewAbility -= OnSetNewAbility;
             _cardDeck.RerollPointsUpdated -= OnUpdateRerollPoints;
             _cardDeck.PlayerStatsUpdated -= OnStatsUpdate;
@@ -68,7 +73,7 @@ namespace Assets.Source.Game.Scripts
             _playerHealth = new PlayerHealth(levelObserver, this, weaponData, this);
             _playerAnimation = new PlayerAnimation(_animator, _rigidbody, 2, playerClassData, this);
             _playerAttacker = new PlayerAttacker(_shotPoint, this, weaponData, this, _poolBullet);
-            _playerWeapons = new PlayerWeapons(this, weaponData, _poolBullet);
+            _playerWeapons = new PlayerWeapons(this, weaponData, _poolBullet, _critDamageParticle, _vampirismParticle);
             _playerMovment = new PlayerMovement(levelObserver.CameraControiler.Camera, levelObserver.CameraControiler.VariableJoystick, _rigidbody, 2f, this);
             _cardDeck = new CardDeck();
             _playerStats = new PlayerStats(this, 1, null, levelObserver, abilityFactory, abilityPresenter);
@@ -81,6 +86,8 @@ namespace Assets.Source.Game.Scripts
         {
             _playerAttacker.Attacked += OnAttack;
             _playerAttacker.EnemyFinded += OnRotateToTarget;
+            _playerAttacker.CritAttacked += OnApplayCritDamage;
+            _playerAttacker.HealedVampirism += OnHealingVampirism;
 
             _cardDeck.SetNewAbility += OnSetNewAbility;
             _cardDeck.RerollPointsUpdated += OnUpdateRerollPoints;
@@ -100,6 +107,17 @@ namespace Assets.Source.Game.Scripts
 
             _playerAbilityCaster.AbilityUsed += OnAbilityUsed;
             _playerAbilityCaster.AbilityEnded += OnAbilityEnded;
+        }
+
+        private void OnHealingVampirism(float healing)
+        {
+            _playerHealth.TakeHealing(Convert.ToInt32(healing));
+            _playerWeapons.InstantiateHealingEffect();
+        }
+
+        private void OnApplayCritDamage()
+        {
+            _playerWeapons.InstantiateCritEffect();
         }
 
         private void OnReduceHealth(float reduce)

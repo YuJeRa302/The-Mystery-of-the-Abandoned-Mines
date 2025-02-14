@@ -31,7 +31,15 @@ namespace Assets.Source.Game.Scripts
             _coroutineRunner = coroutineRunner;
             _levelObserver = levelObserver;
             _player = player;
-            _armor += weapon.BonusArmor;
+
+            foreach (var parametr in weapon.WeaponPatametr.WeaponSupportivePatametrs)
+            {
+                if (parametr.SupportivePatametr == TypeWeaponSupportiveParametr.BonusArmor)
+                {
+                    _armor += Convert.ToInt32(parametr.Value);
+                }
+            }
+
             _currentHealth = 50;
             _regeneration = _coroutineRunner.StartCoroutine(RegenerationHealth());
             AddListener();

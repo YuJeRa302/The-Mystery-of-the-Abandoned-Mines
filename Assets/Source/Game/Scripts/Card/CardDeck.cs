@@ -95,7 +95,7 @@ namespace Assets.Source.Game.Scripts
             }
         }
 
-        private CardState InitState(CardData cardData)
+        private CardState InitState(CardData cardData)//паблик вызывать в сардодер при инициализации+проверка на легендарку
         {
             CardState cardState = new ();
             cardState.Id = cardData.Id;

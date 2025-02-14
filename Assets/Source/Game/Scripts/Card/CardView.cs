@@ -63,6 +63,11 @@ namespace Assets.Source.Game.Scripts
                     _cardData.AttributeData.CardParameters[_cardState.CurrentLevel].CardParameters[index].Value,
                     _cardData.AttributeData.CardParameters[_cardState.CurrentLevel].CardParameters[index].TypeParameter);
             }
+
+            //for (int i = 0; i < _cardData.SuppurtivData.Count; i++)
+            //{
+            //    _cardData
+            //}
         }
     }
 }

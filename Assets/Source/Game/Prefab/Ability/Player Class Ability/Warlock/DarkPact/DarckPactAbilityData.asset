@@ -63,12 +63,9 @@ MonoBehaviour:
       TypeParameter: 2
     - Value: 0
       TypeParameter: 13
-  _abilityType: 13
-  _typeDamage:
+  _abilityType: 14
+  _damageParametr:
     TypeDamage: 0
-    Damage: 0
-    SupportivePatametr: 0
-    Value: 0
-    Duration: 0
+    DamageSupportivePatametrs: []
     Particle: {fileID: 0}
   _poolParticle: {fileID: 7425594545007167068, guid: d2fb527ba5068ff469ce64c846a41a5f, type: 3}

@@ -43,6 +43,11 @@ namespace Assets.Source.Game.Scripts
             return false;
         }
 
+        public void DestoySpell()
+        {
+            Destroy(gameObject);
+        }
+
         private void CreateEffect(ParticleSystem particleSystem)
         {
             _abilityEffect = Instantiate(particleSystem, transform);

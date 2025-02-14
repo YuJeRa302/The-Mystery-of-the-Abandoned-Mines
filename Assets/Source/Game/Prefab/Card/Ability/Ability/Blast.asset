@@ -47,3 +47,9 @@ MonoBehaviour:
   _spell: {fileID: 1654424239186438959, guid: 081f8bf11483ab544842add8457b3c62, type: 3}
   _spellRadius: 2
   _typeAttackAbility: 1
+  _damageParametr:
+    TypeDamage: 0
+    DamageSupportivePatametrs:
+    - Value: 5
+      SupportivePatametr: 0
+    Particle: {fileID: 0}

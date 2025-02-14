@@ -24,7 +24,7 @@ namespace Assets.Source.Game.Scripts
 
             if(_enemy.TryGetComponent(out Beholder beholder))
             {
-                _bulletSpawner = new BulletSpawner(beholder.Bullet, beholder.Pool, beholder.BaseShotPoint, beholder.Damage);
+                _bulletSpawner = new BulletSpawner(beholder.Bullet, beholder.Pool, beholder.BaseShotPoint, _enemy);
                 _animationController.Attacked += LaunchBullet;
             }
             else

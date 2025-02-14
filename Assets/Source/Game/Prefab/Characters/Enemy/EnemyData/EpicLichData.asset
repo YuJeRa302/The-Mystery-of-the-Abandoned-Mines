@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46298075006e7674bb48a2417b651218, type: 3}
+  m_Name: EpicLichData
+  m_EditorClassIdentifier: 
+  _id: 8
+  _level: 0
+  _damage: 30
+  _health: 40
+  _experienceReward: 0
+  _upgradeExperienceReward: 0
+  _score: 0
+  _timeSpawn: 0
+  _enemyCount: 0
+  _moveSpeed: 3
+  _attackDistance: 15
+  _attackDelay: 3
+  _abilityCoolDown: []
+  _abilityDamage: 
+  _enemyDieParticleSystem: {fileID: -8729764003642495447, guid: 090d6dbf1da29384393feb27736c7ec6, type: 3}
+  _audioClipDie: {fileID: 0}
+  _hit: {fileID: 0}
+  _prefabEnemy: {fileID: 190874258655281799, guid: 8a874ac03b442f94595eb25ecec1e2ff, type: 3}

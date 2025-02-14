@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4261990515010931713}
   - component: {fileID: 983808502372699640}
   - component: {fileID: 4671021294003322497}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: IceBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4847,7 +4847,7 @@ GameObject:
   - component: {fileID: 2398381805833306561}
   - component: {fileID: 2057736127712107595}
   - component: {fileID: 8284180076123876405}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: GroundSpikes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9552,7 +9552,7 @@ GameObject:
   - component: {fileID: 3102785424994964337}
   - component: {fileID: 2373104079394908149}
   - component: {fileID: 1329724138856232491}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SnowFlakes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14320,7 +14320,7 @@ GameObject:
   - component: {fileID: 8060151080476996490}
   - component: {fileID: 1165935942422749116}
   - component: {fileID: 6547552290489921388}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: GlowFlat
   m_TagString: Untagged
   m_Icon: {fileID: 0}

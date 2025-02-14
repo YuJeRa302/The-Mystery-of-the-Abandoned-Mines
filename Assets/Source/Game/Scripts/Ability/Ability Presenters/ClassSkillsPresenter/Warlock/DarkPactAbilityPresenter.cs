@@ -66,7 +66,7 @@ public class DarkPactAbilityPresenter : MonoBehaviour
 
         _isAbilityUse = false;
         ChandeAbilityEffect(_isAbilityUse);
-        _player.PlayerAnimation.UsedAbilityEnd();
+        //_player.PlayerAnimation.UsedAbilityEnd();
     }
 
     private void OnButtonSkillClick()

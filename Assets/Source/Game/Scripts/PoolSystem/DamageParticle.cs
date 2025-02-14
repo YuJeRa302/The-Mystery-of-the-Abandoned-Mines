@@ -3,13 +3,10 @@ using UnityEngine;
 
 public class DamageParticle : PoolParticle
 {
-    private float _damage;
     private DamageParametr _damageParametr;
 
-    public void Initialaze(float damage, DamageParametr damageParametr)
+    public void Initialaze(DamageParametr damageParametr)
     {
-        Debug.Log("Init");
-        _damage = damage;
         _damageParametr = damageParametr;
     }
 
@@ -17,8 +14,6 @@ public class DamageParticle : PoolParticle
     {
         if (other.gameObject.TryGetComponent(out Enemy enemy))
         {
-            Debug.Log("Enter");
-            //enemy.TakeDamage(_damage);
             enemy.TakeDamageTest(_damageParametr);
         }
     }

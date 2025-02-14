@@ -84,7 +84,7 @@ namespace Assets.Source.Game.Scripts
             if(RoomData.Id == 1)
                 _countEnemy = 1;
             else
-                _countEnemy = UnityEngine.Random.Range(1, 3); //tests
+                _countEnemy = UnityEngine.Random.Range(2, 6); //tests
 
             CreateDoorway();
             AddListener();

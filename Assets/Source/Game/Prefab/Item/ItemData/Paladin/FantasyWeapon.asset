@@ -26,4 +26,16 @@ MonoBehaviour:
   _bonusArmor: 6
   _translationName: Fantasy Weapon
   _icon: {fileID: 21300000, guid: 39320d00d59e9dd4596f1cc7d936b74d, type: 3}
+  _damageParametrs:
+  - TypeDamage: 4
+    DamageSupportivePatametrs:
+    - Value: 6
+      SupportivePatametr: 0
+    - Value: 0.16
+      SupportivePatametr: 4
+    Particle: {fileID: 550930723136525005, guid: 0e61f2a8c521ff844bffcc24bda7480e, type: 3}
+  _weaponPatametr:
+    WeaponSupportivePatametrs:
+    - Value: 6
+      SupportivePatametr: 4
   _additionalWeapon: {fileID: -5167669675695763617, guid: de056d4bdfc524146a1fd6441b2360c1, type: 3}

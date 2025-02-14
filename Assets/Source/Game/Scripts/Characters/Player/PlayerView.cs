@@ -37,7 +37,7 @@ namespace Assets.Source.Game.Scripts
 
         public event Action<AbilityView, ParticleSystem, Transform> AbilityViewCreated;
         public event Action<ClassAbilityData, ClassSkillButtonView, int> CreatedClassSkillView;
-        public event Action<AbilityView, ParticleSystem, Transform> LegendaryAbilityViewCreated;
+        public event Action<AbilityView, ParticleSystem, Transform, AbilityAttributeData> LegendaryAbilityViewCreated;
         public event Action<PassiveAbilityView> PassiveAbilityViewCreated;
 
         private void OnDestroy()
@@ -173,7 +173,7 @@ namespace Assets.Source.Game.Scripts
             }
 
             abilityView.Initialize(abilityAttributeData.LegendaryAbilityData.Icon, currentAbilityCooldown);
-            LegendaryAbilityViewCreated?.Invoke(abilityView, _abilityEffect, _throwPoint);
+            LegendaryAbilityViewCreated?.Invoke(abilityView, _abilityEffect, _throwPoint, abilityAttributeData);
         }
 
         private void OnAbilityTaked(AbilityAttributeData abilityAttributeData, int currentLevel)

@@ -26,3 +26,17 @@ MonoBehaviour:
   _bonusArmor: 0
   _translationName: Axe Evolving
   _icon: {fileID: 21300000, guid: 7e58436bdcbdd034d997f68b7cac4d7a, type: 3}
+  _damageParametrs:
+  - TypeDamage: 2
+    DamageSupportivePatametrs:
+    - Value: 10
+      SupportivePatametr: 0
+    - Value: 2
+      SupportivePatametr: 2
+    - Value: 2
+      SupportivePatametr: 0
+    Particle: {fileID: 1461602671872348846, guid: 0b5e7793d4d1e854385c5ce9b1e79f47, type: 3}
+  _weaponPatametr:
+    WeaponSupportivePatametrs:
+    - Value: 0
+      SupportivePatametr: 4

@@ -8,19 +8,20 @@ namespace Assets.Source.Game.Scripts
         private Bullet _bulletBrefab;
         private Pool _pool;
         private Transform _shotPoint;
-        private float _damage;
+        private Enemy _enemy;
 
-        public BulletSpawner(Bullet enemyBullet, Pool pool, Transform shotPoint, float damage)
+        public BulletSpawner(Bullet enemyBullet, Pool pool, Transform shotPoint, Enemy enemy)
         {
             _bulletBrefab = enemyBullet;
             _pool = pool;
             _shotPoint = shotPoint;
-            _damage = damage;
+            _enemy = enemy;
         }
 
         public void SpawnBullet()
         {
             Bullet bullet;
+            Debug.Log("SpawnBullet");
 
             if (_pool.TryPoolObject(_bulletBrefab.gameObject, out PoolObject pollBullet))
             {
@@ -35,7 +36,7 @@ namespace Assets.Source.Game.Scripts
                 _pool.InstantiatePoolObject(bullet, _bulletBrefab.name);
             }
 
-            bullet.Initialaze((int)Math.Round(_damage));
+            bullet.Initialaze((int)Math.Round(_enemy.Damage));
             bullet.GetComponent<Rigidbody>().AddForce(_shotPoint.forward * 5f, ForceMode.Impulse);
         }
 

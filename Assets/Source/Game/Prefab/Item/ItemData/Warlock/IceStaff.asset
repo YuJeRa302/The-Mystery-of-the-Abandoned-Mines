@@ -26,4 +26,18 @@ MonoBehaviour:
   _bonusArmor: 0
   _translationName: 
   _icon: {fileID: 21300000, guid: 924fa5c40630438449415c2c8f9c74fd, type: 3}
+  _damageParametrs:
+  - TypeDamage: 3
+    DamageSupportivePatametrs:
+    - Value: 10
+      SupportivePatametr: 0
+    - Value: 20
+      SupportivePatametr: 4
+    - Value: 1
+      SupportivePatametr: 2
+    Particle: {fileID: 550930723136525005, guid: 0e61f2a8c521ff844bffcc24bda7480e, type: 3}
+  _weaponPatametr:
+    WeaponSupportivePatametrs:
+    - Value: 0
+      SupportivePatametr: 4
   _bulletPrefab: {fileID: -3771606035605123692, guid: c9ca83d488107f0478626efa9585ed8d, type: 3}

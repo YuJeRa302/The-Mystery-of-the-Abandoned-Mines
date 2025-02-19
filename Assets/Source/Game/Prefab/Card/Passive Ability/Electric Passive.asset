@@ -24,6 +24,6 @@ MonoBehaviour:
   _name: Passive Ability
   _description: Pass
   _icon: {fileID: 21300000, guid: ed8ef41e0593c444f89985400bb18768, type: 3}
-  _typeMagic: 0
+  _typeMagic: 1
   _typeAbility: 6
   _passiveAbilityView: {fileID: 2680077035284226637, guid: 02e65a2996165c24281b87db23b3fabc, type: 3}

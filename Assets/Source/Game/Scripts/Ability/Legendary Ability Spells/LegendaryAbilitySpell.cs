@@ -5,12 +5,13 @@ namespace Assets.Source.Game.Scripts
 {
     public class LegendaryAbilitySpell : MonoBehaviour
     {
-        [SerializeField] private AbilityEnemyFinder[] _abilityEnemyFinders;
+        [SerializeField] protected AbilityEnemyFinder[] _abilityEnemyFinders;
 
-        private List<ParticleSystem> _abilityEffects = new ();
-        private float _spellLifeTime;
+        protected List<Enemy> _enemies = new List<Enemy>();
+        protected List<ParticleSystem> _abilityEffects = new ();
+        protected float _spellLifeTime;
 
-        public void Initialize(ParticleSystem particleSystem, float currentDuration)
+        public virtual void Initialize(ParticleSystem particleSystem, float currentDuration)
         {
             if (_abilityEffects.Count > 0)
             {
@@ -42,6 +43,23 @@ namespace Assets.Source.Game.Scripts
             return false;
         }
 
+        public virtual bool TryFindEnemys(out List<Enemy> enemies)
+        {
+            _enemies.Clear();
+            enemies = new List<Enemy>();
+
+            foreach (AbilityEnemyFinder abilityEnemyFinder in _abilityEnemyFinders)
+            {
+                if (abilityEnemyFinder.TryFindEnemys(out List<Enemy> findEnemyse))
+                {
+                    _enemies.AddRange(findEnemyse);
+                }
+            }
+
+            enemies.AddRange(_enemies);
+            return enemies.Count > 0;
+        }
+
         private void CreateEffect(ParticleSystem particleSystem)
         {
             foreach (AbilityEnemyFinder abilityEnemyFinder in _abilityEnemyFinders) 
@@ -52,7 +70,7 @@ namespace Assets.Source.Game.Scripts
             }
         }
 
-        private void DestroyEffectsByLifeTime(float spellLifeTime) 
+        protected virtual void DestroyEffectsByLifeTime(float spellLifeTime) 
         {
             foreach (var abilityEffect in _abilityEffects)
             {

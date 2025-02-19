@@ -9,12 +9,14 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private AbilityView _abilityView;
         [SerializeField] private ParticleSystem _particleSystem;
         [SerializeField] private AudioClip _audioClip;
+        [SerializeField] private TypeUpgradeAbility _typeUpgradeMagic;
         [SerializeField] private TypeMagic _typeMagic;
         [SerializeField] private LegendaryAbilityData _legendaryAbilityData;
 
         public LegendaryAbilityData LegendaryAbilityData => _legendaryAbilityData;
         public AbilityView AbilityView => _abilityView;
         public TypeAbility TypeAbility => _abilityType;
+        public TypeUpgradeAbility TypeUpgradeMagic => _typeUpgradeMagic;
         public TypeMagic TypeMagic => _typeMagic;
         public ParticleSystem ParticleSystem => _particleSystem;
         public AudioClip AudioClip => _audioClip;

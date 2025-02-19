@@ -1,8 +1,6 @@
-public enum TypeMagic 
+public enum TypeMagic
 {
-    ElectricSphere,
-    Meteor,
-    FireBall,
-    MagicShield,
-    Metior
+    Fiery,
+    Electric,
+    Icy
 }

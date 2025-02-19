@@ -2,5 +2,6 @@ public enum TypeAttackAbility
 {
     AoEAbility,
     ProjectileAbility,
-    TargetSpell
+    TargetSpell,
+    RotationAbility
 }

@@ -42,7 +42,8 @@ MonoBehaviour:
   _abilityView: {fileID: 7248082733305173889, guid: b41ccdfb932d3874d92c031e66d814ec, type: 3}
   _particleSystem: {fileID: 4918590649640318993, guid: e94b52a6fd549384987ca598b0596267, type: 3}
   _audioClip: {fileID: 0}
-  _typeMagic: 2
+  _typeUpgradeMagic: 1
+  _typeMagic: 0
   _legendaryAbilityData: {fileID: 11400000, guid: c04bdbf921a76864e9adbd787aaf1878, type: 2}
   _spell: {fileID: 1654424239186438959, guid: 081f8bf11483ab544842add8457b3c62, type: 3}
   _spellRadius: 9

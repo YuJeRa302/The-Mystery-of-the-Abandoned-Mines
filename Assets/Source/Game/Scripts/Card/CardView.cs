@@ -14,6 +14,8 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private LeanLocalizedText _cardName;
         [SerializeField] private LeanLocalizedText _description;
         [SerializeField] private Transform _cardParameterContainer;
+        [SerializeField] private Transform _supportiParametrContainer;
+        [SerializeField] private CardSupportivParametrsView _supportivParametrsView;
 
         private List<CardParameterView> _cardParametersViews = new ();
         private CardState _cardState;
@@ -34,9 +36,19 @@ namespace Assets.Source.Game.Scripts
         {
             _cardData = cardData;
             _cardState = cardState;
-            _cardIcon.sprite = cardData.AttributeData.Icon;
-            _cardName.TranslationName = cardData.AttributeData.NameCard;
-            _description.TranslationName = cardData.AttributeData.Description;
+
+            if (cardData.AttributeData != null)
+            {
+                _cardIcon.sprite = cardData.AttributeData.Icon;
+                _cardName.TranslationName = cardData.AttributeData.NameCard;
+                _description.TranslationName = cardData.AttributeData.Description;
+            }
+            else
+            {
+                _cardIcon.sprite = cardData.LegendaryAbilityData.Icon;
+                _cardName.TranslationName = cardData.LegendaryAbilityData.Name;
+                _description.TranslationName = cardData.LegendaryAbilityData.Description;
+            }
 
             _cardImage.color = new Color(
                 cardData.TypeCardColor[(int)cardData.TypeCardParameter].r,
@@ -45,6 +57,9 @@ namespace Assets.Source.Game.Scripts
 
             _applyButton.onClick.AddListener(TakeCard);
             CreateParameterField();
+
+            if (cardData.SuppurtivData.Count > 0)
+                CreateSupportivParametrField();
         }
 
         private void TakeCard()
@@ -54,20 +69,45 @@ namespace Assets.Source.Game.Scripts
 
         private void CreateParameterField()
         {
-            for (int index = 0; index < _cardData.AttributeData.CardParameters[_cardState.CurrentLevel].CardParameters.Count; index++)
+            if (_cardData.AttributeData != null)
             {
-                CardParameterView view = Instantiate(_cardData.AttributeData.CardParameterView, _cardParameterContainer);
-                _cardParametersViews.Add(view);
+                for (int index = 0; index < _cardData.AttributeData.CardParameters[_cardState.CurrentLevel].CardParameters.Count; index++)
+                {
+                    CardParameterView view = Instantiate(_cardData.AttributeData.CardParameterView, _cardParameterContainer);
+                    _cardParametersViews.Add(view);
 
-                view.Initialize(
-                    _cardData.AttributeData.CardParameters[_cardState.CurrentLevel].CardParameters[index].Value,
-                    _cardData.AttributeData.CardParameters[_cardState.CurrentLevel].CardParameters[index].TypeParameter);
+                    view.Initialize(
+                        _cardData.AttributeData.CardParameters[_cardState.CurrentLevel].CardParameters[index].Value,
+                        _cardData.AttributeData.CardParameters[_cardState.CurrentLevel].CardParameters[index].TypeParameter);
+                }
             }
+            else
+            {
+                for (int index = 0; index < _cardData.LegendaryAbilityData.LegendaryAbilityParameters[_cardState.CurrentLevel].CardParameters.Count; index++)
+                {
+                    CardParameterView view = Instantiate(_cardData.LegendaryAbilityData.CardParameterView, _cardParameterContainer);
+                    _cardParametersViews.Add(view);
 
+                    view.Initialize(
+                        _cardData.LegendaryAbilityData.LegendaryAbilityParameters[_cardState.CurrentLevel].CardParameters[index].Value,
+                        _cardData.LegendaryAbilityData.LegendaryAbilityParameters[_cardState.CurrentLevel].CardParameters[index].TypeParameter);
+                }
+            }
+           
             //for (int i = 0; i < _cardData.SuppurtivData.Count; i++)
             //{
             //    _cardData
             //}
+        }
+
+        private void CreateSupportivParametrField()
+        {
+            for (int i = 0; i < _cardData.SuppurtivData.Count; i++)
+            {
+                CardSupportivParametrsView view = Instantiate(_supportivParametrsView, _supportiParametrContainer);
+
+                view.Initialize(_cardData.SuppurtivData[i].Icon);
+            }
         }
     }
 }

@@ -10,12 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 74193d3b83aa06d4a93557514f6829f9, type: 3}
-  m_Name: Health Card
+  m_Name: 12_Thunder
   m_EditorClassIdentifier: 
-  _id: 4
+  _id: 12
   _typeCardColor:
   - {r: 0.17895234, g: 0.8490566, b: 0, a: 0}
   - {r: 0.110137045, g: 0.6794794, b: 0.9339623, a: 0}
   - {r: 1, g: 0.69671583, b: 0.13679248, a: 0}
-  _typeCardParameter: 0
-  _attributeData: {fileID: 11400000, guid: 76e0205ea0d37bf46945f773874bb456, type: 2}
+  - {r: 0.7368477, g: 0.1372549, b: 1, a: 0}
+  _typeCardParameter: 3
+  _attributeData: {fileID: 0}
+  _legendaryAbilityData: {fileID: 11400000, guid: fae6aa1d12a580a4981a33992ebabd2e, type: 2}
+  _suppurtivData: []

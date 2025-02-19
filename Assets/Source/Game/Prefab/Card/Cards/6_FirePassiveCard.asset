@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 74193d3b83aa06d4a93557514f6829f9, type: 3}
-  m_Name: FirePassiveCard
+  m_Name: 6_FirePassiveCard
   m_EditorClassIdentifier: 
   _id: 6
   _typeCardColor:

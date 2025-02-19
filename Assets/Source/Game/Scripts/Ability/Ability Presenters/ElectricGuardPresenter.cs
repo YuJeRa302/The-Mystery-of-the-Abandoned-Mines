@@ -1,12 +1,12 @@
 using Assets.Source.Game.Scripts;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class MetiorSowerPresenter : IDisposable
+public class ElectricGuardPresenter : IDisposable
 {
     private readonly float _delayAttack = 0.3f;
+    private readonly float _rotationSpeed = 100f;
     private readonly ICoroutineRunner _coroutineRunner;
     private readonly IGameLoopService _gameLoopService;
 
@@ -15,11 +15,13 @@ public class MetiorSowerPresenter : IDisposable
     private LegendaryAbilitySpell _spellPrefab;
     private LegendaryAbilitySpell _spell;
     private Player _player;
+    private Vector3 _rotationVector = new Vector3(0, 1, 0);
     private Coroutine _blastThrowingCoroutine;
     private Coroutine _damageDealCoroutine;
+    private Transform _throwPoint;
     private ParticleSystem _particleSystem;
 
-    public MetiorSowerPresenter(
+    public ElectricGuardPresenter(
         Ability ability,
         AbilityView abilityView,
         Player player,
@@ -93,6 +95,9 @@ public class MetiorSowerPresenter : IDisposable
     {
         _ability.Use();
 
+        if (_blastThrowingCoroutine != null)
+            _blastThrowingCoroutine = _coroutineRunner.StartCoroutine(RotateSpell());
+
         if (_damageDealCoroutine != null)
             _damageDealCoroutine = _coroutineRunner.StartCoroutine(DealDamage());
     }
@@ -135,7 +140,7 @@ public class MetiorSowerPresenter : IDisposable
     {
         _spell = GameObject.Instantiate(
                 _spellPrefab,
-                new Vector3(_player.transform.position.x, _spellPrefab.transform.position.y, _player.transform.position.z),
+                new Vector3(_player.transform.position.x, _player.transform.position.y, _player.transform.position.z),
                 Quaternion.identity);
 
         _spell.Initialize(_particleSystem, _ability.CurrentDuration);
@@ -149,14 +154,30 @@ public class MetiorSowerPresenter : IDisposable
 
             if (_spell != null)
             {
-                if (_spell.TryFindEnemys(out List<Enemy> enemies))
-                {
-                    foreach (var enemy in enemies)
-                    {
-                        enemy.TakeDamage(_ability.CurrentAbilityValue);
-                    }
-                }
+                if (_spell.TryFindEnemy(out Enemy enemy))
+                    enemy.TakeDamage(_ability.CurrentAbilityValue);
             }
+        }
+    }
+
+    private IEnumerator RotateSpell()
+    {
+        while (_ability.IsAbilityEnded == false)
+        {
+            if (_spell != null)
+            {
+                _spell.transform.Rotate(_rotationVector * _rotationSpeed * Time.deltaTime);
+                _spell.transform.position = new Vector3(
+                    _player.transform.localPosition.x,
+                    _player.PlayerAbilityContainer.localPosition.y,
+                    _player.transform.transform.localPosition.z);
+            }
+            else
+            {
+                yield return null;
+            }
+
+            yield return null;
         }
     }
 }

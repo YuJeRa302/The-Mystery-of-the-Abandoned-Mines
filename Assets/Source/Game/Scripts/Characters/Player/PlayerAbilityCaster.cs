@@ -57,6 +57,14 @@ namespace Assets.Source.Game.Scripts
 
         public void TakeAbility(CardView cardView)
         {
+            _abilityAttributeData = null;
+
+            if (cardView.CardData.LegendaryAbilityData != null)
+            {
+                if (TrySetLegendaryAbility(cardView.CardData.LegendaryAbilityData.TypeUpgradeMagic, out Ability legendAbility))
+                    CreateLegendaryAbility(legendAbility, legendAbility.AbilityAttribute);
+            }
+            
             if (cardView.CardData.AttributeData == null)
                 return;
 
@@ -78,10 +86,9 @@ namespace Assets.Source.Game.Scripts
                     AbilityTaked?.Invoke(_abilityAttributeData, cardView.CardState.CurrentLevel);
             }
 
-            _abilityAttributeData = null;
 
-            if (TrySetLegendaryAbility(out Ability legendAbility))
-                CreateLegendaryAbility(legendAbility, legendAbility.AbilityAttribute);
+            //if (TrySetLegendaryAbility(out Ability legendAbility))
+            //    CreateLegendaryAbility(legendAbility, legendAbility.AbilityAttribute);
         }
 
         public void Dispose()
@@ -125,19 +132,13 @@ namespace Assets.Source.Game.Scripts
             newAbility = _abilityFactory.CreateClassSkill(classAbilityData, false, currentLvl);
 
             if (classAbilityData.AbilityType == TypeAbility.Summon)
-            {
                 _abilityPresenterFactory.CreateSummonAbilityPresenter(newAbility, classSkillButtonView, _player.ShotPoint, _player, (classAbilityData as SummonAbilityData).Summon.Summon, _player.Pool);
-            }
 
             if (classAbilityData.AbilityType == TypeAbility.ThrowAxe)
-            {
                 _abilityPresenterFactory.CreateThrowAxePresenter(newAbility, classSkillButtonView, _player, (classAbilityData as ThrowAxeClassAbility).AxemMssile);
-            }
 
             if (classAbilityData.AbilityType == TypeAbility.JerkFront)
-            {
                 _abilityPresenterFactory.CreateJerkFrontAbilityPresenter(newAbility, classSkillButtonView, _player, (classAbilityData as JerkFrontAbilityData).PoolParticle);
-            }
 
             if (classAbilityData.AbilityType == TypeAbility.Rage)
             {
@@ -162,29 +163,19 @@ namespace Assets.Source.Game.Scripts
             }
 
             if (classAbilityData.AbilityType == TypeAbility.Epiphany)
-            {
                 _abilityPresenterFactory.CreateEpiphanyAbilityPresenter(newAbility, classSkillButtonView, _player, (classAbilityData as EpiphanyClassAbilityData).EpiphanyParticle);
-            }
 
             if (classAbilityData.AbilityType == TypeAbility.ShieldUp)
-            {
                 _abilityPresenterFactory.CreateShieldUpAbility(newAbility, classSkillButtonView, _player, (classAbilityData as ShieldUpAbility).PoolParticle);
-            }
 
             if (classAbilityData.AbilityType == TypeAbility.SoulExplosion)
-            {
                 _abilityPresenterFactory.CreateSoulExplosionAbilityPresenter(newAbility, classSkillButtonView, _player, (classAbilityData as SoulExplosionAbilityData).DamageParticle);
-            }
 
             if (classAbilityData.AbilityType == TypeAbility.DarkPact)
-            {
                 _abilityPresenterFactory.CreateDarkPactAbilityPresenter(newAbility, classSkillButtonView, _player, (classAbilityData as DarkPactAbilityData).PoolParticle);
-            }
 
             if (classAbilityData.AbilityType == TypeAbility.StunningBlow)
-            {
                 _abilityPresenterFactory.CreateStunningBlowAbilityPresenter(newAbility, classSkillButtonView, _player, (classAbilityData as StunningBlowClassAbilityData).PoolParticle);
-            }
 
             newAbility.AbilityUsed += OnAbilityUsed;
             newAbility.AbilityEnded += OnAbilityEnded;
@@ -224,26 +215,43 @@ namespace Assets.Source.Game.Scripts
                 _abilityDamage, 
                 true);
 
-            switch (abilityAttributeData.TypeMagic)
+            switch (abilityAttributeData.TypeUpgradeMagic)
             {
-                case TypeMagic.ElectricSphere:
+                case TypeUpgradeAbility.ElectricSphere:
                     _abilityPresenterFactory.CreateGlobularLightningPresenter(
                         newAbility,
                         abilityView,
                         _player,
                         particleSystem, (abilityAttributeData as AttackAbilityData).LegendaryAbilityData.LegendaryAbilitySpell);
                     break;
-                case TypeMagic.FireBall:
-                    //_abilityPresenterFactory.CreateFirestormPresenter(
-                    //    newAbility,
-                    //    abilityView,
-                    //    _player,
-                    //    particleSystem, (abilityAttributeData as AttackAbilityData).LegendaryAbilityData.LegendaryAbilitySpell);
+                case TypeUpgradeAbility.ElectricTrap:
+                    ElectricGuardPresenter electricGuardPresenter = _abilityPresenterFactory.CreateElectricGuardPresenter(
+                        newAbility,
+                        abilityView,
+                        _player,
+                        particleSystem,
+                        (abilityAttributeData as AttackAbilityData).LegendaryAbilityData.LegendaryAbilitySpell);
+                    break;
+                case TypeUpgradeAbility.LightningBolt:
+                    ThunderPresenter thunderPresenter = _abilityPresenterFactory.CreateThunderPresenter(newAbility,
+                        abilityView,
+                        _player,
+                        particleSystem,
+                        (abilityAttributeData as AttackAbilityData).LegendaryAbilityData.LegendaryAbilitySpell);
+                    break;
+                case TypeUpgradeAbility.Meteor:
                     _abilityPresenterFactory.CreateMetiorSowerPresenter(newAbility,
                         abilityView,
                         _player,
                         (abilityAttributeData as AttackAbilityData).LegendaryAbilityData.Particle, 
                         (abilityAttributeData as AttackAbilityData).LegendaryAbilityData.LegendaryAbilitySpell);
+                    break;
+                case TypeUpgradeAbility.FireBall:
+                    _abilityPresenterFactory.CreateFirestormPresenter(
+                        newAbility,
+                        abilityView,
+                        _player,
+                        particleSystem, (abilityAttributeData as AttackAbilityData).LegendaryAbilityData.LegendaryAbilitySpell);
                     break;
             }
 
@@ -279,7 +287,7 @@ namespace Assets.Source.Game.Scripts
             }
         }
 
-        private bool TrySetLegendaryAbility(out Ability newability)
+        private bool TrySetLegendaryAbility(TypeUpgradeAbility typeUpgrate, out Ability newability)
         {
             bool isFind = false;
             newability = null;
@@ -292,13 +300,16 @@ namespace Assets.Source.Game.Scripts
                     {
                         foreach (PassiveAbilityView passiveAbilityView in _passiveAbilityViews)
                         {
-                            if (ability.TypeMagic == passiveAbilityView.TypeMagic)
+                            if (ability.TypeMagic == passiveAbilityView.TypeMagic)///
                             {
                                 if (ability.CurrentLevel == ability.MaxLevel - _shiftIndex)
                                 {
-                                    newability = ability;
-                                    isFind = true;
-                                    return isFind;
+                                    if (ability.TypeUpgradeMagic == typeUpgrate)
+                                    {
+                                        newability = ability;
+                                        isFind = true;
+                                        return isFind;
+                                    }
                                 }
                             }
                         }
@@ -320,7 +331,7 @@ namespace Assets.Source.Game.Scripts
                 {
                     if (ability.TypeAbility == abilityAttributeData.TypeAbility)
                     {
-                        if(ability.TypeMagic == abilityAttributeData.TypeMagic)
+                        if(ability.TypeUpgradeMagic == abilityAttributeData.TypeUpgradeMagic)
                         {
                             if ((abilityAttributeData as AttackAbilityData) != null)
                             {
@@ -347,8 +358,10 @@ namespace Assets.Source.Game.Scripts
         {
             foreach (var item in _legendaryAbilities)
             {
-                if (item.TypeMagic == ability.TypeMagic)
+                if (item.TypeUpgradeMagic == ability.TypeUpgradeMagic)
+                {
                     return;
+                }
             }
 
             ability.Dispose();

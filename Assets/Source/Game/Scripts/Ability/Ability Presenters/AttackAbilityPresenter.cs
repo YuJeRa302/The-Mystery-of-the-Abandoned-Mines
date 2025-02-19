@@ -1,11 +1,13 @@
 using System;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Assets.Source.Game.Scripts
 {
     public class AttackAbilityPresenter : IDisposable
     {
+        private readonly float _rotationSpeed = 100f;
         private readonly float _delayAttack = 0.3f;
         private readonly float _blastSpeed = 0.2f;
         private readonly ICoroutineRunner _coroutineRunner;
@@ -17,6 +19,7 @@ namespace Assets.Source.Game.Scripts
         private Spell _spell;
         private Player _player;
         private Vector3 _direction;
+        private Vector3 _rotationVector = new Vector3(0, 1, 0);
         private Coroutine _blastThrowingCoroutine;
         private Coroutine _damageDealCoroutine;
         private Transform _throwPoint;
@@ -116,6 +119,9 @@ namespace Assets.Source.Game.Scripts
             if (_ability.TypeAttackAbility == TypeAttackAbility.TargetSpell)
                 CreateTargetSpell();
 
+            if (_ability.TypeAttackAbility == TypeAttackAbility.RotationAbility)
+                CreateRotateSpell();
+
             if (_damageDealCoroutine != null)
                 _coroutineRunner.StopCoroutine(_damageDealCoroutine);
 
@@ -144,6 +150,20 @@ namespace Assets.Source.Game.Scripts
         private void OnCooldownValueReseted(float value)
         {
             _abilityView.ResetCooldownValue(value);
+        }
+
+        private void CreateRotateSpell()
+        {
+            _spell = GameObject.Instantiate(
+               _spellPrefab,
+               new Vector3(
+                   _player.ShotPoint.position.x,
+                   _player.ShotPoint.position.y + 0.57f,
+                   _player.ShotPoint.position.z),
+               Quaternion.identity);
+
+            _spell.Initialize(_particleSystem, _ability.CurrentDuration);
+            _blastThrowingCoroutine = _coroutineRunner.StartCoroutine(RotateSpell());
         }
 
         private void ThrowBlast()
@@ -214,7 +234,6 @@ namespace Assets.Source.Game.Scripts
 
         private IEnumerator DealDamage()
         {
-            Debug.Log("DealDamage");
             while (_ability.IsAbilityEnded == false)
             {
                 yield return new WaitForSeconds(_delayAttack);
@@ -238,6 +257,30 @@ namespace Assets.Source.Game.Scripts
                     _spell.transform.Translate(_direction * _blastSpeed);
                 else
                     yield return null;
+
+                yield return null;
+            }
+        }
+
+        private IEnumerator RotateSpell()
+        {
+            float verticalOffset = 0f;
+            float distance = 5f;
+            float speed = 100f;
+
+            _spell.transform.position = _player.transform.position + new Vector3(distance, 1.15f, 0.57f);
+            while (_ability.IsAbilityEnded == false)
+            {
+                if (_spell != null)
+                {
+                    _spell.transform.RotateAround(_player.transform.position + Vector3.up * verticalOffset, Vector3.up, speed * Time.deltaTime);
+                    Vector3 direction = (_spell.transform.position - _player.transform.position).normalized;
+                    _spell.transform.position = _player.transform.position + direction * distance + Vector3.up * verticalOffset;
+                }
+                else
+                {
+                    yield return null;
+                }
 
                 yield return null;
             }

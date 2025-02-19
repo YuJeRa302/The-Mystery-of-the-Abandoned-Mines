@@ -55,6 +55,7 @@ namespace Assets.Source.Game.Scripts
         public DamageParametr DamageParametr => _damageParametr;
         public int CurrentLevel { get; private set; }
         public int MaxLevel { get; private set; }
+        public TypeUpgradeAbility TypeUpgradeMagic { get; private set; }
         public TypeMagic TypeMagic { get; private set; }
         public TypeAbility TypeAbility { get; private set; }
         public TypeAttackAbility TypeAttackAbility { get; private set; }
@@ -79,6 +80,7 @@ namespace Assets.Source.Game.Scripts
             _isAutoCast = isAutoCast;
             TypeAbility = abilityAttributeData.TypeAbility;
             TypeAttackAbility = (abilityAttributeData as AttackAbilityData) != null ? (abilityAttributeData as AttackAbilityData).TypeAttackAbility : 0;
+            TypeUpgradeMagic = abilityAttributeData.TypeUpgradeMagic;
             TypeMagic = abilityAttributeData.TypeMagic;
             MaxLevel = abilityAttributeData.CardParameters.Count;
             UpdateAbilityParamters();
@@ -102,6 +104,7 @@ namespace Assets.Source.Game.Scripts
             _isAutoCast = isAutoCast;
             TypeAbility = abilityAttributeData.TypeAbility;
             TypeAttackAbility = (abilityAttributeData as AttackAbilityData) != null ? (abilityAttributeData as AttackAbilityData).TypeAttackAbility : 0;
+            TypeUpgradeMagic = abilityAttributeData.TypeUpgradeMagic;
             TypeMagic = abilityAttributeData.TypeMagic;
             MaxLevel = abilityAttributeData.CardParameters.Count;
             UpdateAbilityParamters();
@@ -147,7 +150,6 @@ namespace Assets.Source.Game.Scripts
             UpdateAbilityParamters();
             CurrentLevel = currentLevel;
             AbilityUpgraded?.Invoke(_defaultCooldown);
-            Debug.Log(TypeMagic + "Undate");
         }
 
         private void FillAbilityParameters(AbilityAttributeData abilityAttributeData, int currentLevel)

@@ -4,7 +4,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MetiorSowerPresenter : IDisposable
+
+public class ThunderPresenter : IDisposable
 {
     private readonly float _delayAttack = 0.3f;
     private readonly ICoroutineRunner _coroutineRunner;
@@ -19,7 +20,7 @@ public class MetiorSowerPresenter : IDisposable
     private Coroutine _damageDealCoroutine;
     private ParticleSystem _particleSystem;
 
-    public MetiorSowerPresenter(
+    public ThunderPresenter(
         Ability ability,
         AbilityView abilityView,
         Player player,
@@ -138,7 +139,7 @@ public class MetiorSowerPresenter : IDisposable
                 new Vector3(_player.transform.position.x, _spellPrefab.transform.position.y, _player.transform.position.z),
                 Quaternion.identity);
 
-        _spell.Initialize(_particleSystem, _ability.CurrentDuration);
+        (_spell as LegendadatyTargetAbilitySpell).Initialize(_particleSystem, _ability.CurrentDuration);
     }
 
     private IEnumerator DealDamage()
@@ -149,12 +150,14 @@ public class MetiorSowerPresenter : IDisposable
 
             if (_spell != null)
             {
-                if (_spell.TryFindEnemys(out List<Enemy> enemies))
+                if ((_spell as LegendadatyTargetAbilitySpell).TryFindEnemys(out List<Enemy> enemies))
                 {
                     foreach (var enemy in enemies)
                     {
                         enemy.TakeDamage(_ability.CurrentAbilityValue);
                     }
+
+                    GameObject.Destroy(_spell);
                 }
             }
         }

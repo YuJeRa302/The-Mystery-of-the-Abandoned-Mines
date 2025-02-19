@@ -10,51 +10,47 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 02f9d96df1d2c444dbca494c7fd95bbc, type: 3}
-  m_Name: Fireball
+  m_Name: LightningBolt
   m_EditorClassIdentifier: 
   _cardParameterView: {fileID: 1961483584371832456, guid: 6d57f6325ba58d6478a1fd35f1ba2831, type: 3}
   _parameters:
   - CardParameters:
-    - Value: 2
+    - Value: 10
       TypeParameter: 4
     - Value: 2
       TypeParameter: 5
-    - Value: 5
+    - Value: 10
       TypeParameter: 6
   - CardParameters:
-    - Value: 2
+    - Value: 12
       TypeParameter: 4
-    - Value: 4
-      TypeParameter: 6
     - Value: 2
       TypeParameter: 5
+    - Value: 10
+      TypeParameter: 6
   - CardParameters:
-    - Value: 3
+    - Value: 12
       TypeParameter: 4
-    - Value: 3
-      TypeParameter: 6
     - Value: 2
       TypeParameter: 5
-  _name: Fireball
-  _description: Fireball
-  _icon: {fileID: 21300000, guid: 8c500d54ff99a5546a4409724f9b5579, type: 3}
+    - Value: 8
+      TypeParameter: 6
+  _name: Lightning Bolt
+  _description: Lightning Bolt
+  _icon: {fileID: 21300000, guid: 679b077591a3b44429e6d0cb3b000386, type: 3}
   _abilityType: 5
   _abilityView: {fileID: 7248082733305173889, guid: b41ccdfb932d3874d92c031e66d814ec, type: 3}
-  _particleSystem: {fileID: 19886636, guid: 3b671081e44be1c4aa4355e8ba6e8a5e, type: 3}
+  _particleSystem: {fileID: 2061987872771563782, guid: ee9410dd14509c84498340b23bc57eae, type: 3}
   _audioClip: {fileID: 0}
-  _typeUpgradeMagic: 2
-  _typeMagic: 0
-  _legendaryAbilityData: {fileID: 11400000, guid: 8567e61c92159eb4fbd5aef185c27421, type: 2}
+  _typeUpgradeMagic: 5
+  _typeMagic: 1
+  _legendaryAbilityData: {fileID: 11400000, guid: fae6aa1d12a580a4981a33992ebabd2e, type: 2}
   _spell: {fileID: 1654424239186438959, guid: 081f8bf11483ab544842add8457b3c62, type: 3}
   _spellRadius: 2
-  _typeAttackAbility: 1
+  _typeAttackAbility: 2
   _damageParametr:
-    TypeDamage: 2
+    TypeDamage: 0
     DamageSupportivePatametrs:
-    - Value: 2
+    - Value: 0
       SupportivePatametr: 0
-    - Value: 2
-      SupportivePatametr: 2
-    - Value: 1
-      SupportivePatametr: 5
-    Particle: {fileID: 1461602671872348846, guid: 0b5e7793d4d1e854385c5ce9b1e79f47, type: 3}
+    Particle: {fileID: 0}

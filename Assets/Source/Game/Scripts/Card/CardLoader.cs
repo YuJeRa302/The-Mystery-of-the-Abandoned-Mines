@@ -24,6 +24,11 @@ namespace Assets.Source.Game.Scripts
         public void Initialize(CardDeck deck)
         {
             _cardDeck = deck;
+
+            foreach (var data in _cardData)
+            {
+                _cardDeck.InitState(data);
+            }
         }
 
         public void CreateCardPool()
@@ -70,7 +75,7 @@ namespace Assets.Source.Game.Scripts
             foreach (var card in cardsData)
             {
                 CardState cardState = _cardDeck.GetCardStateByData(card);
-
+                
                 if (cardState.IsLocked == false)
                 {
                     if (cardState.IsTaked == false)
@@ -99,13 +104,83 @@ namespace Assets.Source.Game.Scripts
             foreach (var card in cards)
             {
                 CardState cardState = _cardDeck.GetCardStateByData(card);
-
+                if (cardState.Id == 10)
+                {
+                    Debug.Log($"LvlCard {cardState.CurrentLevel}");
+                }
                 if (card.Id == cardState.Id)
                 {
-                    if (card.AttributeData.CardParameters.Count <= cardState.CurrentLevel)
-                        cardState.IsLocked = true;
+                    if (card.TypeCardParameter == TypeCardParameter.Ability)
+                    {
+                        if (card.AttributeData.CardParameters.Count <= cardState.CurrentLevel)
+                        {
+                            cardState.IsLocked = true;
+
+                            if (card.AttributeData as AbilityAttributeData)
+                            {
+                                if (FindLegendaryCard(cards, (card.AttributeData as AbilityAttributeData).TypeUpgradeMagic, out CardData legendaryCard))
+                                {
+                                    if (FindPassivCard(cards, (card.AttributeData as AbilityAttributeData).TypeMagic, out CardData passivCard))
+                                    {
+                                        _cardDeck.GetCardStateByData(legendaryCard).IsLocked = false;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else if (card.TypeCardParameter == TypeCardParameter.LegendariAbility)
+                    {
+                        Debug.Log($"current lvl {cardState.CurrentLevel} max lvl {card.LegendaryAbilityData.LegendaryAbilityParameters.Count}");
+                        if (card.LegendaryAbilityData.LegendaryAbilityParameters.Count <= cardState.CurrentLevel)
+                            cardState.IsLocked = true;
+                    }
                 }
             }
+        }
+
+        private bool FindLegendaryCard(List<CardData> cards, TypeUpgradeAbility typeMagic, out CardData legendaryCard)
+        {
+            legendaryCard = null;
+
+            foreach (var data in cards)
+            {
+                if (data.LegendaryAbilityData != null)
+                {
+                    if (_cardDeck.GetCardStateByData(data).IsLocked)
+                    {
+                        if (typeMagic == data.LegendaryAbilityData.TypeUpgradeMagic)
+                        {
+                            if (_cardDeck.GetCardStateByData(data).CurrentLevel <= data.LegendaryAbilityData.LegendaryAbilityParameters.Count)
+                            {
+                                legendaryCard = data;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return legendaryCard != null;
+        }
+
+        private bool FindPassivCard(List<CardData> cards, TypeMagic typeMagic, out CardData passivCard)
+        {
+            passivCard = null;
+
+            foreach (var data in cards)
+            {
+                if (data.AttributeData as PassiveAttributeData)
+                {
+                    if ((data.AttributeData as PassiveAttributeData).TypeMagic == typeMagic)
+                    {
+                        if (_cardDeck.GetCardStateByData(data).IsLocked == true)
+                        {
+                            passivCard = data;
+                        }
+                    }
+                }
+            }
+
+            return passivCard != null;
         }
 
         private void Shuffle(List<CardData> cards)

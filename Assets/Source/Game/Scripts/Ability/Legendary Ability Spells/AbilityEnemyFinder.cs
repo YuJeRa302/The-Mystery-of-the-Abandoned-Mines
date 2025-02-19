@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.Source.Game.Scripts
@@ -19,7 +20,6 @@ namespace Assets.Source.Game.Scripts
             {
                 if (collider.TryGetComponent(out enemy))
                 {
-                    Debug.Log(enemy.name);
                     return true;
                 }
 
@@ -27,6 +27,23 @@ namespace Assets.Source.Game.Scripts
 
             enemy = null;
             return false;
+        }
+
+        public bool TryFindEnemys(out List<Enemy> enemys)
+        {
+            enemys = new List<Enemy>();
+            Collider[] coliderEnemy = Physics.OverlapSphere(transform.position, _findEnemyRange);
+
+            foreach (Collider collider in coliderEnemy)
+            {
+                if (collider.TryGetComponent(out Enemy enemy))
+                {
+                    enemys.Add(enemy);
+                }
+
+            }
+
+            return enemys.Count > 0;
         }
     }
 }

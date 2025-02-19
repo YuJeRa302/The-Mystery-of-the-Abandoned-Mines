@@ -2,5 +2,6 @@ public enum TypeCardParameter
 {
     Default,
     Ability,
-    RerollPoints
+    RerollPoints,
+    LegendariAbility
 }

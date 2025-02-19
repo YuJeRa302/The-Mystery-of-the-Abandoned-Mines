@@ -228,5 +228,25 @@ namespace Assets.Source.Game.Scripts
             MetiorSowerPresenter metiorSower = new MetiorSowerPresenter(ability, abilityView, player, particleSystem, _gameLoopService, _coroutineRunner, spell);
             return metiorSower;
         }
+
+        public ElectricGuardPresenter CreateElectricGuardPresenter(Ability ability,
+            AbilityView abilityView,
+            Player player,
+            ParticleSystem particleSystem,
+            LegendaryAbilitySpell spell)
+        {
+            ElectricGuardPresenter electricGuardPresenter = new ElectricGuardPresenter(ability, abilityView, player, particleSystem, _gameLoopService, _coroutineRunner, spell);
+            return electricGuardPresenter;
+        }
+
+        public ThunderPresenter CreateThunderPresenter(Ability ability,
+            AbilityView abilityView,
+            Player player,
+            ParticleSystem particleSystem,
+            LegendaryAbilitySpell spell)
+        {
+            ThunderPresenter thunderPresenter = new ThunderPresenter(ability, abilityView, player, particleSystem, _gameLoopService, _coroutineRunner, spell);
+            return thunderPresenter;
+        }
     }
 }

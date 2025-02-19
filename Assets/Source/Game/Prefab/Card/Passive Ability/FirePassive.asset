@@ -24,6 +24,6 @@ MonoBehaviour:
   _name: FirePassive
   _description: FirePassive
   _icon: {fileID: 21300000, guid: fdf81e4514a3ee343842aa1421113184, type: 3}
-  _typeMagic: 2
+  _typeMagic: 0
   _typeAbility: 6
   _passiveAbilityView: {fileID: 2680077035284226637, guid: 02e65a2996165c24281b87db23b3fabc, type: 3}

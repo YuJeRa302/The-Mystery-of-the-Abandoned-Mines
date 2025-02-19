@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 74193d3b83aa06d4a93557514f6829f9, type: 3}
-  m_Name: MetiorCard
+  m_Name: 3_Reroll Card
   m_EditorClassIdentifier: 
-  _id: 7
+  _id: 3
   _typeCardColor:
   - {r: 0.17895234, g: 0.8490566, b: 0, a: 0}
   - {r: 0.110137045, g: 0.6794794, b: 0.9339623, a: 0}
   - {r: 1, g: 0.69671583, b: 0.13679248, a: 0}
-  _typeCardParameter: 1
-  _attributeData: {fileID: 11400000, guid: 0eea1264a940c974eaf7f1795d7279c9, type: 2}
+  _typeCardParameter: 2
+  _attributeData: {fileID: 11400000, guid: c077ef0efb52aeb4b89d43852d50e675, type: 2}

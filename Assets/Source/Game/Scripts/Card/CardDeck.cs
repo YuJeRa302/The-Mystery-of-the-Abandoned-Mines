@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Assets.Source.Game.Scripts
 {
     public class CardDeck
     {
-        private readonly Random _rnd = new ();
+        private readonly System.Random _rnd = new ();
         private readonly int _defaultStateLevel = 0;
         private readonly int _defaultStateWeight = 1;
         private readonly int _minValue = 0;
@@ -24,7 +25,7 @@ namespace Assets.Source.Game.Scripts
 
         public void TakeCard(CardView cardView)
         {
-            if (cardView.CardData.TypeCardParameter == TypeCardParameter.Ability)
+            if (cardView.CardData.TypeCardParameter == TypeCardParameter.Ability || cardView.CardData.TypeCardParameter == TypeCardParameter.LegendariAbility)
             {
                 SetNewAbility?.Invoke(cardView);
 
@@ -95,12 +96,17 @@ namespace Assets.Source.Game.Scripts
             }
         }
 
-        private CardState InitState(CardData cardData)//паблик вызывать в сардодер при инициализации+проверка на легендарку
+        public CardState InitState(CardData cardData)
         {
             CardState cardState = new ();
             cardState.Id = cardData.Id;
             cardState.CurrentLevel = _defaultStateLevel;
-            cardState.IsLocked = false;
+
+            if (cardData.TypeCardParameter == TypeCardParameter.LegendariAbility)
+                cardState.IsLocked = true;
+            else
+                cardState.IsLocked = false;
+
             cardState.Weight = _defaultStateWeight;
             _cardState.Add(cardState);
             return cardState;

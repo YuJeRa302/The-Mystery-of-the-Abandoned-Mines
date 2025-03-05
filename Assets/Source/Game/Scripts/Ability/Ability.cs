@@ -25,6 +25,8 @@ namespace Assets.Source.Game.Scripts
         private int _defailyHealing;
         private float _defaultCooldown;
         private float _currentCooldown;
+        private float _spellRadius;
+        private int _quantily;
         private AudioClip _audioClip;
         private Coroutine _coolDown;
         private Coroutine _duration;
@@ -51,6 +53,8 @@ namespace Assets.Source.Game.Scripts
         public int DefailtArmor => _defailtArmor;
         public int AbilityDamage => _abilityDamage;
         public int DefailyHealing => _defailyHealing;
+        public int Quantily => _quantily;
+        public float SpellRadius => _spellRadius;
 
         public DamageParametr DamageParametr => _damageParametr;
         public int CurrentLevel { get; private set; }
@@ -83,6 +87,7 @@ namespace Assets.Source.Game.Scripts
             TypeUpgradeMagic = abilityAttributeData.TypeUpgradeMagic;
             TypeMagic = abilityAttributeData.TypeMagic;
             MaxLevel = abilityAttributeData.CardParameters.Count;
+            _spellRadius = (abilityAttributeData as AttackAbilityData).SpellRadius;
             UpdateAbilityParamters();
         }
 
@@ -199,6 +204,27 @@ namespace Assets.Source.Game.Scripts
                     _currentAbilityValue = parameter.Value;
                 else if (parameter.TypeParameter == TypeParameter.AbilityDuration)
                     _defaultDuration = parameter.Value;
+
+                _damageParametr = legendaryAbilityData.DamageParametr;
+
+                if (_damageParametr != null)
+                {
+                    foreach (var parametr in _damageParametr.DamageSupportivePatametrs)
+                    {
+                        if (parametr.SupportivePatametr == TypeSupportivePatametr.Damage)
+                        {
+                            parametr.Value = _currentAbilityValue;
+                        }
+                        else if (parametr.SupportivePatametr == TypeSupportivePatametr.Chence)
+                        {
+                            parametr.Value = _chance;
+                        }
+                        else if (parametr.SupportivePatametr == TypeSupportivePatametr.Duration)
+                        {
+                            parametr.Value = _defaultDuration;
+                        }
+                    }
+                }
             }
         }
 
@@ -228,6 +254,8 @@ namespace Assets.Source.Game.Scripts
                     _regeneration = parameter.Value;
                 else if (parameter.TypeParameter == TypeParameter.Chance)
                     _chance = parameter.Value;
+                else if (parameter.TypeParameter == TypeParameter.Quantity)
+                    _quantily = parameter.Value;
             }
 
             if (_damageParametr != null)

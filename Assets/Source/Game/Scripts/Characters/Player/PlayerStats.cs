@@ -98,7 +98,9 @@ namespace Assets.Source.Game.Scripts
 
         public void UpdatePlayerStats(CardView cardView)
         {
-            foreach (var parameter in cardView.CardData.AttributeData.CardParameters[cardView.CardState.CurrentLevel].CardParameters)
+            Debug.Log("UpdatePalyerStats");
+            Debug.Log(cardView.CardState.CurrentLevel);
+            foreach (var parameter in cardView.CardData.AttributeData.CardParameters[cardView.CardState.CurrentLevel - 1].CardParameters)
             {
                 switch (parameter.TypeParameter)
                 {
@@ -108,6 +110,7 @@ namespace Assets.Source.Game.Scripts
                         break;
                     case TypeParameter.Damage:
                         _damage += parameter.Value;
+                        DamageChenged?.Invoke(_damage);
                         break;
                     case TypeParameter.Regeneration:
                         _regeneration += parameter.Value;
@@ -115,6 +118,10 @@ namespace Assets.Source.Game.Scripts
                         break;
                     case TypeParameter.Health:
                         MaxHealthChanged?.Invoke(parameter.Value);
+                        break;
+                    case TypeParameter.MoveSpeed:
+                        _speed += parameter.Value;
+                        MoveSpeedChanged?.Invoke(_speed);
                         break;
                 }
             }

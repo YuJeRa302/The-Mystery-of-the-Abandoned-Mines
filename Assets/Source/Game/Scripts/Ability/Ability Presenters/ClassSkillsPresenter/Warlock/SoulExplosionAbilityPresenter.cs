@@ -1,67 +1,39 @@
 using Assets.Source.Game.Scripts;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class SoulExplosionAbilityPresenter : MonoBehaviour
+public class SoulExplosionAbilityPresenter : AbilityPresenter
 {
-    private readonly ICoroutineRunner _coroutineRunner;
-    private readonly IGameLoopService _gameLoopService;
-
-    private Ability _ability;
-    private AbilityView _abilityView;
-    private Player _player;
     private Coroutine _coroutine;
-    private Rigidbody _rigidbodyPlayer;
     private Transform _effectConteiner;
     private Pool _pool;
     private PoolParticle _poolParticle;
-    private List<PoolObject> _spawnedEffects = new();
     private bool _isAbilityUse;
 
-    public SoulExplosionAbilityPresenter(Ability ability, AbilityView abilityView, Player player,
-        IGameLoopService gameLoopService, ICoroutineRunner coroutineRunner, PoolParticle abilityEffect)
+    public SoulExplosionAbilityPresenter(Ability ability,
+        AbilityView abilityView,
+        Player player,
+        IGameLoopService gameLoopService,
+        ICoroutineRunner coroutineRunner, PoolParticle abilityEffect) : base(ability, abilityView, player, gameLoopService, coroutineRunner)
     {
-        _ability = ability;
-        _abilityView = abilityView;
-        _player = player;
-        _coroutineRunner = coroutineRunner;
-        _gameLoopService = gameLoopService;
         _pool = _player.Pool;
         _poolParticle = abilityEffect;
         _effectConteiner = _player.PlayerAbilityContainer;
-        _rigidbodyPlayer = _player.GetComponent<Rigidbody>();
         AddListener();
     }
 
-    private void AddListener()
+    protected override void AddListener()
     {
+        base.AddListener();
         (_abilityView as ClassSkillButtonView).AbilityUsed += OnButtonSkillClick;
-        _ability.AbilityUsed += OnAbilityUsed;
-        _ability.AbilityEnded += OnAbilityEnded;
-        //_ability.AbilityUpgraded += OnAbilityUpgraded;
-        _ability.CooldownValueChanged += OnCooldownValueChanged;
-        _ability.CooldownValueReseted += OnCooldownValueReseted;
-        _ability.AbilityRemoved += Dispose;
-        _gameLoopService.GamePaused += OnGamePaused;
-        _gameLoopService.GameResumed += OnGameResumed;
-        _gameLoopService.GameClosed += OnGameClosed;
     }
 
-    private void RemoveListener()
+    protected override void RemoveListener()
     {
+        base.RemoveListener();
         (_abilityView as ClassSkillButtonView).AbilityUsed -= OnButtonSkillClick;
-        _ability.AbilityUsed -= OnAbilityUsed;
-        _ability.AbilityEnded -= OnAbilityEnded;
-        //_ability.AbilityUpgraded -= OnAbilityUpgraded;
-        _ability.CooldownValueChanged -= OnCooldownValueChanged;
-        _ability.CooldownValueReseted -= OnCooldownValueReseted;
-        _ability.AbilityRemoved -= Dispose;
-        _gameLoopService.GamePaused -= OnGamePaused;
-        _gameLoopService.GameResumed -= OnGameResumed;
-        _gameLoopService.GameClosed -= OnGameClosed;
     }
 
-    private void OnAbilityEnded(Ability ability)
+    protected override void OnAbilityEnded(Ability ability)
     {
         if (_coroutine != null)
             _coroutineRunner.StopCoroutine(_coroutine);
@@ -74,30 +46,15 @@ public class SoulExplosionAbilityPresenter : MonoBehaviour
         if (_isAbilityUse)
             return;
 
-        // _isAbilityUse = true;
+        _isAbilityUse = true;
         _ability.Use();
+        (_abilityView as ClassSkillButtonView).SetInerectableButton(false);
     }
 
-    private void OnAbilityUsed(Ability ability)
+    protected override void OnAbilityUsed(Ability ability)
     {
         _isAbilityUse = true;
         CreateParticle();
-    }
-
-    private void OnGameClosed()
-    {
-        Dispose();
-    }
-
-    private void OnGamePaused()
-    {
-        _ability.StopCoroutine();
-    }
-
-    private void OnGameResumed()
-    {
-        if (_isAbilityUse)
-            _ability.ResumeCoroutine();
     }
 
     private void CreateParticle()
@@ -118,18 +75,15 @@ public class SoulExplosionAbilityPresenter : MonoBehaviour
         }
     }
 
-    private void OnCooldownValueChanged(float value)
+    protected override void OnGameResumed()
     {
-        _abilityView.ChangeCooldownValue(value);
+        if (_isAbilityUse)
+            base.OnGameResumed();
     }
 
-    private void OnCooldownValueReseted(float value)
+    protected override void OnCooldownValueReseted(float value)
     {
-        _abilityView.ResetCooldownValue(value);
-    }
-
-    public void Dispose()
-    {
-        RemoveListener();
+        base.OnCooldownValueReseted(value);
+        (_abilityView as ClassSkillButtonView).SetInerectableButton(true);
     }
 }

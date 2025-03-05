@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: beb1b69ea56807a4592769cd98d16a55, type: 3}
   m_Name: GlobularLightning
   m_EditorClassIdentifier: 
-  _name: 
-  _discription: 
+  _name: GlobularLightning
+  _discription: GlobularLightning
   _legendarySpell: {fileID: 3443178031204434909, guid: 05def5971c92e754289c752393ffa96b, type: 3}
   _spellRadius: 2
-  _icon: {fileID: 21300000, guid: 062eeb9d5e8ba8f45a9ddfea52518f82, type: 3}
+  _icon: {fileID: -700289141, guid: dc2e3af32fff16a4fa28920cc9449371, type: 3}
   _legendaryParametersAbility:
   - CardParameters:
     - Value: 15
@@ -28,4 +28,10 @@ MonoBehaviour:
   _particle: {fileID: 0}
   _typeUpgradeMagic: 0
   _typeMagic: 1
-  _parameterView: {fileID: 0}
+  _parameterView: {fileID: 1961483584371832456, guid: 6d57f6325ba58d6478a1fd35f1ba2831, type: 3}
+  _damageParametr:
+    TypeDamage: 0
+    DamageSupportivePatametrs:
+    - Value: 15
+      SupportivePatametr: 0
+    Particle: {fileID: 0}

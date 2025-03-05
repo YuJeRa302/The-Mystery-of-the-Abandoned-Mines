@@ -18,6 +18,7 @@ public class SummonIdleState : State
     public override void EnterState()
     {
         base.EnterState();
+
         SetIdleState();
     }
 

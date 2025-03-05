@@ -12,11 +12,11 @@ public class PlayerBullet : Bullet
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.collider.TryGetComponent(out Enemy enemy))
-        {
-            enemy.TakeDamage(_damage);
-            ReturObjectPool();
-        }
+        //if (collision.collider.TryGetComponent(out Enemy enemy))
+        //{
+        //    enemy.TakeDamage(_damage);
+        //    ReturObjectPool();
+        //}
 
         //if (collision.collider.TryGetComponent(out Wall wall))
         //    ReturObjectPool();

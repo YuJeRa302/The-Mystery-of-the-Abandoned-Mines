@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace Assets.Source.Game.Scripts
 {
@@ -12,11 +11,13 @@ namespace Assets.Source.Game.Scripts
         private readonly int _minValue = 0;
 
         private List<CardData> _cardDataAbility = new ();
+        private List<CardData> _activeCardAbility = new ();
         private List<CardState> _cardState = new ();
 
         public event Action<CardView> SetNewAbility;
         public event Action<CardView> RerollPointsUpdated;
         public event Action<CardView> PlayerStatsUpdated;
+        public event Action<CardView> TakedPassivAbility;
 
         public CardDeck() { }
 
@@ -30,9 +31,25 @@ namespace Assets.Source.Game.Scripts
                 SetNewAbility?.Invoke(cardView);
 
                 if (_cardDataAbility.Count > 0)
-                    AddCardAbilityData(cardView);
+                    AddCardAbilityData(cardView, _cardDataAbility);
                 else
                     _cardDataAbility.Add(cardView.CardData);
+
+                if (cardView.CardData.AttributeData as AttackAbilityData)
+                {
+                    if (_activeCardAbility.Count > 0)
+                    {
+                        AddCardAbilityData(cardView, _activeCardAbility);
+                    }
+                    else
+                    {
+                        _activeCardAbility.Add(cardView.CardData);
+                    }
+                }
+                else if (cardView.CardData.AttributeData as PassiveAttributeData)
+                {
+                    PlayerStatsUpdated?.Invoke(cardView);
+                }
             }
             else if (cardView.CardData.TypeCardParameter == TypeCardParameter.RerollPoints)
             {
@@ -112,12 +129,30 @@ namespace Assets.Source.Game.Scripts
             return cardState;
         }
 
-        private void AddCardAbilityData(CardView cardView)
+        public bool CanTakeAbilityCard(int id)
         {
-            if (_cardDataAbility.Contains(cardView.CardData))
+            if (_activeCardAbility.Count < 3)
+            {
+                return true;
+            }
+            else
+            {
+                foreach (CardData cardData in _activeCardAbility)
+                {
+                    if (cardData.Id == id)
+                        return true;
+                }
+            }
+
+            return false;
+        }
+
+        private void AddCardAbilityData(CardView cardView, List<CardData> repository)
+        {
+            if (repository.Contains(cardView.CardData))
                 return;
 
-            _cardDataAbility.Add(cardView.CardData);
+            repository.Add(cardView.CardData);
         }
     }
 }

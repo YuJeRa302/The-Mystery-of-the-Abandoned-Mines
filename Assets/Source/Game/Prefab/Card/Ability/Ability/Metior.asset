@@ -37,7 +37,7 @@ MonoBehaviour:
       TypeParameter: 6
   _name: Metior
   _description: Metior
-  _icon: {fileID: 21300000, guid: 325d33c6d266f0e448f60efb34dde7b1, type: 3}
+  _icon: {fileID: -1657215781, guid: dc2e3af32fff16a4fa28920cc9449371, type: 3}
   _abilityType: 5
   _abilityView: {fileID: 7248082733305173889, guid: b41ccdfb932d3874d92c031e66d814ec, type: 3}
   _particleSystem: {fileID: 4918590649640318993, guid: e94b52a6fd549384987ca598b0596267, type: 3}

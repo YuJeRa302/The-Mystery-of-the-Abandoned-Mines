@@ -1,90 +1,37 @@
 using Assets.Source.Game.Scripts;
-using System;
 using System.Collections;
 using UnityEngine;
 
-public class FirestormPresenter : IDisposable
+public class FirestormPresenter : AbilityPresenter
 {
     private readonly float _delayAttack = 0.3f;
     private readonly float _blastSpeed = 0.2f;
-    private readonly ICoroutineRunner _coroutineRunner;
-    private readonly IGameLoopService _gameLoopService;
 
-    private Ability _ability;
-    private AbilityView _abilityView;
     private LegendaryAbilitySpell _spellPrefab;
     private LegendaryAbilitySpell _spell;
-    private Player _player;
     private Vector3 _direction;
     private Coroutine _blastThrowingCoroutine;
     private Coroutine _damageDealCoroutine;
     private Transform _throwPoint;
     private ParticleSystem _particleSystem;
 
-    public FirestormPresenter(
-        Ability ability,
+    public FirestormPresenter(Ability ability,
         AbilityView abilityView,
         Player player,
-        Transform throwPoint,
-        ParticleSystem particleSystem,
         IGameLoopService gameLoopService,
         ICoroutineRunner coroutineRunner,
-        LegendaryAbilitySpell spellPrefab)
+        ParticleSystem particleSystem,
+        LegendaryAbilitySpell spellPrefab) : base(ability, abilityView, player, gameLoopService, coroutineRunner)
     {
-        _ability = ability;
-        _abilityView = abilityView;
         _particleSystem = particleSystem;
-        _throwPoint = throwPoint;
-        _player = player;
+        _throwPoint = _player.ThrowAbilityPoint;
         _spellPrefab = spellPrefab;
-        _gameLoopService = gameLoopService;
-        _coroutineRunner = coroutineRunner;
         AddListener();
     }
 
-    public void Dispose()
+    protected override void OnGamePaused()
     {
-        if (_abilityView != null)
-            _abilityView.ViewDestroy();
-
-        RemoveListener();
-        GC.SuppressFinalize(this);
-    }
-
-    protected virtual void AddListener()
-    {
-        _ability.AbilityUsed += OnAbilityUsed;
-        _ability.AbilityEnded += OnAbilityEnded;
-        _ability.AbilityUpgraded += OnAbilityUpgraded;
-        _ability.CooldownValueChanged += OnCooldownValueChanged;
-        _ability.CooldownValueReseted += OnCooldownValueReseted;
-        _ability.AbilityRemoved += Dispose;
-        _gameLoopService.GamePaused += OnGamePaused;
-        _gameLoopService.GameResumed += OnGameResumed;
-        _gameLoopService.GameClosed += OnGameClosed;
-    }
-
-    protected virtual void RemoveListener()
-    {
-        _ability.AbilityUsed -= OnAbilityUsed;
-        _ability.AbilityEnded -= OnAbilityEnded;
-        _ability.AbilityUpgraded -= OnAbilityUpgraded;
-        _ability.CooldownValueChanged -= OnCooldownValueChanged;
-        _ability.CooldownValueReseted -= OnCooldownValueReseted;
-        _ability.AbilityRemoved -= Dispose;
-        _gameLoopService.GamePaused -= OnGamePaused;
-        _gameLoopService.GameResumed -= OnGameResumed;
-        _gameLoopService.GameClosed -= OnGameClosed;
-    }
-
-    private void OnGameClosed()
-    {
-        Dispose();
-    }
-
-    private void OnGamePaused()
-    {
-        _ability.StopCoroutine();
+        base.OnGamePaused();
 
         if (_blastThrowingCoroutine != null)
             _coroutineRunner.StopCoroutine(_blastThrowingCoroutine);
@@ -93,9 +40,9 @@ public class FirestormPresenter : IDisposable
             _coroutineRunner.StopCoroutine(_damageDealCoroutine);
     }
 
-    private void OnGameResumed()
+    protected override void OnGameResumed()
     {
-        _ability.Use();
+        base.OnGameResumed();
 
         if (_blastThrowingCoroutine != null)
             _blastThrowingCoroutine = _coroutineRunner.StartCoroutine(ThrowingBlast());
@@ -104,7 +51,7 @@ public class FirestormPresenter : IDisposable
             _damageDealCoroutine = _coroutineRunner.StartCoroutine(DealDamage());
     }
 
-    private void OnAbilityUsed(Ability ability)
+    protected override void OnAbilityUsed(Ability ability)
     {
         ThrowBlast();
 
@@ -114,28 +61,13 @@ public class FirestormPresenter : IDisposable
         _damageDealCoroutine = _coroutineRunner.StartCoroutine(DealDamage());
     }
 
-    private void OnAbilityEnded(Ability ability)
+    protected override void OnAbilityEnded(Ability ability)
     {
         if (_blastThrowingCoroutine != null)
             _coroutineRunner.StopCoroutine(_blastThrowingCoroutine);
 
         if (_damageDealCoroutine != null)
             _coroutineRunner.StopCoroutine(_damageDealCoroutine);
-    }
-
-    private void OnAbilityUpgraded(float delay)
-    {
-        _abilityView.Upgrade(delay);
-    }
-
-    private void OnCooldownValueChanged(float value)
-    {
-        _abilityView.ChangeCooldownValue(value);
-    }
-
-    private void OnCooldownValueReseted(float value)
-    {
-        _abilityView.ResetCooldownValue(value);
     }
 
     private void ThrowBlast()
@@ -183,7 +115,7 @@ public class FirestormPresenter : IDisposable
             {
                 if (_spell.TryFindEnemy(out Enemy enemy))
                 {
-                    enemy.TakeDamage(_ability.CurrentAbilityValue);
+                    enemy.TakeDamageTest(_ability.DamageParametr);
                     //enemy.TakeDamageTest(_ability.DamageParametr);
                 }
             }

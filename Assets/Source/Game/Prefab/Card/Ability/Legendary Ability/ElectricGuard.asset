@@ -16,7 +16,7 @@ MonoBehaviour:
   _discription: 
   _legendarySpell: {fileID: 3443178031204434909, guid: 73078fed5fbb1dd48a44c7d2221caf72, type: 3}
   _spellRadius: 1.55
-  _icon: {fileID: 21300000, guid: f4e49bb7005427c4fac854d6d05fcb4e, type: 3}
+  _icon: {fileID: 567277375, guid: dc2e3af32fff16a4fa28920cc9449371, type: 3}
   _legendaryParametersAbility:
   - CardParameters:
     - Value: 2
@@ -28,4 +28,10 @@ MonoBehaviour:
   _particle: {fileID: 6702441514761029868, guid: 469e59a9e0f165e4b9cce7f794cde630, type: 3}
   _typeUpgradeMagic: 4
   _typeMagic: 1
-  _parameterView: {fileID: 0}
+  _parameterView: {fileID: 1961483584371832456, guid: 6d57f6325ba58d6478a1fd35f1ba2831, type: 3}
+  _damageParametr:
+    TypeDamage: 0
+    DamageSupportivePatametrs:
+    - Value: 2
+      SupportivePatametr: 0
+    Particle: {fileID: 0}

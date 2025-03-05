@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _id: 13
   _name: Epiphany
-  _icon: {fileID: 21300000, guid: dba0c48d5a7e35f4bb87f2e8b57499d0, type: 3}
+  _icon: {fileID: 1619018144, guid: 855001a07e231344b97e76392f4d2449, type: 3}
   _description: Epiphany
   _buttonView: {fileID: 7547704264931708372, guid: 226be77f080a72f41b3a154b64b3d4ae, type: 3}
   _abilityClassParameters:
@@ -64,4 +64,8 @@ MonoBehaviour:
     - Value: 30
       TypeParameter: 10
   _abilityType: 11
+  _damageParametr:
+    TypeDamage: 0
+    DamageSupportivePatametrs: []
+    Particle: {fileID: 0}
   _epiphanyParticle: {fileID: -5223542749063254159, guid: d7d41c1b15d706e4e9e4da984db392b3, type: 3}

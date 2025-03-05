@@ -1,63 +1,38 @@
 using Assets.Source.Game.Scripts;
-using System;
 using UnityEngine;
 
-public class ThrowAxeAbilityPresenter : IDisposable
+public class ThrowAxeAbilityPresenter : AbilityPresenter
 {
-    private readonly ICoroutineRunner _coroutineRunner;
-    private readonly IGameLoopService _gameLoopService;
-
-    private Ability _ability;
-    private AbilityView _abilityView;
-    private Player _player;
     private Transform _throwPoint;
     private Pool _pool;
     private AxemMssile _axemMssile;
     private bool _isAbilityUse;
 
-    public ThrowAxeAbilityPresenter(Ability ability, AbilityView abilityView, Transform spawnPoint, Player player,
-        IGameLoopService gameLoopService, ICoroutineRunner coroutineRunner, AxemMssile axemMssile, Pool pool)
+    public ThrowAxeAbilityPresenter(Ability ability,
+        AbilityView abilityView,
+        Player player,
+        IGameLoopService gameLoopService,
+        ICoroutineRunner coroutineRunner, AxemMssile axemMssile) : base(ability, abilityView, player, gameLoopService, coroutineRunner)
     {
-        _ability = ability;
-        _abilityView = abilityView;
-        _throwPoint = spawnPoint;
-        _player = player;
-        _coroutineRunner = coroutineRunner;
-        _gameLoopService = gameLoopService;
+        _throwPoint = _player.ThrowAbilityPoint;
+        _pool = _player.Pool;
         _axemMssile = axemMssile;
-        _pool = pool;
         AddListener();
     }
 
-    private void AddListener()
+    protected override void AddListener()
     {
+        base.AddListener();
         (_abilityView as ClassSkillButtonView).AbilityUsed += OnButtonSkillClick;
-        _ability.AbilityUsed += OnAbilityUsed;
-        _ability.AbilityEnded += OnAbilityEnded;
-        //_ability.AbilityUpgraded += OnAbilityUpgraded;
-        _ability.CooldownValueChanged += OnCooldownValueChanged;
-        _ability.CooldownValueReseted += OnCooldownValueReseted;
-        _ability.AbilityRemoved += Dispose;
-        _gameLoopService.GamePaused += OnGamePaused;
-        _gameLoopService.GameResumed += OnGameResumed;
-        _gameLoopService.GameClosed += OnGameClosed;
     }
 
-    private void RemoveListener()
+    protected override void RemoveListener()
     {
+        base.RemoveListener();
         (_abilityView as ClassSkillButtonView).AbilityUsed -= OnButtonSkillClick;
-        _ability.AbilityUsed -= OnAbilityUsed;
-        _ability.AbilityEnded -= OnAbilityEnded;
-        //_ability.AbilityUpgraded -= OnAbilityUpgraded;
-        _ability.CooldownValueChanged -= OnCooldownValueChanged;
-        _ability.CooldownValueReseted -= OnCooldownValueReseted;
-        _ability.AbilityRemoved -= Dispose;
-        _gameLoopService.GamePaused -= OnGamePaused;
-        _gameLoopService.GameResumed -= OnGameResumed;
-        _gameLoopService.GameClosed -= OnGameClosed;
     }
 
-    private void OnAbilityEnded(Ability ability)
+    protected override void OnAbilityEnded(Ability ability)
     {
         _isAbilityUse = false;
     }
@@ -69,27 +44,13 @@ public class ThrowAxeAbilityPresenter : IDisposable
 
         _isAbilityUse = true;
         _ability.Use();
+        (_abilityView as ClassSkillButtonView).SetInerectableButton(false);
     }
 
-    private void OnAbilityUsed(Ability ability)
+    protected override void OnAbilityUsed(Ability ability)
     {
+        _isAbilityUse = true;
         Spawn();
-    }
-
-    private void OnGameClosed()
-    {
-        Dispose();
-    }
-
-    private void OnGamePaused()
-    {
-        _ability.StopCoroutine();
-    }
-
-    private void OnGameResumed()
-    {
-        if (_isAbilityUse)
-            _ability.ResumeCoroutine();
     }
 
     private void Spawn()
@@ -109,11 +70,6 @@ public class ThrowAxeAbilityPresenter : IDisposable
 
             _pool.InstantiatePoolObject(axemMssile, _axemMssile.name);
             axemMssile.Initialaze(_player, _player.PlayerAttacker.DamageParametr, _player.PlayerMovment.MoveSpeed);
-
-            //if (_deadParticles.ContainsKey(enemyData.PrefabEnemy.name) == false)
-            //{
-            //    _deadParticles.Add(enemyData.PrefabEnemy.name, enemyData.EnemyDieParticleSystem);
-            //}
         }
 
         axemMssile.GetComponent<Rigidbody>().AddForce(_throwPoint.forward * _ability.CurrentDuration, ForceMode.Impulse);
@@ -131,18 +87,9 @@ public class ThrowAxeAbilityPresenter : IDisposable
         return poolObj != null;
     }
 
-    private void OnCooldownValueChanged(float value)
+    protected override void OnCooldownValueReseted(float value)
     {
-        _abilityView.ChangeCooldownValue(value);
-    }
-
-    private void OnCooldownValueReseted(float value)
-    {
-        _abilityView.ResetCooldownValue(value);
-    }
-
-    public void Dispose()
-    {
-        RemoveListener();
+        base.OnCooldownValueReseted(value);
+        (_abilityView as ClassSkillButtonView).SetInerectableButton(true);
     }
 }

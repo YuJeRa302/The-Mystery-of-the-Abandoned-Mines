@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: beb1b69ea56807a4592769cd98d16a55, type: 3}
+  m_Name: snowfall
+  m_EditorClassIdentifier: 
+  _name: Snowfall
+  _discription: Snowfall
+  _legendarySpell: {fileID: 3443178031204434909, guid: bcd32f6824b151946bebed9aadfe6a5e, type: 3}
+  _spellRadius: 2
+  _icon: {fileID: 1570952433, guid: dc2e3af32fff16a4fa28920cc9449371, type: 3}
+  _legendaryParametersAbility:
+  - CardParameters:
+    - Value: 12
+      TypeParameter: 4
+    - Value: 5
+      TypeParameter: 5
+    - Value: 10
+      TypeParameter: 6
+  _particle: {fileID: 19898640, guid: 7e9a3591984cda1499dc675622a57b0b, type: 3}
+  _typeUpgradeMagic: 7
+  _typeMagic: 2
+  _parameterView: {fileID: 1961483584371832456, guid: 6d57f6325ba58d6478a1fd35f1ba2831, type: 3}
+  _damageParametr:
+    TypeDamage: 4
+    DamageSupportivePatametrs:
+    - Value: 0
+      SupportivePatametr: 0
+    - Value: 2
+      SupportivePatametr: 3
+    Particle: {fileID: 550930723136525005, guid: 0e61f2a8c521ff844bffcc24bda7480e, type: 3}

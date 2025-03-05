@@ -5,5 +5,9 @@ public enum TypeUpgradeAbility
     FireBall,
     MagicShield,
     ElectricTrap,
-    LightningBolt
+    LightningBolt,
+    FireCircle,
+    ShowBall,
+    IceBolt,
+    FrostNova
 }

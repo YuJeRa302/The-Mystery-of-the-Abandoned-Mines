@@ -37,7 +37,7 @@ MonoBehaviour:
       TypeParameter: 5
   _name: Fireball
   _description: Fireball
-  _icon: {fileID: 21300000, guid: 8c500d54ff99a5546a4409724f9b5579, type: 3}
+  _icon: {fileID: 2020403252, guid: dc2e3af32fff16a4fa28920cc9449371, type: 3}
   _abilityType: 5
   _abilityView: {fileID: 7248082733305173889, guid: b41ccdfb932d3874d92c031e66d814ec, type: 3}
   _particleSystem: {fileID: 19886636, guid: 3b671081e44be1c4aa4355e8ba6e8a5e, type: 3}

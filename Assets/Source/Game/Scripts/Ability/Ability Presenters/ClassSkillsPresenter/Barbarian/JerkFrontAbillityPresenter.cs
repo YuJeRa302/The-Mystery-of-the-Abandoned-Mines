@@ -1,17 +1,10 @@
 using Assets.Source.Game.Scripts;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class JerkFrontAbillityPresenter : IDisposable
+public class JerkFrontAbillityPresenter : AbilityPresenter
 {
-    private readonly ICoroutineRunner _coroutineRunner;
-    private readonly IGameLoopService _gameLoopService;
-
-    private Ability _ability;
-    private AbilityView _abilityView;
-    private Player _player;
     private Coroutine _coroutine;
     private Rigidbody _rigidbodyPlayer;
     private Transform _effectConteiner;
@@ -20,14 +13,12 @@ public class JerkFrontAbillityPresenter : IDisposable
     private List<PoolObject> _spawnedEffects = new();
     private bool _isAbilityUse;
 
-    public JerkFrontAbillityPresenter(Ability ability, AbilityView abilityView, Player player,
-        IGameLoopService gameLoopService, ICoroutineRunner coroutineRunner, PoolParticle abilityEffect)
+    public JerkFrontAbillityPresenter(Ability ability,
+        AbilityView abilityView,
+        Player player,
+        IGameLoopService gameLoopService,
+        ICoroutineRunner coroutineRunner, PoolParticle abilityEffect) : base(ability, abilityView, player, gameLoopService, coroutineRunner)
     {
-        _ability = ability;
-        _abilityView = abilityView;
-        _player = player;
-        _coroutineRunner = coroutineRunner;
-        _gameLoopService = gameLoopService;
         _pool = _player.Pool;
         _poolParticle = abilityEffect;
         _effectConteiner = _player.PlayerAbilityContainer;
@@ -35,41 +26,16 @@ public class JerkFrontAbillityPresenter : IDisposable
         AddListener();
     }
 
-    private void AddListener()
+    protected override void AddListener()
     {
+        base.AddListener();
         (_abilityView as ClassSkillButtonView).AbilityUsed += OnButtonSkillClick;
-        _ability.AbilityUsed += OnAbilityUsed;
-        _ability.AbilityEnded += OnAbilityEnded;
-        //_ability.AbilityUpgraded += OnAbilityUpgraded;
-        _ability.CooldownValueChanged += OnCooldownValueChanged;
-        _ability.CooldownValueReseted += OnCooldownValueReseted;
-        _ability.AbilityRemoved += Dispose;
-        _gameLoopService.GamePaused += OnGamePaused;
-        _gameLoopService.GameResumed += OnGameResumed;
-        _gameLoopService.GameClosed += OnGameClosed;
     }
 
-    private void RemoveListener()
+    protected override void RemoveListener()
     {
+        base.RemoveListener();
         (_abilityView as ClassSkillButtonView).AbilityUsed -= OnButtonSkillClick;
-        _ability.AbilityUsed -= OnAbilityUsed;
-        _ability.AbilityEnded -= OnAbilityEnded;
-        //_ability.AbilityUpgraded -= OnAbilityUpgraded;
-        _ability.CooldownValueChanged -= OnCooldownValueChanged;
-        _ability.CooldownValueReseted -= OnCooldownValueReseted;
-        _ability.AbilityRemoved -= Dispose;
-        _gameLoopService.GamePaused -= OnGamePaused;
-        _gameLoopService.GameResumed -= OnGameResumed;
-        _gameLoopService.GameClosed -= OnGameClosed;
-    }
-
-    private void OnAbilityEnded(Ability ability)
-    {
-        if (_coroutine != null)
-            _coroutineRunner.StopCoroutine(_coroutine);
-
-        _isAbilityUse = false;
-        ChandeAbilityEffect(_isAbilityUse);
     }
 
     private void OnButtonSkillClick()
@@ -77,31 +43,9 @@ public class JerkFrontAbillityPresenter : IDisposable
         if (_isAbilityUse)
             return;
 
-       // _isAbilityUse = true;
-        _ability.Use();
-    }
-
-    private void OnAbilityUsed(Ability ability)
-    {
         _isAbilityUse = true;
-        ChandeAbilityEffect(_isAbilityUse);
-        Jerk();
-    }
-
-    private void OnGameClosed()
-    {
-        Dispose();
-    }
-
-    private void OnGamePaused()
-    {
-        _ability.StopCoroutine();
-    }
-
-    private void OnGameResumed()
-    {
-        if (_isAbilityUse)
-            _ability.ResumeCoroutine();
+        _ability.Use();
+        (_abilityView as ClassSkillButtonView).SetInerectableButton(false);
     }
 
     private void Jerk()
@@ -127,7 +71,6 @@ public class JerkFrontAbillityPresenter : IDisposable
             else
             {
                 particle = GameObject.Instantiate(_poolParticle, _effectConteiner);
-               // particle = GameObject.Instantiate(_poolParticle, _effectConteiner.position, Quaternion.identity);
                 _pool.InstantiatePoolObject(particle, _poolParticle.name);
                 _spawnedEffects.Add(particle);
                 (particle as DamageParticle).Initialaze(_ability.DamageParametr);
@@ -155,18 +98,24 @@ public class JerkFrontAbillityPresenter : IDisposable
         }
     }
 
-    private void OnCooldownValueChanged(float value)
+    protected override void OnAbilityUsed(Ability ability)
     {
-        _abilityView.ChangeCooldownValue(value);
+        ChandeAbilityEffect(_isAbilityUse);
+        Jerk();
     }
 
-    private void OnCooldownValueReseted(float value)
+    protected override void OnAbilityEnded(Ability ability)
     {
-        _abilityView.ResetCooldownValue(value);
+        if (_coroutine != null)
+            _coroutineRunner.StopCoroutine(_coroutine);
+
+        _isAbilityUse = false;
+        ChandeAbilityEffect(_isAbilityUse);
     }
 
-    public void Dispose()
+    protected override void OnCooldownValueReseted(float value)
     {
-        RemoveListener();
+        base.OnCooldownValueReseted(value);
+        (_abilityView as ClassSkillButtonView).SetInerectableButton(true);
     }
 }

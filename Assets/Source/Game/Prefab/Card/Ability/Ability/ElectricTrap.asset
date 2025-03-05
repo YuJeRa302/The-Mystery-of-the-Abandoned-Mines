@@ -37,7 +37,7 @@ MonoBehaviour:
       TypeParameter: 6
   _name: Electric Trap
   _description: Electric Trap
-  _icon: {fileID: 237908341, guid: c16733358f4b7074daf3d9c0d62b074d, type: 3}
+  _icon: {fileID: -1125297861, guid: dc2e3af32fff16a4fa28920cc9449371, type: 3}
   _abilityType: 5
   _abilityView: {fileID: 7248082733305173889, guid: b41ccdfb932d3874d92c031e66d814ec, type: 3}
   _particleSystem: {fileID: 6702441514761029868, guid: 469e59a9e0f165e4b9cce7f794cde630, type: 3}

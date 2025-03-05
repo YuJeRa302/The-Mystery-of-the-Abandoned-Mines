@@ -1,23 +1,17 @@
-using System;
 using System.Collections;
-using Unity.VisualScripting;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.Source.Game.Scripts
 {
-    public class AttackAbilityPresenter : IDisposable
+    public class AttackAbilityPresenter : AbilityPresenter
     {
         private readonly float _rotationSpeed = 100f;
         private readonly float _delayAttack = 0.3f;
         private readonly float _blastSpeed = 0.2f;
-        private readonly ICoroutineRunner _coroutineRunner;
-        private readonly IGameLoopService _gameLoopService;
 
-        private Ability _ability;
-        private AbilityView _abilityView;
         private Spell _spellPrefab;
         private Spell _spell;
-        private Player _player;
         private Vector3 _direction;
         private Vector3 _rotationVector = new Vector3(0, 1, 0);
         private Coroutine _blastThrowingCoroutine;
@@ -25,68 +19,20 @@ namespace Assets.Source.Game.Scripts
         private Transform _throwPoint;
         private ParticleSystem _particleSystem;
 
-        public AttackAbilityPresenter(
-            Ability ability,
-            AbilityView abilityView,
-            Player player,
-            Transform throwPoint,
-            ParticleSystem particleSystem,
-            IGameLoopService gameLoopService,
+        public AttackAbilityPresenter(Ability ability, 
+            AbilityView abilityView, 
+            Player player, 
+            IGameLoopService gameLoopService, 
             ICoroutineRunner coroutineRunner,
-            Spell spellPrefab) 
+            Spell spellPrefab, ParticleSystem particleSystem) : base(ability, abilityView, player, gameLoopService, coroutineRunner)
         {
-            _ability = ability;
-            _abilityView = abilityView;
-            _throwPoint = throwPoint;
+            _throwPoint = _player.ThrowAbilityPoint;
             _particleSystem = particleSystem;
-            _player = player;
             _spellPrefab = spellPrefab;
-            _gameLoopService = gameLoopService;
-            _coroutineRunner = coroutineRunner;
             AddListener();
         }
 
-        public void Dispose()
-        {
-            if (_abilityView != null)
-                _abilityView.ViewDestroy();
-
-            RemoveListener();
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void AddListener()
-        {
-            _ability.AbilityUsed += OnAbilityUsed;
-            _ability.AbilityEnded += OnAbilityEnded;
-            _ability.AbilityUpgraded += OnAbilityUpgraded;
-            _ability.CooldownValueChanged += OnCooldownValueChanged;
-            _ability.CooldownValueReseted += OnCooldownValueReseted;
-            _ability.AbilityRemoved += Dispose;
-            _gameLoopService.GamePaused += OnGamePaused;
-            _gameLoopService.GameResumed += OnGameResumed;
-            _gameLoopService.GameClosed += OnGameClosed;
-        }
-
-        protected virtual void RemoveListener()
-        {
-            _ability.AbilityUsed -= OnAbilityUsed;
-            _ability.AbilityEnded -= OnAbilityEnded;
-            _ability.AbilityUpgraded -= OnAbilityUpgraded;
-            _ability.CooldownValueChanged -= OnCooldownValueChanged;
-            _ability.CooldownValueReseted -= OnCooldownValueReseted;
-            _ability.AbilityRemoved -= Dispose;
-            _gameLoopService.GamePaused -= OnGamePaused;
-            _gameLoopService.GameResumed -= OnGameResumed;
-            _gameLoopService.GameClosed -= OnGameClosed;
-        }
-
-        private void OnGameClosed()
-        {
-            Dispose();
-        }
-
-        private void OnGamePaused()
+        protected override void OnGamePaused()
         {
             _ability.StopCoroutine();
 
@@ -97,7 +43,7 @@ namespace Assets.Source.Game.Scripts
                 _coroutineRunner.StopCoroutine(_damageDealCoroutine);
         }
 
-        private void OnGameResumed()
+        protected override void OnGameResumed()
         {
             _ability.Use();
 
@@ -108,7 +54,7 @@ namespace Assets.Source.Game.Scripts
                 _damageDealCoroutine = _coroutineRunner.StartCoroutine(DealDamage());
         }
 
-        private void OnAbilityUsed(Ability ability) 
+        protected override void OnAbilityUsed(Ability ability) 
         {
             if (_ability.TypeAttackAbility == TypeAttackAbility.AoEAbility)
                 CreateAoESpell();
@@ -128,28 +74,13 @@ namespace Assets.Source.Game.Scripts
             _damageDealCoroutine = _coroutineRunner.StartCoroutine(DealDamage());
         }
 
-        private void OnAbilityEnded(Ability ability) 
+        protected override void OnAbilityEnded(Ability ability) 
         {
             if (_blastThrowingCoroutine != null)
                 _coroutineRunner.StopCoroutine(_blastThrowingCoroutine);
 
             if (_damageDealCoroutine != null)
                 _coroutineRunner.StopCoroutine(_damageDealCoroutine);
-        }
-
-        private void OnAbilityUpgraded(float delay)
-        {
-            _abilityView.Upgrade(delay);
-        }
-
-        private void OnCooldownValueChanged(float value) 
-        {
-            _abilityView.ChangeCooldownValue(value);
-        }
-
-        private void OnCooldownValueReseted(float value)
-        {
-            _abilityView.ResetCooldownValue(value);
         }
 
         private void CreateRotateSpell()
@@ -162,7 +93,7 @@ namespace Assets.Source.Game.Scripts
                    _player.ShotPoint.position.z),
                Quaternion.identity);
 
-            _spell.Initialize(_particleSystem, _ability.CurrentDuration);
+            _spell.Initialize(_particleSystem, _ability.CurrentDuration, _ability.SpellRadius);
             _blastThrowingCoroutine = _coroutineRunner.StartCoroutine(RotateSpell());
         }
 
@@ -183,7 +114,7 @@ namespace Assets.Source.Game.Scripts
                 _direction = _throwPoint.forward;
             }
 
-            _spell.Initialize(_particleSystem, _ability.CurrentDuration);
+            _spell.Initialize(_particleSystem, _ability.CurrentDuration, _ability.SpellRadius);
             _blastThrowingCoroutine = _coroutineRunner.StartCoroutine(ThrowingBlast());
         }
 
@@ -194,7 +125,7 @@ namespace Assets.Source.Game.Scripts
                 new Vector3(_player.transform.position.x, _player.transform.position.y, _player.transform.position.z),
                 Quaternion.identity);
 
-            _spell.Initialize(_particleSystem, _ability.CurrentDuration);
+            _spell.Initialize(_particleSystem, _ability.CurrentDuration, _ability.SpellRadius);
         }
 
         private void CreateTargetSpell()
@@ -215,7 +146,7 @@ namespace Assets.Source.Game.Scripts
                 targetPosition,
                 Quaternion.identity);
 
-            _spell.Initialize(_particleSystem, _ability.CurrentDuration);
+            _spell.Initialize(_particleSystem, _ability.CurrentDuration, _ability.SpellRadius);
         }
 
         public bool TryFindEnemy(out Enemy enemy)
@@ -240,10 +171,22 @@ namespace Assets.Source.Game.Scripts
 
                 if (_spell != null)
                 {
-                    if (_spell.TryFindEnemy(out Enemy enemy))
+                    if (_ability.TypeAttackAbility == TypeAttackAbility.AoEAbility)
                     {
-                        //enemy.TakeDamage(_ability.CurrentAbilityValue);
-                        enemy.TakeDamageTest(_ability.DamageParametr);
+                        if (_spell.TryFindEnemys(out List<Enemy> enemies))
+                        {
+                            foreach (var enemy in enemies)
+                            {
+                                enemy.TakeDamageTest(_ability.DamageParametr);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (_spell.TryFindEnemy(out Enemy enemy))
+                        {
+                            enemy.TakeDamageTest(_ability.DamageParametr);
+                        }
                     }
                 }
             }
@@ -266,14 +209,14 @@ namespace Assets.Source.Game.Scripts
         {
             float verticalOffset = 0f;
             float distance = 5f;
-            float speed = 100f;
 
             _spell.transform.position = _player.transform.position + new Vector3(distance, 1.15f, 0.57f);
+
             while (_ability.IsAbilityEnded == false)
             {
                 if (_spell != null)
                 {
-                    _spell.transform.RotateAround(_player.transform.position + Vector3.up * verticalOffset, Vector3.up, speed * Time.deltaTime);
+                    _spell.transform.RotateAround(_player.transform.position + Vector3.up * verticalOffset, Vector3.up, _rotationSpeed * Time.deltaTime);
                     Vector3 direction = (_spell.transform.position - _player.transform.position).normalized;
                     _spell.transform.position = _player.transform.position + direction * distance + Vector3.up * verticalOffset;
                 }

@@ -24,7 +24,7 @@ namespace Assets.Source.Game.Scripts
             ParticleSystem particleSystem,
             Spell spell)
         {
-            AttackAbilityPresenter attackAbilityPresenter = new AttackAbilityPresenter(ability, abilityView, player, throwPoint, particleSystem, _gameLoopService, _coroutineRunner, spell);
+            AttackAbilityPresenter attackAbilityPresenter = new AttackAbilityPresenter(ability, abilityView, player, _gameLoopService, _coroutineRunner, spell, particleSystem);
             return attackAbilityPresenter;
         }
 
@@ -47,17 +47,8 @@ namespace Assets.Source.Game.Scripts
             Summon summonPrefab,
             Pool pool)
         {
-            ValidateNotNull(ability, abilityView, spawnPoint, player, summonPrefab, pool);
-
-            return CreatePresenter<SummonAbillityPresenter>(
-                ability,
-                abilityView,
-                spawnPoint,
-                player,
-                _gameLoopService,
-                _coroutineRunner,
-                summonPrefab,
-                pool);
+            SummonAbillityPresenter summonAbillityPresenter = new SummonAbillityPresenter(ability, abilityView, player, _gameLoopService, _coroutineRunner, summonPrefab);
+            return summonAbillityPresenter;
         }
 
         public ThrowAxeAbilityPresenter CreateThrowAxePresenter(
@@ -66,111 +57,50 @@ namespace Assets.Source.Game.Scripts
             Player player,
             AxemMssile axemMssile)
         {
-            ValidateNotNull(ability, abilityView, player, axemMssile);
-
-            return CreatePresenter<ThrowAxeAbilityPresenter>(
-                ability,
-                abilityView,
-                player.ShotPoint,
-                player,
-                _gameLoopService,
-                _coroutineRunner,
-                axemMssile,
-                player.Pool);
+            ThrowAxeAbilityPresenter throwAxeAbilityPresenter = new ThrowAxeAbilityPresenter(ability, abilityView, player, _gameLoopService, _coroutineRunner, axemMssile);
+            return throwAxeAbilityPresenter;
         }
 
         public JerkFrontAbillityPresenter CreateJerkFrontAbilityPresenter(Ability ability, AbilityView abilityView, Player player, PoolParticle abilityEffect)
         {
-            ValidateNotNull(ability, abilityView, player, abilityEffect);
-
-            return CreatePresenter<JerkFrontAbillityPresenter>(
-                ability,
-                abilityView,
-                player,
-                _gameLoopService,
-                _coroutineRunner,
-                abilityEffect);
+            JerkFrontAbillityPresenter jerkFrontAbillityPresenter = new JerkFrontAbillityPresenter(ability, abilityView, player, _gameLoopService, _coroutineRunner, abilityEffect);
+            return jerkFrontAbillityPresenter;
         }
 
-        public RageAbillityPresenter CreateRageAbilityPresenter(Ability ability, AbilityView abilityView, Player player, int boostDamage, float boostMoveSpeed, int boostArmor, PoolParticle abilityEffect)
+        public RageAbillityPresenter CreateRageAbilityPresenter(Ability ability, AbilityView abilityView, Player player, PoolParticle abilityEffect)
         {
-            ValidateNotNull(ability, abilityView, player, abilityEffect);
-
-            return CreatePresenter<RageAbillityPresenter>(
-                ability,
-                abilityView,
-                player,
-                boostDamage,
-                boostMoveSpeed,
-                boostArmor,
-                _gameLoopService,
-                _coroutineRunner,
-                abilityEffect);
+            RageAbillityPresenter rageAbillityPresenter = new RageAbillityPresenter(ability, abilityView, player, _gameLoopService, _coroutineRunner, abilityEffect);
+            return rageAbillityPresenter;
         }
 
         public EpiphanyAbilityPresenter CreateEpiphanyAbilityPresenter(Ability ability, AbilityView abilityView, Player player, PoolParticle abilityEffect)
         {
-            ValidateNotNull(ability, abilityView, player, abilityEffect);
-
-            return CreatePresenter<EpiphanyAbilityPresenter>(
-                ability,
-                abilityView,
-                player,
-                _gameLoopService,
-                _coroutineRunner,
-                abilityEffect);
+            EpiphanyAbilityPresenter epiphanyAbilityPresenter = new EpiphanyAbilityPresenter(ability, abilityView, player, _gameLoopService, _coroutineRunner, abilityEffect);
+            return epiphanyAbilityPresenter;
         }
 
         public ShildUpAbilityPresenter CreateShieldUpAbility(Ability ability, AbilityView abilityView, Player player, PoolParticle poolParticle)
         {
-            ValidateNotNull(ability, abilityView, player, poolParticle);
-
-            return CreatePresenter<ShildUpAbilityPresenter>(
-                ability,
-                abilityView,
-                player,
-                _gameLoopService,
-                _coroutineRunner,
-                poolParticle);
+            ShildUpAbilityPresenter shildUpAbilityPresenter = new ShildUpAbilityPresenter(ability, abilityView, player, _gameLoopService, _coroutineRunner, poolParticle);
+            return shildUpAbilityPresenter;
         }
 
         public SoulExplosionAbilityPresenter CreateSoulExplosionAbilityPresenter(Ability ability, AbilityView abilityView, Player player, PoolParticle poolParticle)
         {
-            ValidateNotNull(ability, abilityView, player, poolParticle);
-
-            return CreatePresenter<SoulExplosionAbilityPresenter>(
-                ability,
-                abilityView,
-                player,
-                _gameLoopService,
-                _coroutineRunner,
-                poolParticle);
+            SoulExplosionAbilityPresenter soulExplosionAbilityPresenter = new SoulExplosionAbilityPresenter(ability, abilityView, player, _gameLoopService, _coroutineRunner, poolParticle);
+            return soulExplosionAbilityPresenter;
         }
 
         public DarkPactAbilityPresenter CreateDarkPactAbilityPresenter(Ability ability, AbilityView abilityView, Player player, PoolParticle poolParticle)
         {
-            ValidateNotNull(ability, abilityView, player, poolParticle);
-
-            return CreatePresenter<DarkPactAbilityPresenter>(
-                ability,
-                abilityView,
-                player,
-                _gameLoopService,
-                _coroutineRunner,
-                poolParticle);
+            DarkPactAbilityPresenter darkPactAbilityPresenter = new DarkPactAbilityPresenter(ability, abilityView, player, _gameLoopService, _coroutineRunner, poolParticle);
+            return darkPactAbilityPresenter;
         }
 
         public StunningBlowAbilityPresenter CreateStunningBlowAbilityPresenter(Ability ability, AbilityView abilityView, Player player, PoolParticle poolParticle)
         {
-            ValidateNotNull(ability, abilityView, player, poolParticle);
-
-            return CreatePresenter<StunningBlowAbilityPresenter>(
-                ability,
-                abilityView,
-                player,
-                _gameLoopService,
-                _coroutineRunner,
-                poolParticle);
+            StunningBlowAbilityPresenter stunningBlowAbilityPresenter = new StunningBlowAbilityPresenter(ability, abilityView, player, _gameLoopService, _coroutineRunner, poolParticle);
+            return stunningBlowAbilityPresenter;
         }
 
         private T CreatePresenter<T>(params object[] parameters) where T : class
@@ -200,9 +130,9 @@ namespace Assets.Source.Game.Scripts
                 ability,
                 abilityView,
                 player,
-                particleSystem,
                 _gameLoopService,
                 _coroutineRunner,
+                particleSystem,
                 spell);
 
             return globularLightningPresenter;
@@ -214,7 +144,7 @@ namespace Assets.Source.Game.Scripts
             ParticleSystem particleSystem,
             LegendaryAbilitySpell spell)
         {
-            FirestormPresenter firestormPresenter = new FirestormPresenter(ability, abilityView, player, player.ThrowAbilityPoint, particleSystem, _gameLoopService, _coroutineRunner, spell);
+            FirestormPresenter firestormPresenter = new FirestormPresenter(ability, abilityView, player, _gameLoopService, _coroutineRunner, particleSystem, spell);
 
             return firestormPresenter;
         }
@@ -225,7 +155,7 @@ namespace Assets.Source.Game.Scripts
             ParticleSystem particleSystem,
             LegendaryAbilitySpell spell)
         {
-            MetiorSowerPresenter metiorSower = new MetiorSowerPresenter(ability, abilityView, player, particleSystem, _gameLoopService, _coroutineRunner, spell);
+            MetiorSowerPresenter metiorSower = new MetiorSowerPresenter(ability, abilityView, player, _gameLoopService, _coroutineRunner, particleSystem, spell);
             return metiorSower;
         }
 
@@ -235,7 +165,7 @@ namespace Assets.Source.Game.Scripts
             ParticleSystem particleSystem,
             LegendaryAbilitySpell spell)
         {
-            ElectricGuardPresenter electricGuardPresenter = new ElectricGuardPresenter(ability, abilityView, player, particleSystem, _gameLoopService, _coroutineRunner, spell);
+            ElectricGuardPresenter electricGuardPresenter = new ElectricGuardPresenter(ability, abilityView, player, _gameLoopService, _coroutineRunner, particleSystem, spell);
             return electricGuardPresenter;
         }
 
@@ -245,8 +175,47 @@ namespace Assets.Source.Game.Scripts
             ParticleSystem particleSystem,
             LegendaryAbilitySpell spell)
         {
-            ThunderPresenter thunderPresenter = new ThunderPresenter(ability, abilityView, player, particleSystem, _gameLoopService, _coroutineRunner, spell);
+            ThunderPresenter thunderPresenter = new ThunderPresenter(ability, abilityView, player, _gameLoopService, _coroutineRunner, particleSystem, spell);
             return thunderPresenter;
+        }
+
+        public DragonTracePresenter CreateDragonTracePresenter(Ability ability,
+            AbilityView abilityView,
+            Player player,
+            ParticleSystem particleSystem,
+            LegendaryAbilitySpell spell)
+        {
+            DragonTracePresenter dragonTracePresenter = new DragonTracePresenter(ability, abilityView, player, _gameLoopService, _coroutineRunner, particleSystem, spell);
+            return dragonTracePresenter;
+        }
+
+        public SnowfallPresenter CreateSnowfallPresenter(Ability ability,
+            AbilityView abilityView, 
+            Player player,
+            ParticleSystem particleSystem,
+            LegendaryAbilitySpell spell)
+        {
+            SnowfallPresenter snowfallPresenter = new SnowfallPresenter(ability, abilityView, player, _gameLoopService, _coroutineRunner, particleSystem, spell);
+            return snowfallPresenter;
+        }
+
+        public IciAvalanchePresenter CreateIciAvalanchePresenter(Ability ability,
+            AbilityView abilityView,
+            Player player,
+            ParticleSystem particleSystem,
+            LegendaryAbilitySpell spell)
+        {
+            IciAvalanchePresenter iciAvalanchePresenter = new IciAvalanchePresenter(ability, abilityView, player, _gameLoopService, _coroutineRunner, particleSystem, spell);
+            return iciAvalanchePresenter;
+        }
+
+        public BuranPresenter CreateBuranPresenter(Ability ability,
+            AbilityView abilityView,
+            Player player, ParticleSystem particleSystem,
+            LegendaryAbilitySpell spell)
+        {
+            BuranPresenter buranPresenter = new BuranPresenter(ability, abilityView, player, _gameLoopService, _coroutineRunner, particleSystem, spell);
+            return buranPresenter;
         }
     }
 }

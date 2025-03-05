@@ -8,5 +8,6 @@ namespace Assets.Source.Game.Scripts
         public bool IsLocked;
         public int Weight = 1;
         public int CurrentLevel;
+        public bool IsCardUpgraded = false;
     }
 }

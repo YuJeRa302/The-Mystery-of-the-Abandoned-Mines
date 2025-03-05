@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _id: 14
   _name: ShielUp
-  _icon: {fileID: 21300000, guid: 570018e27fa24c34091ab0bbdcff209b, type: 3}
+  _icon: {fileID: 1680454516, guid: 855001a07e231344b97e76392f4d2449, type: 3}
   _description: ShielUp
   _buttonView: {fileID: 7547704264931708372, guid: 226be77f080a72f41b3a154b64b3d4ae, type: 3}
   _abilityClassParameters:
@@ -64,4 +64,8 @@ MonoBehaviour:
     - Value: -1
       TypeParameter: 9
   _abilityType: 12
+  _damageParametr:
+    TypeDamage: 0
+    DamageSupportivePatametrs: []
+    Particle: {fileID: 0}
   _poolParticle: {fileID: 6218049840532234276, guid: c3e43636e62735442b8f24f10242594e, type: 3}

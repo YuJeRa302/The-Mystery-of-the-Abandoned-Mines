@@ -40,7 +40,6 @@ namespace Assets.Source.Game.Scripts
                 {
                     enemys.Add(enemy);
                 }
-
             }
 
             return enemys.Count > 0;

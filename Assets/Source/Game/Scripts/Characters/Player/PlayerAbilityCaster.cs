@@ -85,10 +85,6 @@ namespace Assets.Source.Game.Scripts
                 else
                     AbilityTaked?.Invoke(_abilityAttributeData, cardView.CardState.CurrentLevel);
             }
-
-
-            //if (TrySetLegendaryAbility(out Ability legendAbility))
-            //    CreateLegendaryAbility(legendAbility, legendAbility.AbilityAttribute);
         }
 
         public void Dispose()
@@ -142,24 +138,8 @@ namespace Assets.Source.Game.Scripts
 
             if (classAbilityData.AbilityType == TypeAbility.Rage)
             {
-                int boostDamage = 0;
-                float boosMoveSpeed = 0;
-                int boosArmor = 0;
-
-                foreach (CardParameter parameter in classAbilityData.Parameters[currentLvl].CardParameters)
-                {
-                    if (parameter.TypeParameter == TypeParameter.Damage)
-                        boostDamage = parameter.Value;
-
-                    if (parameter.TypeParameter == TypeParameter.MoveSpeed)
-                        boosMoveSpeed = parameter.Value;
-
-                    if (parameter.TypeParameter == TypeParameter.Armor)
-                        boosArmor = parameter.Value;
-                }
-
                 _abilityPresenterFactory.CreateRageAbilityPresenter(newAbility,
-                    classSkillButtonView, _player, boostDamage, boosMoveSpeed, boosArmor, (classAbilityData as RageClassAbilityData).RageEffect);
+                    classSkillButtonView, _player, (classAbilityData as RageClassAbilityData).RageEffect);
             }
 
             if (classAbilityData.AbilityType == TypeAbility.Epiphany)
@@ -252,6 +232,33 @@ namespace Assets.Source.Game.Scripts
                         abilityView,
                         _player,
                         particleSystem, (abilityAttributeData as AttackAbilityData).LegendaryAbilityData.LegendaryAbilitySpell);
+                    break;
+                case TypeUpgradeAbility.FireCircle:
+                    _abilityPresenterFactory.CreateDragonTracePresenter(
+                        newAbility,
+                        abilityView,
+                        _player,
+                        particleSystem,
+                        (abilityAttributeData as AttackAbilityData).LegendaryAbilityData.LegendaryAbilitySpell);
+                    break;
+                case TypeUpgradeAbility.ShowBall:
+                    _abilityPresenterFactory.CreateSnowfallPresenter(
+                        newAbility, abilityView, _player, particleSystem,
+                        (abilityAttributeData as AttackAbilityData).LegendaryAbilityData.LegendaryAbilitySpell);
+                    break;
+                case TypeUpgradeAbility.IceBolt:
+                    _abilityPresenterFactory.CreateIciAvalanchePresenter(newAbility,
+                        abilityView,
+                        _player,
+                        (abilityAttributeData as AttackAbilityData).LegendaryAbilityData.Particle,
+                        (abilityAttributeData as AttackAbilityData).LegendaryAbilityData.LegendaryAbilitySpell);
+                    break;
+                case TypeUpgradeAbility.FrostNova:
+                    _abilityPresenterFactory.CreateBuranPresenter(newAbility,
+                         abilityView,
+                        _player,
+                        (abilityAttributeData as AttackAbilityData).LegendaryAbilityData.Particle,
+                        (abilityAttributeData as AttackAbilityData).LegendaryAbilityData.LegendaryAbilitySpell);
                     break;
             }
 

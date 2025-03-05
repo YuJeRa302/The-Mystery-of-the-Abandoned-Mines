@@ -15,15 +15,11 @@ MonoBehaviour:
   _cardParameterView: {fileID: 1961483584371832456, guid: 6d57f6325ba58d6478a1fd35f1ba2831, type: 3}
   _parameters:
   - CardParameters:
-    - Value: 0
-      TypeParameter: 0
-    - Value: 0
-      TypeParameter: 0
-    - Value: 0
+    - Value: 7
       TypeParameter: 0
   _name: FirePassive
   _description: FirePassive
-  _icon: {fileID: 21300000, guid: fdf81e4514a3ee343842aa1421113184, type: 3}
+  _icon: {fileID: -498994127, guid: dc2e3af32fff16a4fa28920cc9449371, type: 3}
   _typeMagic: 0
   _typeAbility: 6
   _passiveAbilityView: {fileID: 2680077035284226637, guid: 02e65a2996165c24281b87db23b3fabc, type: 3}

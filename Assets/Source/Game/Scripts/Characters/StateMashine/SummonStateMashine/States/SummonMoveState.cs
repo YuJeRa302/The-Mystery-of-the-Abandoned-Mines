@@ -30,42 +30,35 @@ public class SummonMoveState : State
         if (_summon.Target != null)
         {
             _direction = _summon.Target.transform;
-            Debug.Log("≈неми");
         }
         else
         {
             _direction = _player.transform;
-            Debug.Log("»грок");
         }
     }
 
     public override void UpdateState()
     {
-        //if (FindEnemy(out Enemy target))
-        //{
-        //    _summon.SetTarget(target);
-        //    _direction = _summon.Target.transform;
-        //}
+        if (FindEnemy(out Enemy target))
+        {
+            _summon.SetTarget(target);
+            _direction = _summon.Target.transform;
+        }
 
         Vector3 directionToTarget = _summon.transform.position - _direction.position;
         float distance = directionToTarget.magnitude;
 
-        if (distance <= _summon.DistanceToTarget)
+        if (distance < _summon.DistanceToTarget)
         {
-            Debug.Log(_summon.Target != null);
             if (_summon.Target != null)
             {
-                Debug.Log("не равен нулл");
-                Debug.Log(_summon.Target.isActiveAndEnabled != false);
                 if (_summon.Target.isActiveAndEnabled != false)
                 {
-                    Debug.Log("Attack");
                     _stateMashine.SetState<SummonAttackState>();
                 }            
             }
             else
             {
-                Debug.Log("Idle");
                 _stateMashine.SetState<SummonIdleState>();
             }
         }

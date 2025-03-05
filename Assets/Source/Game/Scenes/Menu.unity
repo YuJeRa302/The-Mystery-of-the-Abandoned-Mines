@@ -6114,7 +6114,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 6839403e35f1a2e41a82078172bef2a0, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ea2173c947ab718489745cdb5bb408db, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -7404,7 +7404,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 6839403e35f1a2e41a82078172bef2a0, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b83fcbd463322e3488f35d9e8f9359a4, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -9175,7 +9175,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _weaponImage: {fileID: 194260569}
-  _defaultSprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  _defaultSprite: {fileID: 21300000, guid: 2ad6108347fb0634e95a221bd12c38f8, type: 3}
   _nameWeapon: {fileID: 430438117}
   _damageText: {fileID: 491177421}
   _armorText: {fileID: 327939788}
@@ -10146,7 +10146,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 6839403e35f1a2e41a82078172bef2a0, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d694d515cb141514c957d937e8977448, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -11508,8 +11508,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: d694d515cb141514c957d937e8977448, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -11726,7 +11726,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 6a3ba55e82a9e2347a97d621ed805c20, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 2ad6108347fb0634e95a221bd12c38f8, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -12577,7 +12577,7 @@ MonoBehaviour:
   _classAbilityDataView: {fileID: 6360322611065278402, guid: ceb38ad443ff21b40a4aac83d132b2a7, type: 3}
   _playerClassDataView: {fileID: 2790745703130738760, guid: 06969f4d3edb01a45901786836535a1f, type: 3}
   _abilityImage: {fileID: 1887904415}
-  _defaultSprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  _defaultSprite: {fileID: 21300000, guid: 6a3ba55e82a9e2347a97d621ed805c20, type: 3}
   _abilityClassContainer: {fileID: 2090543012}
   _classContainer: {fileID: 25123218}
   _playerClassDatas:
@@ -12826,7 +12826,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 6839403e35f1a2e41a82078172bef2a0, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 882addc15aa86c442b5aa095c723ea54, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -14870,7 +14870,7 @@ MonoBehaviour:
   _resetButtonText: {fileID: 1188647970}
   _countUpgradePoints: {fileID: 84648903}
   _statsImage: {fileID: 388375099}
-  _defaultSprite: {fileID: 21300000, guid: c1e3ddf20be295e4cb3a38f57f18680a, type: 3}
+  _defaultSprite: {fileID: 21300000, guid: 6a3ba55e82a9e2347a97d621ed805c20, type: 3}
   _upgradeDataView: {fileID: 4575521317633889204, guid: 321821a2d73b9034ebd392503d6b7277, type: 3}
   _upgradesContainer: {fileID: 1960137272}
   _defaultUpgradeData:
@@ -16892,7 +16892,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 6839403e35f1a2e41a82078172bef2a0, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b83fcbd463322e3488f35d9e8f9359a4, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -17043,7 +17043,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 6839403e35f1a2e41a82078172bef2a0, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a1090068d2644714c9ea2fab0b008630, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

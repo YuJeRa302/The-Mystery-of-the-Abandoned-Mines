@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: beb1b69ea56807a4592769cd98d16a55, type: 3}
+  m_Name: IceAvalanche
+  m_EditorClassIdentifier: 
+  _name: IceAvalanche
+  _discription: IceAvalanche
+  _legendarySpell: {fileID: 3443178031204434909, guid: 68adff4030c94ef40870ead0c5ed1745, type: 3}
+  _spellRadius: 10
+  _icon: {fileID: -249834207, guid: dc2e3af32fff16a4fa28920cc9449371, type: 3}
+  _legendaryParametersAbility:
+  - CardParameters:
+    - Value: 10
+      TypeParameter: 4
+    - Value: 4
+      TypeParameter: 5
+    - Value: 10
+      TypeParameter: 6
+  _particle: {fileID: 307322573501949415, guid: bbe1a80e080c7ac4c8d0f4dbbe898922, type: 3}
+  _typeUpgradeMagic: 8
+  _typeMagic: 2
+  _parameterView: {fileID: 1961483584371832456, guid: 6d57f6325ba58d6478a1fd35f1ba2831, type: 3}
+  _damageParametr:
+    TypeDamage: 1
+    DamageSupportivePatametrs:
+    - Value: 10
+      SupportivePatametr: 0
+    - Value: 20
+      SupportivePatametr: 1
+    - Value: 4
+      SupportivePatametr: 2
+    Particle: {fileID: -8818530760380164550, guid: 2ed06ab528b7c474eb9246421cd7c791, type: 3}

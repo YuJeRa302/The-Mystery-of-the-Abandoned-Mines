@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.ParticleSystem;
 
 namespace Assets.Source.Game.Scripts
 {
@@ -44,6 +45,11 @@ namespace Assets.Source.Game.Scripts
 
         private void OnDisable()
         {
+            foreach (var spawnedParticle in _spawnedEffects)
+            {
+                spawnedParticle.ReturObjectPool();
+            }
+
             CorountineStop(_slowDamage);
             CorountineStop(_stunDamage);
             CorountineStop(_repulsiveDamage);
@@ -79,7 +85,7 @@ namespace Assets.Source.Game.Scripts
             _stateMashine.ResetState();
         }
 
-        public void TakeDamage(float damage)//+тип урона
+        private void TakeDamage(float damage)//+тип урона
         {
             if (damage < 0)
                 return;
@@ -162,7 +168,7 @@ namespace Assets.Source.Game.Scripts
             else if (damage.TypeDamage == TypeDamage.RepulsiveDamage)
             {
                 TakeDamage(damageValue);
-                Debug.Log(damageValue);
+
                 if (_isDead)
                     return;
 

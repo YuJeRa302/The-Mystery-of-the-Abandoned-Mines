@@ -37,7 +37,7 @@ MonoBehaviour:
       TypeParameter: 6
   _name: Lightning Bolt
   _description: Lightning Bolt
-  _icon: {fileID: 21300000, guid: 679b077591a3b44429e6d0cb3b000386, type: 3}
+  _icon: {fileID: 1705902418, guid: dc2e3af32fff16a4fa28920cc9449371, type: 3}
   _abilityType: 5
   _abilityView: {fileID: 7248082733305173889, guid: b41ccdfb932d3874d92c031e66d814ec, type: 3}
   _particleSystem: {fileID: 2061987872771563782, guid: ee9410dd14509c84498340b23bc57eae, type: 3}
@@ -51,6 +51,6 @@ MonoBehaviour:
   _damageParametr:
     TypeDamage: 0
     DamageSupportivePatametrs:
-    - Value: 0
+    - Value: 10
       SupportivePatametr: 0
     Particle: {fileID: 0}

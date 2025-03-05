@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02f9d96df1d2c444dbca494c7fd95bbc, type: 3}
+  m_Name: IceBolt
+  m_EditorClassIdentifier: 
+  _cardParameterView: {fileID: 1961483584371832456, guid: 6d57f6325ba58d6478a1fd35f1ba2831, type: 3}
+  _parameters:
+  - CardParameters:
+    - Value: 10
+      TypeParameter: 4
+    - Value: 1
+      TypeParameter: 5
+    - Value: 10
+      TypeParameter: 6
+  - CardParameters:
+    - Value: 10
+      TypeParameter: 4
+    - Value: 1
+      TypeParameter: 5
+    - Value: 10
+      TypeParameter: 6
+  - CardParameters:
+    - Value: 10
+      TypeParameter: 4
+    - Value: 1
+      TypeParameter: 5
+    - Value: 10
+      TypeParameter: 6
+  _name: IceBolt
+  _description: IceBolt
+  _icon: {fileID: -1627941802, guid: dc2e3af32fff16a4fa28920cc9449371, type: 3}
+  _abilityType: 5
+  _abilityView: {fileID: 7248082733305173889, guid: b41ccdfb932d3874d92c031e66d814ec, type: 3}
+  _particleSystem: {fileID: 3054870731400746735, guid: dde2f3df6a2638240995d457f72eb9d0, type: 3}
+  _audioClip: {fileID: 0}
+  _typeUpgradeMagic: 8
+  _typeMagic: 2
+  _legendaryAbilityData: {fileID: 11400000, guid: 09243cca4edfc5042a4bb232c751aef7, type: 2}
+  _spell: {fileID: 1654424239186438959, guid: 081f8bf11483ab544842add8457b3c62, type: 3}
+  _spellRadius: 2
+  _typeAttackAbility: 2
+  _damageParametr:
+    TypeDamage: 1
+    DamageSupportivePatametrs:
+    - Value: 0
+      SupportivePatametr: 0
+    - Value: 20
+      SupportivePatametr: 1
+    - Value: 2
+      SupportivePatametr: 2
+    Particle: {fileID: -8818530760380164550, guid: 2ed06ab528b7c474eb9246421cd7c791, type: 3}

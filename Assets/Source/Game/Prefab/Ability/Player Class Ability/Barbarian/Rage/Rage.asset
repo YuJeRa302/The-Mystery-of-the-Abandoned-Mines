@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _id: 12
   _name: Rage
-  _icon: {fileID: 21300000, guid: 322058629e47df340a9cfbe5daf6c21a, type: 3}
+  _icon: {fileID: 1119336843, guid: 855001a07e231344b97e76392f4d2449, type: 3}
   _description: Rage
   _buttonView: {fileID: 7547704264931708372, guid: 226be77f080a72f41b3a154b64b3d4ae, type: 3}
   _abilityClassParameters:
@@ -72,4 +72,8 @@ MonoBehaviour:
     - Value: 9
       TypeParameter: 5
   _abilityType: 10
+  _damageParametr:
+    TypeDamage: 0
+    DamageSupportivePatametrs: []
+    Particle: {fileID: 0}
   _rageEffect: {fileID: 1869056104995865337, guid: 12aa6d89f37fe0b41ab0da8adc26824b, type: 3}

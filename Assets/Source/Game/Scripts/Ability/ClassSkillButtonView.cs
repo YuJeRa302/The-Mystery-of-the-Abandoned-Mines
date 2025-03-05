@@ -19,6 +19,11 @@ public class ClassSkillButtonView : AbilityView
         _button.onClick.RemoveListener(OnAbilityUse);
     }
 
+    public void SetInerectableButton(bool state)
+    {
+        _button.interactable = state;
+    }
+
     private void OnAbilityUse()
     {
         AbilityUsed?.Invoke();

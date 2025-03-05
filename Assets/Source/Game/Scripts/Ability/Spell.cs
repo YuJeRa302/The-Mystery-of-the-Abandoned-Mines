@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Assets.Source.Game.Scripts
@@ -6,7 +8,8 @@ namespace Assets.Source.Game.Scripts
     {
         [SerializeField] private Transform _effectContainer;
         [SerializeField] private float _findEnemyRange = 4f;
-
+        
+        protected List<Enemy> _enemies = new List<Enemy>();
         private ParticleSystem _abilityEffect;
         private float _spellLifeTime;
 
@@ -15,7 +18,7 @@ namespace Assets.Source.Game.Scripts
             Gizmos.DrawWireSphere(transform.position, _findEnemyRange);
         }
 
-        public void Initialize(ParticleSystem particleSystem, float currentDuration)
+        public void Initialize(ParticleSystem particleSystem, float currentDuration, float radius)
         {
             if (_abilityEffect != null)
             {
@@ -23,6 +26,7 @@ namespace Assets.Source.Game.Scripts
                     Destroy(_abilityEffect);
             }
 
+            _findEnemyRange = radius;
             _spellLifeTime = currentDuration;
             CreateEffect(particleSystem);
             Destroy(_abilityEffect.gameObject, _spellLifeTime);
@@ -41,6 +45,24 @@ namespace Assets.Source.Game.Scripts
 
             enemy = null;
             return false;
+        }
+
+        public virtual bool TryFindEnemys(out List<Enemy> enemies)
+        {
+            _enemies.Clear();
+            enemies = new List<Enemy>();
+            Collider[] coliderEnemy = Physics.OverlapSphere(transform.position, _findEnemyRange);
+
+            foreach (Collider collider in coliderEnemy)
+            {
+                if (collider.TryGetComponent(out Enemy enemy))
+                {
+                    _enemies.Add(enemy);
+                }
+            }
+
+            enemies.AddRange(_enemies);
+            return enemies.Count > 0;
         }
 
         public void DestoySpell()

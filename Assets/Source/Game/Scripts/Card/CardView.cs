@@ -93,11 +93,6 @@ namespace Assets.Source.Game.Scripts
                         _cardData.LegendaryAbilityData.LegendaryAbilityParameters[_cardState.CurrentLevel].CardParameters[index].TypeParameter);
                 }
             }
-           
-            //for (int i = 0; i < _cardData.SuppurtivData.Count; i++)
-            //{
-            //    _cardData
-            //}
         }
 
         private void CreateSupportivParametrField()

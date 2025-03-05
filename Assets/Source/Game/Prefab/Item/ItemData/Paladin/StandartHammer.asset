@@ -29,7 +29,7 @@ MonoBehaviour:
     DamageSupportivePatametrs:
     - Value: 4
       SupportivePatametr: 0
-    - Value: 5
+    - Value: 1
       SupportivePatametr: 1
     - Value: 2
       SupportivePatametr: 2

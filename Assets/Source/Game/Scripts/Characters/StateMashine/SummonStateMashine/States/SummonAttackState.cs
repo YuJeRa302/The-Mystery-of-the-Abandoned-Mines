@@ -10,7 +10,7 @@ public class SummonAttackState : State
     protected float _attackRange;
     protected Vector3 _directionToTarget;
     protected float _distanceToTarget;
-    protected float _damage;
+    protected DamageParametr _damage;
     protected SummonAnimation _animationController;
 
     public SummonAttackState(StateMashine stateMashine, Summon summon) : base(stateMashine)
@@ -87,7 +87,7 @@ public class SummonAttackState : State
             float distance = directionToTarget.magnitude;
             
             if (distance <= _attackRange)
-                _target.TakeDamage(_damage);
+                _target.TakeDamageTest(_damage);
         }
 
         _canTransit = true;

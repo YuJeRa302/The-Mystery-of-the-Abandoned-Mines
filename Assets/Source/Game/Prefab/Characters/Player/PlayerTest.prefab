@@ -518,6 +518,7 @@ Transform:
   - {fileID: 5186116703229223242}
   - {fileID: 8624854817256175002}
   - {fileID: 4676482698656249478}
+  - {fileID: 1514387994940771477}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &2234261728090648628
@@ -590,7 +591,7 @@ CapsuleCollider:
   m_Radius: 0.5
   m_Height: 1.5609617
   m_Direction: 1
-  m_Center: {x: 0, y: 0.7304809, z: 0}
+  m_Center: {x: 0, y: 0.78, z: 0}
 --- !u!114 &116321836545481359
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2090,3 +2091,85 @@ Transform:
   - {fileID: 66472046615289077}
   m_Father: {fileID: 6838459016693900040}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1514387994940372509
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 2909471469563594498}
+    m_Modifications:
+    - target: {fileID: 191608, guid: 9f3976a6238a2b94ea159f52cadc3713, type: 3}
+      propertyPath: m_Name
+      value: PlayerBacklight
+      objectReference: {fileID: 0}
+    - target: {fileID: 457352, guid: 9f3976a6238a2b94ea159f52cadc3713, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 457352, guid: 9f3976a6238a2b94ea159f52cadc3713, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.09
+      objectReference: {fileID: 0}
+    - target: {fileID: 457352, guid: 9f3976a6238a2b94ea159f52cadc3713, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 457352, guid: 9f3976a6238a2b94ea159f52cadc3713, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 457352, guid: 9f3976a6238a2b94ea159f52cadc3713, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 457352, guid: 9f3976a6238a2b94ea159f52cadc3713, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 457352, guid: 9f3976a6238a2b94ea159f52cadc3713, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 457352, guid: 9f3976a6238a2b94ea159f52cadc3713, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 457352, guid: 9f3976a6238a2b94ea159f52cadc3713, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 457352, guid: 9f3976a6238a2b94ea159f52cadc3713, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 19803840, guid: 9f3976a6238a2b94ea159f52cadc3713, type: 3}
+      propertyPath: InitialModule.maxNumParticles
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 19803840, guid: 9f3976a6238a2b94ea159f52cadc3713, type: 3}
+      propertyPath: EmissionModule.rateOverTime.scalar
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 19803840, guid: 9f3976a6238a2b94ea159f52cadc3713, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key0.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 19803840, guid: 9f3976a6238a2b94ea159f52cadc3713, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key2.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 19803840, guid: 9f3976a6238a2b94ea159f52cadc3713, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.m_ColorSpace
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 9f3976a6238a2b94ea159f52cadc3713, type: 3}
+--- !u!4 &1514387994940771477 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 457352, guid: 9f3976a6238a2b94ea159f52cadc3713, type: 3}
+  m_PrefabInstance: {fileID: 1514387994940372509}
+  m_PrefabAsset: {fileID: 0}

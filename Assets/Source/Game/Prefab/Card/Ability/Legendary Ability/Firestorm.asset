@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: beb1b69ea56807a4592769cd98d16a55, type: 3}
   m_Name: Firestorm
   m_EditorClassIdentifier: 
-  _name: 
-  _discription: 
+  _name: Firestorm
+  _discription: Firestorm
   _legendarySpell: {fileID: 3443178031204434909, guid: a29f834c9e1cf5547a4f7bbe575371f4, type: 3}
   _spellRadius: 2
-  _icon: {fileID: 21300000, guid: 06823b49a1fcd154da0942a436195adb, type: 3}
+  _icon: {fileID: 733775937, guid: dc2e3af32fff16a4fa28920cc9449371, type: 3}
   _legendaryParametersAbility:
   - CardParameters:
     - Value: 3
@@ -29,3 +29,13 @@ MonoBehaviour:
   _typeUpgradeMagic: 2
   _typeMagic: 0
   _parameterView: {fileID: 1961483584371832456, guid: 6d57f6325ba58d6478a1fd35f1ba2831, type: 3}
+  _damageParametr:
+    TypeDamage: 2
+    DamageSupportivePatametrs:
+    - Value: 0
+      SupportivePatametr: 0
+    - Value: 0
+      SupportivePatametr: 2
+    - Value: 1
+      SupportivePatametr: 5
+    Particle: {fileID: 1461602671872348846, guid: 0b5e7793d4d1e854385c5ce9b1e79f47, type: 3}

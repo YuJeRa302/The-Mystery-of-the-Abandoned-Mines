@@ -18,5 +18,14 @@ namespace Assets.Source.Game.Scripts
                 ReturObjectPool();
             }
         }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.TryGetComponent(out Player player))
+            {
+                player.PlayerHealth.TakeDamage(Convert.ToInt32(_damage));
+                ReturObjectPool();
+            }
+        }
     }
 }

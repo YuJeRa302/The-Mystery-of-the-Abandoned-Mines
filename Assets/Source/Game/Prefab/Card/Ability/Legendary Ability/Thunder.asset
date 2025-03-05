@@ -16,7 +16,7 @@ MonoBehaviour:
   _discription: Thunder
   _legendarySpell: {fileID: -5401896953832697201, guid: 9b9e8820c5928684da3b9d1c2cb4f945, type: 3}
   _spellRadius: 15
-  _icon: {fileID: 21300000, guid: 6886db5fac1305b4d82a95ca744de0c7, type: 3}
+  _icon: {fileID: 1190033990, guid: dc2e3af32fff16a4fa28920cc9449371, type: 3}
   _legendaryParametersAbility:
   - CardParameters:
     - Value: 12
@@ -29,3 +29,9 @@ MonoBehaviour:
   _typeUpgradeMagic: 5
   _typeMagic: 1
   _parameterView: {fileID: 1961483584371832456, guid: 6d57f6325ba58d6478a1fd35f1ba2831, type: 3}
+  _damageParametr:
+    TypeDamage: 0
+    DamageSupportivePatametrs:
+    - Value: 0
+      SupportivePatametr: 0
+    Particle: {fileID: 0}

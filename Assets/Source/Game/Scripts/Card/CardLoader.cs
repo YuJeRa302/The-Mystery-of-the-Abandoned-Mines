@@ -104,35 +104,41 @@ namespace Assets.Source.Game.Scripts
             foreach (var card in cards)
             {
                 CardState cardState = _cardDeck.GetCardStateByData(card);
-                if (cardState.Id == 10)
-                {
-                    Debug.Log($"LvlCard {cardState.CurrentLevel}");
-                }
+
                 if (card.Id == cardState.Id)
                 {
                     if (card.TypeCardParameter == TypeCardParameter.Ability)
                     {
-                        if (card.AttributeData.CardParameters.Count <= cardState.CurrentLevel)
+                        if(_cardDeck.CanTakeAbilityCard(card.Id) || card.AttributeData as PassiveAttributeData)
                         {
-                            cardState.IsLocked = true;
-
-                            if (card.AttributeData as AbilityAttributeData)
+                            if (card.AttributeData.CardParameters.Count <= cardState.CurrentLevel)
                             {
-                                if (FindLegendaryCard(cards, (card.AttributeData as AbilityAttributeData).TypeUpgradeMagic, out CardData legendaryCard))
+                                cardState.IsLocked = true;
+
+                                if (card.AttributeData as AbilityAttributeData)
                                 {
                                     if (FindPassivCard(cards, (card.AttributeData as AbilityAttributeData).TypeMagic, out CardData passivCard))
                                     {
-                                        _cardDeck.GetCardStateByData(legendaryCard).IsLocked = false;
+                                        if (FindLegendaryCard(cards, (card.AttributeData as AbilityAttributeData).TypeUpgradeMagic, out CardData legendaryCard))
+                                        {
+                                            _cardDeck.GetCardStateByData(legendaryCard).IsLocked = false;
+                                        }
                                     }
                                 }
                             }
                         }
+                        else
+                        {
+                            cardState.IsLocked = true;
+                        }
                     }
                     else if (card.TypeCardParameter == TypeCardParameter.LegendariAbility)
                     {
-                        Debug.Log($"current lvl {cardState.CurrentLevel} max lvl {card.LegendaryAbilityData.LegendaryAbilityParameters.Count}");
                         if (card.LegendaryAbilityData.LegendaryAbilityParameters.Count <= cardState.CurrentLevel)
+                        {
                             cardState.IsLocked = true;
+                            cardState.IsCardUpgraded = true;
+                        }
                     }
                 }
             }
@@ -142,17 +148,20 @@ namespace Assets.Source.Game.Scripts
         {
             legendaryCard = null;
 
-            foreach (var data in cards)
+            foreach (var card in cards)
             {
-                if (data.LegendaryAbilityData != null)
+                if (card.LegendaryAbilityData != null)
                 {
-                    if (_cardDeck.GetCardStateByData(data).IsLocked)
+                    if (_cardDeck.GetCardStateByData(card).IsLocked)
                     {
-                        if (typeMagic == data.LegendaryAbilityData.TypeUpgradeMagic)
+                        if (typeMagic == card.LegendaryAbilityData.TypeUpgradeMagic)
                         {
-                            if (_cardDeck.GetCardStateByData(data).CurrentLevel <= data.LegendaryAbilityData.LegendaryAbilityParameters.Count)
+                            if (_cardDeck.GetCardStateByData(card).CurrentLevel <= card.LegendaryAbilityData.LegendaryAbilityParameters.Count)
                             {
-                                legendaryCard = data;
+                                if (_cardDeck.GetCardStateByData(card).IsCardUpgraded == false)
+                                {
+                                    legendaryCard = card;
+                                }
                             }
                         }
                     }

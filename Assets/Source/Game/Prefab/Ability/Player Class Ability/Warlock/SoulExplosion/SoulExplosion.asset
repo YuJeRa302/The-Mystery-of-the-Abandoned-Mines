@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _id: 15
   _name: SoulExplosion
-  _icon: {fileID: 21300000, guid: 9c1bd758ff5093a428bf7013bb9aac33, type: 3}
+  _icon: {fileID: 1869640326, guid: 855001a07e231344b97e76392f4d2449, type: 3}
   _description: SoulExplosion
   _buttonView: {fileID: 7547704264931708372, guid: 226be77f080a72f41b3a154b64b3d4ae, type: 3}
   _abilityClassParameters:

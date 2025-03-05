@@ -17,6 +17,7 @@ public class PlayerMovement : IDisposable
     private Rigidbody _rigidbody;
     private InputAction _move;
     private Coroutine _movment;
+    Player _player;
     private ICoroutineRunner _coroutineRunner;
     private bool _isModile = false;
     private bool _canRotate = true;
@@ -32,6 +33,7 @@ public class PlayerMovement : IDisposable
         _camera = camera;
         _variableJoystick = variableJoystick;
         _coroutineRunner = coroutineRunner;
+        _player = coroutineRunner;
 
         if (_playerInputSystem == null)
         {
@@ -60,7 +62,6 @@ public class PlayerMovement : IDisposable
     {
         _moveSpeed = value;
         _maxMoveSpeed = _moveSpeed * 2f;
-
     }
 
     public void ChengeRotate()
@@ -70,7 +71,7 @@ public class PlayerMovement : IDisposable
 
     public void LookAtEnemy(Transform target)
     {
-        _rigidbody.transform.LookAt(target);
+        _rigidbody.transform.LookAt(new Vector3(target.position.x, 0 , target.position.z));
     }
 
     private IEnumerator MobileMove()

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _id: 9
   _name: Skelleton
-  _icon: {fileID: 21300000, guid: 8066e15c4e3df6e4f9806f9d5f71e70a, type: 3}
+  _icon: {fileID: 763642747, guid: 855001a07e231344b97e76392f4d2449, type: 3}
   _description: Skelleton
   _buttonView: {fileID: 7547704264931708372, guid: 226be77f080a72f41b3a154b64b3d4ae, type: 3}
   _abilityClassParameters:
@@ -30,10 +30,12 @@ MonoBehaviour:
   - CardParameters:
     - Value: 1
       TypeParameter: 8
-    - Value: 5
+    - Value: 10
       TypeParameter: 5
     - Value: 15
       TypeParameter: 6
+    - Value: 10
+      TypeParameter: 4
   - CardParameters:
     - Value: 2
       TypeParameter: 8
@@ -41,6 +43,8 @@ MonoBehaviour:
       TypeParameter: 5
     - Value: 13
       TypeParameter: 6
+    - Value: 13
+      TypeParameter: 4
   - CardParameters:
     - Value: 3
       TypeParameter: 8
@@ -48,6 +52,8 @@ MonoBehaviour:
       TypeParameter: 5
     - Value: 10
       TypeParameter: 6
+    - Value: 10
+      TypeParameter: 4
   - CardParameters:
     - Value: 4
       TypeParameter: 8
@@ -55,5 +61,13 @@ MonoBehaviour:
       TypeParameter: 5
     - Value: 10
       TypeParameter: 6
+    - Value: 10
+      TypeParameter: 4
   _abilityType: 7
+  _damageParametr:
+    TypeDamage: 0
+    DamageSupportivePatametrs:
+    - Value: 10
+      SupportivePatametr: 0
+    Particle: {fileID: 0}
   _summonData: {fileID: 11400000, guid: 26e4bd4476e87af49b6012ade3e6eaf3, type: 2}

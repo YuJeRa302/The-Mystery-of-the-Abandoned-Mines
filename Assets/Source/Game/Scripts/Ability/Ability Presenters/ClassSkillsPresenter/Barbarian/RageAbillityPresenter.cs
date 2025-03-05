@@ -3,74 +3,44 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RageAbillityPresenter : IDisposable
+public class RageAbillityPresenter : AbilityPresenter
 {
-    private readonly ICoroutineRunner _coroutineRunner;
-    private readonly IGameLoopService _gameLoopService;
-
-    private Ability _ability;
-    private AbilityView _abilityView;
-    private Player _player;
     private List<Transform> _effectConteiner = new List<Transform>();
     private List<PoolObject> _spawnedEffects = new ();
     private Pool _pool;
     private PoolParticle _particleEffectPrefab;
-    private int _bonusDamage;
-    private float _bonusMoveSpeed;
-    private int _bonusArmor;
     private bool _isAbilityUse;
 
-    public RageAbillityPresenter(Ability ability, AbilityView abilityView, Player player, int boostDamage, float boostMoveSpeed, int boosArmor,
-        IGameLoopService gameLoopService, ICoroutineRunner coroutineRunner, PoolParticle abilityEffect)
+    public RageAbillityPresenter(Ability ability,
+        AbilityView abilityView,
+        Player player,
+        IGameLoopService gameLoopService,
+        ICoroutineRunner coroutineRunner, PoolParticle abilityEffect) : base(ability, abilityView, player, gameLoopService, coroutineRunner)
     {
-        _ability = ability;
-        _abilityView = abilityView;
-        _player = player;
         _pool = _player.Pool;
         _particleEffectPrefab = abilityEffect;
-        _bonusDamage = boostDamage;
-        _bonusMoveSpeed = boostMoveSpeed;
-        _bonusArmor = boosArmor;
-        _coroutineRunner = coroutineRunner;
-        _gameLoopService = gameLoopService;
         _effectConteiner.Add(_player.WeaponPoint);
         _effectConteiner.Add(_player.AdditionalWeaponPoint);
 
         AddListener();
     }
 
-    private void AddListener()
+    protected override void AddListener()
     {
+        base.AddListener();
         (_abilityView as ClassSkillButtonView).AbilityUsed += OnButtonSkillClick;
-        _ability.AbilityUsed += OnAbilityUsed;
-        _ability.AbilityEnded += OnAbilityEnded;
-        //_ability.AbilityUpgraded += OnAbilityUpgraded;
-        _ability.CooldownValueChanged += OnCooldownValueChanged;
-        _ability.CooldownValueReseted += OnCooldownValueReseted;
-        _ability.AbilityRemoved += Dispose;
-        _gameLoopService.GamePaused += OnGamePaused;
-        _gameLoopService.GameResumed += OnGameResumed;
-        _gameLoopService.GameClosed += OnGameClosed;
     }
 
-    private void RemoveListener()
+    protected override void RemoveListener()
     {
+        base.RemoveListener();
         (_abilityView as ClassSkillButtonView).AbilityUsed -= OnButtonSkillClick;
-        _ability.AbilityUsed -= OnAbilityUsed;
-        _ability.AbilityEnded -= OnAbilityEnded;
-        //_ability.AbilityUpgraded -= OnAbilityUpgraded;
-        _ability.CooldownValueChanged -= OnCooldownValueChanged;
-        _ability.CooldownValueReseted -= OnCooldownValueReseted;
-        _ability.AbilityRemoved -= Dispose;
-        _gameLoopService.GamePaused -= OnGamePaused;
-        _gameLoopService.GameResumed -= OnGameResumed;
-        _gameLoopService.GameClosed -= OnGameClosed;
     }
 
-    private void OnAbilityEnded(Ability ability)
+    protected override void OnAbilityEnded(Ability ability)
     {
         _isAbilityUse = false;
-        BoostPlayer(true);
+        BoostPlayer(_isAbilityUse);
     }
 
     private void OnButtonSkillClick()
@@ -80,11 +50,13 @@ public class RageAbillityPresenter : IDisposable
 
         _isAbilityUse = true;
         _ability.Use();
+        (_abilityView as ClassSkillButtonView).SetInerectableButton(false);
     }
 
-    private void OnAbilityUsed(Ability ability)
+    protected override void OnAbilityUsed(Ability ability)
     {
-        BoostPlayer(false);
+        _isAbilityUse = true;
+        BoostPlayer(_isAbilityUse);
     }
 
     private void BoostPlayer(bool isAbilityEnded)
@@ -97,7 +69,7 @@ public class RageAbillityPresenter : IDisposable
 
     private void ChangeEffectEneble(bool isAbilityEnded, Transform conteiner)
     {
-        if (isAbilityEnded == false)
+        if (isAbilityEnded)
         {
             PoolParticle particle;
 
@@ -123,35 +95,15 @@ public class RageAbillityPresenter : IDisposable
         }
     }
 
-    private void OnGameClosed()
+    protected override void OnCooldownValueReseted(float value)
     {
-        Dispose();
+        base.OnCooldownValueReseted(value);
+        (_abilityView as ClassSkillButtonView).SetInerectableButton(true);
     }
 
-    private void OnGamePaused()
-    {
-        _ability.StopCoroutine();
-    }
-
-    private void OnGameResumed()
+    protected override void OnGameResumed()
     {
         if (_isAbilityUse)
-            _ability.ResumeCoroutine();
-    }
-
-   
-    private void OnCooldownValueChanged(float value)
-    {
-        _abilityView.ChangeCooldownValue(value);
-    }
-
-    private void OnCooldownValueReseted(float value)
-    {
-        _abilityView.ResetCooldownValue(value);
-    }
-
-    public void Dispose()
-    {
-        RemoveListener();
+            base.OnGameResumed();
     }
 }

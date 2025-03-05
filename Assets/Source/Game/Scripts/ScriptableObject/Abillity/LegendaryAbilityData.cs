@@ -16,6 +16,7 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private TypeUpgradeAbility _typeUpgradeMagic;
         [SerializeField] private TypeMagic _typeMagic;
         [SerializeField] private CardParameterView _parameterView;
+        [SerializeField] private DamageParametr _damageParametr;
 
         public string Name => _name;
         public string Description => _discription;
@@ -27,5 +28,6 @@ namespace Assets.Source.Game.Scripts
         public TypeUpgradeAbility TypeUpgradeMagic => _typeUpgradeMagic;
         public TypeMagic TypeMagic => _typeMagic;
         public CardParameterView CardParameterView => _parameterView;
+        public DamageParametr DamageParametr => _damageParametr;
     }
 }

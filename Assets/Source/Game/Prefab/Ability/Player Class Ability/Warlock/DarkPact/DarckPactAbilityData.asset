@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _id: 16
   _name: DarkPact
-  _icon: {fileID: 21300000, guid: e21783b9009bb3e40aac9f7487d624f7, type: 3}
+  _icon: {fileID: -923664100, guid: 855001a07e231344b97e76392f4d2449, type: 3}
   _description: DarkPact
   _buttonView: {fileID: 7547704264931708372, guid: 226be77f080a72f41b3a154b64b3d4ae, type: 3}
   _abilityClassParameters:

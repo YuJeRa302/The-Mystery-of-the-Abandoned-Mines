@@ -13,11 +13,12 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private int _experienceReward;
         [SerializeField] private int _upgradeExperienceReward;
         [SerializeField] private int _score;
-        [SerializeField] private int _timeSpawn;
+        [SerializeField] private float _delaySpawn;
         [SerializeField] private int _enemyCount;
         [SerializeField] private float _moveSpeed;
         [SerializeField] private float _attackDistance;
         [SerializeField] private float _attackDelay;
+        [SerializeField] private int _chanceSpawn;
         [Header("[Ability Stats]")]
         [SerializeField] private float[] _abilityCoolDown;
         [SerializeField] private int[] _abilityDamage;
@@ -34,8 +35,9 @@ namespace Assets.Source.Game.Scripts
         public int Id => _id;
         public int UpgradeExperienceReward => _upgradeExperienceReward;
         public int EnemyCount => _enemyCount;
-        public int TimeSpawn => _timeSpawn;
+        public float DelaySpawn => _delaySpawn;
         public int Level => _level;
+        public int ChanceSpawn => _chanceSpawn;
         public int Damage => _damage;
         public int Health => _health;
         public int ExperienceReward => _experienceReward;

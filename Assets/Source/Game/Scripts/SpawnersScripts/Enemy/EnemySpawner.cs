@@ -8,29 +8,31 @@ namespace Assets.Source.Game.Scripts
     public class EnemySpawner : IDisposable
     {
         private readonly System.Random _rnd = new ();
-        private readonly float _delaySpawn = 1.0f;
+        private readonly int _minValueChance = 0;
+        private readonly int _maxValueChance = 100;
 
+        private int _currentRoomsLevel = 0;
         private Pool _enemuPool;
         private Transform[] _spawnPoints;
         private Player _player;
-        private EnemyData[] _enemyDatas;
-        private EnemyData[] _epicEnemyDatas;
         private Coroutine _spawn;
+        private Coroutine _spawnEnemy;
         private ICoroutineRunner _coroutineRunner;
-        private RoomView _currentRoom;
+        private int _currentRoomLevel;
         private List<Enemy> _enemies = new List<Enemy>();
         private Dictionary<string, PoolParticle> _deadParticles = new Dictionary<string, PoolParticle>();
-        private int _spawnedEnemy;
         private int _deadEnemy = 0;
-        private int _countEnemyRoom = 1;//временное значение
         private int _totalEnemyCount;
+        private bool _isEnemySpawned = false;
 
         public event Action AllEnemyRoomDied;
 
-        public EnemySpawner (Pool enemyPool, ICoroutineRunner coroutineRunner)
+        public EnemySpawner(Pool enemyPool, ICoroutineRunner coroutineRunner, Player player, int currentLevel)
         {
+            _currentRoomsLevel = currentLevel;
             _enemuPool = enemyPool;
             _coroutineRunner = coroutineRunner;
+            _player = player;
         }
 
         public void Dispose()
@@ -38,57 +40,74 @@ namespace Assets.Source.Game.Scripts
             if (_spawn != null)
                 _coroutineRunner.StopCoroutine(_spawn);
 
+            if (_spawnEnemy != null)
+                _coroutineRunner.StopCoroutine(_spawnEnemy);
+
             GC.SuppressFinalize(this);
         }
 
         public void Initialize(RoomView currentRoom)
         {
-            _currentRoom = currentRoom;
+            if (currentRoom.EnemySpawnPoints.Length == 0)
+                return;
 
             if (_spawn != null)
                 _coroutineRunner.StopCoroutine(_spawn);
 
-            //if (_deadParticles != null)
-            //    _deadParticles.Clear();
+            if (_spawnEnemy != null)
+                _coroutineRunner.StopCoroutine(_spawnEnemy);
 
-            if(currentRoom.EnemySpawnPoints.Length == 0)
+            _deadEnemy = 0;
+            _currentRoomLevel = currentRoom.CurrentLevel;
+            _spawnPoints = currentRoom.EnemySpawnPoints;
+            _totalEnemyCount = GetTotalEnemyCount(currentRoom.RoomData.EnemyDatas);
+            _spawn = _coroutineRunner.StartCoroutine(Spawn(currentRoom.RoomData.EnemyDatas));
+        }
+
+        private int GetTotalEnemyCount(EnemyData[] enemyDatas)
+        {
+            int countEnemy = 0;
+
+            foreach (EnemyData enemyData in enemyDatas)
             {
-                AllEnemyRoomDied?.Invoke();
+                countEnemy += enemyData.EnemyCount;
             }
-            else
+
+            return countEnemy;
+        }
+
+        private IEnumerator Spawn(EnemyData[] enemyDatas)
+        {
+            foreach (EnemyData enemyData in enemyDatas)
             {
-                _spawnedEnemy = 0;
-                _deadEnemy = 0;
-                _countEnemyRoom = currentRoom.CountEnemy;
-                _spawnPoints = currentRoom.EnemySpawnPoints;
-                _enemyDatas = currentRoom.RoomData.EnemyData;
-                _epicEnemyDatas = currentRoom.RoomData.EpicEnemyDatas;
-                _spawn = _coroutineRunner.StartCoroutine(Spawn());
+                if (_spawnEnemy != null)
+                    _coroutineRunner.StopCoroutine(_spawnEnemy);
+
+                _isEnemySpawned = false;
+                _spawnEnemy = _coroutineRunner.StartCoroutine(SpawnEnemy(enemyData));
+                yield return new WaitUntil(() => _isEnemySpawned);
             }
         }
 
-        public void SetTotalEnemyCount(int countEnemy, Player player)
+        private IEnumerator SpawnEnemy(EnemyData enemyData)
         {
-            _player = player;
-            _totalEnemyCount = countEnemy;
-        }
-
-        private IEnumerator Spawn()
-        {
-            while (_spawnedEnemy < _countEnemyRoom)
+            if (CalculateChance(enemyData.ChanceSpawn))
             {
-                yield return new WaitForSeconds(_delaySpawn);
-                
-                if (_rnd.Next(0, 100) <= 90)
+                int currentEnemyCount = 0;
+
+                while (currentEnemyCount++ < enemyData.EnemyCount)
                 {
-                    EnemyCreate(_epicEnemyDatas[_rnd.Next(_epicEnemyDatas.Length)], _rnd.Next(_spawnPoints.Length));
-                }
-                else
-                {
-                    EnemyCreate(_enemyDatas[_rnd.Next(_enemyDatas.Length)], _rnd.Next(_spawnPoints.Length));
+                    yield return new WaitForSeconds(enemyData.DelaySpawn);
+                    EnemyCreate(enemyData, _rnd.Next(_spawnPoints.Length));
                 }
 
-                _spawnedEnemy++;
+                _isEnemySpawned = true;
+            }
+            else 
+            {
+                yield return null;
+                _totalEnemyCount -= enemyData.EnemyCount;
+                _isEnemySpawned = true;
             }
         }
 
@@ -101,21 +120,18 @@ namespace Assets.Source.Game.Scripts
                 enemy = poolEnemy;
                 enemy.transform.position = _spawnPoints[value].position;
                 enemy.gameObject.SetActive(true);
-                enemy.ResetEnemy(_currentRoom.CurrentLevel);
+                enemy.ResetEnemy(_currentRoomLevel);
             }
             else
             {
                 enemy = GameObject.Instantiate(enemyData.PrefabEnemy, _spawnPoints[value].position, _spawnPoints[value].rotation);
-
                 _enemuPool.InstantiatePoolObject(enemy, enemyData.PrefabEnemy.name);
-                enemy.Initialize(_player, enemyData.Id, _currentRoom.CurrentLevel, enemyData.Damage, enemyData.Health, enemyData.AttackDelay, enemyData.AttackDistance, enemyData.MoveSpeed);
+                enemy.Initialize(_player, enemyData.Id, _currentRoomLevel, enemyData.Damage, enemyData.Health, enemyData.AttackDelay, enemyData.AttackDistance, enemyData.MoveSpeed);
                 enemy.Died += OnEnemyDead;
                 _enemies.Add(enemy);
 
                 if (_deadParticles.ContainsKey(enemyData.PrefabEnemy.name) == false)
-                {
                     _deadParticles.Add(enemyData.PrefabEnemy.name, enemyData.EnemyDieParticleSystem);
-                }
             }
         }
 
@@ -124,9 +140,7 @@ namespace Assets.Source.Game.Scripts
             poolEnemy = null;
 
             if (_enemuPool.TryPoolObject(enemyType, out PoolObject enemyPool))
-            {
                 poolEnemy = enemyPool as Enemy;
-            }
 
             return poolEnemy != null;
         }
@@ -157,17 +171,16 @@ namespace Assets.Source.Game.Scripts
         {
             _deadEnemy++;
 
-            if (_deadEnemy == Convert.ToInt32(_countEnemyRoom))
-            {
+            if (_deadEnemy == _totalEnemyCount)
                 AllEnemyRoomDied?.Invoke();
-            }
+        }
 
-            _totalEnemyCount--;
-
-            if (_totalEnemyCount <= 0)
-            {
-                Debug.Log("!WIN!");
-            }
+        private bool CalculateChance(float chance)
+        {
+            if (_rnd.Next(_minValueChance, _maxValueChance) <= chance + _currentRoomsLevel)
+                return true;
+            else
+                return false;
         }
     }
 }

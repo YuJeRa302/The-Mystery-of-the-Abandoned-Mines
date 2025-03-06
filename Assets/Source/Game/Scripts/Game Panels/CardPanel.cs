@@ -7,9 +7,6 @@ namespace Assets.Source.Game.Scripts
 {
     public class CardPanel : GamePanels
     {
-        private readonly string _skipTextTranslationName = "Skip";
-        private readonly string _rerollTextTranslationName = "Reroll";
-
         [SerializeField] private CardLoader _cardLoader;
         [SerializeField] private Transform _cardContainer;
         [SerializeField] private CardView _cardView;
@@ -22,7 +19,6 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private LeanLocalizedText _buttonSkipText;
         [SerializeField] private LeanLocalizedText _buttonRerollText;
 
-        private Player _player;
         private List<CardView> _cardViews = new();
 
         private void Awake()
@@ -32,8 +28,6 @@ namespace Assets.Source.Game.Scripts
             _buttonReroll.onClick.AddListener(Reroll);
             _buttonSkip.onClick.AddListener(Skip);
             _cardLoader.CardPoolCreated += Fill;
-            //_buttonSkipText.TranslationName = _skipTextTranslationName;
-            //_buttonRerollText.TranslationName = _rerollTextTranslationName;
         }
 
         private void OnDestroy()
@@ -43,10 +37,10 @@ namespace Assets.Source.Game.Scripts
             _cardLoader.CardPoolCreated -= Fill;
         }
 
-        public void Initialize(Player player)
+        public override void Initialize(Player player, LevelObserver levelObserver)
         {
-            _player = player;
-            _cardLoader.Initialize(_player.CardDeck);
+            base.Initialize(player, levelObserver);
+            _cardLoader.Initialize(player.CardDeck);
         }
 
         protected override void Open()
@@ -67,7 +61,7 @@ namespace Assets.Source.Game.Scripts
             {
                 CardView view = Instantiate(_cardView, _cardContainer);
                 _cardViews.Add(view);
-                view.Initialize(_player.CardDeck.GetCardStateByData(cardData), cardData);
+                view.Initialize(Player.CardDeck.GetCardStateByData(cardData), cardData);
                 view.CardTaked += OnCardTaked;
             }
         }
@@ -85,7 +79,7 @@ namespace Assets.Source.Game.Scripts
 
         private void OnCardTaked(CardView cardView)
         {
-            _player.CardDeck.TakeCard(cardView);
+            Player.CardDeck.TakeCard(cardView);
             Close();
         }
 
@@ -96,7 +90,7 @@ namespace Assets.Source.Game.Scripts
 
         private void Reroll()
         {
-            if (_player.PlayerStats.TryGetRerollPoints())
+            if (Player.PlayerStats.TryGetRerollPoints())
             {
                 Clear();
                 _cardLoader.CreateCardPool();

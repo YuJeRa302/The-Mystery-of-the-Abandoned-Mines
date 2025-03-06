@@ -32,6 +32,11 @@ public class LevelsModel
         return false;
     }
 
+    public bool TryBuyContract(int cost)
+    {
+        return _temporaryData.TryBuy(cost);
+    }
+
     public LevelState GetLevelState(LevelData levelData) 
     {
         LevelState levelState = _temporaryData.GetLevelState(levelData.Id);
@@ -65,14 +70,6 @@ public class LevelsModel
         _temporaryData.SetWeaponData(_currentWeaponData);
     }
 
-    private LevelState InitLevelState(LevelData levelData)
-    {
-        LevelState levelState = new ();
-        levelState.Id = levelData.Id;
-        levelState.IsComplete = false;
-        return levelState;
-    }
-
     public void LoadLevel() 
     {
         LoadScene(_currentLevelData.Id);
@@ -103,5 +100,13 @@ public class LevelsModel
 
         _load.allowSceneActivation = true;
         _load = null;
+    }
+
+    private LevelState InitLevelState(LevelData levelData)
+    {
+        LevelState levelState = new();
+        levelState.Id = levelData.Id;
+        levelState.IsComplete = false;
+        return levelState;
     }
 }

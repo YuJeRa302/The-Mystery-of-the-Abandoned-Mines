@@ -175,7 +175,7 @@ namespace Assets.Source.Game.Scripts
                     {
                         parametr.Value = _currentAbilityValue;
                     }
-                    else if (parametr.SupportivePatametr == TypeSupportivePatametr.Chence)
+                    else if (parametr.SupportivePatametr == TypeSupportivePatametr.Chance)
                     {
                         parametr.Value = _chance;
                     }
@@ -236,7 +236,7 @@ namespace Assets.Source.Game.Scripts
                     {
                         parametr.Value = _currentAbilityValue;
                     }
-                    else if (parametr.SupportivePatametr == TypeSupportivePatametr.Chence)
+                    else if (parametr.SupportivePatametr == TypeSupportivePatametr.Chance)
                     {
                         parametr.Value = _chance;
                     }

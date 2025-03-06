@@ -8,7 +8,6 @@ namespace Assets.Source.Game.Scripts
     {
         private readonly System.Random _rnd = new ();
         private readonly int _roomSize = 40;
-        private readonly int _maxRoomCount = 12;
         private readonly int _massRoomSize = 11;
         private readonly int _spawnCenterCoordinate = 5;
         private readonly int _minValue = 0;
@@ -23,17 +22,17 @@ namespace Assets.Source.Game.Scripts
 
         private RoomView[,] _spawnedRooms;
         private List<RoomView> _createdRooms = new ();
-        private int _allEnemyCount;
+        private int _maxRoomCount = 0;
 
         public List<RoomView> CreatedRooms => _createdRooms;
         public RoomView StartRoom => _startRoom;
-        public int AllEnemyCount => _allEnemyCount;
 
-        public void Initialize(int currentRoomLevel, bool canSeeDoor)
+        public void Initialize(int currentRoomLevel, bool canSeeDoor, int countRooms)
         {
             _spawnedRooms = new RoomView[_massRoomSize, _massRoomSize];
             _spawnedRooms[_spawnCenterCoordinate, _spawnCenterCoordinate] = _startRoom;
             _startRoom.SetCameraArial(canSeeDoor);
+            _maxRoomCount = countRooms;
 
             for (int index = 0; index < _maxRoomCount; index++)
             {
@@ -47,6 +46,9 @@ namespace Assets.Source.Game.Scripts
             {
                 Destroy(room.gameObject);
             }
+
+            _createdRooms.Clear();
+            _startRoom.ResetAllRemovableWall();
         }
 
         private void PlaceOneRoom(int currentRoomLevel, bool canSeeDoor)
@@ -97,7 +99,6 @@ namespace Assets.Source.Game.Scripts
                     newRoom.transform.position = new Vector3(position.x - _spawnCenterCoordinate, 0, position.y - _spawnCenterCoordinate) * _roomSize;
                     _spawnedRooms[position.x, position.y] = newRoom;
                     newRoom.Initialize(randomRoomData, currentRoomLevel, canSeeDoor);
-                    _allEnemyCount += newRoom.CountEnemy;
                     _createdRooms.Add(newRoom);
                     return;
                 }
@@ -133,23 +134,23 @@ namespace Assets.Source.Game.Scripts
 
             if (selectedDirection == Vector2Int.up)
             {
-                room.WallUpper.SetActive(false);
-                selectedRoom.WallDown.SetActive(false);
+                room.WallUpper.gameObject.SetActive(false);
+                selectedRoom.WallDown.gameObject.SetActive(false);
             }
             else if (selectedDirection == Vector2Int.down)
             {
-                room.WallDown.SetActive(false);
-                selectedRoom.WallUpper.SetActive(false);
+                room.WallDown.gameObject.SetActive(false);
+                selectedRoom.WallUpper.gameObject.SetActive(false);
             }
             else if (selectedDirection == Vector2Int.right)
             {
-                room.WallRight.SetActive(false);
-                selectedRoom.WallLeft.SetActive(false);
+                room.WallRight.gameObject.SetActive(false);
+                selectedRoom.WallLeft.gameObject.SetActive(false);
             }
             else if (selectedDirection == Vector2Int.left)
             {
-                room.WallLeft.SetActive(false);
-                selectedRoom.WallRight.SetActive(false);
+                room.WallLeft.gameObject.SetActive(false);
+                selectedRoom.WallRight.gameObject.SetActive(false);
             }
 
             return true;

@@ -14,6 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _id: 0
   _roomName: Room 1
+  _tierColor:
+  - {r: 1, g: 1, b: 1, a: 0}
+  - {r: 0.23921569, g: 1, b: 0.21568628, a: 0}
+  - {r: 0, g: 0.5411765, b: 1, a: 0}
+  - {r: 0.5686275, g: 0.14509805, b: 1, a: 0}
+  - {r: 1, g: 0.22745098, b: 0.14509805, a: 0}
   _room: {fileID: 6577346141303521551, guid: 7b1c697bf7e9d6d4899a09334c62ce74, type: 3}
   _chanceFromDistance:
     serializedVersion: 2
@@ -40,7 +46,8 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   _enemyDatas:
-  - {fileID: 11400000, guid: f809bfbac0297dc4a830126088816ad5, type: 2}
-  _epicEnemyDatas:
-  - {fileID: 11400000, guid: cc9c4a9b824b408408b8095f6c480ff3, type: 2}
+  - {fileID: 11400000, guid: e88a5ccc8245ee745b4fc75cb3a9a14b, type: 2}
+  - {fileID: 11400000, guid: c92657e7a2ab3794487c73c56292055c, type: 2}
+  - {fileID: 11400000, guid: 52a391ff5abb1484dacfaca3a35118e9, type: 2}
+  _epicEnemyDatas: []
   _traps: []

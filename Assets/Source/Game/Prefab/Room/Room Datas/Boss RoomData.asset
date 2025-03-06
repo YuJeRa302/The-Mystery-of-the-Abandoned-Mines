@@ -14,6 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _id: 1
   _roomName: Room Boss
+  _tierColor:
+  - {r: 1, g: 1, b: 1, a: 0}
+  - {r: 0.23921569, g: 1, b: 0.21568628, a: 0}
+  - {r: 0, g: 0.5411765, b: 1, a: 0}
+  - {r: 0.5686275, g: 0.14509805, b: 1, a: 0}
+  - {r: 1, g: 0.22745098, b: 0.14509805, a: 0}
   _room: {fileID: 7754323460198337123, guid: 773f354892204254883985b3b438b9a9, type: 3}
   _chanceFromDistance:
     serializedVersion: 2
@@ -41,4 +47,5 @@ MonoBehaviour:
     m_RotationOrder: 4
   _enemyDatas:
   - {fileID: 11400000, guid: 5aa97bc60d24f1449ad8435eefea666d, type: 2}
+  _epicEnemyDatas: []
   _traps: []

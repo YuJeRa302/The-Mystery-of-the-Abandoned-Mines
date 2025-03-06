@@ -32,7 +32,7 @@ namespace Assets.Source.Game.Scripts
             _levelObserver = levelObserver;
             _player = player;
 
-            foreach (var parametr in weapon.WeaponPatametr.WeaponSupportivePatametrs)
+            foreach (var parametr in weapon.WeaponParameter.WeaponSupportivePatametrs)
             {
                 if (parametr.SupportivePatametr == TypeWeaponSupportiveParametr.BonusArmor)
                 {

@@ -39,10 +39,14 @@ namespace Assets.Source.Game.Scripts
             _button.onClick.AddListener(OnSelected);
             Fill(levelData);
 
-            if (levelData.IsContractLevel == false) 
+            if (levelData.IsContractLevel == false)
             {
                 LoadCompletePlayerLevels(levelState);
                 CheckLevelState(levelState);
+            }
+            else 
+            {
+                SetLevelState(true);
             }
         }
 
@@ -60,6 +64,7 @@ namespace Assets.Source.Game.Scripts
         {
             _icon.sprite = levelData.Icon;
             _name.TranslationName = levelData.TranslationName;
+            _icon.color = new Color(levelData.TierColor.r, levelData.TierColor.g, levelData.TierColor.b);
         }
 
         private void LoadCompletePlayerLevels(LevelState levelState)
@@ -82,12 +87,14 @@ namespace Assets.Source.Game.Scripts
 
         private void SetLevelState(bool isLevelComplete)
         {
-            _button.interactable = isLevelComplete;
             _lockImage.gameObject.SetActive(!isLevelComplete);
         }
 
         private void OnSelected()
         {
+            if (_lockImage.isActiveAndEnabled == true)
+                return;
+
             LevelSelected?.Invoke(this);
         }
     }

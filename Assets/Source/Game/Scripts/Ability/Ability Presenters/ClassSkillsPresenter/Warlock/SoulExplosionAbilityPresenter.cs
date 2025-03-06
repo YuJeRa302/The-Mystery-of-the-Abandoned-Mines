@@ -2,7 +2,7 @@ using Assets.Source.Game.Scripts;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SoulExplosionAbilityPresenter : MonoBehaviour
+public class SoulExplosionAbilityPresenter
 {
     private readonly ICoroutineRunner _coroutineRunner;
     private readonly IGameLoopService _gameLoopService;

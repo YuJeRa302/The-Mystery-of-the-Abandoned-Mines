@@ -14,6 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _id: 2
   _roomName: Loot Room
+  _tierColor:
+  - {r: 1, g: 1, b: 1, a: 0}
+  - {r: 0.23921569, g: 1, b: 0.21568628, a: 0}
+  - {r: 0, g: 0.5411765, b: 1, a: 0}
+  - {r: 0.5686275, g: 0.14509805, b: 1, a: 0}
+  - {r: 1, g: 0.22745098, b: 0.14509805, a: 0}
   _room: {fileID: 5290419408085186937, guid: 738f9ea6447543e4a8c93c99eb26efaf, type: 3}
   _chanceFromDistance:
     serializedVersion: 2
@@ -40,6 +46,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   _enemyDatas: []
+  _epicEnemyDatas: []
   _traps:
   - {fileID: 5501110779660946596, guid: af92dc372babe964585dbcd46a3e6f99, type: 3}
   - {fileID: 881391800726880042, guid: 557e0a64dad6d2c4bab583ff958d77ec, type: 3}

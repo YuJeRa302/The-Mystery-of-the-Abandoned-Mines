@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Unity.AI.Navigation;
 using UnityEngine;
 
@@ -8,38 +10,34 @@ namespace Assets.Source.Game.Scripts
     {
         private readonly Vector3 _standartCameraArial = new Vector3(0, 1.5f, 1.6f);
         private readonly Vector3 _maxCameraArial = new Vector3(1f, 1.5f, 1.6f);
-
-        [Header("Room Wall Places")]
-        [SerializeField] private GameObject _wallUpper;
-        [SerializeField] private GameObject _wallRight;
-        [SerializeField] private GameObject _wallDown;
-        [SerializeField] private GameObject _wallLeft;
+        [Header("Room Lights")]
+        [SerializeField] private List<Light> _lights;
+        [Header("Room Wall")]
+        [SerializeField] private List<Wall> _walls;
+        [Header("Removable Wall Places")]
+        [SerializeField] private List<RemovableWall> _removableWalls;
         [Header("Room Doorway Places")]
-        [SerializeField] private GameObject _doorwayUpper;
-        [SerializeField] private GameObject _doorwayRight;
-        [SerializeField] private GameObject _doorwayDown;
-        [SerializeField] private GameObject _doorwayLeft;
+        [SerializeField] private List<DoorWayView> _doorWayViews;
         [Header("Spawn Locations")]
         [SerializeField] private Transform[] _trapSpawnpoints;
         [SerializeField] private Transform[] _enemySpawnPoints;
-        [Header("Room Door Places")]
-        [SerializeField] private RoomDoor[] _doors;
         [Header("Confiner Zone")]
         [SerializeField] private BoxCollider _confiner;
         [Header("NavMesh")]
         [SerializeField] private NavMeshSurface _navSurface;
 
-        private RoomDoor _openDoor;
+        private List<RoomDoorView> _roomDoorViews =  new ();
+        private RoomDoorView _openDoor;
         private int _countEnemy;
+        private int _dividerIndexColor = 5;
 
         public event Action<RoomView> RoomEntering;
 
-        public GameObject WallUpper => _wallUpper;
-        public GameObject WallRight => _wallRight;
-        public GameObject WallDown => _wallDown;
-        public GameObject WallLeft => _wallLeft;
+        public RemovableWall WallUpper => _removableWalls.SingleOrDefault(wall => wall.TypeRoomSide == TypeRoomSide.Upper);
+        public RemovableWall WallRight => _removableWalls.SingleOrDefault(wall => wall.TypeRoomSide == TypeRoomSide.Right);
+        public RemovableWall WallDown => _removableWalls.SingleOrDefault(wall => wall.TypeRoomSide == TypeRoomSide.Down);
+        public RemovableWall WallLeft => _removableWalls.SingleOrDefault(wall => wall.TypeRoomSide == TypeRoomSide.Left);
         public BoxCollider Confiner => _confiner;
-        public NavMeshSurface NavSurface => _navSurface;
         public Transform[] EnemySpawnPoints => _enemySpawnPoints;
         public Transform[] TrapSpawnPoints => _trapSpawnpoints;
         public RoomData RoomData { get; private set; }
@@ -49,9 +47,21 @@ namespace Assets.Source.Game.Scripts
 
         private void OnDestroy()
         {
-            foreach (var door in _doors)
+            foreach (var door in _roomDoorViews)
             {
                 door.RoomDoorTaked -= OnDoorTaked;
+            }
+
+            foreach (DoorWayView doorWayView in _doorWayViews)
+            {
+                if(doorWayView != null)
+                    Destroy(doorWayView.gameObject);
+            }
+
+            foreach (RemovableWall removableWall in _removableWalls)
+            {
+                if (removableWall != null)
+                    Destroy(removableWall.gameObject);
             }
         }
 
@@ -80,14 +90,17 @@ namespace Assets.Source.Game.Scripts
 
             RoomData = roomData;
             CurrentLevel = currentLevel;
-            
-            if(RoomData.Id == 1)
+
+            if (RoomData.Id == 1)
                 _countEnemy = 1;
             else
                 _countEnemy = UnityEngine.Random.Range(2, 6); //tests
 
             CreateDoorway();
             AddListener();
+            RemoveUnusedDoors();
+            RemoveUnusedWalls();
+            UpdateMaterialColor(roomData.TierColor[currentLevel / _dividerIndexColor]);
         }
 
         public void SetComplete()
@@ -101,7 +114,7 @@ namespace Assets.Source.Game.Scripts
             if (IsComplete == true)
                 return;
 
-            foreach (var door in _doors)
+            foreach (var door in _roomDoorViews)
             {
                 door.Lock();
             }
@@ -109,7 +122,7 @@ namespace Assets.Source.Game.Scripts
 
         public virtual void UnlockRoom()
         {
-            foreach (var door in _doors)
+            foreach (var door in _roomDoorViews)
             {
                 door.Unlock();
             }
@@ -118,30 +131,75 @@ namespace Assets.Source.Game.Scripts
                 _openDoor.SetDoorOpen();
         }
 
+        public void ResetAllRemovableWall()
+        {
+            foreach (RemovableWall removableWall in _removableWalls)
+            {
+                if (removableWall != null)
+                    removableWall.gameObject.SetActive(true);
+            }
+        }
+
         private void AddListener() 
         {
-            foreach (var door in _doors)
+            foreach (var door in _roomDoorViews)
             {
                 door.RoomDoorTaked += OnDoorTaked;
             }
         }
 
-        private void CreateDoorway() 
+        private void UpdateMaterialColor(Color color) 
         {
-            if (_wallLeft != null && _wallLeft.activeSelf == false)
-                _doorwayLeft.SetActive(true);
+            foreach (Wall wall in _walls)
+            {
+                wall.UpdateMaterial(color);
+            }
 
-            if (_wallRight != null && _wallRight.activeSelf == false)
-                _doorwayRight.SetActive(true);
+            foreach (Wall wall in _removableWalls)
+            {
+                wall.UpdateMaterial(color);
+            }
 
-            if (_wallUpper != null && _wallUpper.activeSelf == false)
-                _doorwayUpper.SetActive(true);
-
-            if (_wallDown != null && _wallDown.activeSelf == false)
-                _doorwayDown.SetActive(true);
+            foreach (Light light in _lights) 
+            {
+                light.color = color;
+            }
         }
 
-        private void OnDoorTaked(RoomDoor roomDoor) 
+        private void CreateDoorway() 
+        {
+            foreach (RemovableWall removableWall in _removableWalls) 
+            {
+                foreach (DoorWayView doorWayView in _doorWayViews) 
+                {
+                    if (removableWall.gameObject != null && removableWall.gameObject.activeSelf == false && removableWall.TypeRoomSide == doorWayView.TypeRoomSide)
+                    {
+                        doorWayView.gameObject.SetActive(true);
+                        _roomDoorViews.Add(doorWayView.RoomDoor);
+                    }
+                }
+            }
+        }
+
+        private void RemoveUnusedDoors() 
+        {
+            foreach (DoorWayView doorWayView in _doorWayViews)
+            {
+                if (doorWayView.gameObject.activeSelf == false)
+                    Destroy(doorWayView.gameObject);
+            }
+        }
+
+        private void RemoveUnusedWalls()
+        {
+            foreach (RemovableWall removableWall in _removableWalls)
+            {
+                if (removableWall.gameObject.activeSelf == false)
+                    Destroy(removableWall.gameObject);
+            }
+        }
+
+        private void OnDoorTaked(RoomDoorView roomDoor) 
         {
             _openDoor = roomDoor;
         }

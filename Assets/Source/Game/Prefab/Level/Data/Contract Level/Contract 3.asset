@@ -14,7 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _id: 2
   _tier: 2
-  _countLevels: 4
+  _tierColor:
+  - {r: 1, g: 1, b: 1, a: 0}
+  - {r: 0.23921569, g: 1, b: 0.21568628, a: 0}
+  - {r: 0, g: 0.5411765, b: 1, a: 0}
+  - {r: 0.5686275, g: 0.14509805, b: 1, a: 0}
+  - {r: 1, g: 0.22745098, b: 0.14509805, a: 0}
+  _countStages: 0
+  _countRooms: 0
+  _cost: 4500
   _isContractLevel: 1
   _translationName: 
   _translationDescription: 

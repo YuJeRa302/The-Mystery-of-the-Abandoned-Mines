@@ -7,13 +7,19 @@ namespace Assets.Source.Game.Scripts
     {
         [SerializeField] private int _id;
         [SerializeField] private int _tier;
-        [SerializeField] private int _countLevels;
+        [SerializeField] private Color[] _tierColor;
+        [SerializeField] private int _countStages;
+        [SerializeField] private int _countRooms;
+        [SerializeField] private int _cost;
         [SerializeField] private bool _isContractLevel;
         [SerializeField] private string _translationName;
         [SerializeField] private string _translationDescription;
         [SerializeField] private Sprite _icon;
 
-        public int CountLevels => _countLevels;
+        public Color TierColor => _tierColor[_tier];
+        public int Cost => _cost;
+        public int CountRooms => _countRooms;
+        public int CountStages => _countStages;
         public bool IsContractLevel => _isContractLevel;
         public int Tier => _tier;
         public int Id => _id;

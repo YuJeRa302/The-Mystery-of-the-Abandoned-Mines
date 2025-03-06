@@ -50,8 +50,8 @@ MonoBehaviour:
     IsUnlock: 1
   _defaultLevelState:
   - Id: 0
-    IsComplete: 0
+    IsComplete: 1
   - Id: 1
-    IsComplete: 0
+    IsComplete: 1
   - Id: 2
-    IsComplete: 0
+    IsComplete: 1

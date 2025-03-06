@@ -19,11 +19,12 @@ MonoBehaviour:
   _experienceReward: 0
   _upgradeExperienceReward: 0
   _score: 0
-  _timeSpawn: 0
-  _enemyCount: 0
-  _moveSpeed: 3
+  _delaySpawn: 2.5
+  _enemyCount: 1
+  _moveSpeed: 2
   _attackDistance: 2
   _attackDelay: 2
+  _chanceSpawn: 100
   _abilityCoolDown: []
   _abilityDamage: 
   _enemyDieParticleSystem: {fileID: 7833486365468921808, guid: 5192d35fd14a19043bfa6419948dd535, type: 3}

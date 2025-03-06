@@ -19,8 +19,8 @@ MonoBehaviour:
   _experienceReward: 0
   _upgradeExperienceReward: 0
   _score: 0
-  _timeSpawn: 0
-  _enemyCount: 0
+  _delaySpawn: 1
+  _enemyCount: 1
   _moveSpeed: 3
   _attackDistance: 15
   _attackDelay: 2

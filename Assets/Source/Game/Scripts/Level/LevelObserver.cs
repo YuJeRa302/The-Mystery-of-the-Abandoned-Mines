@@ -1,5 +1,4 @@
 using System;
-using Unity.AI.Navigation;
 using UnityEngine;
 
 namespace Assets.Source.Game.Scripts
@@ -16,11 +15,8 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private Player _playerPrefab;
         [SerializeField] private PlayerView _playerView;
         [SerializeField] private CameraControiler _cameraControiler;
-        [SerializeField] private NavMeshSurface _navSurface;
         [Space(20)]
         [SerializeField] private GamePanels[] _panels;
-        [Space(20)]
-        [SerializeField] private CardPanel _cardPanel;
 
         private bool _canSeeDoor;
         private EnemySpawner _enemySpawner;
@@ -29,24 +25,26 @@ namespace Assets.Source.Game.Scripts
         private Player _player;
         private RoomView _currentRoom;
         private int _currentRoomLevel = 0;
+        private int _countStages = 0;
         private AbilityFactory _abilityFactory;
         private AbilityPresenterFactory _abilityPresenterFactory;
-        private TemporaryData _temporaryData;//test
 
         public event Action GameEnded;
         public event Action GameClosed;
         public event Action GamePaused;
         public event Action GameResumed;
+        public event Action StageCompleted;
 
         public PlayerView PlayerView => _playerView;
         public CameraControiler CameraControiler => _cameraControiler;
-
+        public int CurrentRoomLevel => _currentRoomLevel;
+        public int CountRooms { get; private set; }
+        public int CountStages => _countStages;
         public bool IsPaused => throw new NotImplementedException();
 
         private void Awake()
         {
             _cameraControiler.ChengeConfiner(_roomPlacer.StartRoom);
-            //Initialize(_temporaryData); //test
             LoadGamePanels();
         }
 
@@ -61,10 +59,11 @@ namespace Assets.Source.Game.Scripts
         {
             RegisterServices();
 
-            _canSeeDoor = _cameraControiler.TrySeeDoor(_roomPlacer.StartRoom.WallLeft);
-            _enemySpawner = new EnemySpawner(_enemuPool, this);
+            CountRooms = temporaryData.LevelData.CountRooms;
+            _countStages = temporaryData.LevelData.CountStages;
+            _canSeeDoor = _cameraControiler.TrySeeDoor(_roomPlacer.StartRoom.WallLeft.gameObject);
             _trapsSpawner = new TrapsSpawner();
-            _roomPlacer.Initialize(_currentRoomLevel, _canSeeDoor);
+            _roomPlacer.Initialize(_currentRoomLevel, _canSeeDoor, CountRooms);
 
             _playerFactory = new PlayerFactory(
                 temporaryData.WeaponData, 
@@ -77,12 +76,10 @@ namespace Assets.Source.Game.Scripts
                 temporaryData, out Player player);
 
             _player = player;
+            _enemySpawner = new EnemySpawner(_enemuPool, this, _player, _currentRoomLevel);
             _playerView.Initialize(_player, temporaryData.PlayerClassData.Icon);
             _player.PlayerAbilityCaster.Initialize();
             _cameraControiler.SetLookTarget(_player.transform);
-            _cardPanel.Initialize(_player);
-            _enemySpawner.SetTotalEnemyCount(_roomPlacer.AllEnemyCount, _player);
-            _navSurface.BuildNavMesh();
             AddListener();
         }
 
@@ -231,7 +228,7 @@ namespace Assets.Source.Game.Scripts
             UnlockAllDoors();
 
             if (_currentRoom == _currentRoom as BossRoomView)
-                LevelCompleted();
+                StageComplete();
         }
 
         private void RegisterServices()
@@ -240,13 +237,31 @@ namespace Assets.Source.Game.Scripts
             _abilityPresenterFactory = new AbilityPresenterFactory(this, this);
         }
 
-        private void LevelCompleted() 
+        private void StageComplete()
+        {
+            if (_currentRoomLevel == _countStages)
+                EndGame();
+            else
+                CreateNextStage();
+        }
+
+        private void CreateNextStage() 
         {
             RemoveRoomListener();
             _roomPlacer.Clear();
+            _player.transform.position = _spawnPlayerPoint.transform.position;
             _currentRoomLevel++;
-            _roomPlacer.Initialize(_currentRoomLevel, _canSeeDoor);
+            StageCompleted?.Invoke();
+            _roomPlacer.Initialize(_currentRoomLevel, _canSeeDoor, CountRooms);
             AddRoomListener();
+        }
+
+        private void EndGame() 
+        {
+            CloseAllGamePanels();
+            RemoveRoomListener();
+            _roomPlacer.Clear();
+            Debug.Log("END GAme");
         }
     }
 }

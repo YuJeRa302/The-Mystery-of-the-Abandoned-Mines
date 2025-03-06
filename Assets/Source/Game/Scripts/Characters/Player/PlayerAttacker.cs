@@ -47,7 +47,7 @@ namespace Assets.Source.Game.Scripts
             _coroutineRunner = coroutineRunner;
             _poolBullet = pool;
 
-            foreach (var parametr in _weaponData.WeaponPatametr.WeaponSupportivePatametrs)
+            foreach (var parametr in _weaponData.WeaponParameter.WeaponSupportivePatametrs)
             {
                 if (parametr.SupportivePatametr == TypeWeaponSupportiveParametr.CritChence)
                 {

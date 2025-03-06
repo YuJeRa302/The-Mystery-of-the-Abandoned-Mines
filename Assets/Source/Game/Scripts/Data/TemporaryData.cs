@@ -87,6 +87,19 @@ public class TemporaryData
         return null;
     }
 
+    public bool TryBuy(int value)
+    {
+        if (Coins >= value) 
+        {
+            Coins -= value;
+            return true;
+        }
+        else 
+        {
+            return false;
+        }
+    }
+
     public LevelState[] GetLevelStates() 
     {
         return _levelStates;

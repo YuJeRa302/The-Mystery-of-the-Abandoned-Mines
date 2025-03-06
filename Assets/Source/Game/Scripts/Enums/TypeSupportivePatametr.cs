@@ -1,7 +1,7 @@
 public enum TypeSupportivePatametr 
 {
     Damage,
-    Chence,
+    Chance,
     Duration,
     Repulsive,
     Slowdown,

@@ -1,4 +1,3 @@
-using Lean.Localization;
 using System;
 using UnityEngine;
 using UnityEngine.EventSystems;

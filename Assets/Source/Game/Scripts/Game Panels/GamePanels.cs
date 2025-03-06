@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Assets.Source.Game.Scripts
 {
-    public abstract class GamePanels : MonoBehaviour
+    public abstract class GamePanels : MonoBehaviour // Переделать по типу Model ViewModel View
     {
         protected Player Player;
         protected LevelObserver LevelObserver;

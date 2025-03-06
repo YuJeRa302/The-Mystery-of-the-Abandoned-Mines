@@ -119,7 +119,7 @@ namespace Assets.Source.Game.Scripts
                 {
                     damageValue = parametr.Value;
                 }
-                else if (parametr.SupportivePatametr == TypeSupportivePatametr.Chence)
+                else if (parametr.SupportivePatametr == TypeSupportivePatametr.Chance)
                 {
                     chance = parametr.Value;
                 }

@@ -34,10 +34,10 @@ public class Pool : MonoBehaviour
     {
         PoolObject result = null;
 
-        foreach (var object1InPool in _poolObjects)
+        foreach (var objectInPool in _poolObjects)
         {
-            if (object1InPool.NameObject == soughtObject.name)
-                result = object1InPool;
+            if (objectInPool.NameObject == soughtObject.name)
+                result = objectInPool;
         }
 
         poolObject = result;

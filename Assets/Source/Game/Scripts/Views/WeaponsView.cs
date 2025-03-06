@@ -1,5 +1,4 @@
 using Lean.Localization;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,20 +7,20 @@ namespace Assets.Source.Game.Scripts
 {
     public class WeaponsView : MonoBehaviour
     {
+        private readonly string _typeDamageTranslationName = "TypeDamage";
+
         [SerializeField] private Image _weaponImage;
         [SerializeField] private Sprite _defaultSprite;
         [Space(20)]
         [SerializeField] private LeanLocalizedText _nameWeapon;
-        [SerializeField] private LeanLocalizedText _damageText;
-        [SerializeField] private LeanLocalizedText _armorText;
-        [SerializeField] private Text _damageValue;
-        [SerializeField] private Text _armorValue;
         [Space(20)]
         [SerializeField] private WeaponDataView _weaponDataView;
         [SerializeField] private PlayerClassDataView _playerClassDataView;
+        [SerializeField] private WeaponStatsView _weaponStatsView;
         [Space(20)]
         [SerializeField] private Transform _weaponsContainer;
         [SerializeField] private Transform _classContainer;
+        [SerializeField] private Transform _weaponStatsContainer;
         [Space(20)]
         [SerializeField] private List<WeaponData> _weaponDatas;
         [Space(10)]
@@ -29,6 +28,7 @@ namespace Assets.Source.Game.Scripts
         [Space(20)]
         [SerializeField] private Button _backButton;
 
+        private List<WeaponStatsView> _weaponStatsViews = new ();
         private List<PlayerClassDataView> _playerClassDataViews = new ();
         private List<WeaponDataView> _weaponDataViews = new ();
         private WeaponsViewModel _weaponsViewModel;
@@ -96,6 +96,16 @@ namespace Assets.Source.Game.Scripts
             _weaponDataViews.Clear();
         }
 
+        private void ClearWeaponStats()
+        {
+            foreach (WeaponStatsView view in _weaponStatsViews)
+            {
+                Destroy(view.gameObject);
+            }
+
+            _weaponStatsViews.Clear();
+        }
+
         private void ClearClass()
         {
             foreach (PlayerClassDataView view in _playerClassDataViews)
@@ -109,31 +119,38 @@ namespace Assets.Source.Game.Scripts
 
         private void OnPlayerClassSelected(PlayerClassDataView playerClassDataView)
         {
+            ClearWeaponStats();
             ClearWeapons();
             CreateWeapons(playerClassDataView.PlayerClassData.TypePlayerClass);
         }
 
         private void OnWeaponSelected(WeaponDataView weaponDataView)
         {
+            ClearWeaponStats();
             _nameWeapon.TranslationName = weaponDataView.WeaponData.TranslationName;
+            _weaponImage.sprite = weaponDataView.WeaponData.Icon;
+            CreateWeaponStats(weaponDataView);
+        }
+
+        private void CreateWeaponStats(WeaponDataView weaponDataView) 
+        {
+            WeaponStatsView view = Instantiate(_weaponStatsView, _weaponStatsContainer);
+            view.Initialize(_typeDamageTranslationName, weaponDataView.WeaponData.DamageParametrs[0].TypeDamage.ToString(), true);
+            _weaponStatsViews.Add(view);
 
             foreach (var parametr in weaponDataView.WeaponData.DamageParametrs[0].DamageSupportivePatametrs)
             {
-                if (parametr.SupportivePatametr == TypeSupportivePatametr.Damage)
-                {
-                    _damageValue.text = parametr.Value.ToString();
-                }
+                view = Instantiate(_weaponStatsView, _weaponStatsContainer);
+                view.Initialize(parametr.SupportivePatametr.ToString(), parametr.Value.ToString(), false);
+                _weaponStatsViews.Add(view);
             }
 
-            foreach (var parametr in weaponDataView.WeaponData.WeaponPatametr.WeaponSupportivePatametrs)
+            foreach (var parametr in weaponDataView.WeaponData.WeaponParameter.WeaponSupportivePatametrs)
             {
-                if (parametr.SupportivePatametr == TypeWeaponSupportiveParametr.BonusArmor)
-                {
-                    _armorValue.text = Convert.ToInt32(parametr.Value).ToString();
-                }
+                view = Instantiate(_weaponStatsView, _weaponStatsContainer);
+                view.Initialize(parametr.SupportivePatametr.ToString(), parametr.Value.ToString(), false);
+                _weaponStatsViews.Add(view);
             }
-
-            _weaponImage.sprite = weaponDataView.WeaponData.Icon;
         }
 
         private void Show()
@@ -141,13 +158,12 @@ namespace Assets.Source.Game.Scripts
             gameObject.SetActive(true);
             CreateClass();
             _nameWeapon.TranslationName = string.Empty;
-            _damageValue.text = string.Empty;
-            _armorValue.text = string.Empty;
             _weaponImage.sprite = _defaultSprite;
         }
 
         private void OnBackButtonClicked()
         {
+            ClearWeaponStats();
             ClearWeapons();
             ClearClass();
             gameObject.SetActive(false);

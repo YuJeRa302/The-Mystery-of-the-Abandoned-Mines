@@ -1,3 +1,4 @@
+using DG.Tweening;
 using Lean.Localization;
 using System;
 using System.Collections.Generic;
@@ -9,9 +10,16 @@ namespace Assets.Source.Game.Scripts
     public class LevelsView : MonoBehaviour
     {
         private readonly int _indexUnlockContractButton = 2;
+        private readonly string _chooseLevelType = "LevelType";
+        private readonly string _chooseLevel = "ChooseLevel";
+        private readonly string _choosePlayerClass = "ChoosePlayerClass";
+        private readonly string _chooseWeapon = "ChooseWeapon";
+        private readonly float _durationAnimation = 1f;
+        private readonly Color _startColorAnimation = Color.red;
+        private readonly Color _endColorAnimation = new Color(118f, 73f, 0);
 
         [SerializeField] private Image _levelImage;
-        [SerializeField] private LeanLocalizedText _textNextButton;
+        [SerializeField] private LeanLocalizedText _textHint;
         [Space(20)]
         [SerializeField] private WeaponDataView _weaponDataView;
         [SerializeField] private LevelDataView _levelDataView;
@@ -35,12 +43,18 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private ScrollRect _modsScrollRect;
         [Space(10)]
         [SerializeField] private GameObject _levelInfo;
+        [SerializeField] private GameObject _dialogPanel;
+        [SerializeField] private Text _goldTextDialogPanel;
         [Space(20)]
         [SerializeField] private Button _defaultLevelButton;
         [SerializeField] private Button _contractButton;
         [SerializeField] private Button _backButton;
         [SerializeField] private Button _nextButton;
+        [SerializeField] private Button _buyButton;
+        [SerializeField] private Button _cancelButton;
 
+        private bool _isContractLevel = false;
+        private LevelDataView _currentLevelDataView;
         private List<PlayerClassDataView> _playerClassDataViews = new ();
         private List<LevelDataView> _levelDataViews = new ();
         private List<WeaponDataView> _weaponDataViews = new ();
@@ -60,6 +74,7 @@ namespace Assets.Source.Game.Scripts
 
         public void Initialize(LevelsViewModel levelsViewModel, IAudioPlayerService audioPlayerService)
         {
+            _textHint.TranslationName = _chooseLevelType;
             _levelsViewModel = levelsViewModel;
             _audioPlayerService = audioPlayerService;
             _contractButton.interactable = _levelsViewModel.TryUnlockContractButton(_indexUnlockContractButton);
@@ -74,6 +89,8 @@ namespace Assets.Source.Game.Scripts
         {
             _levelsViewModel.InvokedShow += Show;
             _backButton.onClick.AddListener(OnBackButtonClicked);
+            _buyButton.onClick.AddListener(OnBuyButtonClick);
+            _cancelButton.onClick.AddListener(OnCancelButtonClick);
             _contractButton.onClick.AddListener(ShowContractLevels);
             _defaultLevelButton.onClick.AddListener(ShowDefaultLevels);
             _nextButton.onClick.AddListener(OnNextButtonClicked);
@@ -84,6 +101,8 @@ namespace Assets.Source.Game.Scripts
         {
             _levelsViewModel.InvokedShow -= Show;
             _backButton.onClick.RemoveListener(OnBackButtonClicked);
+            _buyButton.onClick.RemoveListener(OnBuyButtonClick);
+            _cancelButton.onClick.RemoveListener(OnCancelButtonClick);
             _contractButton.onClick.RemoveListener(ShowContractLevels);
             _defaultLevelButton.onClick.RemoveListener(ShowDefaultLevels);
             _nextButton.onClick.RemoveListener(OnNextButtonClicked);
@@ -153,12 +172,12 @@ namespace Assets.Source.Game.Scripts
 
         private void SortContractsByTier()
         {
-            _contractLevelDatas.Sort(delegate (LevelData x, LevelData y) { return y.Tier.CompareTo(x.Tier); });
+            _contractLevelDatas.Sort(delegate (LevelData x, LevelData y) { return x.Tier.CompareTo(y.Tier); });
         }
 
         private void SortLevelsByTier()
         {
-            _levelDatas.Sort(delegate (LevelData x, LevelData y) { return y.Tier.CompareTo(x.Tier); });
+            _levelDatas.Sort(delegate (LevelData x, LevelData y) { return x.Tier.CompareTo(y.Tier); });
         }
 
         private void SortWeaponsByTier()
@@ -168,6 +187,8 @@ namespace Assets.Source.Game.Scripts
 
         private void ShowDefaultLevels()
         {
+            _textHint.TranslationName = _chooseLevel;
+            _isContractLevel = false;
             _isLevelsShow = true;
             _nextButton.interactable = false;
             _levelInfo.SetActive(true);
@@ -181,6 +202,8 @@ namespace Assets.Source.Game.Scripts
 
         private void ShowContractLevels()
         {
+            _textHint.TranslationName = _chooseLevel;
+            _isContractLevel = true;
             _isLevelsShow = true;
             _nextButton.interactable = false;
             _levelInfo.SetActive(true);
@@ -194,6 +217,10 @@ namespace Assets.Source.Game.Scripts
 
         private void ShowPlayerClass()
         {
+            if (_isPlayerClassShow == true)
+                return;
+
+            _textHint.TranslationName = _choosePlayerClass;
             _isPlayerClassShow = true;
             _nextButton.interactable = false;
             _levelsScrollRect.gameObject.SetActive(false);
@@ -205,6 +232,8 @@ namespace Assets.Source.Game.Scripts
 
         private void HideLevels() 
         {
+            _levelImage.gameObject.SetActive(false);
+            _textHint.TranslationName = _chooseLevelType;
             _nextButton.interactable = false;
             _isLevelSelect = false;
             _isLevelsShow = false;
@@ -217,6 +246,8 @@ namespace Assets.Source.Game.Scripts
 
         private void HidePlayerClass()
         {
+            _levelImage.gameObject.SetActive(false);
+            _textHint.TranslationName = _chooseLevel;
             _isPlayerClassShow = false;
             _isWeaponSelect = false;
             _nextButton.interactable = false;
@@ -263,6 +294,7 @@ namespace Assets.Source.Game.Scripts
 
         private void OnPlayerClassSelected(PlayerClassDataView playerClassDataView)
         {
+            _textHint.TranslationName = _chooseWeapon;
             ClearWeapons();
             CreateWeapons(playerClassDataView.PlayerClassData.TypePlayerClass);
             _levelsViewModel.SelectClass(playerClassDataView);
@@ -279,9 +311,25 @@ namespace Assets.Source.Game.Scripts
 
         private void OnLevelSelected(LevelDataView levelDataView)
         {
+            _levelImage.gameObject.SetActive(true);
+            _levelImage.sprite = levelDataView.LevelData.Icon;
             _nextButton.interactable = true;
             _levelsViewModel.SelectLevel(levelDataView);
+            _currentLevelDataView = levelDataView;
             _isLevelSelect = true;
+        }
+
+        private void OnBuyButtonClick() 
+        {
+            if (_levelsViewModel.TryBuyContract(_currentLevelDataView.LevelData.Cost))
+                LoadLevel();
+            else
+                PlayCoinsAnimation();
+        }
+
+        private void OnCancelButtonClick() 
+        {
+            _dialogPanel.SetActive(false);
         }
 
         private void OnNextButtonClicked()
@@ -289,8 +337,16 @@ namespace Assets.Source.Game.Scripts
             if (_isLevelSelect == true)
                 ShowPlayerClass();
 
-            if (_isWeaponSelect == true)
-                LoadLevel();
+            if (_isContractLevel == true)
+            {
+                if (_isWeaponSelect == true)
+                    ShowDialogPanel();
+            }
+            else 
+            {
+                if (_isWeaponSelect == true)
+                    LoadLevel();
+            }
         }
 
         private void OnBackButtonClicked()
@@ -309,6 +365,22 @@ namespace Assets.Source.Game.Scripts
 
             gameObject.SetActive(false);
             _levelsViewModel.Hide();
+        }
+
+        private void PlayCoinsAnimation() 
+        {
+            _goldTextDialogPanel.transform.localScale = Vector3.zero;
+
+            _goldTextDialogPanel.transform
+                .DOScale(_durationAnimation, _durationAnimation)
+                .SetEase(Ease.OutBounce)
+                .SetLink(_goldTextDialogPanel.gameObject);
+        }
+
+        private void ShowDialogPanel() 
+        {
+            _dialogPanel.SetActive(true);
+            _goldTextDialogPanel.text = _currentLevelDataView.LevelData.Cost.ToString();
         }
 
         private void Show() => gameObject.SetActive(true);

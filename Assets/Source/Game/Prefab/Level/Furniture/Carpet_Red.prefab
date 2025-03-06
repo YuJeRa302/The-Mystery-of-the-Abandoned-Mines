@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 9218377935294762359}
   - component: {fileID: 9218377935298186583}
   - component: {fileID: 9218377935297056663}
-  - component: {fileID: 5824447511790668872}
   m_Layer: 0
   m_Name: Carpet_Red
   m_TagString: Untagged
@@ -84,17 +83,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &5824447511790668872
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9218377935294861655}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: 3218aaed8ef5b6b42b5b1fe3ae5b6342, type: 3}

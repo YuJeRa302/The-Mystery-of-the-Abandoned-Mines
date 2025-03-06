@@ -7,6 +7,7 @@ namespace Assets.Source.Game.Scripts
         event Action GamePaused;
         event Action GameResumed;
         event Action GameClosed;
+        event Action StageCompleted;
         bool IsPaused { get; }
         void ResumeByRewarded();
         void PauseByRewarded();

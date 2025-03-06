@@ -121,6 +121,7 @@ namespace Assets.Source.Game.Scripts
             AddPanelListener();
             _roomPlacer.StartRoom.SetRoomStatus();//
             _roomPlacer.StartRoom.RoomEntering += OnRoomEntering;//test
+            _enemySpawner.EnemyDied += OnEnemyDied;
             _enemySpawner.AllEnemyRoomDied += OnRoomCompleted;
         }
 
@@ -129,7 +130,13 @@ namespace Assets.Source.Game.Scripts
             RemoveRoomListener();
             RemovePanelListener();
             _roomPlacer.StartRoom.RoomEntering -= OnRoomEntering;
+            _enemySpawner.EnemyDied -= OnEnemyDied;
             _enemySpawner.AllEnemyRoomDied -= OnRoomCompleted;
+        }
+
+        private void OnEnemyDied(Enemy enemy)
+        {
+            _player.PlayerStats.EnemyDied(enemy);
         }
 
         private void AddRoomListener() 

@@ -12,8 +12,8 @@ namespace Assets.Source.Game.Scripts
         private readonly int _maxUpgradeExperience = 1000;
         private readonly int _minValue = 0;
 
-        private int _maxPlayerLevel;//
-        private int _maxUpgradeLevel;//
+        private int _maxPlayerLevel = 5;//
+        private int _maxUpgradeLevel = 5;//
 
         private Player _player;
         private PlayerView _playerView;
@@ -57,6 +57,11 @@ namespace Assets.Source.Game.Scripts
             GenerateLevelPlayer(_maxPlayerLevel);
             GenerateUpgradeLevel(_maxUpgradeLevel);
             SetPlayerStats(score);
+            _levels.TryGetValue(_currentLevel, out int levelValue);
+            _maxLevelValue = levelValue;
+            Debug.Log(levelValue);
+            _upgradeLevels.TryGetValue(_currentUpgradeLevel, out int upgradeValue);
+            _maxUpgradeValue = upgradeValue;
         }
 
         public float Speed => _speed;
@@ -79,11 +84,11 @@ namespace Assets.Source.Game.Scripts
 
         public void EnemyDied(Enemy enemy)
         {
-            //_score += enemy.Score;
-            //_currentExperience += enemy.ExperienceReward;
-            //_currentUpgradeExperience += enemy.UpgradeExperienceReward;
-            //UpgradeExperienceValueChanged?.Invoke(enemy.UpgradeExperienceReward);
-            //ExperienceValueChanged?.Invoke(enemy.ExperienceReward);
+            _score += enemy.Score;
+            _currentExperience += enemy.ExperienceReward;
+            _currentUpgradeExperience += enemy.UpgradeExperienceReward;
+            UpgradeExperienceValueChanged?.Invoke(enemy.UpgradeExperienceReward);
+            ExperienceValueChanged?.Invoke(enemy.ExperienceReward);
             _countKillEnemy++;
             KillCountChanged?.Invoke(_countKillEnemy);
             SetNewPlayerLevel(_currentLevel);

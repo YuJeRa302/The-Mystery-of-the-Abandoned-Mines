@@ -65,6 +65,7 @@ namespace Assets.Source.Game.Scripts
             _sliderHP.maxValue = _player.PlayerHealth.MaxHealth;
             _sliderHP.value = _player.PlayerHealth.CurrentHealth;
             _sliderXP.maxValue = _player.PlayerStats.MaxLevelValue;
+            Debug.Log(player.PlayerStats.MaxLevelValue);
             _sliderXP.value = _player.PlayerStats.CurrentExperience;
             _sliderUpgradePoints.maxValue = _player.PlayerStats.MaxUpgradeValue;
             _sliderUpgradePoints.value = _player.PlayerStats.UpgradeExperience;

@@ -25,6 +25,7 @@ namespace Assets.Source.Game.Scripts
         private int _totalEnemyCount;
         private bool _isEnemySpawned = false;
 
+        public event Action<Enemy> EnemyDied;
         public event Action AllEnemyRoomDied;
 
         public EnemySpawner(Pool enemyPool, ICoroutineRunner coroutineRunner, Player player, int currentLevel)
@@ -126,7 +127,7 @@ namespace Assets.Source.Game.Scripts
             {
                 enemy = GameObject.Instantiate(enemyData.PrefabEnemy, _spawnPoints[value].position, _spawnPoints[value].rotation);
                 _enemuPool.InstantiatePoolObject(enemy, enemyData.PrefabEnemy.name);
-                enemy.Initialize(_player, enemyData.Id, _currentRoomLevel, enemyData.Damage, enemyData.Health, enemyData.AttackDelay, enemyData.AttackDistance, enemyData.MoveSpeed);
+                enemy.Initialize(_player, _currentRoomLevel, enemyData);
                 enemy.Died += OnEnemyDead;
                 _enemies.Add(enemy);
 
@@ -147,6 +148,8 @@ namespace Assets.Source.Game.Scripts
 
         private void OnEnemyDead(Enemy enemy)
         {
+            EnemyDied?.Invoke(enemy);
+
             if (_deadParticles.TryGetValue(enemy.NameObject, out PoolParticle particlePrefab))
             {
                 PoolParticle particle;

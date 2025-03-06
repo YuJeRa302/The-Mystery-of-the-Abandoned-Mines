@@ -19,6 +19,7 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private float _attackDistance;
         [SerializeField] private float _attackDelay;
         [SerializeField] private int _chanceSpawn;
+        [SerializeField] private int _goldReward;
         [Header("[Ability Stats]")]
         [SerializeField] private float[] _abilityCoolDown;
         [SerializeField] private int[] _abilityDamage;
@@ -42,6 +43,7 @@ namespace Assets.Source.Game.Scripts
         public int Health => _health;
         public int ExperienceReward => _experienceReward;
         public int Score => _score;
+        public int GoldReward => _goldReward;
         public float MoveSpeed => _moveSpeed;
         public float AttackDistance => _attackDistance;
         public float AttackDelay => _attackDelay;

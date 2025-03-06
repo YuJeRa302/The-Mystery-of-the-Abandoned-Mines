@@ -23,6 +23,10 @@ namespace Assets.Source.Game.Scripts
         private int _currentLvlRoom;
         private bool _isDead;
         private float _currentHealth;
+        private int _experience;
+        private int _score;
+        private int _gold;
+        private int _upgradeExperience;
         private Player _player;
         private Rigidbody _rigidbody;
         private Coroutine _stunDamage;
@@ -36,6 +40,10 @@ namespace Assets.Source.Game.Scripts
         public float Damage => _damage;
         public float Speed => _speed;
         public float AttackDistance => _attackDistance;
+        public int ExperienceReward => _experience;
+        public int Score => _score;
+        public int GoldReward => _gold;
+        public int UpgradeExperienceReward => _upgradeExperience;
         public EnemyAnimation AnimationStateController => _animationController;
         public EnemyStateMashineExample StateMashine => _stateMashine;
 
@@ -56,19 +64,14 @@ namespace Assets.Source.Game.Scripts
             CorountineStop(_burnDamage);
         }
 
-        public virtual void Initialize(Player player, int id, int lvlRoom, int damage, int health, float attackDelay, float attackDistance, float moveSpeed)
+        public virtual void Initialize(Player player, int lvlRoom, EnemyData data)
         {
             _player = player;
             _rigidbody = GetComponent<Rigidbody>();
-            _health = health;
-            _currentHealth = _health;
-            _damage = damage;
-            _speed = moveSpeed;
-            _attackDelay = attackDelay;
-            _attackDistance = attackDistance;
-            _id = id;
             _currentLvlRoom = lvlRoom;
             _stateMashine.InitializeStateMashine(player);
+            Fill(data);
+            _currentHealth = _health;
         }
 
         public void ResetEnemy(int lvlRoom)
@@ -83,6 +86,20 @@ namespace Assets.Source.Game.Scripts
             }
 
             _stateMashine.ResetState();
+        }
+
+        private void Fill(EnemyData data)
+        {
+            _health = data.Health;
+            _damage = data.Damage;
+            _speed = data.MoveSpeed;
+            _attackDelay = data.AttackDelay;
+            _attackDistance = data.AttackDistance;
+            _id = data.Id;
+            _gold = data.GoldReward;
+            _score = data.Score;
+            _experience = data.ExperienceReward;
+            _upgradeExperience = data.UpgradeExperienceReward;
         }
 
         private void TakeDamage(float damage)//+тип урона

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: GlobularLightning
   m_EditorClassIdentifier: 
   _name: GlobularLightning
-  _discription: GlobularLightning
+  _discription: GlobularLightningDescription
   _legendarySpell: {fileID: 3443178031204434909, guid: 05def5971c92e754289c752393ffa96b, type: 3}
   _spellRadius: 2
   _icon: {fileID: -700289141, guid: dc2e3af32fff16a4fa28920cc9449371, type: 3}
@@ -21,7 +21,7 @@ MonoBehaviour:
   - CardParameters:
     - Value: 15
       TypeParameter: 4
-    - Value: 10
+    - Value: 25
       TypeParameter: 5
     - Value: 25
       TypeParameter: 6

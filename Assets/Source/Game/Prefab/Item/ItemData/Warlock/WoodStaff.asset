@@ -27,11 +27,9 @@ MonoBehaviour:
   _damageParametrs:
   - TypeDamage: 0
     DamageSupportivePatametrs:
-    - Value: 2
+    - Value: 4
       SupportivePatametr: 0
     Particle: {fileID: 0}
-  _weaponPatametr:
-    WeaponSupportivePatametrs:
-    - Value: 0
-      SupportivePatametr: 4
+  _weaponParameter:
+    WeaponSupportivePatametrs: []
   _bulletPrefab: {fileID: -8979001810310791697, guid: 956d7ba531875a24b963c77474ed0464, type: 3}

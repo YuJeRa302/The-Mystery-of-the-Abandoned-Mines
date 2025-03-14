@@ -15,15 +15,17 @@ MonoBehaviour:
   _id: 10
   _level: 0
   _damage: 15
-  _health: 40
-  _experienceReward: 0
+  _health: 80
+  _experienceReward: 50
   _upgradeExperienceReward: 0
   _score: 0
-  _timeSpawn: 0
-  _enemyCount: 0
+  _delaySpawn: 3
+  _enemyCount: 1
   _moveSpeed: 3
   _attackDistance: 2
   _attackDelay: 2
+  _chanceSpawn: 10
+  _goldReward: 0
   _abilityCoolDown: []
   _abilityDamage: 
   _enemyDieParticleSystem: {fileID: 7833486365468921808, guid: 5192d35fd14a19043bfa6419948dd535, type: 3}

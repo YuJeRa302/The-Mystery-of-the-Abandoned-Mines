@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: ThrowAxe
   m_EditorClassIdentifier: 
   _id: 10
-  _name: Throw Axe
+  _name: ThrowAxe
   _icon: {fileID: 1211075645, guid: 855001a07e231344b97e76392f4d2449, type: 3}
-  _description: Throw Axe
+  _description: ThrowAxeDescription
   _buttonView: {fileID: 7547704264931708372, guid: 226be77f080a72f41b3a154b64b3d4ae, type: 3}
   _abilityClassParameters:
   - Cost: 0

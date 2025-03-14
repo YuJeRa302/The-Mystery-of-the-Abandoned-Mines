@@ -52,8 +52,6 @@ public class AxemMssile : PoolObject
             Debug.Log(_damage.DamageSupportivePatametrs.Count);
             enemy.TakeDamageTest(_damage);
             Vector3 direction = (enemy.transform.position - transform.position) * 5;
-
-            CorountineStart(BackToPlayer());
         }
     }
 

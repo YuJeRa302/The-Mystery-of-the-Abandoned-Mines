@@ -75,6 +75,14 @@ namespace Assets.Source.Game.Scripts
                 _bulletSpawner = new ProjectileSpawner(paladinWeaponData.BulletPrafab, _poolBullet, _shotPoint, _damage, _weaponData.DamageParametrs[0]);
             }
 
+            foreach (var parametr in DamageParametr.DamageSupportivePatametrs)
+            {
+                if (parametr.SupportivePatametr == TypeSupportivePatametr.Damage)
+                {
+                    _damage = parametr.Value;
+                }
+            }
+
             _coolDownAttack = _coroutineRunner.StartCoroutine(CoolDownAttack());
         }
 
@@ -96,6 +104,14 @@ namespace Assets.Source.Game.Scripts
         public void ÑhangeDamage(float value)
         {
             _damage = value;
+
+            foreach (var parametr in DamageParametr.DamageSupportivePatametrs)
+            {
+                if (parametr.SupportivePatametr == TypeSupportivePatametr.Damage)
+                {
+                    parametr.Value = _damage;
+                }
+            }
         }
 
         public void AttackEnemy()

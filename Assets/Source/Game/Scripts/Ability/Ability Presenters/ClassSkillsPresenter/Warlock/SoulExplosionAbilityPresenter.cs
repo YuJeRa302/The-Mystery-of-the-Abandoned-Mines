@@ -77,8 +77,7 @@ public class SoulExplosionAbilityPresenter : AbilityPresenter
 
     protected override void OnGameResumed()
     {
-        if (_isAbilityUse)
-            base.OnGameResumed();
+        base.OnGameResumed();
     }
 
     protected override void OnCooldownValueReseted(float value)

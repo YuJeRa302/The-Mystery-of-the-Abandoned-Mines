@@ -27,8 +27,8 @@ MonoBehaviour:
   _damageParametrs:
   - TypeDamage: 0
     DamageSupportivePatametrs:
-    - Value: 4
+    - Value: 6
       SupportivePatametr: 0
     Particle: {fileID: 0}
-  _weaponPatametr:
+  _weaponParameter:
     WeaponSupportivePatametrs: []

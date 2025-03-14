@@ -9,6 +9,7 @@ public class DragonFlame : MonoBehaviour
     {
         if (other.gameObject.TryGetComponent(out Player player))
         {
+            Debug.Log("Player");
             player.PlayerHealth.TakeDamage(_damage);
         }
     }

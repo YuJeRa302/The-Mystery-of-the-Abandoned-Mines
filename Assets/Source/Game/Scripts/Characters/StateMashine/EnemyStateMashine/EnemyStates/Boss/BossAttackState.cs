@@ -12,20 +12,19 @@ namespace Assets.Source.Game.Scripts
 
         public BossAttackState(StateMashine stateMashine, Player target, Enemy enemy) : base(stateMashine, target, enemy)
         {
-            _enemy = enemy;
-            _target = target;
-            _attackRange = _enemy.AttackDistance;
-            _damage = _enemy.Damage;
-            _attackDelay = _enemy.AttackDelay;
-            _animationController = _enemy.AnimationStateController;
             Boss boss = enemy as Boss;
             _additionalAttackDelay = boss.AdditionalAttackDelay;
             _specialAttackDelay = boss.SpecilaAttackDelay;
+            Debug.Log(_attackDelay);
+        }
 
-            if(_enemy.TryGetComponent(out Beholder beholder))
+        public override void SubscrabeIvent()
+        {
+            if (_enemy.TryGetComponent(out Beholder beholder))
             {
                 _bulletSpawner = new BulletSpawner(beholder.Bullet, beholder.Pool, beholder.BaseShotPoint, _enemy);
                 _animationController.Attacked += LaunchBullet;
+                Debug.Log("beholder attack");
             }
             else
             {
@@ -111,6 +110,7 @@ namespace Assets.Source.Game.Scripts
         {
             _enemy.transform.LookAt(_target.transform.position);
             _bulletSpawner.SpawnBullet();
+            _canTransit = true;
         }
     }
 }

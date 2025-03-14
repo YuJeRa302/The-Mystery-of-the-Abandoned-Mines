@@ -59,8 +59,7 @@ public class EpiphanyAbilityPresenter : AbilityPresenter
 
     protected override void OnGameResumed()
     {
-        if (_isAbilityUse)
-            base.OnGameResumed();
+        base.OnGameResumed();
     }
 
     private void CastEpiphany()

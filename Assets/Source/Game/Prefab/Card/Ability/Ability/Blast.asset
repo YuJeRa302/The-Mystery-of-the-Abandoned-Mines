@@ -15,28 +15,28 @@ MonoBehaviour:
   _cardParameterView: {fileID: 1961483584371832456, guid: 6d57f6325ba58d6478a1fd35f1ba2831, type: 3}
   _parameters:
   - CardParameters:
-    - Value: 5
+    - Value: 10
+      TypeParameter: 4
+    - Value: 15
+      TypeParameter: 5
+    - Value: 30
+      TypeParameter: 6
+  - CardParameters:
+    - Value: 10
       TypeParameter: 4
     - Value: 20
       TypeParameter: 5
-    - Value: 50
+    - Value: 30
       TypeParameter: 6
   - CardParameters:
-    - Value: 5
+    - Value: 15
       TypeParameter: 4
-    - Value: 2
+    - Value: 20
       TypeParameter: 5
-    - Value: 5
+    - Value: 25
       TypeParameter: 6
-  - CardParameters:
-    - Value: 5
-      TypeParameter: 4
-    - Value: 2
-      TypeParameter: 5
-    - Value: 5
-      TypeParameter: 6
-  _name: Ability
-  _description: Ability
+  _name: ElectricSphere
+  _description: ElectricSphereDescription
   _icon: {fileID: 21300000, guid: a1abefe37b92e5c4681ef6ea75669835, type: 3}
   _abilityType: 5
   _abilityView: {fileID: 7248082733305173889, guid: b41ccdfb932d3874d92c031e66d814ec, type: 3}

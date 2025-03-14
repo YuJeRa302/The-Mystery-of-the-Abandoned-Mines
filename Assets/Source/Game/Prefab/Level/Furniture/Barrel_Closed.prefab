@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2317576605583390934}
   - component: {fileID: 2317576605584390678}
   - component: {fileID: 8821042935367650186}
+  - component: {fileID: -3123221801721430711}
   m_Layer: 0
   m_Name: Barrel_Closed
   m_TagString: Untagged
@@ -26,13 +27,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2317576605586580694}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!33 &2317576605583390934
 MeshFilter:
@@ -106,3 +107,16 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.89473313, y: 0.9418151, z: 0.8947331}
   m_Center: {x: 0.00000014901161, y: 0.46748236, z: -0.00000016391277}
+--- !u!114 &-3123221801721430711
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2317576605586580694}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa4afac267df5174890ab948d8307a2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _meshRenderer: {fileID: 2317576605584390678}

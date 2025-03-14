@@ -12,18 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: beb1b69ea56807a4592769cd98d16a55, type: 3}
   m_Name: ElectricGuard
   m_EditorClassIdentifier: 
-  _name: 
-  _discription: 
+  _name: ElectricGuard
+  _discription: ElectricGuardDescription
   _legendarySpell: {fileID: 3443178031204434909, guid: 73078fed5fbb1dd48a44c7d2221caf72, type: 3}
   _spellRadius: 1.55
   _icon: {fileID: 567277375, guid: dc2e3af32fff16a4fa28920cc9449371, type: 3}
   _legendaryParametersAbility:
   - CardParameters:
-    - Value: 2
+    - Value: 20
       TypeParameter: 4
-    - Value: 5
+    - Value: 15
       TypeParameter: 5
-    - Value: 8
+    - Value: 15
       TypeParameter: 6
   _particle: {fileID: 6702441514761029868, guid: 469e59a9e0f165e4b9cce7f794cde630, type: 3}
   _typeUpgradeMagic: 4

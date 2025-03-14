@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: SummonSkelleton
   m_EditorClassIdentifier: 
   _id: 9
-  _name: Skelleton
+  _name: SummonSkelleton
   _icon: {fileID: 763642747, guid: 855001a07e231344b97e76392f4d2449, type: 3}
-  _description: Skelleton
+  _description: SummonSkelletonDescription
   _buttonView: {fileID: 7547704264931708372, guid: 226be77f080a72f41b3a154b64b3d4ae, type: 3}
   _abilityClassParameters:
   - Cost: 0

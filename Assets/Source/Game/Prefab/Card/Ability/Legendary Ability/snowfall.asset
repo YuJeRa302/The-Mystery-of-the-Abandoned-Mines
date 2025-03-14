@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: snowfall
   m_EditorClassIdentifier: 
   _name: Snowfall
-  _discription: Snowfall
+  _discription: SnowfallDescription
   _legendarySpell: {fileID: 3443178031204434909, guid: bcd32f6824b151946bebed9aadfe6a5e, type: 3}
   _spellRadius: 2
   _icon: {fileID: 1570952433, guid: dc2e3af32fff16a4fa28920cc9449371, type: 3}
   _legendaryParametersAbility:
   - CardParameters:
-    - Value: 12
+    - Value: 6
       TypeParameter: 4
     - Value: 5
       TypeParameter: 5

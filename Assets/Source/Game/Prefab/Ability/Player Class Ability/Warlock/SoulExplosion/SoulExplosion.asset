@@ -15,7 +15,7 @@ MonoBehaviour:
   _id: 15
   _name: SoulExplosion
   _icon: {fileID: 1869640326, guid: 855001a07e231344b97e76392f4d2449, type: 3}
-  _description: SoulExplosion
+  _description: SoulExplosionDescription
   _buttonView: {fileID: 7547704264931708372, guid: 226be77f080a72f41b3a154b64b3d4ae, type: 3}
   _abilityClassParameters:
   - Cost: 0
@@ -32,7 +32,7 @@ MonoBehaviour:
       TypeParameter: 6
     - Value: 4
       TypeParameter: 5
-    - Value: 15
+    - Value: 20
       TypeParameter: 11
     - Value: 20
       TypeParameter: 12
@@ -52,7 +52,7 @@ MonoBehaviour:
       TypeParameter: 6
     - Value: 4
       TypeParameter: 5
-    - Value: 17
+    - Value: 30
       TypeParameter: 11
     - Value: 15
       TypeParameter: 12
@@ -61,7 +61,7 @@ MonoBehaviour:
       TypeParameter: 6
     - Value: 4
       TypeParameter: 5
-    - Value: 20
+    - Value: 40
       TypeParameter: 11
     - Value: 10
       TypeParameter: 12

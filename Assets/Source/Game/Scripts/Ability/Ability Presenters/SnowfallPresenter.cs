@@ -7,7 +7,7 @@ using UnityEngine;
 public class SnowfallPresenter : AbilityPresenter
 {
     private readonly float _delayAttack = 0.3f;
-    private readonly float _blastSpeed = 0.2f;
+    private readonly float _blastSpeed = 0.1f;
     private readonly int _countSpell = 3;
 
     private LegendaryAbilitySpell _spellPrefab;

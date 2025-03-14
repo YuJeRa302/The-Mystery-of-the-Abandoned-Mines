@@ -8,11 +8,11 @@ namespace Assets.Source.Game.Scripts
     {
         private readonly Dictionary<int, int> _levels = new();
         private readonly Dictionary<int, int> _upgradeLevels = new();
-        private readonly int _maxExperience = 100;
+        private readonly int _maxExperience = 50;
         private readonly int _maxUpgradeExperience = 1000;
         private readonly int _minValue = 0;
 
-        private int _maxPlayerLevel = 5;//
+        private int _maxPlayerLevel = 10;//
         private int _maxUpgradeLevel = 5;//
 
         private Player _player;
@@ -46,6 +46,7 @@ namespace Assets.Source.Game.Scripts
         public event Action<int> AbilityDamageChanged;
         public event Action<int> AbilityCooldownReductionChanged;
         public event Action<int> KillCountChanged;//view
+        public event Action LvlUpped;
 
         public PlayerStats(Player player, int score, UpgradeState[] upgradeState, LevelObserver levelObserver, 
             AbilityFactory abilityFactory, AbilityPresenterFactory abilityPresenterFactory)
@@ -59,7 +60,6 @@ namespace Assets.Source.Game.Scripts
             SetPlayerStats(score);
             _levels.TryGetValue(_currentLevel, out int levelValue);
             _maxLevelValue = levelValue;
-            Debug.Log(levelValue);
             _upgradeLevels.TryGetValue(_currentUpgradeLevel, out int upgradeValue);
             _maxUpgradeValue = upgradeValue;
         }
@@ -76,6 +76,7 @@ namespace Assets.Source.Game.Scripts
         public int MaxLevelValue => _maxLevelValue;
         public int MaxUpgradeValue => _maxUpgradeValue;
         public int CurrentLevel => _currentLevel;
+        public int RerollPoint => _rerollPoints;
 
         public void Dispose()
         {
@@ -95,16 +96,26 @@ namespace Assets.Source.Game.Scripts
             SetNewUpgradePoints(_currentUpgradeLevel);
         }
 
-        public bool TryGetRerollPoints()
+        public bool TryGetRerollPoints(out bool canNextReroll)
         {
-            _rerollPoints = Mathf.Clamp(_rerollPoints--, _minValue, _rerollPoints);
-            return _rerollPoints == _minValue ? false : true;
+            //_rerollPoints = Mathf.Clamp(_rerollPoints--, _minValue, _rerollPoints);
+            //Debug.Log(_rerollPoints);
+            //return _rerollPoints == _minValue ? false : true;
+            if (_rerollPoints == _minValue)
+            {
+                canNextReroll = _rerollPoints == _minValue ? false : true;
+                return false;
+            }
+            else
+            {
+                _rerollPoints--;
+                canNextReroll = _rerollPoints == _minValue ? false : true;
+                return true;
+            }
         }
 
         public void UpdatePlayerStats(CardView cardView)
         {
-            Debug.Log("UpdatePalyerStats");
-            Debug.Log(cardView.CardState.CurrentLevel);
             foreach (var parameter in cardView.CardData.AttributeData.CardParameters[cardView.CardState.CurrentLevel - 1].CardParameters)
             {
                 switch (parameter.TypeParameter)
@@ -137,8 +148,8 @@ namespace Assets.Source.Game.Scripts
 
         public void UpdateRerollPoints(CardView cardView)
         {
-            _rerollPoints = cardView.CardData.AttributeData.CardParameters[cardView.CardState.CurrentLevel].CardParameters[0].Value;
-            cardView.CardState.CurrentLevel++;
+            _rerollPoints += cardView.CardData.AttributeData.CardParameters[cardView.CardState.CurrentLevel].CardParameters[0].Value;
+            //cardView.CardState.CurrentLevel++;
             cardView.CardState.Weight++;
         }
 
@@ -232,6 +243,7 @@ namespace Assets.Source.Game.Scripts
                     if (parameter.TypeParameter == TypeParameter.Damage)
                     {
                         _damage += parameter.Value;
+                        Debug.Log(_damage);
                         DamageChenged?.Invoke(_damage);
                     }
                     else if (parameter.TypeParameter == TypeParameter.Armor)
@@ -356,6 +368,7 @@ namespace Assets.Source.Game.Scripts
                     _playerView.SetNewLevelValue(_currentLevel);
                     _levels.TryGetValue(_currentLevel, out int currentValue);
                     _playerView.SetExperienceSliderValue(currentValue, _currentExperience);
+                    LvlUpped?.Invoke();
                 }
             }
         }

@@ -17,8 +17,8 @@ MonoBehaviour:
   - CardParameters:
     - Value: 1
       TypeParameter: 9
-  _name: Passive Ability
-  _description: Pass
+  _name: ElectricPassive
+  _description: ElectricPassiveDescription
   _icon: {fileID: -204967682, guid: dc2e3af32fff16a4fa28920cc9449371, type: 3}
   _typeMagic: 1
   _typeAbility: 6

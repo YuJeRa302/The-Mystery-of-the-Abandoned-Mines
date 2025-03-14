@@ -12,6 +12,7 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private EnemyAnimation _animationController;
         [SerializeField] private Transform _damageEffectConteiner;
         [SerializeField] protected Pool _pool;
+        [SerializeField] private HealthBarView _healthView;
 
         private readonly System.Random _rnd = new();
         private float _attackDistance;
@@ -19,6 +20,7 @@ namespace Assets.Source.Game.Scripts
         private int _health = 20;
         protected int _damage;
         private float _speed;
+        private float _baseMoveSpeed;
         private int _id;
         private int _currentLvlRoom;
         private bool _isDead;
@@ -44,12 +46,16 @@ namespace Assets.Source.Game.Scripts
         public int Score => _score;
         public int GoldReward => _gold;
         public int UpgradeExperienceReward => _upgradeExperience;
+        public int MaxHealth => _health;
+        public float CurrentHealth => _currentHealth;
         public EnemyAnimation AnimationStateController => _animationController;
         public EnemyStateMashineExample StateMashine => _stateMashine;
 
         public event Action<Enemy> Died;
         public event Action Stuned;
         public event Action EndedStun;
+        public event Action<float> DamageTaked;
+        public event Action HealthChenged;
 
         private void OnDisable()
         {
@@ -69,9 +75,11 @@ namespace Assets.Source.Game.Scripts
             _player = player;
             _rigidbody = GetComponent<Rigidbody>();
             _currentLvlRoom = lvlRoom;
-            _stateMashine.InitializeStateMashine(player);
             Fill(data);
+            _stateMashine.InitializeStateMashine(player);
+            _healthView.Initialize(this);
             _currentHealth = _health;
+            HealthChenged?.Invoke();
         }
 
         public void ResetEnemy(int lvlRoom)
@@ -86,6 +94,8 @@ namespace Assets.Source.Game.Scripts
             }
 
             _stateMashine.ResetState();
+            _currentHealth = _health;
+            HealthChenged?.Invoke();
         }
 
         private void Fill(EnemyData data)
@@ -100,6 +110,7 @@ namespace Assets.Source.Game.Scripts
             _score = data.Score;
             _experience = data.ExperienceReward;
             _upgradeExperience = data.UpgradeExperienceReward;
+            _baseMoveSpeed = _speed;
         }
 
         private void TakeDamage(float damage)//+тип урона
@@ -111,6 +122,8 @@ namespace Assets.Source.Game.Scripts
                 return;
 
             _currentHealth -= damage;
+            DamageTaked?.Invoke(damage);
+            HealthChenged?.Invoke();
 
             if (_currentHealth <= 0)
             {
@@ -222,6 +235,7 @@ namespace Assets.Source.Game.Scripts
             CorountineStop(_burnDamage);
             base.ReturnToPool();
             _isDead = true;
+            _speed = _baseMoveSpeed;
             _currentHealth = _health;
         }
 
@@ -312,9 +326,8 @@ namespace Assets.Source.Game.Scripts
         {
             float currentTime = 0;
             CreateDamageParticle(particle);
-            float baseMoveSpeed = _speed;
+            _baseMoveSpeed = _speed;
             _speed = _speed * (1 - valueSlowed/100);
-            Debug.Log(_speed);
 
             while (currentTime <= duration)
             {
@@ -322,7 +335,7 @@ namespace Assets.Source.Game.Scripts
                 yield return null;
             }
 
-            _speed = baseMoveSpeed;
+            _speed = _baseMoveSpeed;
             DisableParticle(particle);
         }
     }

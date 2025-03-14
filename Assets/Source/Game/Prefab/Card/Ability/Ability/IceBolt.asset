@@ -36,7 +36,7 @@ MonoBehaviour:
     - Value: 10
       TypeParameter: 6
   _name: IceBolt
-  _description: IceBolt
+  _description: IceBoltDescription
   _icon: {fileID: -1627941802, guid: dc2e3af32fff16a4fa28920cc9449371, type: 3}
   _abilityType: 5
   _abilityView: {fileID: 7248082733305173889, guid: b41ccdfb932d3874d92c031e66d814ec, type: 3}

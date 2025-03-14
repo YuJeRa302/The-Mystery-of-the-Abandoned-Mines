@@ -7,8 +7,10 @@ namespace Assets.Source.Game.Scripts
     public class AttackAbilityPresenter : AbilityPresenter
     {
         private readonly float _rotationSpeed = 100f;
-        private readonly float _delayAttack = 0.3f;
-        private readonly float _blastSpeed = 0.2f;
+        private readonly float _delayAttackBlast = 0.3f;
+        private readonly float _delayAOE = 1f;
+        private readonly float _delayTargetSpell = 1f;
+        private readonly float _blastSpeed = 0.1f;
 
         private Spell _spellPrefab;
         private Spell _spell;
@@ -18,6 +20,7 @@ namespace Assets.Source.Game.Scripts
         private Coroutine _damageDealCoroutine;
         private Transform _throwPoint;
         private ParticleSystem _particleSystem;
+        float _currentDelayAttack = 0.3f;
 
         public AttackAbilityPresenter(Ability ability, 
             AbilityView abilityView, 
@@ -30,6 +33,18 @@ namespace Assets.Source.Game.Scripts
             _particleSystem = particleSystem;
             _spellPrefab = spellPrefab;
             AddListener();
+
+            if (_ability.TypeAttackAbility == TypeAttackAbility.AoEAbility)
+                _currentDelayAttack = _delayAOE;
+
+            if (_ability.TypeAttackAbility == TypeAttackAbility.ProjectileAbility)
+                _currentDelayAttack = _delayAttackBlast;
+
+            if (_ability.TypeAttackAbility == TypeAttackAbility.TargetSpell)
+                _currentDelayAttack = _delayTargetSpell;
+
+            if (_ability.TypeAttackAbility == TypeAttackAbility.RotationAbility)
+                _currentDelayAttack = _delayAttackBlast;
         }
 
         protected override void OnGamePaused()
@@ -167,8 +182,6 @@ namespace Assets.Source.Game.Scripts
         {
             while (_ability.IsAbilityEnded == false)
             {
-                yield return new WaitForSeconds(_delayAttack);
-
                 if (_spell != null)
                 {
                     if (_ability.TypeAttackAbility == TypeAttackAbility.AoEAbility)
@@ -189,6 +202,8 @@ namespace Assets.Source.Game.Scripts
                         }
                     }
                 }
+
+                yield return new WaitForSeconds(_currentDelayAttack);
             }
         }
 

@@ -15,7 +15,7 @@ MonoBehaviour:
   _id: 17
   _name: StunningBlow
   _icon: {fileID: 263639840, guid: 855001a07e231344b97e76392f4d2449, type: 3}
-  _description: StunningBlow
+  _description: StunningBlowDescription
   _buttonView: {fileID: 7547704264931708372, guid: 226be77f080a72f41b3a154b64b3d4ae, type: 3}
   _abilityClassParameters:
   - Cost: 0
@@ -30,38 +30,38 @@ MonoBehaviour:
   - CardParameters:
     - Value: 10
       TypeParameter: 6
-    - Value: 10
-      TypeParameter: 5
-    - Value: 5
-      TypeParameter: 11
-    - Value: 100
-      TypeParameter: 14
-  - CardParameters:
-    - Value: 10
-      TypeParameter: 6
     - Value: 1
       TypeParameter: 5
     - Value: 5
       TypeParameter: 11
-    - Value: 25
+    - Value: 50
       TypeParameter: 14
   - CardParameters:
-    - Value: 8
+    - Value: 10
       TypeParameter: 6
-    - Value: 1
+    - Value: 2
       TypeParameter: 5
     - Value: 5
       TypeParameter: 11
-    - Value: 25
+    - Value: 50
       TypeParameter: 14
   - CardParameters:
     - Value: 8
       TypeParameter: 6
     - Value: 2
       TypeParameter: 5
+    - Value: 5
+      TypeParameter: 11
+    - Value: 75
+      TypeParameter: 14
+  - CardParameters:
+    - Value: 8
+      TypeParameter: 6
+    - Value: 3
+      TypeParameter: 5
     - Value: 10
       TypeParameter: 11
-    - Value: 50
+    - Value: 100
       TypeParameter: 14
   _abilityType: 15
   _damageParametr:
@@ -69,9 +69,9 @@ MonoBehaviour:
     DamageSupportivePatametrs:
     - Value: 5
       SupportivePatametr: 0
-    - Value: 100
+    - Value: 50
       SupportivePatametr: 1
-    - Value: 10
+    - Value: 1
       SupportivePatametr: 2
     Particle: {fileID: -8818530760380164550, guid: 2ed06ab528b7c474eb9246421cd7c791, type: 3}
   _poolParticle: {fileID: 2488866898889339437, guid: 1a78f5ed4c5a86543a38af1e9c5773db, type: 3}

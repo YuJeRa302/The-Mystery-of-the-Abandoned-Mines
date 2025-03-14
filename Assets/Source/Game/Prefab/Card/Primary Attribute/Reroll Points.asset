@@ -18,5 +18,5 @@ MonoBehaviour:
     - Value: 1
       TypeParameter: 7
   _name: Reroll
-  _description: Add Reroll
+  _description: RerollDescription
   _icon: {fileID: 21300000, guid: ef147e2665db3394ab8f3c2ade98cbf5, type: 3}

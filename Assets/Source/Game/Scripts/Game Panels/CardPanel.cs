@@ -12,9 +12,8 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private CardView _cardView;
         [SerializeField] private PlayerView _testPanel;
         [Space(20)]
-        [SerializeField] private Button _buttonTest;
         [SerializeField] private Button _buttonReroll;
-        [SerializeField] private Button _buttonSkip;
+        //[SerializeField] private Button _buttonSkip;
         [Space(20)]
         [SerializeField] private LeanLocalizedText _buttonSkipText;
         [SerializeField] private LeanLocalizedText _buttonRerollText;
@@ -24,16 +23,15 @@ namespace Assets.Source.Game.Scripts
         private void Awake()
         {
             gameObject.SetActive(false);
-            _buttonTest.onClick.AddListener(Open);
             _buttonReroll.onClick.AddListener(Reroll);
-            _buttonSkip.onClick.AddListener(Skip);
+            //_buttonSkip.onClick.AddListener(Skip);
             _cardLoader.CardPoolCreated += Fill;
         }
 
         private void OnDestroy()
         {
             _buttonReroll.onClick.RemoveListener(Reroll);
-            _buttonSkip.onClick.RemoveListener(Skip);
+            //_buttonSkip.onClick.RemoveListener(Skip);
             _cardLoader.CardPoolCreated -= Fill;
         }
 
@@ -43,10 +41,18 @@ namespace Assets.Source.Game.Scripts
             _cardLoader.Initialize(player.CardDeck);
         }
 
+        public void OpenCard()
+        {
+            Open();
+        }
+
         protected override void Open()
         {
             _cardLoader.CreateCardPool();
             base.Open();
+
+            if (Player.PlayerStats.RerollPoint > 0)
+                _buttonReroll.gameObject.SetActive(true);
         }
 
         protected override void Close()
@@ -90,10 +96,13 @@ namespace Assets.Source.Game.Scripts
 
         private void Reroll()
         {
-            if (Player.PlayerStats.TryGetRerollPoints())
+            if (Player.PlayerStats.TryGetRerollPoints(out bool canNextReroll))
             {
                 Clear();
                 _cardLoader.CreateCardPool();
+
+                if (canNextReroll == false)
+                    _buttonReroll.gameObject.SetActive(false);
             }
             else
             {

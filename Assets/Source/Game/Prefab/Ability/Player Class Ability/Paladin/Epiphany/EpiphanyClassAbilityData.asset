@@ -15,7 +15,7 @@ MonoBehaviour:
   _id: 13
   _name: Epiphany
   _icon: {fileID: 1619018144, guid: 855001a07e231344b97e76392f4d2449, type: 3}
-  _description: Epiphany
+  _description: EpiphanyDescription
   _buttonView: {fileID: 7547704264931708372, guid: 226be77f080a72f41b3a154b64b3d4ae, type: 3}
   _abilityClassParameters:
   - Cost: 0
@@ -28,18 +28,18 @@ MonoBehaviour:
     Value: 0
   _parameters:
   - CardParameters:
-    - Value: 4
+    - Value: 16
       TypeParameter: 6
     - Value: 1
       TypeParameter: 5
-    - Value: 10
+    - Value: 20
       TypeParameter: 11
     - Value: 20
       TypeParameter: 10
   - CardParameters:
     - Value: 14
       TypeParameter: 6
-    - Value: 0
+    - Value: 1
       TypeParameter: 5
     - Value: 12
       TypeParameter: 11
@@ -48,7 +48,7 @@ MonoBehaviour:
   - CardParameters:
     - Value: 12
       TypeParameter: 6
-    - Value: 0
+    - Value: 1
       TypeParameter: 5
     - Value: 15
       TypeParameter: 11
@@ -57,7 +57,7 @@ MonoBehaviour:
   - CardParameters:
     - Value: 10
       TypeParameter: 6
-    - Value: 0
+    - Value: 1
       TypeParameter: 5
     - Value: 20
       TypeParameter: 11
@@ -66,6 +66,8 @@ MonoBehaviour:
   _abilityType: 11
   _damageParametr:
     TypeDamage: 0
-    DamageSupportivePatametrs: []
+    DamageSupportivePatametrs:
+    - Value: 20
+      SupportivePatametr: 0
     Particle: {fileID: 0}
   _epiphanyParticle: {fileID: -5223542749063254159, guid: d7d41c1b15d706e4e9e4da984db392b3, type: 3}

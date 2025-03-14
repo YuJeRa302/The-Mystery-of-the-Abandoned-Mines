@@ -15,7 +15,7 @@ MonoBehaviour:
   _id: 14
   _name: ShielUp
   _icon: {fileID: 1680454516, guid: 855001a07e231344b97e76392f4d2449, type: 3}
-  _description: ShielUp
+  _description: ShielUpDescription
   _buttonView: {fileID: 7547704264931708372, guid: 226be77f080a72f41b3a154b64b3d4ae, type: 3}
   _abilityClassParameters:
   - Cost: 0
@@ -28,7 +28,7 @@ MonoBehaviour:
     Value: 0
   _parameters:
   - CardParameters:
-    - Value: 5
+    - Value: 10
       TypeParameter: 6
     - Value: 5
       TypeParameter: 5

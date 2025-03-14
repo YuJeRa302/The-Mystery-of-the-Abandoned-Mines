@@ -22,8 +22,6 @@ MonoBehaviour:
   - {r: 1, g: 0.22745098, b: 0.14509805, a: 0}
   _targetClass: 2
   _weaponPrefab: {fileID: -4351137862763014755, guid: 6d047b9776780c8408c257072b128521, type: 3}
-  _bonusDamage: 10
-  _bonusArmor: 0
   _translationName: Axe Evolving
   _icon: {fileID: 21300000, guid: 7e58436bdcbdd034d997f68b7cac4d7a, type: 3}
   _damageParametrs:
@@ -36,7 +34,7 @@ MonoBehaviour:
     - Value: 2
       SupportivePatametr: 0
     Particle: {fileID: 1461602671872348846, guid: 0b5e7793d4d1e854385c5ce9b1e79f47, type: 3}
-  _weaponPatametr:
+  _weaponParameter:
     WeaponSupportivePatametrs:
     - Value: 0
-      SupportivePatametr: 4
+      SupportivePatametr: 0

@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: beb1b69ea56807a4592769cd98d16a55, type: 3}
   m_Name: MetiorShower
   m_EditorClassIdentifier: 
-  _name: Meteor Rain
-  _discription: Meteor Rain
+  _name: MeteorRain
+  _discription: MeteorRainDescription
   _legendarySpell: {fileID: 3443178031204434909, guid: 022848a3e9738f24d84efb0780c65671, type: 3}
   _spellRadius: 11
   _icon: {fileID: 2030285709, guid: dc2e3af32fff16a4fa28920cc9449371, type: 3}

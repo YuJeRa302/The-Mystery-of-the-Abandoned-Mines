@@ -18,6 +18,7 @@ namespace Assets.Source.Game.Scripts
         [Space(20)]
         [SerializeField] private GamePanels[] _panels;
 
+        private CardPanel _cardPanel;
         private bool _canSeeDoor;
         private EnemySpawner _enemySpawner;
         private TrapsSpawner _trapsSpawner;
@@ -123,6 +124,7 @@ namespace Assets.Source.Game.Scripts
             _roomPlacer.StartRoom.RoomEntering += OnRoomEntering;//test
             _enemySpawner.EnemyDied += OnEnemyDied;
             _enemySpawner.AllEnemyRoomDied += OnRoomCompleted;
+            _player.PlayerStats.LvlUpped += OnPlayerUppedLvl;
         }
 
         private void RemoveListener()
@@ -132,6 +134,12 @@ namespace Assets.Source.Game.Scripts
             _roomPlacer.StartRoom.RoomEntering -= OnRoomEntering;
             _enemySpawner.EnemyDied -= OnEnemyDied;
             _enemySpawner.AllEnemyRoomDied -= OnRoomCompleted;
+            _player.PlayerStats.LvlUpped -= OnPlayerUppedLvl;
+        }
+
+        private void OnPlayerUppedLvl()
+        {
+            _cardPanel.OpenCard();
         }
 
         private void OnEnemyDied(Enemy enemy)
@@ -156,6 +164,11 @@ namespace Assets.Source.Game.Scripts
             {
                 panel.PanelOpened += PauseByMenu;
                 panel.PanelClosed += ResumeByMenu;
+
+                if (panel as CardPanel)
+                {
+                    _cardPanel = (CardPanel)panel;
+                }
             }
         }
 

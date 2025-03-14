@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: IceAvalanche
   m_EditorClassIdentifier: 
   _name: IceAvalanche
-  _discription: IceAvalanche
+  _discription: IceAvalancheDescription
   _legendarySpell: {fileID: 3443178031204434909, guid: 68adff4030c94ef40870ead0c5ed1745, type: 3}
   _spellRadius: 10
   _icon: {fileID: -249834207, guid: dc2e3af32fff16a4fa28920cc9449371, type: 3}

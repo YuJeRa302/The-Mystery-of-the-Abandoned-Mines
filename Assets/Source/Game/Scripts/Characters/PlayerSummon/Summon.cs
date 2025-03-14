@@ -41,7 +41,8 @@ public class Summon : PoolObject
                 {
                     if (mainDamge.SupportivePatametr == TypeSupportivePatametr.Damage)
                     {
-                        mainDamge.Value = supportivePatametr.Value;
+                        //mainDamge.Value = supportivePatametr.Value;
+                        Debug.Log(mainDamge.Value);
                     }
                 }
             }

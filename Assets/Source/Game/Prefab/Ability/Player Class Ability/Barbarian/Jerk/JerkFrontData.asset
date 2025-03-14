@@ -15,7 +15,7 @@ MonoBehaviour:
   _id: 11
   _name: JerkFront
   _icon: {fileID: -854058769, guid: 855001a07e231344b97e76392f4d2449, type: 3}
-  _description: JerkFront
+  _description: JerkFrontDescription
   _buttonView: {fileID: 7547704264931708372, guid: 226be77f080a72f41b3a154b64b3d4ae, type: 3}
   _abilityClassParameters:
   - Cost: 0
@@ -67,7 +67,7 @@ MonoBehaviour:
   _damageParametr:
     TypeDamage: 4
     DamageSupportivePatametrs:
-    - Value: 0
+    - Value: 8
       SupportivePatametr: 0
     - Value: 0.67
       SupportivePatametr: 3

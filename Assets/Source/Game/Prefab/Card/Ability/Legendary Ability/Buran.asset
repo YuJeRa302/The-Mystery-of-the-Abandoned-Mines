@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: Buran
   m_EditorClassIdentifier: 
   _name: Buran
-  _discription: Buran
+  _discription: BuranDescription
   _legendarySpell: {fileID: 3443178031204434909, guid: 27bd6244777c51d4dbbe8629a6b2706a, type: 3}
   _spellRadius: 9
   _icon: {fileID: 626723095, guid: dc2e3af32fff16a4fa28920cc9449371, type: 3}
   _legendaryParametersAbility:
   - CardParameters:
-    - Value: 0
+    - Value: 15
       TypeParameter: 4
     - Value: 5
       TypeParameter: 5

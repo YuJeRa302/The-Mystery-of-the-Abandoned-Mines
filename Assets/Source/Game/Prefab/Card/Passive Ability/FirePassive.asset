@@ -18,7 +18,7 @@ MonoBehaviour:
     - Value: 7
       TypeParameter: 0
   _name: FirePassive
-  _description: FirePassive
+  _description: FirePassiveDescription
   _icon: {fileID: -498994127, guid: dc2e3af32fff16a4fa28920cc9449371, type: 3}
   _typeMagic: 0
   _typeAbility: 6

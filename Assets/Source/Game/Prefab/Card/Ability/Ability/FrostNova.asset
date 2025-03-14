@@ -22,21 +22,21 @@ MonoBehaviour:
     - Value: 10
       TypeParameter: 6
   - CardParameters:
-    - Value: 10
+    - Value: 15
       TypeParameter: 4
     - Value: 1
       TypeParameter: 5
     - Value: 10
       TypeParameter: 6
   - CardParameters:
-    - Value: 10
+    - Value: 15
       TypeParameter: 4
     - Value: 1
       TypeParameter: 5
-    - Value: 10
+    - Value: 8
       TypeParameter: 6
-  _name: Frost Nova
-  _description: Frost Nova
+  _name: FrostNova
+  _description: FrostNovaDescription
   _icon: {fileID: 1231504098, guid: dc2e3af32fff16a4fa28920cc9449371, type: 3}
   _abilityType: 5
   _abilityView: {fileID: 7248082733305173889, guid: b41ccdfb932d3874d92c031e66d814ec, type: 3}
@@ -51,10 +51,10 @@ MonoBehaviour:
   _damageParametr:
     TypeDamage: 3
     DamageSupportivePatametrs:
-    - Value: 0
+    - Value: 10
       SupportivePatametr: 0
     - Value: 20
       SupportivePatametr: 4
-    - Value: 2
+    - Value: 1
       SupportivePatametr: 2
     Particle: {fileID: 550930723136525005, guid: 0e61f2a8c521ff844bffcc24bda7480e, type: 3}

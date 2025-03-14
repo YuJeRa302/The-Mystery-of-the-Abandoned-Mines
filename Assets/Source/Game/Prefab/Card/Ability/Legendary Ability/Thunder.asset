@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Thunder
   m_EditorClassIdentifier: 
   _name: Thunder
-  _discription: Thunder
+  _discription: ThunderDescription
   _legendarySpell: {fileID: -5401896953832697201, guid: 9b9e8820c5928684da3b9d1c2cb4f945, type: 3}
   _spellRadius: 15
   _icon: {fileID: 1190033990, guid: dc2e3af32fff16a4fa28920cc9449371, type: 3}

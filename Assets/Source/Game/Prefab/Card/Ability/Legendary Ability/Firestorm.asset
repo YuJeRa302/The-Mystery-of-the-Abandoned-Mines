@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: Firestorm
   m_EditorClassIdentifier: 
   _name: Firestorm
-  _discription: Firestorm
+  _discription: FirestormDescription
   _legendarySpell: {fileID: 3443178031204434909, guid: a29f834c9e1cf5547a4f7bbe575371f4, type: 3}
   _spellRadius: 2
   _icon: {fileID: 733775937, guid: dc2e3af32fff16a4fa28920cc9449371, type: 3}
   _legendaryParametersAbility:
   - CardParameters:
-    - Value: 3
+    - Value: 8
       TypeParameter: 4
     - Value: 2
       TypeParameter: 5

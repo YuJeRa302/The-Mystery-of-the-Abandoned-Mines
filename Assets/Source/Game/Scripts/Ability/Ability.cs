@@ -264,7 +264,7 @@ namespace Assets.Source.Game.Scripts
                 {
                     if (parametr.SupportivePatametr == TypeSupportivePatametr.Damage)
                     {
-                        parametr.Value = _currentAbilityValue;
+                        parametr.Value = _abilityDamage;
                     }
                     else if (parametr.SupportivePatametr == TypeSupportivePatametr.Chance)
                     {

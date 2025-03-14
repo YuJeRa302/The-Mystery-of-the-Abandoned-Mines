@@ -17,8 +17,8 @@ MonoBehaviour:
   - CardParameters:
     - Value: 5
       TypeParameter: 1
-  _name: Ice Passive
-  _description: Ice Passive
+  _name: IcePassive
+  _description: IcePassiveDescription
   _icon: {fileID: -1634183232, guid: dc2e3af32fff16a4fa28920cc9449371, type: 3}
   _typeMagic: 2
   _typeAbility: 6

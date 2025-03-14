@@ -13,4 +13,10 @@ public class Beholder : Boss
     public Bullet Bullet => _bullet;
     public Pool Pool => _pool;
     public DragonFlame DragonFlame => _dragonFlame;
+
+    public override void Initialize(Player player, int lvlRoom, EnemyData data)
+    {
+        //_bulletSpawner = new BulletSpawner(_bullet, _pool, _shootPoint, this);
+        base.Initialize(player, lvlRoom, data);
+    }
 }

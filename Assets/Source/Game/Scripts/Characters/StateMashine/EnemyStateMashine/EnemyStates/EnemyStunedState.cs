@@ -10,6 +10,5 @@ public class EnemyStunedState : State
     public override void EnterState()
     {
         base.EnterState();
-        Debug.Log("ENTER");
     }
 }

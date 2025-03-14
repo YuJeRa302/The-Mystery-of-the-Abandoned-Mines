@@ -113,7 +113,9 @@ namespace Assets.Source.Game.Scripts
 
         public void UpdatePlayerStats(CardView cardView)
         {
-            foreach (var parameter in cardView.CardData.AttributeData.CardParameters[cardView.CardState.CurrentLevel - 1].CardParameters)
+            Debug.Log(cardView.CardState.CurrentLevel);
+
+            foreach (var parameter in cardView.CardData.AttributeData.CardParameters[cardView.CardState.CurrentLevel].CardParameters)
             {
                 switch (parameter.TypeParameter)
                 {

@@ -52,6 +52,7 @@ namespace Assets.Source.Game.Scripts
             _cardDeck.SetNewAbility -= OnSetNewAbility;
             _cardDeck.RerollPointsUpdated -= OnUpdateRerollPoints;
             _cardDeck.PlayerStatsUpdated -= OnStatsUpdate;
+            _cardDeck.TakedPassivAbility -= OnTakedPassivAbility;
             _playerStats.MaxHealthChanged -= OnMaxHealthChanged;
             _playerStats.RegenerationChanged -= OnRegenerationChanged;
             _playerStats.ArmorChanged -= OnArmorChenge;
@@ -91,6 +92,7 @@ namespace Assets.Source.Game.Scripts
             _cardDeck.SetNewAbility += OnSetNewAbility;
             _cardDeck.RerollPointsUpdated += OnUpdateRerollPoints;
             _cardDeck.PlayerStatsUpdated += OnStatsUpdate;
+            _cardDeck.TakedPassivAbility += OnTakedPassivAbility;
 
             _playerStats.MaxHealthChanged += OnMaxHealthChanged;
             _playerStats.RegenerationChanged += OnRegenerationChanged;
@@ -195,6 +197,14 @@ namespace Assets.Source.Game.Scripts
         private void OnUpdateRerollPoints(CardView cardView)
         {
             _playerStats.UpdateRerollPoints(cardView);
+            //cardView.CardState.CurrentLevel++;
+            cardView.CardState.Weight++;
+        }
+
+        private void OnTakedPassivAbility(CardView cardView)
+        {
+            _playerStats.UpdatePlayerStats(cardView);
+            _playerAbilityCaster.TakeAbility(cardView);
             cardView.CardState.CurrentLevel++;
             cardView.CardState.Weight++;
         }
@@ -202,7 +212,7 @@ namespace Assets.Source.Game.Scripts
         private void OnStatsUpdate(CardView cardView)
         {
             _playerStats.UpdatePlayerStats(cardView);
-            cardView.CardState.CurrentLevel++;
+            //cardView.CardState.CurrentLevel++;
             cardView.CardState.Weight++;
         }
 

@@ -13,25 +13,19 @@ namespace Assets.Source.Game.Scripts
         //[SerializeField] private Button _buttonSkip;
 
         private List<CardView> _cardViews = new();
-
-        private void Awake()
-        {
-            //_buttonSkip.onClick.AddListener(Skip);
-            _buttonTest.onClick.AddListener(Open);
-            _buttonReroll.onClick.AddListener(Reroll);
-            GamePanelsViewModel.CardPoolCreated += Fill;
-        }
-
+    
         private void OnDestroy()
         {
+            GamePanelsViewModel.CardPoolCreated -= Fill;
             _buttonReroll.onClick.RemoveListener(Reroll);
             //_buttonSkip.onClick.RemoveListener(Skip);
         }
 
-        public override void Initialize(Player player, LevelObserver levelObserver)
+        public override void Initialize(GamePanelsViewModel gamePanelsViewModel)
         {
-            base.Initialize(player, levelObserver);
-            GamePanelsViewModel.CardPoolCreated -= Fill;
+            base.Initialize(gamePanelsViewModel);
+            _buttonReroll.onClick.AddListener(Reroll);
+            GamePanelsViewModel.CardPoolCreated += Fill;
         }
 
         public void OpenCard()
@@ -44,7 +38,7 @@ namespace Assets.Source.Game.Scripts
             GamePanelsViewModel.CreateCardPool();
             base.Open();
 
-            if (Player.PlayerStats.RerollPoint > 0)
+            if (GamePanelsViewModel.GetPlayer().PlayerStats.RerollPoint > 0)
                 _buttonReroll.gameObject.SetActive(true);
         }
 
@@ -89,24 +83,24 @@ namespace Assets.Source.Game.Scripts
 
         private void Reroll()
         {
-            // if (Player.PlayerStats.TryGetRerollPoints(out bool canNextReroll))
-            // {
-            //     Clear();
-            //     _cardLoader.CreateCardPool();
-
-            //     if (canNextReroll == false)
-            //         _buttonReroll.gameObject.SetActive(false);
-            // }
-            // else
-            if (GamePanelsViewModel.GetPlayer().PlayerStats.TryGetRerollPoints() == false)
-            {
-                _buttonReroll.gameObject.SetActive(false);
-            }
-            else 
+            if (GamePanelsViewModel.GetPlayer().PlayerStats.TryGetRerollPoints(out bool canNextReroll))
             {
                 Clear();
                 GamePanelsViewModel.CreateCardPool();
+
+                if (canNextReroll == false)
+                    _buttonReroll.gameObject.SetActive(false);
             }
+            // else
+            //if (GamePanelsViewModel.GetPlayer().PlayerStats.TryGetRerollPoints() == false)
+            //{
+            //    _buttonReroll.gameObject.SetActive(false);
+            //}
+            //else 
+            //{
+            //    Clear();
+            //    GamePanelsViewModel.CreateCardPool();
+            //}
         }
     }
 }

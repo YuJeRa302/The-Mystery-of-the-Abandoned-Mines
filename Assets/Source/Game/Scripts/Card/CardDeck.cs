@@ -26,9 +26,11 @@ namespace Assets.Source.Game.Scripts
 
         public void TakeCard(CardView cardView)
         {
-            if (cardView.CardData.TypeCardParameter == TypeCardParameter.Ability || cardView.CardData.TypeCardParameter == TypeCardParameter.LegendariAbility)
+            if (cardView.CardData.TypeCardParameter == TypeCardParameter.Ability || cardView.CardData.TypeCardParameter == TypeCardParameter.LegendariAbility 
+                || cardView.CardData.TypeCardParameter == TypeCardParameter.PassivAbllity)
             {
-                SetNewAbility?.Invoke(cardView);
+                if(cardView.CardData.TypeCardParameter != TypeCardParameter.PassivAbllity)
+                    SetNewAbility?.Invoke(cardView);
 
                 if (_cardDataAbility.Count > 0)
                     AddCardAbilityData(cardView, _cardDataAbility);
@@ -48,7 +50,7 @@ namespace Assets.Source.Game.Scripts
                 }
                 else if (cardView.CardData.AttributeData as PassiveAttributeData)
                 {
-                    PlayerStatsUpdated?.Invoke(cardView);
+                    TakedPassivAbility?.Invoke(cardView);
                 }
             }
             else if (cardView.CardData.TypeCardParameter == TypeCardParameter.RerollPoints)

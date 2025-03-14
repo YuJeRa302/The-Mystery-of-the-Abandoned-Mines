@@ -1,6 +1,5 @@
 using Assets.Source.Game.Scripts;
 using System.Collections.Generic;
-using UnityEngine;
 
 public class TemporaryData
 {

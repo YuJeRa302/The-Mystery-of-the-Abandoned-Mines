@@ -30,8 +30,6 @@ namespace Assets.Source.Game.Scripts
         private int _armor = 2;
         private int _regeneration = 1;
         private int _countKillEnemy = 0;
-        private int _maxLevelValue;
-        private int _maxUpgradeValue;
 
         public event Action<int> MaxHealthChanged;
         public event Action<int> RegenerationChanged;
@@ -46,6 +44,8 @@ namespace Assets.Source.Game.Scripts
         public event Action<int> AbilityDamageChanged;
         public event Action<int> AbilityCooldownReductionChanged;
         public event Action<int> KillCountChanged;//view
+        public event Action<int, int, int> PlayerLevelChanged;
+        public event Action<int, int, int> PlayerUpgradeLevelChanged;
 
         public PlayerStats(Player player, int score, UpgradeState[] upgradeState, LevelObserver levelObserver, 
             AbilityFactory abilityFactory, AbilityPresenterFactory abilityPresenterFactory)
@@ -57,13 +57,9 @@ namespace Assets.Source.Game.Scripts
             GenerateLevelPlayer(_maxPlayerLevel);
             GenerateUpgradeLevel(_maxUpgradeLevel);
             SetPlayerStats(score);
-            _levels.TryGetValue(_currentLevel, out int levelValue);
-            _maxLevelValue = levelValue;
-            Debug.Log(levelValue);
-            _upgradeLevels.TryGetValue(_currentUpgradeLevel, out int upgradeValue);
-            _maxUpgradeValue = upgradeValue;
         }
 
+        public int RerollPoints => _rerollPoints;
         public float Speed => _speed;
         public int Armor => _armor;
         public int UpgradePoints => _currentUpgradePoints;
@@ -73,8 +69,8 @@ namespace Assets.Source.Game.Scripts
         public int Regeneration => _regeneration;
         public int UpgradeExperience => _currentUpgradeExperience;
         public int CurrentExperience => _currentExperience;
-        public int MaxLevelValue => _maxLevelValue;
-        public int MaxUpgradeValue => _maxUpgradeValue;
+        public int MaxLevelExperience { get; private set; }
+        public int MaxUpgradeExperience { get; private set; }
         public int CurrentLevel => _currentLevel;
 
         public void Dispose()
@@ -103,8 +99,6 @@ namespace Assets.Source.Game.Scripts
 
         public void UpdatePlayerStats(CardView cardView)
         {
-            Debug.Log("UpdatePalyerStats");
-            Debug.Log(cardView.CardState.CurrentLevel);
             foreach (var parameter in cardView.CardData.AttributeData.CardParameters[cardView.CardState.CurrentLevel - 1].CardParameters)
             {
                 switch (parameter.TypeParameter)
@@ -130,22 +124,11 @@ namespace Assets.Source.Game.Scripts
                         break;
                 }
             }
-
-            cardView.CardState.CurrentLevel++;
-            cardView.CardState.Weight++;
         }
 
         public void UpdateRerollPoints(CardView cardView)
         {
             _rerollPoints = cardView.CardData.AttributeData.CardParameters[cardView.CardState.CurrentLevel].CardParameters[0].Value;
-            cardView.CardState.CurrentLevel++;
-            cardView.CardState.Weight++;
-        }
-
-        public void SetNewAbility(CardView cardView)
-        {
-            cardView.CardState.CurrentLevel++;
-            cardView.CardState.Weight++;
         }
 
         private void UpgradePlayerStats(UpgradeState[] upgradeStates, UpgradeData[] upgradeDatas)
@@ -337,9 +320,8 @@ namespace Assets.Source.Game.Scripts
                     var difference = _currentUpgradeExperience - value;
                     _currentUpgradeLevel++;
                     _currentUpgradeExperience = difference;
-                    _playerView.SetNewUpgradeLevelValue(_currentUpgradeLevel);
-                    _upgradeLevels.TryGetValue(_currentUpgradeLevel, out int currentValue);
-                    _playerView.SetUpgradeExperienceSliderValue(currentValue, _currentUpgradeExperience);
+                    _upgradeLevels.TryGetValue(_currentUpgradeLevel, out int maxExperienceValue);
+                    PlayerUpgradeLevelChanged?.Invoke(_currentUpgradeLevel, maxExperienceValue, _currentUpgradeExperience);
                 }
             }
         }
@@ -353,9 +335,8 @@ namespace Assets.Source.Game.Scripts
                     var difference = _currentExperience - value;
                     _currentLevel++;
                     _currentExperience = difference;
-                    _playerView.SetNewLevelValue(_currentLevel);
-                    _levels.TryGetValue(_currentLevel, out int currentValue);
-                    _playerView.SetExperienceSliderValue(currentValue, _currentExperience);
+                    _levels.TryGetValue(_currentLevel, out int maxExperienceValue);
+                    PlayerLevelChanged?.Invoke(_currentLevel, maxExperienceValue, _currentExperience);
                 }
             }
         }
@@ -364,9 +345,9 @@ namespace Assets.Source.Game.Scripts
         {
             _score = score;
             _levels.TryGetValue(_currentLevel, out int levelValue);
-            _maxLevelValue = levelValue;
+            MaxLevelExperience = levelValue;
             _upgradeLevels.TryGetValue(_currentUpgradeLevel, out int upgradeValue);
-            _maxUpgradeValue = upgradeValue;
+            MaxUpgradeExperience = upgradeValue;
         }
 
         private void GenerateLevelPlayer(int level)

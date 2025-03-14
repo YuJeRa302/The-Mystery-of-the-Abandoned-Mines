@@ -188,17 +188,22 @@ namespace Assets.Source.Game.Scripts
         private void OnSetNewAbility(CardView cardView)
         {
             _playerAbilityCaster.TakeAbility(cardView);
-            _playerStats.SetNewAbility(cardView);
+            cardView.CardState.CurrentLevel++;
+            cardView.CardState.Weight++;
         }
 
         private void OnUpdateRerollPoints(CardView cardView)
         {
             _playerStats.UpdateRerollPoints(cardView);
+            cardView.CardState.CurrentLevel++;
+            cardView.CardState.Weight++;
         }
 
         private void OnStatsUpdate(CardView cardView)
         {
             _playerStats.UpdatePlayerStats(cardView);
+            cardView.CardState.CurrentLevel++;
+            cardView.CardState.Weight++;
         }
 
         private void TryAttackEnemy()

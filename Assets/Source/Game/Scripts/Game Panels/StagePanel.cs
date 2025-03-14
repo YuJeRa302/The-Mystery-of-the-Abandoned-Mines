@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace Assets.Source.Game.Scripts
 {
-    public class StagePanel : GamePanels
+    public class StagePanel : GamePanelsView
     {
         [SerializeField] private Button _buttonNext;
         [SerializeField] private Button _buttonRestart;
@@ -13,13 +13,20 @@ namespace Assets.Source.Game.Scripts
         [Space(20)]
         [SerializeField] private LeanLocalizedText _titleText;
         [SerializeField] private Text _numberStageText;
+        [Space(20)]
+        [SerializeField] private Text _playerHealth;
+        [SerializeField] private Text _playerDamage;
+        [SerializeField] private Text _coins;
+        [SerializeField] private Text _rerollPoints;
+        [Space(10)]
+        [SerializeField] private Text _currentRoomLevel;
+        [SerializeField] private Text _killCount;
 
         public event Action RestartButtonClicked;
         public event Action ExitButtonClicked;
 
         private void Awake()
         {
-            gameObject.SetActive(false);
             _buttonNext.onClick.AddListener(ClickButtonNext);
             _buttonRestart.onClick.AddListener(ClickButtonRestart);
             _buttonExit.onClick.AddListener(ClickButtonExit);
@@ -30,19 +37,30 @@ namespace Assets.Source.Game.Scripts
             _buttonNext.onClick.RemoveListener(ClickButtonNext);
             _buttonRestart.onClick.RemoveListener(ClickButtonRestart);
             _buttonExit.onClick.RemoveListener(ClickButtonExit);
-            LevelObserver.StageCompleted -= Open;
+            GamePanelsViewModel.StageCompleted -= Open;
         }
 
-        public override void Initialize(Player player, LevelObserver levelObserver)
+        public override void Initialize(GamePanelsViewModel gamePanelsViewModel)
         {
-            base.Initialize(player, levelObserver);
-            LevelObserver.StageCompleted += Open;
+            base.Initialize(gamePanelsViewModel);
+            GamePanelsViewModel.StageCompleted += Open;
         }
 
         protected override void Open()
         {
             base.Open();
-            _numberStageText.text = LevelObserver.CurrentRoomLevel.ToString() + " / " + LevelObserver.CountStages.ToString();
+            FillGameParameters();
+        }
+
+        private void FillGameParameters()
+        {
+            _numberStageText.text = GamePanelsViewModel.GetCurrentRoomLevel().ToString() + " / " + GamePanelsViewModel.GetStagesCount().ToString();
+            _playerHealth.text = GamePanelsViewModel.GetPlayer().PlayerHealth.CurrentHealth.ToString();
+            _playerDamage.text = GamePanelsViewModel.GetPlayer().PlayerStats.Damage.ToString();
+            //_coins.text = 
+            _rerollPoints.text = GamePanelsViewModel.GetPlayer().PlayerStats.RerollPoints.ToString();
+            _currentRoomLevel.text = GamePanelsViewModel.GetCurrentRoomLevel().ToString();
+            _killCount.text = GamePanelsViewModel.GetPlayer().PlayerStats.CountKillEnemy.ToString();
         }
 
         private void ClickButtonNext() 

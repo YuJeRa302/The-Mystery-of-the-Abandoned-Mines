@@ -19,7 +19,7 @@ public class SettingsView : MonoBehaviour
 
     private void OnDestroy()
     {
-        RemoveListener();
+        RemoveListeners();
     }
 
     public void Initialize(SettingsViewModel settingsViewModel, IAudioPlayerService audioPlayerService)
@@ -29,7 +29,7 @@ public class SettingsView : MonoBehaviour
         _ambientSlider.value = settingsViewModel.GetAmbientVolume();
         _sfxSlider.value = settingsViewModel.GetSfxVolume();
         _muteToggle.isOn = settingsViewModel.GetMuteStatus();
-        AddListener();
+        AddListeners();
         Fill();
         gameObject.SetActive(false);
     }
@@ -45,7 +45,7 @@ public class SettingsView : MonoBehaviour
         }
     }
 
-    private void AddListener()
+    private void AddListeners()
     {
         _settingsViewModel.InvokedShow += Show;
         _settingsViewModel.InvokedHide += Hide;
@@ -55,7 +55,7 @@ public class SettingsView : MonoBehaviour
         _muteToggle.onValueChanged.AddListener(OnMuteValueChanged);
     }
 
-    private void RemoveListener()
+    private void RemoveListeners()
     {
         _settingsViewModel.InvokedShow -= Show;
         _settingsViewModel.InvokedHide -= Hide;

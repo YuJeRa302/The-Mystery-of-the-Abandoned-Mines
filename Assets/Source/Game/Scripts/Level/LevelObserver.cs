@@ -16,8 +16,11 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private PlayerView _playerView;
         [SerializeField] private CameraControiler _cameraControiler;
         [Space(20)]
-        [SerializeField] private GamePanels[] _panels;
+        [SerializeField] private GamePanelsView[] _panels;
+        [Space(20)]
+        [SerializeField] private CardLoader _cardLoader;
 
+        private IAudioPlayerService _audioPlayerService;
         private bool _canSeeDoor;
         private EnemySpawner _enemySpawner;
         private TrapsSpawner _trapsSpawner;
@@ -28,6 +31,8 @@ namespace Assets.Source.Game.Scripts
         private int _countStages = 0;
         private AbilityFactory _abilityFactory;
         private AbilityPresenterFactory _abilityPresenterFactory;
+        private GamePanelsViewModel _gamePanelsViewModel;
+        private GamePanelsModel _gamePanelsModel;
 
         public event Action GameEnded;
         public event Action GameClosed;
@@ -35,6 +40,7 @@ namespace Assets.Source.Game.Scripts
         public event Action GameResumed;
         public event Action StageCompleted;
 
+        public CardLoader CardLoader => _cardLoader;
         public PlayerView PlayerView => _playerView;
         public CameraControiler CameraControiler => _cameraControiler;
         public int CurrentRoomLevel => _currentRoomLevel;
@@ -45,7 +51,6 @@ namespace Assets.Source.Game.Scripts
         private void Awake()
         {
             _cameraControiler.ChengeConfiner(_roomPlacer.StartRoom);
-            LoadGamePanels();
         }
 
         private void OnDestroy()
@@ -76,10 +81,13 @@ namespace Assets.Source.Game.Scripts
                 temporaryData, out Player player);
 
             _player = player;
+            _cardLoader.Initialize(_player.CardDeck);
             _enemySpawner = new EnemySpawner(_enemuPool, this, _player, _currentRoomLevel);
             _playerView.Initialize(_player, temporaryData.PlayerClassData.Icon);
             _player.PlayerAbilityCaster.Initialize();
             _cameraControiler.SetLookTarget(_player.transform);
+            CreateGamePanelEntities(temporaryData);
+            LoadGamePanels();
             AddListener();
         }
 
@@ -113,6 +121,12 @@ namespace Assets.Source.Game.Scripts
         public void PauseByInterstitial()
         {
             throw new NotImplementedException();
+        }
+
+        private void CreateGamePanelEntities(TemporaryData temporaryData) 
+        {
+            _gamePanelsModel = new GamePanelsModel(temporaryData, _player, this, _cardLoader, _audioPlayerService);
+            _gamePanelsViewModel = new GamePanelsViewModel(_gamePanelsModel);
         }
 
         private void AddListener()
@@ -185,7 +199,7 @@ namespace Assets.Source.Game.Scripts
         private void LoadGamePanels()
         {
             foreach (var panel in _panels)
-                panel.Initialize(_player, this);
+                panel.Initialize(_gamePanelsViewModel);
         }
 
         private void CloseAllGamePanels()

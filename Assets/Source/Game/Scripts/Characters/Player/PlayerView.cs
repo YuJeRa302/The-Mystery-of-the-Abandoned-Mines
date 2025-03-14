@@ -25,9 +25,6 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private Transform _playerEffectsContainer;
         [SerializeField] private Transform _weaponEffectsContainer;
         [Space(20)]
-        [SerializeField] private Button _minimapButton;
-        [SerializeField] private Button _minimapCloseButton;
-        [SerializeField] private GameObject _minimap;
         [SerializeField] private Image _playerIcon;
 
         private Transform _throwPoint;
@@ -50,8 +47,8 @@ namespace Assets.Source.Game.Scripts
             _player.PlayerAbilityCaster.LegendaryAbilityTaked -= OnLegendaryAbilityTaked;
             _player.PlayerStats.KillCountChanged -= OnChangeKillCount;
             _player.PlayerAbilityCaster.ClassSkillInitialized -= OnClassSkillViewCreate;
-            _minimapButton.onClick.RemoveListener(OnMinimapButtonClick);
-            _minimapCloseButton.onClick.RemoveListener(OnMinimapButtonClick);
+            _player.PlayerStats.PlayerLevelChanged -= OnPlayerLevelChanged;
+            _player.PlayerStats.PlayerUpgradeLevelChanged -= OnPlayerUpgradeLevelChanged;
         }
 
         public void Initialize(Player player, Sprite iconPlayer)
@@ -64,9 +61,9 @@ namespace Assets.Source.Game.Scripts
             _throwPoint = player.ThrowAbilityPoint;
             _sliderHP.maxValue = _player.PlayerHealth.MaxHealth;
             _sliderHP.value = _player.PlayerHealth.CurrentHealth;
-            _sliderXP.maxValue = _player.PlayerStats.MaxLevelValue;
+            _sliderXP.maxValue = _player.PlayerStats.MaxLevelExperience;
             _sliderXP.value = _player.PlayerStats.CurrentExperience;
-            _sliderUpgradePoints.maxValue = _player.PlayerStats.MaxUpgradeValue;
+            _sliderUpgradePoints.maxValue = _player.PlayerStats.MaxUpgradeExperience;
             _sliderUpgradePoints.value = _player.PlayerStats.UpgradeExperience;
             _textPlayerLevel.text = _player.PlayerStats.CurrentLevel.ToString();
             _textUpgradePoints.text = _player.PlayerStats.UpgradePoints.ToString();
@@ -74,28 +71,6 @@ namespace Assets.Source.Game.Scripts
             _playerEffectsContainer = _player.PlayerAbilityContainer;
             _weaponEffectsContainer = _player.WeaponAbilityContainer;
             _throwPoint = _player.ThrowAbilityPoint;
-        }
-
-        public void SetNewLevelValue(int value)
-        {
-            _textPlayerLevel.text = value.ToString();
-        }
-
-        public void SetNewUpgradeLevelValue(int value)
-        {
-            _textUpgradePoints.text = value.ToString();
-        }
-
-        public void SetExperienceSliderValue(int maxSlidervalue, int currentValue)
-        {
-            _sliderXP.maxValue = maxSlidervalue;
-            _sliderXP.value = currentValue;
-        }
-
-        public void SetUpgradeExperienceSliderValue(int maxSlidervalue, int currentValue)
-        {
-            _sliderUpgradePoints.maxValue = maxSlidervalue;
-            _sliderUpgradePoints.value = currentValue;
         }
 
         public void SetMobileInterface()
@@ -131,14 +106,8 @@ namespace Assets.Source.Game.Scripts
             _player.PlayerAbilityCaster.LegendaryAbilityTaked += OnLegendaryAbilityTaked;
             _player.PlayerStats.KillCountChanged += OnChangeKillCount;
             _player.PlayerAbilityCaster.ClassSkillInitialized += OnClassSkillViewCreate;
-            _minimapButton.onClick.AddListener(OnMinimapButtonClick);
-            _minimapCloseButton.onClick.AddListener(OnMinimapButtonClick);
-        }
-
-        private void OnMinimapButtonClick()
-        {
-            bool isActive = _minimap.activeSelf;
-            _minimap.SetActive(!isActive);
+            _player.PlayerStats.PlayerLevelChanged += OnPlayerLevelChanged;
+            _player.PlayerStats.PlayerUpgradeLevelChanged += OnPlayerUpgradeLevelChanged;
         }
 
         private void OnPassiveAbilityTaked(PassiveAttributeData passiveAttributeData)
@@ -195,6 +164,20 @@ namespace Assets.Source.Game.Scripts
             abilityView = Instantiate(abilityAttributeData.AbilityView, _abilityObjectContainer);
             abilityView.Initialize(abilityAttributeData.Icon, abilityAttributeData.CardParameters[currentLevel].CardParameters[_indexAbilityDelay].Value);
             AbilityViewCreated?.Invoke(abilityView, _abilityEffect, _throwPoint);
+        }
+
+        private void OnPlayerLevelChanged(int currenLevel, int maxExperienceValue, int currentExperience)
+        {
+            _textPlayerLevel.text = currenLevel.ToString();
+            _sliderXP.maxValue = maxExperienceValue;
+            _sliderXP.value = currentExperience;
+        }
+
+        private void OnPlayerUpgradeLevelChanged(int currenLevel, int maxExperienceValue, int currentExperience)
+        {
+            _textUpgradePoints.text = currenLevel.ToString();
+            _sliderUpgradePoints.maxValue = maxExperienceValue;
+            _sliderUpgradePoints.value = currentExperience;
         }
 
         private void OnChangeExperience(int target)

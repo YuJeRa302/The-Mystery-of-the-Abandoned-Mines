@@ -24,7 +24,6 @@ namespace Assets.Source.Game.Scripts
             _attackDelay = _enemy.AttackDelay;
             _animationController = _enemy.AnimationStateController;
             SubscrabeIvent();
-            Debug.Log("Init attack state");
         }
 
         public override void EnterState()

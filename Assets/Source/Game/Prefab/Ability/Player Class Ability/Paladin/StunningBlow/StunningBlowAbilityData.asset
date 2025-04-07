@@ -18,8 +18,6 @@ MonoBehaviour:
   _description: StunningBlowDescription
   _buttonView: {fileID: 7547704264931708372, guid: 226be77f080a72f41b3a154b64b3d4ae, type: 3}
   _abilityClassParameters:
-  - Cost: 0
-    Value: 0
   - Cost: 1000
     Value: 0
   - Cost: 2500
@@ -27,15 +25,6 @@ MonoBehaviour:
   - Cost: 5000
     Value: 0
   _parameters:
-  - CardParameters:
-    - Value: 10
-      TypeParameter: 6
-    - Value: 1
-      TypeParameter: 5
-    - Value: 5
-      TypeParameter: 11
-    - Value: 50
-      TypeParameter: 14
   - CardParameters:
     - Value: 10
       TypeParameter: 6
@@ -65,13 +54,13 @@ MonoBehaviour:
       TypeParameter: 14
   _abilityType: 15
   _damageParametr:
-    TypeDamage: 1
-    DamageSupportivePatametrs:
-    - Value: 5
-      SupportivePatametr: 0
-    - Value: 50
-      SupportivePatametr: 1
-    - Value: 1
-      SupportivePatametr: 2
-    Particle: {fileID: -8818530760380164550, guid: 2ed06ab528b7c474eb9246421cd7c791, type: 3}
+    _typeDamage: 1
+    _damageSupportivePatametrs:
+    - _value: 0
+      _supportivePatametr: 0
+    - _value: 0
+      _supportivePatametr: 1
+    - _value: 0
+      _supportivePatametr: 2
+    _particle: {fileID: -8818530760380164550, guid: 2ed06ab528b7c474eb9246421cd7c791, type: 3}
   _poolParticle: {fileID: 2488866898889339437, guid: 1a78f5ed4c5a86543a38af1e9c5773db, type: 3}

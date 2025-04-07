@@ -16,7 +16,7 @@ public class ClassAbilityModel
     public ClassAbilityModel(TemporaryData temporaryData)
     {
         _temporaryData = temporaryData;
-        SetCoinsCount(_temporaryData.Coins);
+        
 
         if(_temporaryData.ClassAbilityStates != null)
             SetClassAbilityStates(_temporaryData.ClassAbilityStates);
@@ -25,16 +25,11 @@ public class ClassAbilityModel
     public event Action<ClassAbilityState> InvokedAbilityUpgrade;
     public event Action<PlayerClassData> InvokedAbilityReset;
 
-    public int Coins { get; private set; }
-
-    public void SetCoinsCount(int value)
-    {
-        Coins = value;
-    }
+    public int Coins => _temporaryData.Coins;
 
     public void ResetAbilities(int value)
     {
-        Coins += value;
+        _temporaryData.AddCoins(value);
         InvokedAbilityReset?.Invoke(_currentPlayerClassData);
     }
 
@@ -69,7 +64,8 @@ public class ClassAbilityModel
 
         if (Coins >= _currentClassAbilityData.AbilityClassParameters[_currentClassAbilityState.CurrentLevel].Cost)
         {
-            Coins -= _currentClassAbilityData.AbilityClassParameters[_currentClassAbilityState.CurrentLevel].Cost;
+            int cost = _currentClassAbilityData.AbilityClassParameters[_currentClassAbilityState.CurrentLevel].Cost;
+            _temporaryData.TrySpendCoins(cost);
 
             if (_currentClassAbilityState.CurrentLevel < _maxAbilityLevel)
                 _currentClassAbilityState.CurrentLevel++;
@@ -89,9 +85,7 @@ public class ClassAbilityModel
 
     private ClassAbilityState InitState(ClassAbilityData classAbilityData)
     {
-        ClassAbilityState classAbilityState = new ();
-        classAbilityState.Id = classAbilityData.Id;
-        classAbilityState.CurrentLevel = _minValue;
+        ClassAbilityState classAbilityState = new (classAbilityData.Id, _minValue);
         _classAbilityStates.Add(classAbilityState);
         return classAbilityState;
     }

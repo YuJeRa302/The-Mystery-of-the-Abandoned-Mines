@@ -18,8 +18,6 @@ MonoBehaviour:
   _description: SummonSkelletonDescription
   _buttonView: {fileID: 7547704264931708372, guid: 226be77f080a72f41b3a154b64b3d4ae, type: 3}
   _abilityClassParameters:
-  - Cost: 0
-    Value: 0
   - Cost: 1000
     Value: 0
   - Cost: 2500
@@ -30,15 +28,6 @@ MonoBehaviour:
   - CardParameters:
     - Value: 1
       TypeParameter: 8
-    - Value: 10
-      TypeParameter: 5
-    - Value: 15
-      TypeParameter: 6
-    - Value: 10
-      TypeParameter: 4
-  - CardParameters:
-    - Value: 2
-      TypeParameter: 8
     - Value: 8
       TypeParameter: 5
     - Value: 13
@@ -46,7 +35,7 @@ MonoBehaviour:
     - Value: 13
       TypeParameter: 4
   - CardParameters:
-    - Value: 3
+    - Value: 2
       TypeParameter: 8
     - Value: 12
       TypeParameter: 5
@@ -55,7 +44,7 @@ MonoBehaviour:
     - Value: 10
       TypeParameter: 4
   - CardParameters:
-    - Value: 4
+    - Value: 3
       TypeParameter: 8
     - Value: 15
       TypeParameter: 5
@@ -65,9 +54,7 @@ MonoBehaviour:
       TypeParameter: 4
   _abilityType: 7
   _damageParametr:
-    TypeDamage: 0
-    DamageSupportivePatametrs:
-    - Value: 10
-      SupportivePatametr: 0
-    Particle: {fileID: 0}
+    _typeDamage: 0
+    _damageSupportivePatametrs: []
+    _particle: {fileID: 0}
   _summonData: {fileID: 11400000, guid: 26e4bd4476e87af49b6012ade3e6eaf3, type: 2}

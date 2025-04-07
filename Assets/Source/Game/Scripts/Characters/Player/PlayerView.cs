@@ -8,6 +8,7 @@ namespace Assets.Source.Game.Scripts
     {
         private readonly int _firstIndex = 0;
         private readonly int _indexAbilityDelay = 2;
+        private readonly int _minValue = 0;
 
         [SerializeField] private GameObject _mobileInterface;
         [Space(20)]
@@ -80,11 +81,14 @@ namespace Assets.Source.Game.Scripts
 
         private void OnClassSkillViewCreate(ClassAbilityData abilityData, int currentLvl)
         {
+            if (currentLvl == _minValue)
+                return;
+
             ClassSkillButtonView abilityView;
 
             abilityView = Instantiate(abilityData.ButtonView, _classSkillsContainer);
-
-            foreach (var parametr in abilityData.Parameters[currentLvl].CardParameters)
+            Debug.Log(currentLvl);
+            foreach (var parametr in abilityData.Parameters[currentLvl-1].CardParameters)
             {
                 if (parametr.TypeParameter == TypeParameter.AbilityCooldown)
                 {
@@ -92,8 +96,16 @@ namespace Assets.Source.Game.Scripts
                 }
             }
 
-            abilityView.Initialize(abilityData.Icon, _delay);
-            CreatedClassSkillView?.Invoke(abilityData, abilityView, currentLvl);
+            if (currentLvl <= _minValue)
+            {
+                abilityView.Initialize(abilityView.LockImage, _delay);
+                abilityView.SetInerectableButton(false);
+            }
+            else
+            {
+                abilityView.Initialize(abilityData.Icon, _delay);
+                CreatedClassSkillView?.Invoke(abilityData, abilityView, currentLvl);
+            }
         }
 
         private void SubscribePlayerEvent()

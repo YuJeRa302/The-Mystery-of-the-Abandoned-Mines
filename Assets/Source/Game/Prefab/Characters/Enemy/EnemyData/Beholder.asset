@@ -25,7 +25,7 @@ MonoBehaviour:
   _attackDistance: 15
   _attackDelay: 2
   _chanceSpawn: 100
-  _goldReward: 0
+  _goldReward: 1
   _abilityCoolDown: []
   _abilityDamage: 
   _enemyDieParticleSystem: {fileID: -2493363688783835350, guid: 67e691d385b7a084885a4a3a8a1149f0, type: 3}

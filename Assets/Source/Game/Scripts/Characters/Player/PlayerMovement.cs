@@ -130,6 +130,8 @@ public class PlayerMovement : IDisposable
             else
                 _rigidbody.angularVelocity = Vector3.zero;
         }
+
+        _rigidbody.velocity = new Vector3(_rigidbody.velocity.x, 0, _rigidbody.velocity.z);
     }
 
     private IEnumerator DekstopMove()

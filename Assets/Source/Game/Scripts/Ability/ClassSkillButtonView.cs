@@ -6,8 +6,10 @@ using UnityEngine.UI;
 public class ClassSkillButtonView : AbilityView
 {
     [SerializeField] private Button _button;
+    [SerializeField] private Sprite _lockImage;
 
     public event Action AbilityUsed;
+    public Sprite LockImage => _lockImage;
 
     private void Awake()
     {

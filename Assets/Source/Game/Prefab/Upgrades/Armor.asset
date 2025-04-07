@@ -16,11 +16,11 @@ MonoBehaviour:
   _typeParameter: 1
   _upgradeParameters:
   - Cost: 1
-    Value: 4
+    Value: 2
+  - Cost: 1
+    Value: 3
   - Cost: 1
     Value: 5
-  - Cost: 1
-    Value: 7
   _name: Armor
-  _icon: {fileID: 21300000, guid: b7228e264efb37b4cbe2a0fe118eb728, type: 3}
+  _icon: {fileID: 21300000, guid: 570018e27fa24c34091ab0bbdcff209b, type: 3}
   _description: ArmorDescription

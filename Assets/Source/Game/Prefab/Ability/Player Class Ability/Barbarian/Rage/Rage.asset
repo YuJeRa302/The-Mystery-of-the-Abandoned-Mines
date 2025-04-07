@@ -18,8 +18,6 @@ MonoBehaviour:
   _description: RageDescription
   _buttonView: {fileID: 7547704264931708372, guid: 226be77f080a72f41b3a154b64b3d4ae, type: 3}
   _abilityClassParameters:
-  - Cost: 0
-    Value: 0
   - Cost: 1000
     Value: 0
   - Cost: 1500
@@ -28,24 +26,13 @@ MonoBehaviour:
     Value: 0
   _parameters:
   - CardParameters:
-    - Value: 10
-      TypeParameter: 0
-    - Value: 1
-      TypeParameter: 9
-    - Value: -2
-      TypeParameter: 1
-    - Value: 15
-      TypeParameter: 6
-    - Value: 6
-      TypeParameter: 5
-  - CardParameters:
     - Value: 12
       TypeParameter: 0
     - Value: 2
       TypeParameter: 9
-    - Value: 2
+    - Value: 5
       TypeParameter: 1
-    - Value: 12
+    - Value: 20
       TypeParameter: 6
     - Value: 7
       TypeParameter: 5
@@ -54,9 +41,9 @@ MonoBehaviour:
       TypeParameter: 0
     - Value: 2
       TypeParameter: 9
-    - Value: 1
+    - Value: 3
       TypeParameter: 1
-    - Value: 10
+    - Value: 15
       TypeParameter: 6
     - Value: 8
       TypeParameter: 5
@@ -65,15 +52,15 @@ MonoBehaviour:
       TypeParameter: 0
     - Value: 2
       TypeParameter: 9
-    - Value: 0
+    - Value: 2
       TypeParameter: 1
-    - Value: 10
+    - Value: 13
       TypeParameter: 6
     - Value: 9
       TypeParameter: 5
   _abilityType: 10
   _damageParametr:
-    TypeDamage: 0
-    DamageSupportivePatametrs: []
-    Particle: {fileID: 0}
+    _typeDamage: 0
+    _damageSupportivePatametrs: []
+    _particle: {fileID: 0}
   _rageEffect: {fileID: 1869056104995865337, guid: 12aa6d89f37fe0b41ab0da8adc26824b, type: 3}

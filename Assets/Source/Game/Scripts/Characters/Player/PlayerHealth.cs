@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Assets.Source.Game.Scripts
@@ -85,7 +86,7 @@ namespace Assets.Source.Game.Scripts
 
         public void MaxHealthChanged(int value)
         {
-            _maxHealth = value;
+            _maxHealth += value;
         }
 
         public void ChangeRegeniration(int regeniration)
@@ -96,6 +97,7 @@ namespace Assets.Source.Game.Scripts
         public void ChangeArmor(int armor)
         {
             _armor = armor;
+            Debug.Log(armor);
         }
 
         private void AddListener() 
@@ -109,13 +111,15 @@ namespace Assets.Source.Game.Scripts
         private void OnPauseGame()
         {
             if (_regeneration != null)
-                _regeneration = _coroutineRunner.StartCoroutine(RegenerationHealth());
+                _coroutineRunner.StopCoroutine(_regeneration);
         }
 
         private void OnResumeGame()
         {
             if (_regeneration != null)
-                _regeneration = _coroutineRunner.StartCoroutine(RegenerationHealth());
+                _coroutineRunner.StopCoroutine(_regeneration);
+
+            _regeneration = _coroutineRunner.StartCoroutine(RegenerationHealth());
         }
 
         private void OnHealthChanged(int value) 
@@ -132,6 +136,8 @@ namespace Assets.Source.Game.Scripts
 
         private IEnumerator RegenerationHealth()
         {
+            Debug.Log(_currentHealth);
+            Debug.Log(_maxHealth);
             while (_currentHealth < _maxHealth)
             {
                 yield return new WaitForSeconds(_delayHealing);

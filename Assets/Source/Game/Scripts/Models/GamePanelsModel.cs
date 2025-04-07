@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Assets.Source.Game.Scripts
 {
@@ -71,6 +72,7 @@ namespace Assets.Source.Game.Scripts
         {
             SfxVolumeValue = volume;
             _temporaryData.SetInterfaceVolume(volume);
+            Debug.Log(volume);
         }
 
         public void CreateCardPool() 

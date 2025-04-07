@@ -27,19 +27,46 @@ namespace Assets.Source.Game.Scripts
 
         private List<TipView> _tipViews = new ();
         private IEnumerator _getTips;
+        private IEnumerator _animationTips;
         private IAudioPlayerService _audioPlayerService;
         private MainMenuViewModel _menuViewModel;
+        private DG.Tweening.Sequence _sequence;
+        private WaitForSeconds _delayNewTrips;
+
+        private void OnEnable()
+        {
+            _sequence.Kill();
+
+            if (_getTips != null)
+                StopCoroutine(_getTips);
+
+            if (_animationTips != null)
+                StopCoroutine(_animationTips);
+
+            CreateTip();
+            GetRandomTip();
+        }
 
         private void OnDestroy()
         {
             RemoveListener();
+            _menuViewModel.Dispose();
         }
 
         public void Initialize(MainMenuViewModel menuViewModel, IAudioPlayerService audioPlayerService)
         {
             _menuViewModel = menuViewModel;
             _audioPlayerService = audioPlayerService;
+            _delayNewTrips = new WaitForSeconds(_timeNewTips);
             AddListener();
+            _sequence.Kill();
+
+            if (_getTips != null)
+                StopCoroutine(_getTips);
+
+            if (_animationTips != null)
+                StopCoroutine(_animationTips);
+
             CreateTip();
             GetRandomTip();
         }
@@ -105,7 +132,7 @@ namespace Assets.Source.Game.Scripts
 
         private IEnumerator LoadNewTip()
         {
-            yield return new WaitForSeconds(_timeNewTips);
+            yield return _delayNewTrips;
             ClearTip();
             CreateTip();
             GetRandomTip();
@@ -116,7 +143,12 @@ namespace Assets.Source.Game.Scripts
             TipView view = Instantiate(_tipView, _tipsContainer);
             view.Initialize(_tipsDatas[_rnd.Next(0, _tipsDatas.Count)]);
             _tipViews.Add(view);
-            StartCoroutine(SetTipViewAnimation());
+
+            if (_animationTips != null)
+                StopCoroutine(_animationTips);
+
+            _animationTips = SetTipViewAnimation();
+            StartCoroutine(_animationTips);
         }
 
         private void ClearTip()
@@ -129,20 +161,24 @@ namespace Assets.Source.Game.Scripts
 
         private IEnumerator SetTipViewAnimation()
         {
+            WaitForSeconds delay = new WaitForSeconds(_delay);
+
             foreach (TipView view in _tipViews)
             {
                 view.transform.localScale = Vector3.zero;
             }
 
+            _sequence = DOTween.Sequence();
+
             foreach (TipView view in _tipViews)
             {
-                _audioPlayerService.PlayOneShotPopupSound();
+                _audioPlayerService?.PlayOneShotPopupSound();
 
-                view.transform.DOScale(_duration, _duration).
+                _sequence.Append(view.transform.DOScale(_duration, _duration).
                     SetEase(Ease.OutBounce).
-                    SetLink(view.gameObject);
+                    SetLink(view.gameObject));
 
-                yield return new WaitForSeconds(_delay);
+                yield return delay;
             }
         }
 

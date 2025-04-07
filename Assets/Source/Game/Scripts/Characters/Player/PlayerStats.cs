@@ -12,7 +12,7 @@ namespace Assets.Source.Game.Scripts
         private readonly int _maxUpgradeExperience = 1000;
         private readonly int _minValue = 0;
 
-        private int _maxPlayerLevel = 10;//
+        private int _maxPlayerLevel = 100;//
         private int _maxUpgradeLevel = 5;//
 
         private Player _player;
@@ -30,6 +30,8 @@ namespace Assets.Source.Game.Scripts
         private int _armor = 2;
         private int _regeneration = 1;
         private int _countKillEnemy = 0;
+        private UpgradeState[] _upgradeState;
+        private UpgradeData[] _upgradeDatas;
 
         public event Action<int> MaxHealthChanged;
         public event Action<int> RegenerationChanged;
@@ -47,11 +49,14 @@ namespace Assets.Source.Game.Scripts
         public event Action LvlUpped;
         public event Action<int, int, int> PlayerLevelChanged;
         public event Action<int, int, int> PlayerUpgradeLevelChanged;
+        public event Action<int> AddingConins;
 
-        public PlayerStats(Player player, int score, UpgradeState[] upgradeState, LevelObserver levelObserver, 
-            AbilityFactory abilityFactory, AbilityPresenterFactory abilityPresenterFactory)
+        public PlayerStats(Player player, int score, UpgradeState[] upgradeState, LevelObserver levelObserver, TemporaryData temporaryData)
         {
             //UpgradePlayerStats(upgradeState, levelObserver.UpgradeDatas);
+            _upgradeState = new UpgradeState[upgradeState.Length];
+            Array.Copy(upgradeState, _upgradeState, upgradeState.Length);
+            _upgradeDatas = temporaryData.UpgradeDatas;
             _player = player;
             _playerView = levelObserver.PlayerView;
             _damage = Convert.ToInt32(_player.PlayerAttacker.Damage);
@@ -85,10 +90,14 @@ namespace Assets.Source.Game.Scripts
             _score += enemy.Score;
             _currentExperience += enemy.ExperienceReward;
             _currentUpgradeExperience += enemy.UpgradeExperienceReward;
+
             UpgradeExperienceValueChanged?.Invoke(enemy.UpgradeExperienceReward);
             ExperienceValueChanged?.Invoke(enemy.ExperienceReward);
+            AddingConins?.Invoke(enemy.GoldReward);
+
             _countKillEnemy++;
             KillCountChanged?.Invoke(_countKillEnemy);
+            
             SetNewPlayerLevel(_currentLevel);
             SetNewUpgradePoints(_currentUpgradeLevel);
         }
@@ -113,8 +122,6 @@ namespace Assets.Source.Game.Scripts
 
         public void UpdatePlayerStats(CardView cardView)
         {
-            Debug.Log(cardView.CardState.CurrentLevel);
-
             foreach (var parameter in cardView.CardData.AttributeData.CardParameters[cardView.CardState.CurrentLevel].CardParameters)
             {
                 switch (parameter.TypeParameter)
@@ -135,7 +142,7 @@ namespace Assets.Source.Game.Scripts
                         MaxHealthChanged?.Invoke(parameter.Value);
                         break;
                     case TypeParameter.MoveSpeed:
-                        _speed += parameter.Value;
+                        _speed += parameter.Value/2;
                         MoveSpeedChanged?.Invoke(_speed);
                         break;
                 }
@@ -147,17 +154,17 @@ namespace Assets.Source.Game.Scripts
             _rerollPoints += cardView.CardData.AttributeData.CardParameters[cardView.CardState.CurrentLevel].CardParameters[0].Value;
         }
 
-        private void UpgradePlayerStats(UpgradeState[] upgradeStates, UpgradeData[] upgradeDatas)
+        public void UpgradePlayerStats()
         {
-            if (upgradeStates == null)
+            if (_upgradeState == null)
                 return;
 
-            if (upgradeDatas.Length < _minValue)
+            if (_upgradeDatas.Length < _minValue)
                 return;
 
-            foreach (UpgradeState upgradeState in upgradeStates)
+            foreach (UpgradeState upgradeState in _upgradeState)
             {
-                foreach (UpgradeData upgradeData in upgradeDatas)
+                foreach (UpgradeData upgradeData in _upgradeDatas)
                 {
                     if (upgradeState.CurrentLevel > _minValue)
                     {
@@ -166,28 +173,31 @@ namespace Assets.Source.Game.Scripts
                             switch (upgradeData.TypeParameter)
                             {
                                 case TypeParameter.Armor:
-                                    _armor += upgradeData.UpgradeParameters[upgradeState.CurrentLevel].Value;
+                                    Debug.Log(upgradeState.CurrentLevel);
+                                    _armor += upgradeData.UpgradeParameters[upgradeState.CurrentLevel-1].Value;
+                                    ArmorChanged?.Invoke(_armor);
                                     break;
                                 case TypeParameter.Damage:
-                                    _damage += upgradeData.UpgradeParameters[upgradeState.CurrentLevel].Value;
+                                    _damage += upgradeData.UpgradeParameters[upgradeState.CurrentLevel-1].Value;
+                                    DamageChenged?.Invoke(_damage);
                                     break;
                                 case TypeParameter.Regeneration:
-                                    _regeneration += upgradeData.UpgradeParameters[upgradeState.CurrentLevel].Value;
+                                    _regeneration += upgradeData.UpgradeParameters[upgradeState.CurrentLevel-1].Value;
                                     break;
                                 case TypeParameter.Reroll:
-                                    _rerollPoints += upgradeData.UpgradeParameters[upgradeState.CurrentLevel].Value;
+                                    _rerollPoints += upgradeData.UpgradeParameters[upgradeState.CurrentLevel-1].Value;
                                     break;
                                 case TypeParameter.Health:
-                                    MaxHealthChanged?.Invoke(upgradeData.UpgradeParameters[upgradeState.CurrentLevel].Value);
+                                    MaxHealthChanged?.Invoke(upgradeData.UpgradeParameters[upgradeState.CurrentLevel-1].Value);
                                     break;
                                 case TypeParameter.AbilityCooldown:
-                                    AbilityCooldownReductionChanged?.Invoke(upgradeData.UpgradeParameters[upgradeState.CurrentLevel].Value);
+                                    AbilityCooldownReductionChanged?.Invoke(upgradeData.UpgradeParameters[upgradeState.CurrentLevel-1].Value);
                                     break;
                                 case TypeParameter.AbilityDuration:
-                                    AbilityDurationChanged?.Invoke(upgradeData.UpgradeParameters[upgradeState.CurrentLevel].Value);
+                                    AbilityDurationChanged?.Invoke(upgradeData.UpgradeParameters[upgradeState.CurrentLevel-1].Value);
                                     break;
                                 case TypeParameter.AbilityValue:
-                                    AbilityDamageChanged?.Invoke(upgradeData.UpgradeParameters[upgradeState.CurrentLevel].Value);
+                                    AbilityDamageChanged?.Invoke(upgradeData.UpgradeParameters[upgradeState.CurrentLevel-1].Value);
                                     break;
                             }
                         }
@@ -216,7 +226,7 @@ namespace Assets.Source.Game.Scripts
                 }
                 else if (ability.TypeAbility == TypeAbility.MoveSpeedAmplifier)
                 {
-                    _speed += ability.CurrentAbilityValue;
+                    _speed += ability.CurrentAbilityValue/2;
                     MoveSpeedChanged?.Invoke(_speed);
                 }
                 else if (ability.TypeAbility == TypeAbility.Healing)
@@ -231,7 +241,6 @@ namespace Assets.Source.Game.Scripts
                     if (parameter.TypeParameter == TypeParameter.Damage)
                     {
                         _damage += parameter.Value;
-                        Debug.Log(_damage);
                         DamageChenged?.Invoke(_damage);
                     }
                     else if (parameter.TypeParameter == TypeParameter.Armor)
@@ -241,7 +250,7 @@ namespace Assets.Source.Game.Scripts
                     }
                     else if (parameter.TypeParameter == TypeParameter.MoveSpeed)
                     {
-                        _speed += parameter.Value;
+                        _speed += parameter.Value/2;
                         MoveSpeedChanged?.Invoke(_speed);
                     }
                     else if (parameter.TypeParameter == TypeParameter.HealtReduce)
@@ -260,7 +269,7 @@ namespace Assets.Source.Game.Scripts
                     else if (parameter.TypeParameter == TypeParameter.TargetMoveSpeed)
                     {
                         _ownSpeed = _speed;
-                        _speed = parameter.Value;
+                        _speed = parameter.Value/2;
                         MoveSpeedChanged?.Invoke(_speed);
                     }
                 }
@@ -287,7 +296,7 @@ namespace Assets.Source.Game.Scripts
                 }
                 else if (ability.TypeAbility == TypeAbility.MoveSpeedAmplifier)
                 {
-                    _speed -= ability.CurrentAbilityValue;
+                    _speed -= ability.CurrentAbilityValue/2;
                     MoveSpeedChanged?.Invoke(_speed);
                 }
                 else if (ability.TypeAbility == TypeAbility.Healing)
@@ -311,7 +320,7 @@ namespace Assets.Source.Game.Scripts
                     }
                     else if (parameter.TypeParameter == TypeParameter.MoveSpeed)
                     {
-                        _speed -= parameter.Value;
+                        _speed -= parameter.Value/2;
                         MoveSpeedChanged?.Invoke(_speed);
                     }
                     else if (parameter.TypeParameter == TypeParameter.Regeneration)

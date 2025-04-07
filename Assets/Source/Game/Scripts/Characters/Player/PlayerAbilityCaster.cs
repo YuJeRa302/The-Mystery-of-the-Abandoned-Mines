@@ -125,7 +125,7 @@ namespace Assets.Source.Game.Scripts
         private void OnClassSkillsCreated(ClassAbilityData classAbilityData, ClassSkillButtonView classSkillButtonView, int currentLvl)
         {
             Ability newAbility;
-            newAbility = _abilityFactory.CreateClassSkill(classAbilityData, false, currentLvl);
+            newAbility = _abilityFactory.CreateClassSkill(classAbilityData, false, currentLvl - 1);
 
             if (classAbilityData.AbilityType == TypeAbility.Summon)
                 _abilityPresenterFactory.CreateSummonAbilityPresenter(newAbility, classSkillButtonView, _player.ShotPoint, _player, (classAbilityData as SummonAbilityData).Summon.Summon, _player.Pool);
@@ -143,13 +143,15 @@ namespace Assets.Source.Game.Scripts
             }
 
             if (classAbilityData.AbilityType == TypeAbility.Epiphany)
-                _abilityPresenterFactory.CreateEpiphanyAbilityPresenter(newAbility, classSkillButtonView, _player, (classAbilityData as EpiphanyClassAbilityData).EpiphanyParticle);
+                _abilityPresenterFactory.CreateEpiphanyAbilityPresenter(newAbility, classSkillButtonView, _player, (classAbilityData as EpiphanyClassAbilityData).EpiphanyParticle,
+                    (classAbilityData as EpiphanyClassAbilityData).Spell);
 
             if (classAbilityData.AbilityType == TypeAbility.ShieldUp)
                 _abilityPresenterFactory.CreateShieldUpAbility(newAbility, classSkillButtonView, _player, (classAbilityData as ShieldUpAbility).PoolParticle);
 
             if (classAbilityData.AbilityType == TypeAbility.SoulExplosion)
-                _abilityPresenterFactory.CreateSoulExplosionAbilityPresenter(newAbility, classSkillButtonView, _player, (classAbilityData as SoulExplosionAbilityData).DamageParticle);
+                _abilityPresenterFactory.CreateSoulExplosionAbilityPresenter(newAbility, classSkillButtonView, _player, (classAbilityData as SoulExplosionAbilityData).DamageParticle, 
+                    (classAbilityData as SoulExplosionAbilityData).Spell);
 
             if (classAbilityData.AbilityType == TypeAbility.DarkPact)
                 _abilityPresenterFactory.CreateDarkPactAbilityPresenter(newAbility, classSkillButtonView, _player, (classAbilityData as DarkPactAbilityData).PoolParticle);

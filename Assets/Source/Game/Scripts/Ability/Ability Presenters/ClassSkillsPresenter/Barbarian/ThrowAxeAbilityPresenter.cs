@@ -1,12 +1,16 @@
 using Assets.Source.Game.Scripts;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class ThrowAxeAbilityPresenter : AbilityPresenter
 {
     private Transform _throwPoint;
     private Pool _pool;
+    private AxemMssile _axemMssilePredab;
     private AxemMssile _axemMssile;
     private bool _isAbilityUse;
+    private Coroutine _damageDealCoroutine;
 
     public ThrowAxeAbilityPresenter(Ability ability,
         AbilityView abilityView,
@@ -16,7 +20,7 @@ public class ThrowAxeAbilityPresenter : AbilityPresenter
     {
         _throwPoint = _player.ThrowAbilityPoint;
         _pool = _player.Pool;
-        _axemMssile = axemMssile;
+        _axemMssilePredab = axemMssile;
         AddListener();
     }
 
@@ -35,6 +39,9 @@ public class ThrowAxeAbilityPresenter : AbilityPresenter
     protected override void OnAbilityEnded(Ability ability)
     {
         _isAbilityUse = false;
+
+        if (_damageDealCoroutine != null)
+            _coroutineRunner.StopCoroutine(_damageDealCoroutine);
     }
 
     private void OnButtonSkillClick()
@@ -51,28 +58,40 @@ public class ThrowAxeAbilityPresenter : AbilityPresenter
     {
         _isAbilityUse = true;
         Spawn();
+
+        if (_damageDealCoroutine != null)
+            _coroutineRunner.StopCoroutine(_damageDealCoroutine);
+
+        _damageDealCoroutine = _coroutineRunner.StartCoroutine(DealDamage());
+    }
+
+    protected override void OnGameResumed()
+    {
+        //if (_isAbilityUse)
+        base.OnGameResumed();
+
+        if (_damageDealCoroutine != null)
+            _damageDealCoroutine = _coroutineRunner.StartCoroutine(DealDamage());
     }
 
     private void Spawn()
     {
-        AxemMssile axemMssile = null;
-
-        if (TryFindSummon(_axemMssile.gameObject, out AxemMssile poolAxe))
+        if (TryFindSummon(_axemMssilePredab.gameObject, out AxemMssile poolAxe))
         {
-            axemMssile = poolAxe;
-            axemMssile.transform.position = _throwPoint.position;
-            axemMssile.gameObject.SetActive(true);
-            axemMssile.ThrowNow();
+            _axemMssile = poolAxe;
+            _axemMssile.transform.position = _throwPoint.position;
+            _axemMssile.gameObject.SetActive(true);
+            _axemMssile.ThrowNow();
         }
         else
         {
-            axemMssile = GameObject.Instantiate(_axemMssile, _throwPoint.position, UnityEngine.Quaternion.identity);
+            _axemMssile = GameObject.Instantiate(_axemMssilePredab, _throwPoint.position, UnityEngine.Quaternion.identity);
 
-            _pool.InstantiatePoolObject(axemMssile, _axemMssile.name);
-            axemMssile.Initialaze(_player, _player.PlayerAttacker.DamageParametr, _player.PlayerMovment.MoveSpeed);
+            _pool.InstantiatePoolObject(_axemMssile, _axemMssilePredab.name);
+            _axemMssile.Initialaze(_player, _player.PlayerAttacker.DamageParametr, _player.PlayerMovment.MoveSpeed, _ability.CurrentDuration);
         }
 
-        axemMssile.GetComponent<Rigidbody>().AddForce(_throwPoint.forward * _ability.CurrentDuration, ForceMode.Impulse);
+        _axemMssile.GetComponent<Rigidbody>().AddForce(_throwPoint.forward * _ability.CurrentDuration, ForceMode.Impulse);
     }
 
     private bool TryFindSummon(GameObject type, out AxemMssile poolObj)
@@ -91,5 +110,24 @@ public class ThrowAxeAbilityPresenter : AbilityPresenter
     {
         base.OnCooldownValueReseted(value);
         (_abilityView as ClassSkillButtonView).SetInerectableButton(true);
+    }
+
+    private IEnumerator DealDamage()
+    {
+        while (_ability.IsAbilityEnded == false)
+        {
+            if (_axemMssile != null)
+            {
+                if (_axemMssile.TryFindEnemys(out List<Enemy> enemies))
+                {
+                    foreach (var enemy in enemies)
+                    {
+                        enemy.TakeDamageTest(_player.PlayerAttacker.DamageParametr);
+                    }
+                }
+            }
+
+            yield return new WaitForSeconds(0.3f);
+        }
     }
 }

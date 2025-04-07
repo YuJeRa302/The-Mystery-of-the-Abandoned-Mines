@@ -1,6 +1,6 @@
 using System;
 
-public class MainMenuViewModel
+public class MainMenuViewModel : IDisposable
 {
     private readonly MenuModel _menuModel;
 
@@ -18,4 +18,10 @@ public class MainMenuViewModel
     public void InvokeWeaponsShow() => _menuModel.InvokeWeaponsShow();
     public void InvokeClassAbilityShow() => _menuModel.InvokeClassAbilityShow();
     public void InvokeMainMenuShow() => _menuModel.InvokeMainMenuShow();
+
+    public void Dispose()
+    {
+        _menuModel.Dispose();
+        GC.SuppressFinalize(this);
+    }
 }

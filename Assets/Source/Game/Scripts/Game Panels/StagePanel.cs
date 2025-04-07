@@ -57,7 +57,7 @@ namespace Assets.Source.Game.Scripts
             _numberStageText.text = GamePanelsViewModel.GetCurrentRoomLevel().ToString() + " / " + GamePanelsViewModel.GetStagesCount().ToString();
             _playerHealth.text = GamePanelsViewModel.GetPlayer().PlayerHealth.CurrentHealth.ToString();
             _playerDamage.text = GamePanelsViewModel.GetPlayer().PlayerStats.Damage.ToString();
-            //_coins.text = 
+            _coins.text = GamePanelsViewModel.GetPlayer().PlayerWallet.CurrentCoins.ToString();
             _rerollPoints.text = GamePanelsViewModel.GetPlayer().PlayerStats.RerollPoints.ToString();
             _currentRoomLevel.text = GamePanelsViewModel.GetCurrentRoomLevel().ToString();
             _killCount.text = GamePanelsViewModel.GetPlayer().PlayerStats.CountKillEnemy.ToString();

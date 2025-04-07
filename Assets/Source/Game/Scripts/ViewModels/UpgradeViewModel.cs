@@ -1,7 +1,7 @@
 using Assets.Source.Game.Scripts;
 using System;
 
-public class UpgradeViewModel
+public class UpgradeViewModel : IDisposable
 {
     private readonly UpgradeModel _upgradeModel;
     private readonly MenuModel _menuModel;
@@ -28,4 +28,10 @@ public class UpgradeViewModel
     public void SelectStats(UpgradeDataView upgradeDataView) => _upgradeModel.SelectStats(upgradeDataView);
     public void UpgradeStats() => _upgradeModel.UpgradeStats();
     public void UpdateTemporaryData() => _upgradeModel.UpdateTemporaryData();
+
+    public void Dispose()
+    {
+        _upgradeModel.Dispose();
+        GC.SuppressFinalize(this);
+    }
 }

@@ -2,7 +2,7 @@ using Assets.Source.Game.Scripts;
 using System;
 using System.Collections.Generic;
 
-public class UpgradeModel
+public class UpgradeModel : IDisposable
 {
     private readonly TemporaryData _temporaryData;
     private readonly int _minValue = 0;
@@ -24,16 +24,16 @@ public class UpgradeModel
     public event Action<UpgradeState> InvokedStatsUpgrade;
     public event Action InvokedStatsReset;
 
-    public int UpgradePoints { get; private set; }
+    public int UpgradePoints => _temporaryData.UpgradePoints;
 
     public void SetUpgradePoints(int value) 
     {
-        UpgradePoints = value;
+        _temporaryData.SetUpgradePoints(value);
     }
 
     public void ResetUpgrade(int value) 
     {
-        UpgradePoints += value;
+        _temporaryData.AddUpgradePoints(value);
         InvokedStatsReset?.Invoke();
     }
 
@@ -63,7 +63,8 @@ public class UpgradeModel
 
         if (UpgradePoints >= _currentUpgradeData.UpgradeParameters[_currentStats.CurrentLevel].Cost)
         {
-            UpgradePoints -= _currentUpgradeData.UpgradeParameters[_currentStats.CurrentLevel].Cost;
+            int cost = _currentUpgradeData.UpgradeParameters[_currentStats.CurrentLevel].Cost;
+            _temporaryData.TrySpendUpgradePoints(cost);
 
             if (_currentStats.CurrentLevel < _maxStatsLevel)
                 _currentStats.CurrentLevel++;
@@ -91,10 +92,13 @@ public class UpgradeModel
 
     private UpgradeState InitState(UpgradeData upgradeData)
     {
-        UpgradeState upgradeState = new();
-        upgradeState.Id = upgradeData.Id;
-        upgradeState.CurrentLevel = _minValue;
+        UpgradeState upgradeState = new(upgradeData.Id, _minValue);
         _upgradeStates.Add(upgradeState);
         return upgradeState;
+    }
+
+    public void Dispose()
+    {
+        GC.SuppressFinalize(this);
     }
 }

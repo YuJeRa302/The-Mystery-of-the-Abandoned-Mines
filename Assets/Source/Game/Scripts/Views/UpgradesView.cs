@@ -27,6 +27,8 @@ public class UpgradesView : MonoBehaviour
     [SerializeField] private Sprite _defaultSprite;
     [SerializeField] private UpgradeDataView _upgradeDataView;
     [SerializeField] private Transform _upgradesContainer;
+    [SerializeField] private Transform _statsConteiner;
+    [SerializeField] private ClassAbilityStatsView _statsViewPrafab;
     [Space(20)]
     [SerializeField] private List<UpgradeData> _defaultUpgradeData;
     [Space(20)]
@@ -37,10 +39,24 @@ public class UpgradesView : MonoBehaviour
     private List<UpgradeDataView> _upgradeDataViews = new ();
     private UpgradeViewModel _upgradeViewModel;
     private IAudioPlayerService _audioPlayerService;
+    DG.Tweening.Sequence _sequence;
+    private Coroutine _coroutine;
+    private List<ClassAbilityStatsView> _classAbilityStatsViews = new();
+
+    public List<UpgradeData> UpgradeDatas => _defaultUpgradeData;
 
     private void OnDestroy()
     {
         RemoveListener();
+        _upgradeViewModel.Dispose();
+    }
+
+    private void OnEnable()
+    {
+        _sequence.Kill();
+
+        if (_coroutine != null)
+            StopCoroutine(_coroutine);
     }
 
     public void Initialize(UpgradeViewModel upgradeViewModel, IAudioPlayerService audioPlayerService)
@@ -127,15 +143,66 @@ public class UpgradesView : MonoBehaviour
         _nameStats.TranslationName = upgradeDataView.UpgradeData.Name;
         _description.TranslationName = upgradeDataView.UpgradeData.Description;
         _upgradeViewModel.SelectStats(upgradeDataView);
+
+        foreach (var view in _classAbilityStatsViews)
+        {
+            Destroy(view.gameObject);
+        }
+
+        _classAbilityStatsViews.Clear();
+
+        string nameParametr = string.Empty;
+        string valueCurrentLvl = string.Empty;
+        string valueNextLvl = string.Empty;
+
+        ClassAbilityStatsView statsView = Instantiate(_statsViewPrafab, _statsConteiner);
+
+        nameParametr = upgradeDataView.UpgradeData.TypeParameter.ToString();
+
+        if (upgradeDataView.UpgradeState.CurrentLevel > 0)
+        {
+            valueCurrentLvl = "+" + upgradeDataView.UpgradeData.UpgradeParameters[upgradeDataView.UpgradeState.CurrentLevel - 1].Value.ToString();
+
+            if(upgradeDataView.UpgradeState.CurrentLevel < upgradeDataView.UpgradeData.UpgradeParameters.Count)
+            {
+                valueNextLvl = "+" + upgradeDataView.UpgradeData.UpgradeParameters[upgradeDataView.UpgradeState.CurrentLevel].Value.ToString();
+            }
+        }
+        else
+        {
+            valueCurrentLvl = "+" + upgradeDataView.UpgradeData.UpgradeParameters[upgradeDataView.UpgradeState.CurrentLevel].Value.ToString();
+        }
+
+        statsView.Initialize(nameParametr, valueCurrentLvl, valueNextLvl);
+
+        _classAbilityStatsViews.Add(statsView);
     }
 
     private void OnStatsUpgraded(UpgradeState upgradeState)
     {
         _countUpgradePoints.text = _upgradeViewModel.GetUpgradePoints().ToString();
+
+        foreach (var view in _upgradeDataViews)
+        {
+            if (view.UpgradeState.Id == upgradeState.Id)
+            {
+                OnStatsSelected(view);
+            }
+        }
     }
 
     private IEnumerator SetUpgradeViewsAnimation()
     {
+        if (_upgradeDataViews == null || _upgradeDataViews.Count == 0)
+        {
+            Debug.LogWarning("No upgrade views to animate!");
+            yield break;
+        }
+
+        WaitForSeconds delay = new WaitForSeconds(_delay);
+
+        _sequence = DOTween.Sequence();
+
         foreach (var view in _upgradeDataViews)
         {
             view.transform.localScale = Vector3.zero;
@@ -143,9 +210,13 @@ public class UpgradesView : MonoBehaviour
 
         foreach (var view in _upgradeDataViews)
         {
-            _audioPlayerService.PlayOneShotPopupSound();
-            view.transform.DOScale(_duration, _duration).SetEase(Ease.OutBounce).SetLink(view.gameObject);
-            yield return new WaitForSeconds(_delay);
+            _audioPlayerService?.PlayOneShotPopupSound();
+
+            _sequence.Append(view.transform.DOScale(_duration, _duration)
+                .SetEase(Ease.OutBounce)
+                .SetLink(view.gameObject));
+
+            yield return delay;
         }
     }
 
@@ -153,7 +224,10 @@ public class UpgradesView : MonoBehaviour
     {
         _upgradeViewModel.UpdateTemporaryData();
         gameObject.SetActive(false);
-        StopCoroutine(SetUpgradeViewsAnimation());
+
+        if (_coroutine != null)
+            StopCoroutine(_coroutine);
+
         Clear();
         _upgradeViewModel.Hide();
     }
@@ -162,6 +236,10 @@ public class UpgradesView : MonoBehaviour
     {
         gameObject.SetActive(true);
         Fill();
-        StartCoroutine(SetUpgradeViewsAnimation());
+
+        if (_coroutine != null)
+            StopCoroutine(_coroutine);
+
+        _coroutine = StartCoroutine(SetUpgradeViewsAnimation());
     }
 }

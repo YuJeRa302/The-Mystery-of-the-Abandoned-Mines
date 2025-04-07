@@ -55,6 +55,7 @@ namespace Assets.Source.Game.Scripts
         public int DefailyHealing => _defailyHealing;
         public int Quantily => _quantily;
         public float SpellRadius => _spellRadius;
+        public bool IsAbilityUsed => _isAbilityUsed;
 
         public DamageParametr DamageParametr => _damageParametr;
         public int CurrentLevel { get; private set; }
@@ -180,15 +181,18 @@ namespace Assets.Source.Game.Scripts
                 {
                     if (parametr.SupportivePatametr == TypeSupportivePatametr.Damage)
                     {
-                        parametr.Value = _currentAbilityValue;
+                        parametr.ChaneValue(_currentAbilityValue);
+                        //parametr.Value = _currentAbilityValue;
                     }
                     else if (parametr.SupportivePatametr == TypeSupportivePatametr.Chance)
                     {
-                        parametr.Value = _chance;
+                        //parametr.Value = _chance;
+                        parametr.ChaneValue(_chance);
                     }
                     else if (parametr.SupportivePatametr == TypeSupportivePatametr.Duration)
                     {
-                        parametr.Value = _defaultDuration;
+                        //parametr.Value = _defaultDuration;
+                        parametr.ChaneValue(_defaultDuration);
                     }
                 }
             }
@@ -213,15 +217,18 @@ namespace Assets.Source.Game.Scripts
                     {
                         if (parametr.SupportivePatametr == TypeSupportivePatametr.Damage)
                         {
-                            parametr.Value = _currentAbilityValue;
+                            //parametr.Value = _currentAbilityValue;
+                            parametr.ChaneValue(_currentAbilityValue);
                         }
                         else if (parametr.SupportivePatametr == TypeSupportivePatametr.Chance)
                         {
-                            parametr.Value = _chance;
+                            //parametr.Value = _chance;
+                            parametr.ChaneValue(_chance);
                         }
                         else if (parametr.SupportivePatametr == TypeSupportivePatametr.Duration)
                         {
-                            parametr.Value = _defaultDuration;
+                            //parametr.Value = _defaultDuration;
+                            parametr.ChaneValue(_defaultDuration);
                         }
                     }
                 }
@@ -264,15 +271,18 @@ namespace Assets.Source.Game.Scripts
                 {
                     if (parametr.SupportivePatametr == TypeSupportivePatametr.Damage)
                     {
-                        parametr.Value = _abilityDamage;
+                        parametr.ChaneValue(_abilityDamage);
+                        //parametr.Value = _abilityDamage;
                     }
                     else if (parametr.SupportivePatametr == TypeSupportivePatametr.Chance)
                     {
-                        parametr.Value = _chance;
+                        parametr.ChaneValue(_chance);
+                        //parametr.Value = _chance;
                     }
                     else if (parametr.SupportivePatametr == TypeSupportivePatametr.Duration)
                     {
-                        parametr.Value = _defaultDuration;
+                        parametr.ChaneValue(_defaultDuration);
+                        //parametr.Value = _defaultDuration;
                     }
                 }
             }

@@ -49,8 +49,8 @@ MonoBehaviour:
   _spellRadius: 1.55
   _typeAttackAbility: 0
   _damageParametr:
-    TypeDamage: 0
-    DamageSupportivePatametrs:
-    - Value: 1
-      SupportivePatametr: 0
-    Particle: {fileID: 0}
+    _typeDamage: 0
+    _damageSupportivePatametrs:
+    - _value: 0
+      _supportivePatametr: 0
+    _particle: {fileID: 0}

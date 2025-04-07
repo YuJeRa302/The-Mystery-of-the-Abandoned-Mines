@@ -34,7 +34,7 @@ public class LevelsModel
 
     public bool TryBuyContract(int cost)
     {
-        return _temporaryData.TryBuy(cost);
+        return _temporaryData.TrySpendCoins(cost);
     }
 
     public LevelState GetLevelState(LevelData levelData) 
@@ -104,9 +104,7 @@ public class LevelsModel
 
     private LevelState InitLevelState(LevelData levelData)
     {
-        LevelState levelState = new();
-        levelState.Id = levelData.Id;
-        levelState.IsComplete = false;
+        LevelState levelState = new(levelData.Id, false, 0);
         return levelState;
     }
 }

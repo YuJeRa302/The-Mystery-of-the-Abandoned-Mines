@@ -1,23 +1,29 @@
 using Assets.Source.Game.Scripts;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class EpiphanyAbilityPresenter : AbilityPresenter
 {
     private Coroutine _coroutine;
+    private Coroutine _damageDealCoroutine;
     private Transform _effectConteiner;
     private Pool _pool;
-    private PoolParticle _poolParticle;
+    private ParticleSystem _poolParticle;
+    private Spell _spell;
+    private Spell _spellPrefab;
     private bool _isAbilityUse;
 
     public EpiphanyAbilityPresenter(Ability ability,
         AbilityView abilityView,
         Player player,
         IGameLoopService gameLoopService,
-        ICoroutineRunner coroutineRunner, PoolParticle abilityEffect) : base(ability, abilityView, player, gameLoopService, coroutineRunner)
+        ICoroutineRunner coroutineRunner, ParticleSystem abilityEffect, Spell spell) : base(ability, abilityView, player, gameLoopService, coroutineRunner)
     {
         _pool = _player.Pool;
         _poolParticle = abilityEffect;
         _effectConteiner = _player.PlayerAbilityContainer;
+        _spellPrefab = spell;
         AddListener();
     }
 
@@ -38,6 +44,9 @@ public class EpiphanyAbilityPresenter : AbilityPresenter
         if (_coroutine != null)
             _coroutineRunner.StopCoroutine(_coroutine);
 
+        if (_damageDealCoroutine != null)
+            _coroutineRunner.StopCoroutine(_damageDealCoroutine);
+
         _isAbilityUse = false;
     }
 
@@ -55,6 +64,11 @@ public class EpiphanyAbilityPresenter : AbilityPresenter
     {
         _isAbilityUse = true;
         CastEpiphany();
+
+        if (_damageDealCoroutine != null)
+            _coroutineRunner.StopCoroutine(_damageDealCoroutine);
+
+        _damageDealCoroutine = _coroutineRunner.StartCoroutine(DealDamage());
     }
 
     protected override void OnGameResumed()
@@ -69,25 +83,36 @@ public class EpiphanyAbilityPresenter : AbilityPresenter
 
     private void CreateParticle()
     {
-        PoolParticle particle;
+        _spell = GameObject.Instantiate(
+                _spellPrefab,
+                new Vector3(_player.transform.position.x, _player.transform.position.y, _player.transform.position.z),
+                Quaternion.identity);
 
-        if (_pool.TryPoolObject(_poolParticle.gameObject, out PoolObject pollParticle))
-        {
-            particle = pollParticle as PoolParticle;
-            particle.transform.position = _effectConteiner.position;
-            particle.gameObject.SetActive(true);
-        }
-        else
-        {
-            particle = GameObject.Instantiate(_poolParticle, _effectConteiner.position, Quaternion.identity);
-            (particle as DamageParticle).Initialaze(_ability.DamageParametr);
-            _pool.InstantiatePoolObject(particle, _poolParticle.name);
-        }
+        _spell.Initialize(_poolParticle, _ability.CurrentDuration, 8f);
     }
 
     protected override void OnCooldownValueReseted(float value)
     {
         base.OnCooldownValueReseted(value);
         (_abilityView as ClassSkillButtonView).SetInerectableButton(true);
+    }
+
+    private IEnumerator DealDamage()
+    {
+        while (_ability.IsAbilityEnded == false)
+        {
+            if (_spell != null)
+            {
+                if (_spell.TryFindEnemys(out List<Enemy> enemies))
+                {
+                    foreach (var enemy in enemies)
+                    {
+                        enemy.TakeDamageTest(_ability.DamageParametr);
+                    }
+                }
+            }
+
+            yield return new WaitForSeconds(1f);
+        }
     }
 }

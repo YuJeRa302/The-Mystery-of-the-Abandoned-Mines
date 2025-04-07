@@ -24,13 +24,14 @@ namespace Assets.Source.Game.Scripts
         private ICoroutineRunner _coroutineRunner;
         private Coroutine _findTarget;
         private Coroutine _coolDownAttack;
-        private WeaponData _weaponData;
+        //private WeaponData _weaponData;
         private DamageParametr _damageParametr;
         private Enemy _currentTarget;
         private float _chenceCritDamage;
         private float _critDamageMultiplier;
         private float _chenceVampirism;
         private float _vampirismValue;
+        private bool _isRangeAttack = false;
         private Dictionary<float, Enemy> _enemies = new Dictionary<float, Enemy>();
 
         public event Action Attacked;
@@ -42,12 +43,22 @@ namespace Assets.Source.Game.Scripts
         {
             _shotPoint = shoPoint;
             _player = player;
-            _weaponData = weaponData;
-            _damageParametr = _weaponData.DamageParametrs[0];
+            //_weaponData = weaponData;
+            //_damageParametr = _weaponData.DamageParametrs[0];
             _coroutineRunner = coroutineRunner;
             _poolBullet = pool;
 
-            foreach (var parametr in _weaponData.WeaponParameter.WeaponSupportivePatametrs)
+            List<DamageSupportivePatametr> damageSupportivePatametrs = new List<DamageSupportivePatametr>(weaponData.DamageParametr.DamageSupportivePatametrs);
+
+            for (int i = 0; i < damageSupportivePatametrs.Count; i++)
+            {
+                damageSupportivePatametrs[i] = new DamageSupportivePatametr(weaponData.DamageParametr.DamageSupportivePatametrs[i].Value, 
+                    weaponData.DamageParametr.DamageSupportivePatametrs[i].SupportivePatametr);
+            }
+
+            _damageParametr = new DamageParametr(weaponData.DamageParametr.TypeDamage, damageSupportivePatametrs, weaponData.DamageParametr.Particle);
+
+            foreach (var parametr in weaponData.WeaponParameter.WeaponSupportivePatametrs)
             {
                 if (parametr.SupportivePatametr == TypeWeaponSupportiveParametr.CritChence)
                 {
@@ -67,15 +78,16 @@ namespace Assets.Source.Game.Scripts
                 }
             }
 
-            if (_weaponData.TargetClass == TypePlayerClass.Warlock)
+            if (weaponData.TargetClass == TypePlayerClass.Warlock)
             {
+                _isRangeAttack = true;
                 _attackRange = 10f;
                 _searchRadius = 10f;
                 WarlockWeaponData paladinWeaponData = weaponData as WarlockWeaponData;
-                _bulletSpawner = new ProjectileSpawner(paladinWeaponData.BulletPrafab, _poolBullet, _shotPoint, _damage, _weaponData.DamageParametrs[0]);
+                _bulletSpawner = new ProjectileSpawner(paladinWeaponData.BulletPrafab, _poolBullet, _shotPoint, _damage, _damageParametr);
             }
 
-            foreach (var parametr in DamageParametr.DamageSupportivePatametrs)
+            foreach (var parametr in _damageParametr.DamageSupportivePatametrs)
             {
                 if (parametr.SupportivePatametr == TypeSupportivePatametr.Damage)
                 {
@@ -105,18 +117,18 @@ namespace Assets.Source.Game.Scripts
         {
             _damage = value;
 
-            foreach (var parametr in DamageParametr.DamageSupportivePatametrs)
+            foreach (var parametr in _damageParametr.DamageSupportivePatametrs)
             {
                 if (parametr.SupportivePatametr == TypeSupportivePatametr.Damage)
                 {
-                    parametr.Value = _damage;
+                    parametr.ChaneValue(_damage);
                 }
             }
         }
 
         public void AttackEnemy()
         {
-            if (_weaponData.TargetClass == TypePlayerClass.Warlock)
+            if (_isRangeAttack)
                 InstantiateBullet();
             else
                 ApplyDamage();
@@ -155,7 +167,8 @@ namespace Assets.Source.Game.Scripts
                         float distanceToTarget = Vector3.Distance(enemy.transform.position, _player.transform.position);
 
                         if (distanceToTarget <= _searchRadius)
-                            _enemies.Add(distanceToTarget, enemy);
+                            if(_enemies.ContainsKey(distanceToTarget) == false)
+                                _enemies.Add(distanceToTarget, enemy);
                     }
                 }
 
@@ -193,6 +206,7 @@ namespace Assets.Source.Game.Scripts
         {
             Vector3 directionToTarget = _player.transform.position - _currentTarget.transform.position;
             float distanceToTarget = directionToTarget.magnitude;
+            float critDamage;
 
             if (_currentTarget != null && distanceToTarget <= _attackRange)
             {
@@ -203,10 +217,11 @@ namespace Assets.Source.Game.Scripts
                         if (CalculatedChence(_chenceCritDamage))
                         {
                             _damage = parametr.Value;
-                            parametr.Value *= (1 + _critDamageMultiplier / 100);
+                            critDamage = parametr.Value *(1 + _critDamageMultiplier / 100);
+                            parametr.ChaneValue(critDamage);
                             _currentTarget.TakeDamageTest(_damageParametr);
                             _lastApplaedDamage = parametr.Value;
-                            parametr.Value = _damage;
+                            parametr.ChaneValue(_damage);
                             CritAttacked?.Invoke();
                         }
                         else

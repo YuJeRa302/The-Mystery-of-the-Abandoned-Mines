@@ -22,22 +22,18 @@ MonoBehaviour:
   - {r: 1, g: 0.22745098, b: 0.14509805, a: 0}
   _targetClass: 1
   _weaponPrefab: {fileID: 47741854524913294, guid: ee72bfa8c415f0d449e50256cccf6b32, type: 3}
-  _bonusDamage: 10
-  _bonusArmor: 0
-  _translationName: 
+  _translationName: DragonStaff
   _icon: {fileID: 21300000, guid: b6d2559a80abdf64b965a8b3afddf9b4, type: 3}
-  _damageParametrs:
-  - TypeDamage: 2
-    DamageSupportivePatametrs:
-    - Value: 10
-      SupportivePatametr: 0
-    - Value: 2
-      SupportivePatametr: 2
-    - Value: 2
-      SupportivePatametr: 5
-    Particle: {fileID: 1461602671872348846, guid: 0b5e7793d4d1e854385c5ce9b1e79f47, type: 3}
-  _weaponPatametr:
-    WeaponSupportivePatametrs:
-    - Value: 0
-      SupportivePatametr: 4
+  _damageParametr:
+    _typeDamage: 2
+    _damageSupportivePatametrs:
+    - _value: 10
+      _supportivePatametr: 0
+    - _value: 1
+      _supportivePatametr: 5
+    - _value: 2
+      _supportivePatametr: 2
+    _particle: {fileID: 1461602671872348846, guid: 0b5e7793d4d1e854385c5ce9b1e79f47, type: 3}
+  _weaponParameter:
+    WeaponSupportivePatametrs: []
   _bulletPrefab: {fileID: 3623676734272699723, guid: 02610e2a098d59544b206043c820636a, type: 3}

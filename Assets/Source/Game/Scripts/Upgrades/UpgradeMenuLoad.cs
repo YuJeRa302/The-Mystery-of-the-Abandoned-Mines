@@ -89,9 +89,7 @@ namespace Assets.Source.Game.Scripts
 
         private UpgradeState InitState(UpgradeData upgradeData) 
         {
-            UpgradeState upgradeState = new ();
-            upgradeState.Id = upgradeData.Id;
-            upgradeState.CurrentLevel = _minValue;
+            UpgradeState upgradeState = new (upgradeData.Id, _minValue);
             return upgradeState;
         }
 

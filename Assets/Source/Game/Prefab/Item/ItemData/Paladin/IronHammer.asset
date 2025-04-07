@@ -22,18 +22,16 @@ MonoBehaviour:
   - {r: 1, g: 0.22745098, b: 0.14509805, a: 0}
   _targetClass: 0
   _weaponPrefab: {fileID: 2530584089421283590, guid: ad4cc1d440bce8146ad7bbec13385286, type: 3}
-  _bonusDamage: 5
-  _bonusArmor: 5
-  _translationName: 
+  _translationName: IronHammer
   _icon: {fileID: 21300000, guid: e8231bfb59c003a4b9497d9486846aed, type: 3}
-  _damageParametrs:
-  - TypeDamage: 0
-    DamageSupportivePatametrs:
-    - Value: 5
-      SupportivePatametr: 0
-    Particle: {fileID: 0}
-  _weaponPatametr:
+  _damageParametr:
+    _typeDamage: 0
+    _damageSupportivePatametrs:
+    - _value: 6
+      _supportivePatametr: 0
+    _particle: {fileID: 0}
+  _weaponParameter:
     WeaponSupportivePatametrs:
-    - Value: 5
+    - Value: 2
       SupportivePatametr: 4
   _additionalWeapon: {fileID: -8305394949799367915, guid: 9f7103be0a629244893ec9587a134af0, type: 3}

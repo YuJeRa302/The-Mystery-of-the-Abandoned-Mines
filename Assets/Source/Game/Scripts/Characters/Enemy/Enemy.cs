@@ -236,6 +236,8 @@ namespace Assets.Source.Game.Scripts
             base.ReturnToPool();
             _isDead = true;
             _speed = _baseMoveSpeed;
+            _rigidbody.velocity = Vector3.zero;
+            _rigidbody.isKinematic = true;
             _currentHealth = _health;
         }
 

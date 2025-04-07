@@ -49,12 +49,12 @@ MonoBehaviour:
   _spellRadius: 7
   _typeAttackAbility: 0
   _damageParametr:
-    TypeDamage: 3
-    DamageSupportivePatametrs:
-    - Value: 10
-      SupportivePatametr: 0
-    - Value: 20
-      SupportivePatametr: 4
-    - Value: 1
-      SupportivePatametr: 2
-    Particle: {fileID: 550930723136525005, guid: 0e61f2a8c521ff844bffcc24bda7480e, type: 3}
+    _typeDamage: 3
+    _damageSupportivePatametrs:
+    - _value: 0
+      _supportivePatametr: 0
+    - _value: 30
+      _supportivePatametr: 4
+    - _value: 3
+      _supportivePatametr: 2
+    _particle: {fileID: 550930723136525005, guid: 0e61f2a8c521ff844bffcc24bda7480e, type: 3}

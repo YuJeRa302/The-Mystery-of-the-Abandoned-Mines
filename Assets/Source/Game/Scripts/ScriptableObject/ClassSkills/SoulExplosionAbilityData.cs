@@ -4,7 +4,9 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New ClassAbility", menuName = "Create Class Ability/SoulExplosion", order = 51)]
 public class SoulExplosionAbilityData : ClassAbilityData
 {
-    [SerializeField] private DamageParticle _damageParticle;
+    [SerializeField] private Spell _spell;
+    [SerializeField] private ParticleSystem _damageParticle;
 
-    public DamageParticle DamageParticle => _damageParticle;
+    public ParticleSystem DamageParticle => _damageParticle;
+    public Spell Spell => _spell;
 }

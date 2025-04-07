@@ -22,6 +22,7 @@ namespace Assets.Source.Game.Scripts
         private void SetRoomComplete()
         {
             RoomCompleted?.Invoke();
+           // SetRoomComplitIcon();
         }
     }
 }

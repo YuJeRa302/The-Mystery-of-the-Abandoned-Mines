@@ -52,6 +52,8 @@ namespace Assets.Source.Game.Scripts
                 {
                     TakedPassivAbility?.Invoke(cardView);
                 }
+                cardView.CardState.CurrentLevel++;
+                cardView.CardState.Weight++;
             }
             else if (cardView.CardData.TypeCardParameter == TypeCardParameter.RerollPoints)
             {
@@ -61,7 +63,7 @@ namespace Assets.Source.Game.Scripts
             {
                 PlayerStatsUpdated?.Invoke(cardView);
             }
-
+            //cardView.CardState.Weight++;
             _cardState.Add(cardView.CardState);
         }
 

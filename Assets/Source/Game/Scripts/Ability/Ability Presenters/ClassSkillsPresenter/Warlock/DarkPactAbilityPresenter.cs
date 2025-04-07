@@ -91,7 +91,7 @@ public class DarkPactAbilityPresenter : AbilityPresenter
 
     protected override void OnGameResumed()
     {
-        if (_isAbilityUse)
+        if (_isAbilityUse || _ability.IsAbilityUsed)
             base.OnGameResumed();
     }
 

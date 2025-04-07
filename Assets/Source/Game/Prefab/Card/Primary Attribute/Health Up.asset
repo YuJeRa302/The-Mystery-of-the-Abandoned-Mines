@@ -19,4 +19,4 @@ MonoBehaviour:
       TypeParameter: 3
   _name: Health
   _description: HealthDescription
-  _icon: {fileID: 21300000, guid: 19e5ba7d75c4f2e4e8d2151606339bf3, type: 3}
+  _icon: {fileID: 1960849640, guid: 1cbdf543752020f45b7cedcd93cd1a97, type: 3}

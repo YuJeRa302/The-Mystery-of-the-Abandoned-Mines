@@ -13,12 +13,22 @@ MonoBehaviour:
   m_Name: Config
   m_EditorClassIdentifier: 
   _upgradePoints: 3
-  _coins: 2000
+  _coins: 20000
   _ambientVolume: 40
   _sfxVolumeVolume: 40
   _isMuted: 0
   _defaultLanguage: ru
-  _upgradeStates: []
+  _upgradeStates:
+  - Id: 1
+    CurrentLevel: 0
+  - Id: 0
+    CurrentLevel: 0
+  - Id: 3
+    CurrentLevel: 0
+  - Id: 2
+    CurrentLevel: 0
+  - Id: 7
+    CurrentLevel: 0
   _classAbilityStates:
   - Id: 12
     CurrentLevel: 0
@@ -49,9 +59,8 @@ MonoBehaviour:
     IsEquip: 0
     IsUnlock: 1
   _defaultLevelState:
-  - Id: 0
-    IsComplete: 1
-  - Id: 1
-    IsComplete: 1
-  - Id: 2
-    IsComplete: 1
+  - CurrentComplitStages: 0
+  - CurrentComplitStages: 0
+  - CurrentComplitStages: 0
+  - CurrentComplitStages: 0
+  - CurrentComplitStages: 0

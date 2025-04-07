@@ -23,6 +23,9 @@ namespace Assets.Source.Game.Scripts
         private RoomView[,] _spawnedRooms;
         private List<RoomView> _createdRooms = new ();
         private int _maxRoomCount = 0;
+        private int _maxStages = 0;
+        private int _currentStages = 0;
+        private bool _isLvlComplit;
 
         public List<RoomView> CreatedRooms => _createdRooms;
         public RoomView StartRoom => _startRoom;

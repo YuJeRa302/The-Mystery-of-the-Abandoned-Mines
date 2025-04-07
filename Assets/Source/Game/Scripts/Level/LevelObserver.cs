@@ -1,4 +1,6 @@
+using IJunior.TypedScenes;
 using System;
+using System.Collections;
 using UnityEngine;
 
 namespace Assets.Source.Game.Scripts
@@ -21,6 +23,9 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private CardLoader _cardLoader;
 
         private CardPanel _cardPanel;
+        private StagePanel _stagePanel;
+        private PausePanel _pausePanel;
+        private RewardPanel _rewardPanel;
         private IAudioPlayerService _audioPlayerService;
         private bool _canSeeDoor;
         private EnemySpawner _enemySpawner;
@@ -30,10 +35,14 @@ namespace Assets.Source.Game.Scripts
         private RoomView _currentRoom;
         private int _currentRoomLevel = 0;
         private int _countStages = 0;
+        private int _currentStages = 0;
         private AbilityFactory _abilityFactory;
         private AbilityPresenterFactory _abilityPresenterFactory;
         private GamePanelsViewModel _gamePanelsViewModel;
         private GamePanelsModel _gamePanelsModel;
+        private MenuSaveAndLoad _saveAndLoad;
+        private AsyncOperation _load;
+        private TemporaryData _temporaryData;
 
         public event Action GameEnded;
         public event Action GameClosed;
@@ -64,10 +73,18 @@ namespace Assets.Source.Game.Scripts
         public void Initialize(TemporaryData temporaryData)
         {
             RegisterServices();
+            _temporaryData = temporaryData;
 
+            _canSeeDoor = _cameraControiler.TrySeeDoor(_roomPlacer.StartRoom.WallLeft.gameObject);
             CountRooms = temporaryData.LevelData.CountRooms;
             _countStages = temporaryData.LevelData.CountStages;
-            _canSeeDoor = _cameraControiler.TrySeeDoor(_roomPlacer.StartRoom.WallLeft.gameObject);
+            bool isLevelComplit = temporaryData.CurrentLevelState.IsComplete;
+
+            if (isLevelComplit)
+                _currentStages = 0;
+            else
+                _currentStages = temporaryData.CurrentLevelState.CurrentComplitStages;
+
             _trapsSpawner = new TrapsSpawner();
             _roomPlacer.Initialize(_currentRoomLevel, _canSeeDoor, CountRooms);
 
@@ -87,6 +104,8 @@ namespace Assets.Source.Game.Scripts
             _playerView.Initialize(_player, temporaryData.PlayerClassData.Icon);
             _player.PlayerAbilityCaster.Initialize();
             _cameraControiler.SetLookTarget(_player.transform);
+            _saveAndLoad = new MenuSaveAndLoad();
+            _saveAndLoad.Initialize(temporaryData);
             CreateGamePanelEntities(temporaryData);
             LoadGamePanels();
             AddListener();
@@ -149,6 +168,9 @@ namespace Assets.Source.Game.Scripts
             _enemySpawner.EnemyDied -= OnEnemyDied;
             _enemySpawner.AllEnemyRoomDied -= OnRoomCompleted;
             _player.PlayerStats.LvlUpped -= OnPlayerUppedLvl;
+            _stagePanel.ExitButtonClicked -= OnGameExit;
+            _pausePanel.ExitButtonClicked -= OnGameExit;
+            _rewardPanel.ExitButtonClicked -= OnGameExit;
         }
 
         private void OnPlayerUppedLvl()
@@ -183,7 +205,32 @@ namespace Assets.Source.Game.Scripts
                 {
                     _cardPanel = (CardPanel)panel;
                 }
+
+                if (panel as StagePanel)
+                {
+                    _stagePanel = (StagePanel)panel;
+                    _stagePanel.ExitButtonClicked += OnGameExit;
+                }
+
+                if (panel as PausePanel)
+                {
+                    _pausePanel = (PausePanel)panel;
+                    _pausePanel.ExitButtonClicked += OnGameExit;
+                }
+
+                if (panel as RewardPanel)
+                {
+                    _rewardPanel = (RewardPanel)panel;
+                    _rewardPanel.ListenEndGame(this);
+                    _rewardPanel.ExitButtonClicked += OnGameExit;
+                }
             }
+        }
+
+        private void OnGameExit()
+        {
+            _temporaryData.RescheduleProgress(_player.PlayerWallet, _player.PlayerStats, _currentStages);
+            StartCoroutine(LoadScreenLevel(Menu.LoadAsync(_temporaryData)));
         }
 
         private void RemoveRoomListener() 
@@ -212,7 +259,9 @@ namespace Assets.Source.Game.Scripts
         private void LoadGamePanels()
         {
             foreach (var panel in _panels)
+            {
                 panel.Initialize(_gamePanelsViewModel);
+            }
         }
 
         private void CloseAllGamePanels()
@@ -273,7 +322,9 @@ namespace Assets.Source.Game.Scripts
 
         private void StageComplete()
         {
-            if (_currentRoomLevel == _countStages)
+            _currentStages++;
+
+            if (_currentStages == _countStages)
                 EndGame();
             else
                 CreateNextStage();
@@ -292,10 +343,28 @@ namespace Assets.Source.Game.Scripts
 
         private void EndGame() 
         {
-            CloseAllGamePanels();
-            RemoveRoomListener();
-            _roomPlacer.Clear();
+            GameEnded?.Invoke();
+            //CloseAllGamePanels();
+            //RemoveRoomListener();
+            //_roomPlacer.Clear();
             Debug.Log("END GAme");
+        }
+
+        private IEnumerator LoadScreenLevel(AsyncOperation asyncOperation)
+        {
+            if (_load != null)
+                yield break;
+
+            _load = asyncOperation;
+            _load.allowSceneActivation = false;
+
+            while (_load.progress < 0.9f)
+            {
+                yield return null;
+            }
+
+            _load.allowSceneActivation = true;
+            _load = null;
         }
     }
 }

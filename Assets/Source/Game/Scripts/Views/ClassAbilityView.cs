@@ -1,5 +1,6 @@
 using Lean.Localization;
 using System.Collections.Generic;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,11 +23,13 @@ namespace Assets.Source.Game.Scripts
         [Space(20)]
         [SerializeField] private ClassAbilityDataView _classAbilityDataView;
         [SerializeField] private PlayerClassDataView _playerClassDataView;
+        [SerializeField] private ClassAbilityStatsView _classAbilityStatsViewPrefab;
         [Space(20)]
         [SerializeField] private Image _abilityImage;
         [SerializeField] private Sprite _defaultSprite;
         [SerializeField] private Transform _abilityClassContainer;
         [SerializeField] private Transform _classContainer;
+        [SerializeField] private Transform _classAbilityStatsConteiner;
         [Space(20)]
         [SerializeField] private List<PlayerClassData> _playerClassDatas;
         [Space(20)]
@@ -36,6 +39,7 @@ namespace Assets.Source.Game.Scripts
 
         private List<PlayerClassDataView> _playerClassDataViews = new ();
         private List<ClassAbilityDataView> _classAbilityDataViews = new ();
+        private List<ClassAbilityStatsView> _classAbilityStatsViews = new ();
         private ClassAbilityViewModel _classAbilityViewModel;
         private IAudioPlayerService _audioPlayerService;
 
@@ -136,6 +140,14 @@ namespace Assets.Source.Game.Scripts
         private void OnAbilityUpgraded(ClassAbilityState classAbilityState)
         {
             _coinsText.text = _classAbilityViewModel.GetCoins().ToString();
+
+            foreach(var view in _classAbilityDataViews)
+            {
+                if (view.ClassAbilityState.Id == classAbilityState.Id)
+                {
+                    OnAbilitySelected(view);
+                }
+            }
         }
 
         private void OnAbilityReseted(PlayerClassData playerClassData) 
@@ -149,6 +161,57 @@ namespace Assets.Source.Game.Scripts
             _nameAbility.TranslationName = classAbilityDataView.ClassAbilityData.Name;
             _description.TranslationName = classAbilityDataView.ClassAbilityData.Description;
             _classAbilityViewModel.SelectClassAbility(classAbilityDataView);
+
+
+            foreach(var view in _classAbilityStatsViews)
+            {
+                Destroy(view.gameObject);
+            }
+
+            _classAbilityStatsViews.Clear();
+
+            string nameParametr = string.Empty;
+            string valueCurrentLvl = string.Empty;
+            string valueNextLvl = string.Empty;
+
+            if (classAbilityDataView.ClassAbilityState.CurrentLevel > 0)
+            {
+                foreach (var stats in classAbilityDataView.ClassAbilityData.Parameters[classAbilityDataView.ClassAbilityState.CurrentLevel - 1].CardParameters)
+                {
+                    ClassAbilityStatsView statsView = Instantiate(_classAbilityStatsViewPrefab, _classAbilityStatsConteiner);
+                    nameParametr = stats.TypeParameter.ToString();
+                    valueCurrentLvl = stats.Value.ToString();
+                    bool canShowNextLvlStats = classAbilityDataView.ClassAbilityState.CurrentLevel >= classAbilityDataView.ClassAbilityData.Parameters.Count;
+                    
+                    if (!canShowNextLvlStats)
+                    {
+                        foreach (var statsNextLvl in classAbilityDataView.ClassAbilityData.Parameters[classAbilityDataView.ClassAbilityState.CurrentLevel].CardParameters)
+                        {
+                            if (statsNextLvl.TypeParameter == stats.TypeParameter)
+                            {
+                                valueNextLvl = statsNextLvl.Value.ToString();
+                            }
+                        }
+                    }
+
+                    statsView.Initialize(nameParametr, valueCurrentLvl, valueNextLvl);
+
+                    _classAbilityStatsViews.Add(statsView);
+                }
+            }
+            else
+            {
+                foreach (var stats in classAbilityDataView.ClassAbilityData.Parameters[classAbilityDataView.ClassAbilityState.CurrentLevel].CardParameters)
+                {
+                    ClassAbilityStatsView statsView = Instantiate(_classAbilityStatsViewPrefab, _classAbilityStatsConteiner);
+                    nameParametr = stats.TypeParameter.ToString();
+                    valueCurrentLvl = stats.Value.ToString();
+                    
+                    statsView.Initialize(nameParametr, valueCurrentLvl, valueNextLvl);
+
+                    _classAbilityStatsViews.Add(statsView);
+                }
+            }
         }
 
         private void ResetAbilities()
@@ -186,6 +249,7 @@ namespace Assets.Source.Game.Scripts
             _classAbilityViewModel.UpdateTemporaryData();
             ClearClassAbility();
             ClearClass();
+            _abilityImage.sprite = _defaultSprite;
             _classAbilityViewModel.Hide();
         }
     }

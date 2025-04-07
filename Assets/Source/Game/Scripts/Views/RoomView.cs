@@ -25,6 +25,9 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private BoxCollider _confiner;
         [Header("NavMesh")]
         [SerializeField] private NavMeshSurface _navSurface;
+        [Header("ComplitSprite")]
+        [SerializeField] private SpriteRenderer _renderer;
+        [SerializeField] private Sprite _complitIcon;
 
         private List<RoomDoorView> _roomDoorViews =  new ();
         private RoomDoorView _openDoor;
@@ -107,6 +110,7 @@ namespace Assets.Source.Game.Scripts
         {
             IsComplete = true;
             UnlockRoom();
+            SetRoomComplitIcon();
         }
 
         public void LockRoom()
@@ -138,6 +142,11 @@ namespace Assets.Source.Game.Scripts
                 if (removableWall != null)
                     removableWall.gameObject.SetActive(true);
             }
+        }
+
+        protected void SetRoomComplitIcon()
+        {
+            _renderer.sprite = _complitIcon;
         }
 
         private void AddListener() 

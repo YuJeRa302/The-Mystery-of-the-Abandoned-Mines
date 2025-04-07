@@ -22,14 +22,14 @@ MonoBehaviour:
   - {r: 1, g: 0.22745098, b: 0.14509805, a: 0}
   _targetClass: 1
   _weaponPrefab: {fileID: 5201497864007015725, guid: fda8de860ceef0b47aafe990cdeeb763, type: 3}
-  _translationName: Wood Staff
+  _translationName: WoodStaff
   _icon: {fileID: 21300000, guid: bb7249072e18e9a4e8b86d43a61bbb5a, type: 3}
-  _damageParametrs:
-  - TypeDamage: 0
-    DamageSupportivePatametrs:
-    - Value: 4
-      SupportivePatametr: 0
-    Particle: {fileID: 0}
+  _damageParametr:
+    _typeDamage: 0
+    _damageSupportivePatametrs:
+    - _value: 4
+      _supportivePatametr: 0
+    _particle: {fileID: 0}
   _weaponParameter:
     WeaponSupportivePatametrs: []
   _bulletPrefab: {fileID: -8979001810310791697, guid: 956d7ba531875a24b963c77474ed0464, type: 3}

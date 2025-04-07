@@ -15,6 +15,10 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private Image _lockImage;
         [SerializeField] private LeanLocalizedText _name;
         [SerializeField] private Button _button;
+        [SerializeField] private Sprite _star;
+        [SerializeField] private Sprite _complitStar;
+        [SerializeField] private Image _starLvlPrefab;
+        [SerializeField] private Transform _starsConteiner;
 
         private LevelData _levelData;
         private LevelState _leveState;
@@ -37,7 +41,7 @@ namespace Assets.Source.Game.Scripts
             _levelData = levelData;
             _levelsViewModel = levelsViewModel;
             _button.onClick.AddListener(OnSelected);
-            Fill(levelData);
+            Fill(levelData, levelState);
 
             if (levelData.IsContractLevel == false)
             {
@@ -60,11 +64,23 @@ namespace Assets.Source.Game.Scripts
             // _audioPlayerService.PlayOneShotButtonClickSound();
         }
 
-        private void Fill(LevelData levelData)
+        private void Fill(LevelData levelData, LevelState levelState)
         {
             _icon.sprite = levelData.Icon;
             _name.TranslationName = levelData.TranslationName;
             _icon.color = new Color(levelData.TierColor.r, levelData.TierColor.g, levelData.TierColor.b);
+
+            for (int i = 0; i < levelState.CurrentComplitStages; i++)
+            {
+                Image star = Instantiate(_starLvlPrefab, _starsConteiner);
+                star.sprite = _complitStar;
+            }
+
+            for (int i = 0; i < levelData.CountStages; i++)
+            {
+                Image star = Instantiate(_starLvlPrefab, _starsConteiner);
+                star.sprite = _star;
+            }
         }
 
         private void LoadCompletePlayerLevels(LevelState levelState)

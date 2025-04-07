@@ -1,6 +1,7 @@
 using Assets.Source.Game.Scripts;
 using DG.Tweening;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class AxemMssile : PoolObject
@@ -12,10 +13,12 @@ public class AxemMssile : PoolObject
     private Coroutine _coroutine;
     private Player _player;
     private Vector3 _direction;
-    private DamageParametr _damage;
     private float _moveSpeed = 2f;
     private float _moveSpeedBoost = 2f;
+    private float _throwDuration;
+    private float _dackPlayerDuration;
     private bool _isReturn = false;
+    private List<Enemy> _enemies = new List<Enemy>();
 
     private void OnEnable()
     {
@@ -44,23 +47,21 @@ public class AxemMssile : PoolObject
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.collider.TryGetComponent(out Enemy enemy))
-        {
-            Debug.Log("Axe");
-            Debug.Log(_damage.DamageSupportivePatametrs.Count);
-            enemy.TakeDamageTest(_damage);
-            Vector3 direction = (enemy.transform.position - transform.position) * 5;
-        }
-    }
-
-    public void Initialaze(Player player, DamageParametr damageParametr, float moveSpeedBoost)
+    public void Initialaze(Player player, DamageParametr damageParametr, float moveSpeedBoost, float duration)
     {
         _player = player;
         _weponPrefab = _player.PlayerWeapons.WeaponData.WeaponPrefab;
         _moveSpeedBoost = moveSpeedBoost;
-        _damage = damageParametr;
+        _throwDuration = duration - 2f;
+        _dackPlayerDuration = 2f;
+
+        List<DamageSupportivePatametr> damageSupportivePatametrs = new List<DamageSupportivePatametr>(damageParametr.DamageSupportivePatametrs);
+
+        for (int i = 0; i < damageSupportivePatametrs.Count; i++)
+        {
+            damageSupportivePatametrs[i] = new DamageSupportivePatametr(damageParametr.DamageSupportivePatametrs[i].Value,
+                damageParametr.DamageSupportivePatametrs[i].SupportivePatametr);
+        }
 
         _weponPrefab = Instantiate(_player.PlayerWeapons.WeaponData.WeaponPrefab, transform);
         Vector3 rotate = _weponPrefab.transform.eulerAngles;
@@ -74,14 +75,32 @@ public class AxemMssile : PoolObject
         CorountineStart(Throw());
     }
 
+    public bool TryFindEnemys(out List<Enemy> enemies)
+    {
+        _enemies.Clear();
+        enemies = new List<Enemy>();
+        Collider[] coliderEnemy = Physics.OverlapSphere(transform.position, 2f);
+
+        foreach (Collider collider in coliderEnemy)
+        {
+            if (collider.TryGetComponent(out Enemy enemy))
+            {
+                _enemies.Add(enemy);
+            }
+        }
+
+        enemies.AddRange(_enemies);
+        return enemies.Count > 0;
+    }
+
     private IEnumerator Throw()
     {
         _isReturn = false;
-        float time = 1.5f;
+        float time = 0;
 
-        while (time >= 0f)
+        while (time < _throwDuration)
         {
-            time -= Time.deltaTime;
+            time += Time.deltaTime;
             yield return null;
         }
 

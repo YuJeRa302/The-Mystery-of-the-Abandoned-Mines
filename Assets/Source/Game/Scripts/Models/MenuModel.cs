@@ -1,6 +1,6 @@
 using System;
 
-public class MenuModel
+public class MenuModel : IDisposable
 {
     public event Action InvokedUpgradesShow;
     public event Action InvokedLevelsShow;
@@ -20,4 +20,9 @@ public class MenuModel
     public void InvokeClassAbilityShow() => InvokedClassAbilityShow?.Invoke();
     public void InvokeClassAbilityHide() => InvokedMainMenuShow?.Invoke();
     public void InvokeMainMenuShow() => InvokedMainMenuShow?.Invoke();
+
+    public void Dispose()
+    {
+        GC.SuppressFinalize(this);
+    }
 }

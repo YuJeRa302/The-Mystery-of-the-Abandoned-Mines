@@ -75,6 +75,7 @@ public class SummonMoveState : State
 
     private bool FindEnemy(out Enemy target)
     {
+        _enemies.Clear();
         var colliders = Physics.OverlapSphere(_summon.transform.position, _summon.SearchRadius);
 
         for (int i = 0; i < colliders.Length; i++)
@@ -84,7 +85,8 @@ public class SummonMoveState : State
                 float distanceToTarget = Vector3.Distance(enemy.transform.position, _summon.transform.position);
 
                 if (distanceToTarget <= _summon.SearchRadius)
-                    _enemies.Add(distanceToTarget, enemy);
+                    if(_enemies.ContainsKey(distanceToTarget) == false)
+                        _enemies.Add(distanceToTarget, enemy);
             }
         }
 

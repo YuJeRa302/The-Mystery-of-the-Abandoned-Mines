@@ -1,19 +1,27 @@
 using Assets.Source.Game.Scripts;
+using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class TemporaryData
 {
     private LevelState[] _levelStates;
     private WeaponState[] _weaponStates;
     private int _countLevels;
-    private int _upgradePoints;
     private int _playerScore;
     private string _language;
     private bool _muteStateSound;
 
+    public event Action ChengedData;
+
     public TemporaryData(ConfigData configData) 
     {
         InitData(configData);
+    }
+
+    public TemporaryData(GameInfo gameInfo)
+    {
+        InitData(gameInfo);
     }
 
     public int Coins { get; private set; }
@@ -24,11 +32,29 @@ public class TemporaryData
     public UpgradeState[] UpgradeStates { get; private set; }
     public ClassAbilityState[] ClassAbilityStates { get; private set; }
     public LevelData LevelData { get; private set; }
+    public LevelState CurrentLevelState { get; private set; }
     public bool MuteStateSound => _muteStateSound;
-    public int UpgradePoints => _upgradePoints;
+    public int UpgradePoints { get; private set; }
     public int PlayerScore => _playerScore;
     public int CountLevels => _countLevels;
     public string Language => _language;
+    public WeaponState[] WeaponStates => _weaponStates;
+    public LevelState[] LevelStates => _levelStates;
+    public UpgradeData[] UpgradeDatas { get; private set; }
+
+    public void RescheduleProgress(PlayerWallet wallet, PlayerStats playerStats, int currentStages)
+    {
+        _playerScore += playerStats.Score;
+        Coins += wallet.CurrentCoins;
+
+        if (currentStages >= LevelData.CountStages)
+        {
+            currentStages = LevelData.CountStages;
+            CurrentLevelState = new LevelState(LevelData.Id, true, currentStages);
+        }
+
+        ChengedData?.Invoke();
+    }
 
     public ClassAbilityState GetClassAbilityState(int id)
     {
@@ -86,7 +112,17 @@ public class TemporaryData
         return null;
     }
 
-    public bool TryBuy(int value)
+    public void AddCoins(int value)
+    {
+        Coins += value;
+    }
+
+    public void AddUpgradePoints(int value)
+    {
+        UpgradePoints += value;
+    }
+
+    public bool TrySpendCoins(int value)
     {
         if (Coins >= value) 
         {
@@ -99,29 +135,62 @@ public class TemporaryData
         }
     }
 
+    public bool TrySpendUpgradePoints(int value)
+    {
+        if (UpgradePoints >= value)
+        {
+            UpgradePoints -= value;
+            Debug.Log($"tru {UpgradePoints} {value}");
+            return true;
+        }
+        else
+        {
+            Debug.Log($"fal {UpgradePoints} {value}");
+            return false;
+        }
+    }
+
     public LevelState[] GetLevelStates() 
     {
         return _levelStates;
     }
 
+    public void SetUpgradesData(List<UpgradeData> upgradeDatas)
+    {
+        UpgradeDatas = upgradeDatas.ToArray();
+    }
+
     public void SetWeaponData(WeaponData weaponData) 
     {
         WeaponData = weaponData;
+        ChengedData?.Invoke();
     }
 
     public void SetLevelData(LevelData levelData) 
     {
         LevelData = levelData;
+
+        foreach (var state  in LevelStates)
+        {
+            if (state.Id == LevelData.Id)
+            {
+                CurrentLevelState = new LevelState(state.Id, state.IsComplete, state.CurrentComplitStages);
+            }
+        }
+
+        ChengedData?.Invoke();
     }
 
     public void SetPlayerClassData(PlayerClassData playerClassData) 
     {
         PlayerClassData = playerClassData;
+        ChengedData?.Invoke();
     }
 
     public void SetUpgradePoints(int value)
     {
-        _upgradePoints = value;
+        UpgradePoints = value;
+        ChengedData?.Invoke();
     }
 
     public void SetUpgradeState(List<UpgradeState> upgradeStates)
@@ -130,8 +199,10 @@ public class TemporaryData
 
         for (int index = 0; index < upgradeStates.Count; index++)
         {
-            UpgradeStates[index] = upgradeStates[index];
+            UpgradeStates[index] = new UpgradeState(upgradeStates[index].Id, upgradeStates[index].CurrentLevel);
         }
+
+        ChengedData?.Invoke();
     }
 
     public void SetClassAbilityState(List<ClassAbilityState> classAbilityStates)
@@ -140,38 +211,46 @@ public class TemporaryData
 
         for (int index = 0; index < classAbilityStates.Count; index++) 
         {
-            ClassAbilityStates[index] = classAbilityStates[index];
+            ClassAbilityStates[index] = new ClassAbilityState(classAbilityStates[index].Id, classAbilityStates[index].CurrentLevel);
         }
+
+        ChengedData?.Invoke();
     }
 
     public void SetCoinsCount(int value) 
     {
         Coins = value;
+        ChengedData?.Invoke();
     }
 
     public void SetCountLevels(int value)
     {
         _countLevels = value;
+        ChengedData?.Invoke();
     }
 
     public void SetCurrentLanguage(string value)
     {
         _language = value;
+        ChengedData?.Invoke();
     }
 
     public void SetAmbientVolume(float value)
     {
         AmbientVolume = value;
+        ChengedData?.Invoke();
     }
 
     public void SetInterfaceVolume(float value)
     {
         InterfaceVolume = value;
+        ChengedData?.Invoke();
     }
 
     public void SetMuteStateSound(bool value) 
     {
         _muteStateSound = value;
+        ChengedData?.Invoke();
     }
 
     private void InitData(ConfigData configData) 
@@ -186,5 +265,19 @@ public class TemporaryData
         SetUpgradeState(configData.UpgradeStates);
         _levelStates = configData.DefaultLevelState;
         _weaponStates = configData.DefaultWeaponState;
+    }
+
+    private void InitData(GameInfo gameInfo)
+    {
+        SetAmbientVolume(gameInfo.AmbientVolume);
+        SetInterfaceVolume(gameInfo.SfxVolumeVolume);
+        SetCurrentLanguage(gameInfo.DefaultLanguage);
+        SetUpgradePoints(gameInfo.UpgradePoints);
+        SetMuteStateSound(gameInfo.IsMuted);
+        SetCoinsCount(gameInfo.Coins);
+        SetClassAbilityState(gameInfo.ClassAbilityStates);
+        SetUpgradeState(gameInfo.UpgradeStates);
+        _levelStates = gameInfo.DefaultLevelState;
+        _weaponStates = gameInfo.DefaultWeaponState;
     }
 }

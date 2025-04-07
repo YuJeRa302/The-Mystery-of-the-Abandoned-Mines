@@ -26,6 +26,7 @@ namespace Assets.Source.Game.Scripts
         private PlayerAnimation _playerAnimation;
         private PlayerHealth _playerHealth;
         private PlayerMovement _playerMovment;
+        private PlayerWallet _wallet;
 
         public Pool Pool => _poolBullet;
         public Transform WeaponAbilityContainer => _weaponAbilityContainer;
@@ -41,6 +42,7 @@ namespace Assets.Source.Game.Scripts
         public PlayerAnimation PlayerAnimation => _playerAnimation;
         public PlayerHealth PlayerHealth => _playerHealth;
         public PlayerAbilityCaster PlayerAbilityCaster => _playerAbilityCaster;
+        public PlayerWallet PlayerWallet => _wallet;
         public Transform ShotPoint => _shotPoint;
 
         private void OnDestroy()
@@ -49,19 +51,24 @@ namespace Assets.Source.Game.Scripts
             _playerAttacker.EnemyFinded -= OnRotateToTarget;
             _playerAttacker.CritAttacked -= OnApplayCritDamage;
             _playerAttacker.HealedVampirism -= OnHealingVampirism;
+
             _cardDeck.SetNewAbility -= OnSetNewAbility;
             _cardDeck.RerollPointsUpdated -= OnUpdateRerollPoints;
             _cardDeck.PlayerStatsUpdated -= OnStatsUpdate;
             _cardDeck.TakedPassivAbility -= OnTakedPassivAbility;
+
             _playerStats.MaxHealthChanged -= OnMaxHealthChanged;
             _playerStats.RegenerationChanged -= OnRegenerationChanged;
             _playerStats.ArmorChanged -= OnArmorChenge;
+
             _playerAbilityCaster.AbilityUsed -= OnAbilityUsed;
             _playerAbilityCaster.AbilityEnded -= OnAbilityEnded;
+
             _playerStats.DamageChenged -= OnDamageChenged;
             _playerStats.MoveSpeedChanged -= OnMoveSpeedChanged;
             _playerStats.Healed -= OnHealing;
             _playerStats.HealthReduced -= OnReduceHealth;
+            _playerStats.AddingConins -= OnAddCoins;
 
             DisposeStats();
         }
@@ -70,16 +77,18 @@ namespace Assets.Source.Game.Scripts
             AbilityPresenterFactory abilityPresenter, TemporaryData temporaryData)
         {
             _miniMapIcon.sprite = playerClassData.Icon;
+            _wallet = new PlayerWallet();
             _playerHealth = new PlayerHealth(levelObserver, this, weaponData, this);
             _playerAnimation = new PlayerAnimation(_animator, _rigidbody, 2, playerClassData, this);
             _playerAttacker = new PlayerAttacker(_shotPoint, this, weaponData, this, _poolBullet);
             _playerWeapons = new PlayerWeapons(this, weaponData, _poolBullet, _critDamageParticle, _vampirismParticle);
             _playerMovment = new PlayerMovement(levelObserver.CameraControiler.Camera, levelObserver.CameraControiler.VariableJoystick, _rigidbody, 2f, this);
             _cardDeck = new CardDeck();
-            _playerStats = new PlayerStats(this, 1, null, levelObserver, abilityFactory, abilityPresenter);
-            _playerAbilityCaster = new PlayerAbilityCaster(abilityFactory,abilityPresenter,this, levelObserver.PlayerView, temporaryData);
+            _playerStats = new PlayerStats(this, 1, temporaryData.UpgradeStates, levelObserver, temporaryData);
+            _playerAbilityCaster = new PlayerAbilityCaster(abilityFactory, abilityPresenter, this, levelObserver.PlayerView, temporaryData);
 
             SubscribeAction();
+            _playerStats.UpgradePlayerStats();
         }
 
         private void SubscribeAction()
@@ -101,6 +110,7 @@ namespace Assets.Source.Game.Scripts
             _playerStats.MoveSpeedChanged += OnMoveSpeedChanged;
             _playerStats.Healed += OnHealing;
             _playerStats.HealthReduced += OnReduceHealth;
+            _playerStats.AddingConins += OnAddCoins;
 
             _playerStats.AbilityDurationChanged += OnAbilityDurationChange;
             _playerStats.AbilityDamageChanged += OnAbilityDamageChanged;
@@ -108,6 +118,11 @@ namespace Assets.Source.Game.Scripts
 
             _playerAbilityCaster.AbilityUsed += OnAbilityUsed;
             _playerAbilityCaster.AbilityEnded += OnAbilityEnded;
+        }
+
+        public void OnAddCoins(int count)
+        {
+            _wallet.AddCoins(count);
         }
 
         private void OnHealingVampirism(float healing)
@@ -190,30 +205,33 @@ namespace Assets.Source.Game.Scripts
         private void OnSetNewAbility(CardView cardView)
         {
             _playerAbilityCaster.TakeAbility(cardView);
-            cardView.CardState.CurrentLevel++;
-            cardView.CardState.Weight++;
+
+            //cardView.CardState.CurrentLevel++;
+            //cardView.CardState.Weight++;
         }
 
         private void OnUpdateRerollPoints(CardView cardView)
         {
             _playerStats.UpdateRerollPoints(cardView);
             //cardView.CardState.CurrentLevel++;
-            cardView.CardState.Weight++;
+
+            //cardView.CardState.Weight++;
         }
 
         private void OnTakedPassivAbility(CardView cardView)
         {
             _playerStats.UpdatePlayerStats(cardView);
             _playerAbilityCaster.TakeAbility(cardView);
-            cardView.CardState.CurrentLevel++;
-            cardView.CardState.Weight++;
+            //cardView.CardState.CurrentLevel++;
+            //cardView.CardState.Weight++;
         }
 
         private void OnStatsUpdate(CardView cardView)
         {
             _playerStats.UpdatePlayerStats(cardView);
             //cardView.CardState.CurrentLevel++;
-            cardView.CardState.Weight++;
+            
+            //cardView.CardState.Weight++;
         }
 
         private void TryAttackEnemy()

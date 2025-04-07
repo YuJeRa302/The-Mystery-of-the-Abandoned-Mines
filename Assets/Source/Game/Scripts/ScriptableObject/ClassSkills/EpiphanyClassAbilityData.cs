@@ -4,7 +4,9 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New ClassAbility", menuName = "Create Class Ability/Epiphany", order = 51)]
 public class EpiphanyClassAbilityData : ClassAbilityData
 {
-    [SerializeField] private DamageParticle _epiphanyParticle;
+    [SerializeField] private ParticleSystem _epiphanyParticle;
+    [SerializeField] private Spell _spell;
 
-    public DamageParticle EpiphanyParticle => _epiphanyParticle;
+    public Spell Spell => _spell;
+    public ParticleSystem EpiphanyParticle => _epiphanyParticle;
 }

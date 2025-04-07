@@ -8,27 +8,27 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] protected Image _reloadingImage;
         [SerializeField] protected Image _abilityIcon;
 
-        protected float _defaultDelay;
+        protected float AbilityCooldown;
 
-        public void Initialize(Sprite sprite, float delay)
+        public void Initialize(Sprite sprite, float currentAbilityCooldown)
         {
             _abilityIcon.sprite = sprite;
-            _defaultDelay = delay;
+            AbilityCooldown = currentAbilityCooldown;
         }
 
-        public virtual void Upgrade(float delay)
+        public virtual void Upgrade(float currentAbilityCooldown)
         {
-            _defaultDelay = delay;
+            AbilityCooldown = currentAbilityCooldown;
         }
 
-        public virtual void ResetCooldownValue(float delay)
+        public virtual void ResetCooldownValue(float currentAbilityCooldown)
         {
-            _reloadingImage.fillAmount = delay;
+            _reloadingImage.fillAmount = currentAbilityCooldown;
         }
 
-        public virtual void ChangeCooldownValue(float currentDelay)
+        public virtual void ChangeCooldownValue(float currentAbilityCooldown)
         {
-            _reloadingImage.fillAmount = currentDelay / _defaultDelay;
+            _reloadingImage.fillAmount = currentAbilityCooldown / AbilityCooldown;
         }
 
         public virtual void ViewDestroy()

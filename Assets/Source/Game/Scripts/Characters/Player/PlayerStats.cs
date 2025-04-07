@@ -16,20 +16,19 @@ namespace Assets.Source.Game.Scripts
         private int _maxUpgradeLevel = 5;//
 
         private Player _player;
-        private PlayerView _playerView;
         private float _speed = 2;
         private float _ownSpeed;
-        private int _currentLevel = 1;
+        private int _currentLevel;
         private int _currentUpgradeLevel = 0;
         private int _currentUpgradePoints = 0;
         private int _currentExperience = 0;
         private int _currentUpgradeExperience = 0;
-        private int _rerollPoints = 2;
-        private int _score = 0;
-        private int _damage = 10;//
-        private int _armor = 2;
-        private int _regeneration = 1;
-        private int _countKillEnemy = 0;
+        private int _rerollPoints;
+        private int _score;
+        private int _damage;
+        private int _armor;
+        private int _regeneration;
+        private int _countKillEnemy;
 
         public event Action<int> MaxHealthChanged;
         public event Action<int> RegenerationChanged;
@@ -39,25 +38,27 @@ namespace Assets.Source.Game.Scripts
         public event Action<float> HealthReduced;
         public event Action<int> Healed;
         public event Action<int> ExperienceValueChanged;
-        public event Action<int> UpgradeExperienceValueChanged;//view
+        public event Action<int> UpgradeExperienceValueChanged;
         public event Action<int> AbilityDurationChanged;
         public event Action<int> AbilityDamageChanged;
         public event Action<int> AbilityCooldownReductionChanged;
-        public event Action<int> KillCountChanged;//view
+        public event Action<int> KillCountChanged;
         public event Action LvlUpped;
         public event Action<int, int, int> PlayerLevelChanged;
         public event Action<int, int, int> PlayerUpgradeLevelChanged;
 
-        public PlayerStats(Player player, int score, UpgradeState[] upgradeState, LevelObserver levelObserver, 
-            AbilityFactory abilityFactory, AbilityPresenterFactory abilityPresenterFactory)
+        public PlayerStats(Player player, int currentLevel, int rerollPoints, int damage, int armor, int regeneration, int countKillEnemy)
         {
-            //UpgradePlayerStats(upgradeState, levelObserver.UpgradeDatas);
+            _currentLevel = currentLevel;
+            _rerollPoints = rerollPoints;
+            _damage = damage;
+            _armor = armor;
+            _regeneration = regeneration;
+            _countKillEnemy = countKillEnemy;
             _player = player;
-            _playerView = levelObserver.PlayerView;
             _damage = Convert.ToInt32(_player.PlayerAttacker.Damage);
             GenerateLevelPlayer(_maxPlayerLevel);
             GenerateUpgradeLevel(_maxUpgradeLevel);
-            SetPlayerStats(score);
         }
 
         public int RerollPoints => _rerollPoints;
@@ -67,12 +68,6 @@ namespace Assets.Source.Game.Scripts
         public int Damage => _damage;
         public int Score => _score;
         public int CountKillEnemy => _countKillEnemy;
-        public int Regeneration => _regeneration;
-        public int UpgradeExperience => _currentUpgradeExperience;
-        public int CurrentExperience => _currentExperience;
-        public int MaxLevelExperience { get; private set; }
-        public int MaxUpgradeExperience { get; private set; }
-        public int CurrentLevel => _currentLevel;
         public int RerollPoint => _rerollPoints;
 
         public void Dispose()
@@ -85,36 +80,38 @@ namespace Assets.Source.Game.Scripts
             _score += enemy.Score;
             _currentExperience += enemy.ExperienceReward;
             _currentUpgradeExperience += enemy.UpgradeExperienceReward;
+            _countKillEnemy++;
             UpgradeExperienceValueChanged?.Invoke(enemy.UpgradeExperienceReward);
             ExperienceValueChanged?.Invoke(enemy.ExperienceReward);
-            _countKillEnemy++;
             KillCountChanged?.Invoke(_countKillEnemy);
             SetNewPlayerLevel(_currentLevel);
             SetNewUpgradePoints(_currentUpgradeLevel);
         }
 
-        public bool TryGetRerollPoints(out bool canNextReroll)
+        public bool TryGetRerollPoints()
         {
-            //_rerollPoints = Mathf.Clamp(_rerollPoints--, _minValue, _rerollPoints);
-            //Debug.Log(_rerollPoints);
-            //return _rerollPoints == _minValue ? false : true;
-            if (_rerollPoints == _minValue)
-            {
-                canNextReroll = _rerollPoints == _minValue ? false : true;
-                return false;
-            }
-            else
-            {
-                _rerollPoints--;
-                canNextReroll = _rerollPoints == _minValue ? false : true;
-                return true;
-            }
+            return _rerollPoints == _minValue ? false : true;
+        }
+
+        public void UpdateCardPanelByRerollPoints()
+        {
+            _rerollPoints = Mathf.Clamp(_rerollPoints--, _minValue, _rerollPoints);
+        }
+
+        public int GetMaxExperienceValue(int currentLevel) 
+        {
+            _levels.TryGetValue(currentLevel, out int maxLevelExperience);
+            return maxLevelExperience;
+        }
+
+        public int GetMaxUpgradeExperienceValue(int currentLevel) 
+        {
+            _upgradeLevels.TryGetValue(currentLevel, out int maxUpgradeExperience);
+            return maxUpgradeExperience;
         }
 
         public void UpdatePlayerStats(CardView cardView)
         {
-            Debug.Log(cardView.CardState.CurrentLevel);
-
             foreach (var parameter in cardView.CardData.AttributeData.CardParameters[cardView.CardState.CurrentLevel].CardParameters)
             {
                 switch (parameter.TypeParameter)
@@ -147,7 +144,7 @@ namespace Assets.Source.Game.Scripts
             _rerollPoints += cardView.CardData.AttributeData.CardParameters[cardView.CardState.CurrentLevel].CardParameters[0].Value;
         }
 
-        private void UpgradePlayerStats(UpgradeState[] upgradeStates, UpgradeData[] upgradeDatas)
+        public void UpgradePlayerStats(UpgradeState[] upgradeStates, UpgradeData[] upgradeDatas)
         {
             if (upgradeStates == null)
                 return;
@@ -358,15 +355,6 @@ namespace Assets.Source.Game.Scripts
                     PlayerLevelChanged?.Invoke(_currentLevel, maxExperienceValue, _currentExperience);
                 }
             }
-        }
-
-        private void SetPlayerStats(int score)
-        {
-            _score = score;
-            _levels.TryGetValue(_currentLevel, out int levelValue);
-            MaxLevelExperience = levelValue;
-            _upgradeLevels.TryGetValue(_currentUpgradeLevel, out int upgradeValue);
-            MaxUpgradeExperience = upgradeValue;
         }
 
         private void GenerateLevelPlayer(int level)

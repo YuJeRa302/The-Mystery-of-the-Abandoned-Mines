@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 public class TemporaryData
 {
+    private readonly int _shiftIndex = 1;
+
     private LevelState[] _levelStates;
     private WeaponState[] _weaponStates;
     private int _countLevels;
@@ -25,6 +27,7 @@ public class TemporaryData
     public ClassAbilityState[] ClassAbilityStates { get; private set; }
     public LevelData LevelData { get; private set; }
     public bool MuteStateSound => _muteStateSound;
+    public WeaponState[] WeaponStates => _weaponStates;
     public int UpgradePoints => _upgradePoints;
     public int PlayerScore => _playerScore;
     public int CountLevels => _countLevels;
@@ -141,6 +144,29 @@ public class TemporaryData
         for (int index = 0; index < classAbilityStates.Count; index++) 
         {
             ClassAbilityStates[index] = classAbilityStates[index];
+        }
+    }
+
+    public void UpdateWeaponStates(WeaponState weaponState) 
+    {
+        if (weaponState == null)
+            return;
+
+        int newArrayLength = _weaponStates.Length;
+        newArrayLength++;
+        WeaponState[] tempWeaponStates = new WeaponState[newArrayLength];
+
+        for (int index = 0; index < _weaponStates.Length; index++) 
+        {
+            tempWeaponStates[index] = _weaponStates[index];
+        }
+
+        tempWeaponStates[tempWeaponStates.Length - _shiftIndex] = weaponState;
+        _weaponStates = new WeaponState[tempWeaponStates.Length];
+
+        for (int index = 0; index < tempWeaponStates.Length; index++)
+        {
+            _weaponStates[index] = tempWeaponStates[index];
         }
     }
 

@@ -55,7 +55,7 @@ namespace Assets.Source.Game.Scripts
         private void FillGameParameters()
         {
             _numberStageText.text = GamePanelsViewModel.GetCurrentRoomLevel().ToString() + " / " + GamePanelsViewModel.GetStagesCount().ToString();
-            _playerHealth.text = GamePanelsViewModel.GetPlayer().PlayerHealth.CurrentHealth.ToString();
+            _playerHealth.text = GamePanelsViewModel.GetPlayer().CurrentHealth.ToString();
             _playerDamage.text = GamePanelsViewModel.GetPlayer().PlayerStats.Damage.ToString();
             //_coins.text = 
             _rerollPoints.text = GamePanelsViewModel.GetPlayer().PlayerStats.RerollPoints.ToString();

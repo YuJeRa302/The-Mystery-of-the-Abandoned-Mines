@@ -19,7 +19,7 @@ public class WeaponData : ScriptableObject
     public int Id => _id;
     public string TranslationName => _translationName;
     public Sprite Icon => _icon;
-    public TypePlayerClass TargetClass => _targetClass;
+    public TypePlayerClass TypePlayerClass => _targetClass;
     public WeponPrefab WeaponPrefab => _weaponPrefab;
     public List<DamageParametr> DamageParametrs => _damageParametrs;
     public WeaponPatametr WeaponParameter => _weaponParameter;

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.Source.Game.Scripts
@@ -17,7 +18,22 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private Transform _weaponAbilityContainer;
         [SerializeField] private PoolParticle _critDamageParticle;
         [SerializeField] private PoolParticle _vampirismParticle;
+        [Header("[Default Player Parameters]")]
+        [SerializeField] private int _currentLevel = 1;
+        [SerializeField] private int _currentUpgradeLevel = 0;
+        [SerializeField] private int _currentUpgradePoints = 0;
+        [SerializeField] private int _currentExperience = 0;
+        [SerializeField] private int _currentUpgradeExperience = 0;
+        [SerializeField] private int _rerollPoints = 2;
+        [SerializeField] private int _score = 0;
+        [SerializeField] private int _damage = 10;
+        [SerializeField] private int _armor = 2;
+        [SerializeField] private int _regeneration = 1;
+        [SerializeField] private int _countKillEnemy = 0;
+        [SerializeField] private float _moveSpeed = 2;
+        [SerializeField] private int _currentHealth = 50;
 
+        private PlayerView _playerView;
         private PlayerAbilityCaster _playerAbilityCaster;
         private PlayerStats _playerStats;
         private CardDeck _cardDeck;
@@ -25,25 +41,153 @@ namespace Assets.Source.Game.Scripts
         private PlayerAttacker _playerAttacker;
         private PlayerAnimation _playerAnimation;
         private PlayerHealth _playerHealth;
-        private PlayerMovement _playerMovment;
+        private PlayerMovement _playerMovement;
 
         public Pool Pool => _poolBullet;
-        public Transform WeaponAbilityContainer => _weaponAbilityContainer;
         public Transform PlayerAbilityContainer => _playerAbilityContainer;
         public Transform ThrowAbilityPoint => _throwAbilityPoint;
-        public CardDeck CardDeck => _cardDeck;
-        public PlayerMovement PlayerMovment => _playerMovment;
-        public PlayerAttacker PlayerAttacker => _playerAttacker;
-        public PlayerStats PlayerStats => _playerStats;
         public Transform WeaponPoint => _weaponPoint;
         public Transform AdditionalWeaponPoint => _additionalWeaponPoint;
-        public PlayerWeapons PlayerWeapons => _playerWeapons;
+        public Transform ShotPoint => _shotPoint;
+        public PlayerMovement PlayerMovment => _playerMovement;
+        public PlayerAttacker PlayerAttacker => _playerAttacker;
+        public PlayerStats PlayerStats => _playerStats;
         public PlayerAnimation PlayerAnimation => _playerAnimation;
         public PlayerHealth PlayerHealth => _playerHealth;
-        public PlayerAbilityCaster PlayerAbilityCaster => _playerAbilityCaster;
-        public Transform ShotPoint => _shotPoint;
+        public WeaponData WeaponData => _playerWeapons.GetWeaponData();
+        public int CurrentHealth => _playerHealth.GetCurrentHealth();
 
         private void OnDestroy()
+        {
+            RemoveListeners();
+            ReleaseUnmanagedResources();
+        }
+
+        public void CreateStats(
+            LevelObserver levelObserver,
+            PlayerClassData playerClassData,
+            PlayerView playerView,
+            WeaponData weaponData,
+            AbilityFactory abilityFactory,
+            AbilityPresenterFactory abilityPresenter,
+            TemporaryData temporaryData)
+        {
+            _playerView = playerView;
+            _miniMapIcon.sprite = playerClassData.Icon;
+            _playerHealth = new PlayerHealth(_currentHealth, weaponData, this, levelObserver);
+            _playerAnimation = new PlayerAnimation(_animator, _rigidbody, _moveSpeed, playerClassData, this, levelObserver);
+            _playerAttacker = new PlayerAttacker(_shotPoint, this, weaponData, this, levelObserver, _poolBullet);
+            _playerWeapons = new PlayerWeapons(this, weaponData, _poolBullet, _critDamageParticle, _vampirismParticle);
+
+            _playerMovement = new PlayerMovement(
+                levelObserver.CameraControiler.Camera,
+                levelObserver.CameraControiler.VariableJoystick,
+                _rigidbody,
+                _moveSpeed,
+                this,
+                levelObserver);
+
+            _cardDeck = new CardDeck();
+            _playerStats = new PlayerStats(this, _currentLevel, _rerollPoints, _damage, _armor, _regeneration, _countKillEnemy);
+            _playerAbilityCaster = new PlayerAbilityCaster(abilityFactory, abilityPresenter, this, temporaryData);
+            _playerView.Initialize(temporaryData.PlayerClassData.Icon, _throwAbilityPoint, _playerAbilityContainer, _weaponAbilityContainer);
+            SetPlayerStats();
+            AddListeners();
+            _playerAbilityCaster.Initialize();
+        }
+
+        public void InitStateCardDeck(List<CardData> cardDatas) 
+        {
+            foreach (var data in cardDatas)
+            {
+                _cardDeck.InitState(data);
+            }
+        }
+
+        public void UpdateDeck()
+        {
+            _cardDeck.UpdateDeck();
+        }
+
+        public void TakeCard(CardView cardView)
+        {
+            _cardDeck.TakeCard(cardView);
+        }
+
+        public void ResetCardState()
+        {
+            _cardDeck.ResetCardState();
+        }
+
+        public void UpdateCardPanelByRerollPoints()
+        {
+            _playerStats.UpdateCardPanelByRerollPoints();
+        }
+
+        public CardState GetCardStateByData(CardData cardData)
+        {
+            return _cardDeck.GetCardStateByData(cardData);
+        }
+
+        public bool TryTakeAbilityCard(int id) 
+        {
+            return _cardDeck.CanTakeAbilityCard(id);
+        }
+
+        public bool TryGetRerollPoints()
+        {
+            return _playerStats.TryGetRerollPoints();
+        }
+
+        public int GetMinWeightCards()
+        {
+            return _cardDeck.GetMinWeightCards();
+        }
+
+        public int GetCountUnlockedCards()
+        {
+            return _cardDeck.GetCountUnlockedCards();
+        }
+
+        private void AddListeners()
+        {
+            _playerAttacker.Attacked += OnAttack;
+            _playerAttacker.EnemyFinded += OnRotateToTarget;
+            _playerAttacker.CritAttacked += OnApplayCritDamage;
+            _playerAttacker.HealedVampirism += OnHealingVampirism;
+            _cardDeck.SetNewAbility += OnSetNewAbility;
+            _cardDeck.RerollPointsUpdated += OnUpdateRerollPoints;
+            _cardDeck.PlayerStatsUpdated += OnStatsUpdate;
+            _cardDeck.TakedPassivAbility += OnTakedPassivAbility;
+            _playerStats.ExperienceValueChanged += OnExperienceValueChanged;
+            _playerStats.UpgradeExperienceValueChanged += OnUpgradeExperienceValueChanged;
+            _playerStats.MaxHealthChanged += OnMaxHealthChanged;
+            _playerStats.RegenerationChanged += OnRegenerationChanged;
+            _playerStats.ArmorChanged += OnArmorChenge;
+            _playerStats.DamageChenged += OnDamageChenged;
+            _playerStats.MoveSpeedChanged += OnMoveSpeedChanged;
+            _playerStats.Healed += OnHealing;
+            _playerStats.HealthReduced += OnReduceHealth;
+            _playerStats.AbilityDurationChanged += OnAbilityDurationChange;
+            _playerStats.AbilityDamageChanged += OnAbilityDamageChanged;
+            _playerStats.AbilityCooldownReductionChanged += OnAbilityCooldownReductionChanged;
+            _playerStats.KillCountChanged += OnKillCountChanged;
+            _playerStats.PlayerLevelChanged += OnPlayerLevelChanged;
+            _playerStats.PlayerUpgradeLevelChanged += OnPlayerUpgradeLevelChanged;
+            _playerAbilityCaster.AbilityUsed += OnAbilityUsed;
+            _playerAbilityCaster.AbilityEnded += OnAbilityEnded;
+            _playerAbilityCaster.AbilityTaked += OnAbilityTaked;
+            _playerAbilityCaster.PassiveAbilityTaked += OnPassiveAbilityTaked;
+            _playerAbilityCaster.LegendaryAbilityTaked += OnLegendaryAbilityTaked;
+            _playerAbilityCaster.ClassAbilityTaked += OnClassAbilityTaked;
+            _playerHealth.HealthChanged += OnHealthChanged;
+            _playerView.AbilityViewCreated += OnAbilityViewCreated;
+            _playerView.PassiveAbilityViewCreated += OnPassiveAbilityViewCreated;
+            _playerView.LegendaryAbilityViewCreated += OnLegendaryAbilityViewCreated;
+            _playerView.ClassAbilityViewCreated += OnClassAbilityViewCreated;
+        }
+
+        private void RemoveListeners()
         {
             _playerAttacker.Attacked -= OnAttack;
             _playerAttacker.EnemyFinded -= OnRotateToTarget;
@@ -53,61 +197,111 @@ namespace Assets.Source.Game.Scripts
             _cardDeck.RerollPointsUpdated -= OnUpdateRerollPoints;
             _cardDeck.PlayerStatsUpdated -= OnStatsUpdate;
             _cardDeck.TakedPassivAbility -= OnTakedPassivAbility;
+            _playerStats.ExperienceValueChanged -= OnExperienceValueChanged;
+            _playerStats.UpgradeExperienceValueChanged -= OnUpgradeExperienceValueChanged;
             _playerStats.MaxHealthChanged -= OnMaxHealthChanged;
             _playerStats.RegenerationChanged -= OnRegenerationChanged;
             _playerStats.ArmorChanged -= OnArmorChenge;
-            _playerAbilityCaster.AbilityUsed -= OnAbilityUsed;
-            _playerAbilityCaster.AbilityEnded -= OnAbilityEnded;
             _playerStats.DamageChenged -= OnDamageChenged;
             _playerStats.MoveSpeedChanged -= OnMoveSpeedChanged;
             _playerStats.Healed -= OnHealing;
             _playerStats.HealthReduced -= OnReduceHealth;
-
-            DisposeStats();
+            _playerStats.AbilityDurationChanged -= OnAbilityDurationChange;
+            _playerStats.AbilityDamageChanged -= OnAbilityDamageChanged;
+            _playerStats.AbilityCooldownReductionChanged -= OnAbilityCooldownReductionChanged;
+            _playerStats.KillCountChanged -= OnKillCountChanged;
+            _playerStats.PlayerLevelChanged -= OnPlayerLevelChanged;
+            _playerStats.PlayerUpgradeLevelChanged -= OnPlayerUpgradeLevelChanged;
+            _playerAbilityCaster.AbilityUsed -= OnAbilityUsed;
+            _playerAbilityCaster.AbilityEnded -= OnAbilityEnded;
+            _playerAbilityCaster.AbilityTaked -= OnAbilityTaked;
+            _playerAbilityCaster.PassiveAbilityTaked -= OnPassiveAbilityTaked;
+            _playerAbilityCaster.LegendaryAbilityTaked -= OnLegendaryAbilityTaked;
+            _playerAbilityCaster.ClassAbilityTaked -= OnClassAbilityTaked;
+            _playerHealth.HealthChanged -= OnHealthChanged;
+            _playerView.AbilityViewCreated -= OnAbilityViewCreated;
+            _playerView.PassiveAbilityViewCreated -= OnPassiveAbilityViewCreated;
+            _playerView.LegendaryAbilityViewCreated -= OnLegendaryAbilityViewCreated;
+            _playerView.ClassAbilityViewCreated -= OnClassAbilityViewCreated;
         }
 
-        public void CreateStats(LevelObserver levelObserver, PlayerClassData playerClassData, WeaponData weaponData, AbilityFactory abilityFactory, 
-            AbilityPresenterFactory abilityPresenter, TemporaryData temporaryData)
+        private void SetPlayerStats()
         {
-            _miniMapIcon.sprite = playerClassData.Icon;
-            _playerHealth = new PlayerHealth(levelObserver, this, weaponData, this);
-            _playerAnimation = new PlayerAnimation(_animator, _rigidbody, 2, playerClassData, this);
-            _playerAttacker = new PlayerAttacker(_shotPoint, this, weaponData, this, _poolBullet);
-            _playerWeapons = new PlayerWeapons(this, weaponData, _poolBullet, _critDamageParticle, _vampirismParticle);
-            _playerMovment = new PlayerMovement(levelObserver.CameraControiler.Camera, levelObserver.CameraControiler.VariableJoystick, _rigidbody, 2f, this);
-            _cardDeck = new CardDeck();
-            _playerStats = new PlayerStats(this, 1, null, levelObserver, abilityFactory, abilityPresenter);
-            _playerAbilityCaster = new PlayerAbilityCaster(abilityFactory,abilityPresenter,this, levelObserver.PlayerView, temporaryData);
-
-            SubscribeAction();
+            _playerView.ChangeUpgradeLevel(_currentUpgradeLevel, _playerStats.GetMaxUpgradeExperienceValue(_currentUpgradeLevel), _currentUpgradeExperience);
+            _playerView.ChangePlayerLevel(_currentLevel, _playerStats.GetMaxExperienceValue(_currentLevel), _currentExperience);
+            _playerView.ChangeKillCount(_countKillEnemy);
+            _playerView.ChangeMaxHealthValue(_playerHealth.GetMaxHealth(), _playerHealth.GetCurrentHealth());
         }
 
-        private void SubscribeAction()
+        private void OnClassAbilityViewCreated(ClassAbilityData classAbilityData, ClassSkillButtonView classSkillButtonView, int currentLevel)
         {
-            _playerAttacker.Attacked += OnAttack;
-            _playerAttacker.EnemyFinded += OnRotateToTarget;
-            _playerAttacker.CritAttacked += OnApplayCritDamage;
-            _playerAttacker.HealedVampirism += OnHealingVampirism;
+            Debug.Log(classAbilityData.Id);
+            _playerAbilityCaster.CreateClassAbilityView(classAbilityData, classSkillButtonView, currentLevel);
+        }
 
-            _cardDeck.SetNewAbility += OnSetNewAbility;
-            _cardDeck.RerollPointsUpdated += OnUpdateRerollPoints;
-            _cardDeck.PlayerStatsUpdated += OnStatsUpdate;
-            _cardDeck.TakedPassivAbility += OnTakedPassivAbility;
+        private void OnLegendaryAbilityViewCreated(AbilityView abilityView, ParticleSystem particleSystem, Transform throwPoint, AbilityAttributeData abilityAttributeData)
+        {
+            _playerAbilityCaster.CreateLegendaryAbilityView(abilityView, particleSystem, throwPoint, abilityAttributeData);
+        }
 
-            _playerStats.MaxHealthChanged += OnMaxHealthChanged;
-            _playerStats.RegenerationChanged += OnRegenerationChanged;
-            _playerStats.ArmorChanged += OnArmorChenge;
-            _playerStats.DamageChenged += OnDamageChenged;
-            _playerStats.MoveSpeedChanged += OnMoveSpeedChanged;
-            _playerStats.Healed += OnHealing;
-            _playerStats.HealthReduced += OnReduceHealth;
+        private void OnPassiveAbilityViewCreated(PassiveAbilityView passiveAbilityView)
+        {
+            _playerAbilityCaster.CreatePassiveAbilityView(passiveAbilityView);
+        }
 
-            _playerStats.AbilityDurationChanged += OnAbilityDurationChange;
-            _playerStats.AbilityDamageChanged += OnAbilityDamageChanged;
-            _playerStats.AbilityCooldownReductionChanged += OnAbilityCooldownReductionChanged;
+        private void OnAbilityViewCreated(AbilityView abilityView, ParticleSystem particleSystem, Transform throwPoint)
+        {
+            _playerAbilityCaster.CreateAbilityView(abilityView, particleSystem, throwPoint);
+        }
 
-            _playerAbilityCaster.AbilityUsed += OnAbilityUsed;
-            _playerAbilityCaster.AbilityEnded += OnAbilityEnded;
+        private void OnClassAbilityTaked(ClassAbilityData abilityData, int currentLevel)
+        {
+            _playerView.TakeClassAbility(abilityData, currentLevel);
+        }
+
+        private void OnLegendaryAbilityTaked(AbilityAttributeData abilityAttributeData)
+        {
+            _playerView.TakeLegendaryAbility(abilityAttributeData);
+        }
+
+        private void OnPassiveAbilityTaked(PassiveAttributeData passiveAttributeData)
+        {
+            _playerView.TakePassiveAbility(passiveAttributeData);
+        }
+
+        private void OnAbilityTaked(AbilityAttributeData abilityAttributeData, int currentLevel)
+        {
+            _playerView.TakeAbility(abilityAttributeData, currentLevel);
+        }
+
+        private void OnPlayerUpgradeLevelChanged(int currenLevel, int maxExperienceValue, int currentExperience)
+        {
+            _playerView.ChangeUpgradeLevel(currenLevel, maxExperienceValue, currentExperience);
+        }
+
+        private void OnPlayerLevelChanged(int currenLevel, int maxExperienceValue, int currentExperience)
+        {
+            _playerView.ChangePlayerLevel(currenLevel, maxExperienceValue, currentExperience);
+        }
+
+        private void OnKillCountChanged(int value)
+        {
+            _playerView.ChangeKillCount(value);
+        }
+
+        private void OnUpgradeExperienceValueChanged(int value)
+        {
+            _playerView.ChangeExperience(value);
+        }
+
+        private void OnExperienceValueChanged(int value)
+        {
+            _playerView.ChangeUpgradeExperience(value);
+        }
+
+        private void OnHealthChanged(int value)
+        {
+            _playerView.ChangeHealth(value);
         }
 
         private void OnHealingVampirism(float healing)
@@ -133,7 +327,7 @@ namespace Assets.Source.Game.Scripts
 
         private void OnMoveSpeedChanged(float value)
         {
-            _playerMovment.ChangeMoveSpeed(value);
+            _playerMovement.ChangeMoveSpeed(value);
         }
 
         private void OnDamageChenged(int value)
@@ -143,8 +337,8 @@ namespace Assets.Source.Game.Scripts
 
         private void OnRotateToTarget(Transform transform)
         {
-            _playerMovment.ChengeRotate();
-            _playerMovment.LookAtEnemy(transform);
+            _playerMovement.ChangeRotate();
+            _playerMovement.LookAtEnemy(transform);
         }
 
         private void OnAbilityCooldownReductionChanged(int value)
@@ -172,9 +366,10 @@ namespace Assets.Source.Game.Scripts
             _playerStats.AbilityUsed(ability);
         }
 
-        private void OnMaxHealthChanged(int value)
+        private void OnMaxHealthChanged(int healthValue)
         {
-            _playerHealth.MaxHealthChanged(value);
+            _playerHealth.ChangeMaxHealth(healthValue, out int currentHealthValue, out int maxHealth);
+            _playerView.ChangeMaxHealthValue(maxHealth, currentHealthValue);
         }
 
         private void OnRegenerationChanged(int regeneration)
@@ -197,7 +392,6 @@ namespace Assets.Source.Game.Scripts
         private void OnUpdateRerollPoints(CardView cardView)
         {
             _playerStats.UpdateRerollPoints(cardView);
-            //cardView.CardState.CurrentLevel++;
             cardView.CardState.Weight++;
         }
 
@@ -207,12 +401,13 @@ namespace Assets.Source.Game.Scripts
             _playerAbilityCaster.TakeAbility(cardView);
             cardView.CardState.CurrentLevel++;
             cardView.CardState.Weight++;
+            cardView.CardState.IsLocked = true;
+            cardView.CardState.IsCardUpgraded = true;
         }
 
         private void OnStatsUpdate(CardView cardView)
         {
             _playerStats.UpdatePlayerStats(cardView);
-            //cardView.CardState.CurrentLevel++;
             cardView.CardState.Weight++;
         }
 
@@ -224,7 +419,7 @@ namespace Assets.Source.Game.Scripts
 
         private void AttackEnd()
         {
-            _playerMovment.ChengeRotate();
+            _playerMovement.ChangeRotate();
         }
 
         private void OnAttack()
@@ -232,13 +427,14 @@ namespace Assets.Source.Game.Scripts
             _playerAnimation.AttackAnimation();
         }
 
-        private void DisposeStats()
+        private void ReleaseUnmanagedResources()
         {
             _playerHealth.Dispose();
             _playerAnimation.Dispose();
             _playerAttacker.Dispose();
+            _playerAbilityCaster.Dispose();
             _playerWeapons.Dispose();
-            _playerMovment.Dispose();
+            _playerMovement.Dispose();
             _playerStats.Dispose();
         }
     }

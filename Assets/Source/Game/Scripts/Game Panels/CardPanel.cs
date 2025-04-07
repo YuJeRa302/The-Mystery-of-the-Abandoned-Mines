@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,27 +11,31 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private CardView _cardView;
         [Space(20)]
         [SerializeField] private Button _buttonReroll;
+        [SerializeField] private Button _buttonTest;
         //[SerializeField] private Button _buttonSkip;
 
         private List<CardView> _cardViews = new();
-    
+
         private void OnDestroy()
         {
             GamePanelsViewModel.CardPoolCreated -= Fill;
             _buttonReroll.onClick.RemoveListener(Reroll);
+            _buttonTest.onClick.RemoveListener(Open);
             //_buttonSkip.onClick.RemoveListener(Skip);
+        }
+
+        public void OpenCard()
+        {
+            Open();
         }
 
         public override void Initialize(GamePanelsViewModel gamePanelsViewModel)
         {
             base.Initialize(gamePanelsViewModel);
             _buttonReroll.onClick.AddListener(Reroll);
+            _buttonTest.onClick.AddListener(Open);
+            //_buttonSkip.onClick.AddListener(Skip);
             GamePanelsViewModel.CardPoolCreated += Fill;
-        }
-
-        public void OpenCard()
-        {
-            Open();
         }
 
         protected override void Open()
@@ -44,6 +49,7 @@ namespace Assets.Source.Game.Scripts
 
         protected override void Close()
         {
+            GamePanelsViewModel.GetPlayer().UpdateDeck();
             Clear();
             base.Close();
         }
@@ -54,7 +60,7 @@ namespace Assets.Source.Game.Scripts
             {
                 CardView view = Instantiate(_cardView, _cardContainer);
                 _cardViews.Add(view);
-                view.Initialize(GamePanelsViewModel.GetPlayer().CardDeck.GetCardStateByData(cardData), cardData);
+                view.Initialize(GamePanelsViewModel.GetPlayer().GetCardStateByData(cardData), cardData);
                 view.CardTaked += OnCardTaked;
             }
         }
@@ -72,7 +78,7 @@ namespace Assets.Source.Game.Scripts
 
         private void OnCardTaked(CardView cardView)
         {
-            GamePanelsViewModel.GetPlayer().CardDeck.TakeCard(cardView);
+            GamePanelsViewModel.GetPlayer().TakeCard(cardView);
             Close();
         }
 
@@ -83,24 +89,15 @@ namespace Assets.Source.Game.Scripts
 
         private void Reroll()
         {
-            if (GamePanelsViewModel.GetPlayer().PlayerStats.TryGetRerollPoints(out bool canNextReroll))
+            if (GamePanelsViewModel.GetPlayer().TryGetRerollPoints())
             {
                 Clear();
+                GamePanelsViewModel.GetPlayer().UpdateDeck();
+                GamePanelsViewModel.GetPlayer().UpdateCardPanelByRerollPoints();
                 GamePanelsViewModel.CreateCardPool();
-
-                if (canNextReroll == false)
-                    _buttonReroll.gameObject.SetActive(false);
             }
-            // else
-            //if (GamePanelsViewModel.GetPlayer().PlayerStats.TryGetRerollPoints() == false)
-            //{
-            //    _buttonReroll.gameObject.SetActive(false);
-            //}
-            //else 
-            //{
-            //    Clear();
-            //    GamePanelsViewModel.CreateCardPool();
-            //}
+
+            _buttonReroll.gameObject.SetActive(GamePanelsViewModel.GetPlayer().TryGetRerollPoints());
         }
     }
 }

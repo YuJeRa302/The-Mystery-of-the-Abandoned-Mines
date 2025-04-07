@@ -50,7 +50,7 @@ public class AxemMssile : PoolObject
     public void Initialaze(Player player, DamageParametr damageParametr, float moveSpeedBoost, float duration)
     {
         _player = player;
-        _weponPrefab = _player.PlayerWeapons.WeaponData.WeaponPrefab;
+        _weponPrefab = _player.WeaponData.WeaponPrefab;
         _moveSpeedBoost = moveSpeedBoost;
         _throwDuration = duration - 2f;
         _dackPlayerDuration = 2f;
@@ -63,7 +63,7 @@ public class AxemMssile : PoolObject
                 damageParametr.DamageSupportivePatametrs[i].SupportivePatametr);
         }
 
-        _weponPrefab = Instantiate(_player.PlayerWeapons.WeaponData.WeaponPrefab, transform);
+        _weponPrefab = Instantiate(_player.WeaponData.WeaponPrefab, transform);
         Vector3 rotate = _weponPrefab.transform.eulerAngles;
         rotate.x = 90;
         _weponPrefab.transform.rotation = Quaternion.Euler(rotate);

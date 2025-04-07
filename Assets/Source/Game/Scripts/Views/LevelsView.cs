@@ -147,7 +147,7 @@ namespace Assets.Source.Game.Scripts
         {
             foreach (WeaponData weaponData in _weaponDatas)
             {
-                if (typePlayerClass == weaponData.TargetClass)
+                if (typePlayerClass == weaponData.TypePlayerClass)
                 {
                     WeaponState weaponState = _levelsViewModel.GetWeaponState(weaponData);
 

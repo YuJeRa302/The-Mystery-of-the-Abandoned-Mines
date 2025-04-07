@@ -23,11 +23,14 @@ public class PlayerWeapons : IDisposable
         CreateWeaponView();
     }
 
-    public WeaponData WeaponData => _weapon;
-
     public void Dispose()
     {
         GC.SuppressFinalize(this);
+    }
+
+    public WeaponData GetWeaponData() 
+    {
+        return _weapon;
     }
 
     public void ChangeTrailEffect()
@@ -88,7 +91,7 @@ public class PlayerWeapons : IDisposable
     {
         GameObject.Instantiate(_weapon.WeaponPrefab, _player.WeaponPoint);
 
-        if (_weapon.TargetClass == TypePlayerClass.Paladin)
+        if (_weapon.TypePlayerClass == TypePlayerClass.Paladin)
         {
             PaladinWeaponData paladinWeaponData = _weapon as PaladinWeaponData;
             GameObject.Instantiate(paladinWeaponData.AdditionalWeapon, _player.AdditionalWeaponPoint);

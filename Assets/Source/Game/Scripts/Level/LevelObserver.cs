@@ -53,6 +53,7 @@ namespace Assets.Source.Game.Scripts
         public CardLoader CardLoader => _cardLoader;
         public PlayerView PlayerView => _playerView;
         public CameraControiler CameraControiler => _cameraControiler;
+        public WeaponData[] ContractWeaponDatas { get; private set; }
         public int CurrentRoomLevel => _currentRoomLevel;
         public int CountRooms { get; private set; }
         public int CountStages => _countStages;
@@ -90,22 +91,23 @@ namespace Assets.Source.Game.Scripts
 
             _playerFactory = new PlayerFactory(
                 temporaryData.WeaponData, 
-                this, 
-                _abilityFactory, 
+                this,
+                _abilityFactory,
                 _abilityPresenterFactory,
-                _playerPrefab, 
-                _spawnPlayerPoint, 
-                temporaryData.PlayerClassData, 
-                temporaryData, out Player player);
+                _playerPrefab,
+                _spawnPlayerPoint,
+                temporaryData.PlayerClassData,
+                _playerView,
+                temporaryData,
+                out Player player);
 
             _player = player;
-            _cardLoader.Initialize(_player.CardDeck);
+            _cardLoader.Initialize(_player);
             _enemySpawner = new EnemySpawner(_enemuPool, this, _player, _currentRoomLevel);
-            _playerView.Initialize(_player, temporaryData.PlayerClassData.Icon);
-            _player.PlayerAbilityCaster.Initialize();
             _cameraControiler.SetLookTarget(_player.transform);
             _saveAndLoad = new MenuSaveAndLoad();
             _saveAndLoad.Initialize(temporaryData);
+            ContractWeaponDatas = temporaryData.LevelData.IsContractLevel == true ? (temporaryData.LevelData as ContractLevelData).WeaponDatas : null;
             CreateGamePanelEntities(temporaryData);
             LoadGamePanels();
             AddListener();
@@ -343,10 +345,10 @@ namespace Assets.Source.Game.Scripts
 
         private void EndGame() 
         {
+            CloseAllGamePanels();
+            RemoveRoomListener();
+            _roomPlacer.Clear();
             GameEnded?.Invoke();
-            //CloseAllGamePanels();
-            //RemoveRoomListener();
-            //_roomPlacer.Clear();
             Debug.Log("END GAme");
         }
 

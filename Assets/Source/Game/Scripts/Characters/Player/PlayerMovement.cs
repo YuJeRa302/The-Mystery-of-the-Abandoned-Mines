@@ -6,19 +6,19 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : IDisposable
 {
-    private float _moveSpeed;
+    private readonly ICoroutineRunner _coroutineRunner;
+    private readonly IGameLoopService _gameLoopService;
+    private readonly float _amplifierJoystick = 12.7f;
 
+    private float _moveSpeed;
+    private float _maxMoveSpeed;
     private Camera _camera;
     private VariableJoystick _variableJoystick;
-
-    private float _maxMoveSpeed;
     private PlayerInput _playerInputSystem;
     private Vector3 _direction;
     private Rigidbody _rigidbody;
     private InputAction _move;
-    private Coroutine _movment;
-    Player _player;
-    private ICoroutineRunner _coroutineRunner;
+    private Coroutine _movement;
     private bool _isModile = false;
     private bool _canRotate = true;
     private bool _isDecstop = true; //
@@ -26,25 +26,25 @@ public class PlayerMovement : IDisposable
     public float MaxMoveSpeed => _maxMoveSpeed;
     public float MoveSpeed => _moveSpeed;
 
-    public PlayerMovement(Camera camera, VariableJoystick variableJoystick, Rigidbody rigidbody, float moveSpeed, Player coroutineRunner)
+    public PlayerMovement(
+        Camera camera,
+        VariableJoystick variableJoystick,
+        Rigidbody rigidbody,
+        float moveSpeed,
+        ICoroutineRunner coroutineRunner,
+        IGameLoopService gameLoopService)
     {
+        _gameLoopService = gameLoopService;
+        _coroutineRunner = coroutineRunner;
         _moveSpeed = moveSpeed;
         _rigidbody = rigidbody;
         _camera = camera;
         _variableJoystick = variableJoystick;
-        _coroutineRunner = coroutineRunner;
-        _player = coroutineRunner;
-
-        if (_playerInputSystem == null)
-        {
-            _playerInputSystem = new PlayerInput();
-            _playerInputSystem.Enable();
-        }
-
+        CreateInputSystem();
         _move = _playerInputSystem.Player.Move;
         _maxMoveSpeed = _moveSpeed * 2f;
-
-        _movment = _coroutineRunner.StartCoroutine(DekstopMove());
+        _movement = _coroutineRunner.StartCoroutine(DesktopMove());
+        AddListeners();
     }
 
     public void Dispose()
@@ -52,9 +52,10 @@ public class PlayerMovement : IDisposable
         if (_playerInputSystem != null)
             _playerInputSystem.Disable();
 
-        if (_movment != null)
-            _coroutineRunner.StopCoroutine(_movment);
+        if (_movement != null)
+            _coroutineRunner.StopCoroutine(_movement);
 
+        RemoveListeners();
         GC.SuppressFinalize(this);
     }
 
@@ -64,7 +65,7 @@ public class PlayerMovement : IDisposable
         _maxMoveSpeed = _moveSpeed * 2f;
     }
 
-    public void ChengeRotate()
+    public void ChangeRotate()
     {
         _canRotate = !_canRotate;
     }
@@ -74,11 +75,46 @@ public class PlayerMovement : IDisposable
         _rigidbody.transform.LookAt(new Vector3(target.position.x, 0 , target.position.z));
     }
 
+    private void CreateInputSystem() 
+    {
+        if (_playerInputSystem == null)
+        {
+            _playerInputSystem = new PlayerInput();
+            _playerInputSystem.Enable();
+        }
+    }
+
+    private void AddListeners()
+    {
+        _gameLoopService.GamePaused += OnPauseGame;
+        _gameLoopService.GameResumed += OnResumeGame;
+    }
+
+    private void RemoveListeners()
+    {
+        _gameLoopService.GamePaused -= OnPauseGame;
+        _gameLoopService.GameResumed -= OnResumeGame;
+    }
+
+    private void OnPauseGame()
+    {
+        if (_movement != null)
+            _coroutineRunner.StopCoroutine(_movement);
+    }
+
+    private void OnResumeGame()
+    {
+        if (_movement != null)
+            _coroutineRunner.StopCoroutine(_movement);
+
+        _movement = _coroutineRunner.StartCoroutine(DesktopMove());
+    }
+
     private IEnumerator MobileMove()
     {
         while (_variableJoystick != null)
         {
-            float mobileSpeed = _moveSpeed * 12.7f;
+            float mobileSpeed = _moveSpeed * _amplifierJoystick;
             _direction = Vector3.forward * _variableJoystick.Vertical + Vector3.right * _variableJoystick.Horizontal;
             _rigidbody.AddForce(_direction * mobileSpeed * Time.fixedDeltaTime, ForceMode.VelocityChange);
             MobileLookAt();
@@ -134,7 +170,7 @@ public class PlayerMovement : IDisposable
         _rigidbody.velocity = new Vector3(_rigidbody.velocity.x, 0, _rigidbody.velocity.z);
     }
 
-    private IEnumerator DekstopMove()
+    private IEnumerator DesktopMove()
     {
         while (_playerInputSystem != null)
         {

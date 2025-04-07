@@ -8,42 +8,28 @@ namespace Assets.Source.Game.Scripts
     public class PlayerHealth : IDisposable
     {
         private readonly int _minHealth = 0;
-
-        private Player _player;
-        private ICoroutineRunner _coroutineRunner;
+        private readonly ICoroutineRunner _coroutineRunner;
+        private readonly IGameLoopService _gameLoopService;
 
         private int _maxHealth = 100;
-        private int _currentHealth = 0;
+        private int _currentHealth;
         private int _delayHealing = 1;
-        private int _regenerationHealing = 1;
+        private int _regenerationValue = 1;
         private int _armor = 2;
         private Coroutine _regeneration;
-        private LevelObserver _levelObserver;
 
         public event Action DamageTaked;
         public event Action<int> HealthChanged;
         public event Action PlayerDied;
 
-        public int MaxHealth => _maxHealth;
-        public int CurrentHealth => _currentHealth;
-
-        public PlayerHealth(LevelObserver levelObserver, Player player, WeaponData weapon, ICoroutineRunner coroutineRunner)
+        public PlayerHealth(int currentHealth, WeaponData weapon, ICoroutineRunner coroutineRunner, IGameLoopService gameLoopService)
         {
             _coroutineRunner = coroutineRunner;
-            _levelObserver = levelObserver;
-            _player = player;
-
-            foreach (var parametr in weapon.WeaponParameter.WeaponSupportivePatametrs)
-            {
-                if (parametr.SupportivePatametr == TypeWeaponSupportiveParametr.BonusArmor)
-                {
-                    _armor += Convert.ToInt32(parametr.Value);
-                }
-            }
-
-            _currentHealth = 50;
+            _gameLoopService = gameLoopService;
+            _currentHealth = currentHealth;
+            ApplyWeaponParameters(weapon);
+            AddListeners();
             _regeneration = _coroutineRunner.StartCoroutine(RegenerationHealth());
-            AddListener();
         }
 
         public void ReduceHealth(float reduce)
@@ -84,14 +70,16 @@ namespace Assets.Source.Game.Scripts
             HealthChanged?.Invoke(_currentHealth);
         }
 
-        public void MaxHealthChanged(int value)
+        public void ChangeMaxHealth(int value, out int currentHealth, out int maxHealth)
         {
             _maxHealth += value;
+            currentHealth = _currentHealth;
+            maxHealth = _maxHealth;
         }
 
         public void ChangeRegeniration(int regeniration)
         {
-            _regenerationHealing = regeniration;
+            _regenerationValue = regeniration;
         }
 
         public void ChangeArmor(int armor)
@@ -100,12 +88,37 @@ namespace Assets.Source.Game.Scripts
             Debug.Log(armor);
         }
 
-        private void AddListener() 
+        public int GetMaxHealth() 
         {
-            _levelObserver.GamePaused += OnPauseGame;
-            _levelObserver.GameResumed += OnResumeGame;
-            //_player.PlayerStats.MaxHealthChanged += OnMaxHealthChanged;
+            return _maxHealth;
+        }
+
+        public int GetCurrentHealth() 
+        {
+            return _currentHealth;
+        }
+
+        private void ApplyWeaponParameters(WeaponData weapon) 
+        {
+            foreach (var parametr in weapon.WeaponParameter.WeaponSupportivePatametrs)
+            {
+                if (parametr.SupportivePatametr == TypeWeaponSupportiveParameter.BonusArmor)
+                    _armor += Convert.ToInt32(parametr.Value);
+            }
+        }
+
+        private void AddListeners() 
+        {
+            _gameLoopService.GamePaused += OnPauseGame;
+            _gameLoopService.GameResumed += OnResumeGame;
             HealthChanged += OnHealthChanged;
+        }
+
+        private void RemoveListeners() 
+        {
+            _gameLoopService.GamePaused -= OnPauseGame;
+            _gameLoopService.GameResumed -= OnResumeGame;
+            HealthChanged -= OnHealthChanged;
         }
 
         private void OnPauseGame()
@@ -125,13 +138,9 @@ namespace Assets.Source.Game.Scripts
         private void OnHealthChanged(int value) 
         {
             if (_regeneration != null)
-            {
                 return;
-            }
-            else 
-            {
+            else
                 _regeneration = _coroutineRunner.StartCoroutine(RegenerationHealth());
-            }
         }
 
         private IEnumerator RegenerationHealth()
@@ -141,7 +150,7 @@ namespace Assets.Source.Game.Scripts
             while (_currentHealth < _maxHealth)
             {
                 yield return new WaitForSeconds(_delayHealing);
-                _currentHealth += _regenerationHealing;
+                _currentHealth += _regenerationValue;
                 HealthChanged?.Invoke(_currentHealth);
             }
 
@@ -156,14 +165,10 @@ namespace Assets.Source.Game.Scripts
 
         public void Dispose()
         {
-            _levelObserver.GamePaused -= OnPauseGame;
-            _levelObserver.GameResumed -= OnResumeGame;
-            //_player.PlayerStats.MaxHealthChanged -= OnMaxHealthChanged;
-            HealthChanged -= OnHealthChanged;
-
             if (_regeneration != null)
                 _coroutineRunner.StopCoroutine(_regeneration);
 
+            RemoveListeners();
             GC.SuppressFinalize(this);
         }
     }

@@ -1,8 +1,8 @@
-public enum TypeWeaponSupportiveParametr
+public enum TypeWeaponSupportiveParameter
 {
     LifeStealValue,
     LifeStealChance,
-    CritChence,
+    CritChance,
     CritDamage,
     BonusArmor
 }

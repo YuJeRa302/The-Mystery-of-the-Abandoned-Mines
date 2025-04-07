@@ -8,7 +8,6 @@ namespace Assets.Source.Game.Scripts
         private readonly System.Random _rnd = new ();
         private readonly int _defaultStateLevel = 0;
         private readonly int _defaultStateWeight = 1;
-        private readonly int _minValue = 0;
 
         private List<CardData> _cardDataAbility = new ();
         private List<CardData> _activeCardAbility = new ();
@@ -21,47 +20,25 @@ namespace Assets.Source.Game.Scripts
 
         public CardDeck() { }
 
-        public List<CardData> CardDataAbility => _cardDataAbility;
-        public List<CardState> CardStates => _cardState;
-
         public void TakeCard(CardView cardView)
         {
-            if (cardView.CardData.TypeCardParameter == TypeCardParameter.Ability || cardView.CardData.TypeCardParameter == TypeCardParameter.LegendariAbility 
-                || cardView.CardData.TypeCardParameter == TypeCardParameter.PassivAbllity)
+            switch (cardView.CardData.TypeCardParameter)
             {
-                if(cardView.CardData.TypeCardParameter != TypeCardParameter.PassivAbllity)
-                    SetNewAbility?.Invoke(cardView);
-
-                if (_cardDataAbility.Count > 0)
-                    AddCardAbilityData(cardView, _cardDataAbility);
-                else
-                    _cardDataAbility.Add(cardView.CardData);
-
-                if (cardView.CardData.AttributeData as AttackAbilityData)
-                {
-                    if (_activeCardAbility.Count > 0)
-                    {
-                        AddCardAbilityData(cardView, _activeCardAbility);
-                    }
-                    else
-                    {
-                        _activeCardAbility.Add(cardView.CardData);
-                    }
-                }
-                else if (cardView.CardData.AttributeData as PassiveAttributeData)
-                {
-                    TakedPassivAbility?.Invoke(cardView);
-                }
-                cardView.CardState.CurrentLevel++;
-                cardView.CardState.Weight++;
-            }
-            else if (cardView.CardData.TypeCardParameter == TypeCardParameter.RerollPoints)
-            {
-                RerollPointsUpdated?.Invoke(cardView);
-            }
-            else
-            {
-                PlayerStatsUpdated?.Invoke(cardView);
+                case TypeCardParameter.RerollPoints:
+                    RerollPointsUpdated?.Invoke(cardView);
+                    break;
+                case TypeCardParameter.Default:
+                    PlayerStatsUpdated?.Invoke(cardView);
+                    break;
+                case TypeCardParameter.PassivAbllity:
+                    TakePassiveAbility(cardView);
+                    break;
+                case TypeCardParameter.LegendariAbility:
+                    TakeAbility(cardView);
+                    break;
+                case TypeCardParameter.Ability:
+                    TakeAbility(cardView);
+                    break;
             }
             //cardView.CardState.Weight++;
             _cardState.Add(cardView.CardState);
@@ -85,15 +62,24 @@ namespace Assets.Source.Game.Scripts
 
         public int GetMinWeightCards()
         {
+            int maxWeight = 0;
             int minWeight = 0;
 
             foreach (var card in _cardState)
             {
                 if (card.IsLocked == false)
-                    minWeight += card.Weight;
+                {
+                    maxWeight += card.Weight;
+
+                    if (minWeight == 0)
+                        minWeight = card.Weight;
+
+                    if (minWeight > card.Weight)
+                        minWeight = card.Weight;
+                }
             }
 
-            return _rnd.Next(_minValue, minWeight);
+            return _rnd.Next(minWeight, maxWeight);
         }
 
         public int GetCountUnlockedCards()
@@ -114,6 +100,14 @@ namespace Assets.Source.Game.Scripts
             foreach (var card in _cardState)
             {
                 card.IsTaked = false;
+            }
+        }
+
+        public void UpdateDeck()
+        {
+            foreach (var card in _cardState)
+            {
+                card.Weight++;
             }
         }
 
@@ -149,6 +143,34 @@ namespace Assets.Source.Game.Scripts
             }
 
             return false;
+        }
+
+        private void TakeAbility(CardView cardView)
+        {
+            SetNewAbility?.Invoke(cardView);
+
+            if (_cardDataAbility.Count > 0)
+                AddCardAbilityData(cardView, _cardDataAbility);
+            else
+                _cardDataAbility.Add(cardView.CardData);
+
+            if (cardView.CardData.AttributeData as AttackAbilityData)
+            {
+                if (_activeCardAbility.Count > 0)
+                    AddCardAbilityData(cardView, _activeCardAbility);
+                else
+                    _activeCardAbility.Add(cardView.CardData);
+            }
+        }
+
+        private void TakePassiveAbility(CardView cardView) 
+        {
+            if (_cardDataAbility.Count > 0)
+                AddCardAbilityData(cardView, _cardDataAbility);
+            else
+                _cardDataAbility.Add(cardView.CardData);
+
+            TakedPassivAbility?.Invoke(cardView);
         }
 
         private void AddCardAbilityData(CardView cardView, List<CardData> repository)

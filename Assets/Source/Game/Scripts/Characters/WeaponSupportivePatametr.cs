@@ -3,5 +3,5 @@
 public class WeaponSupportivePatametr 
 {
     public float Value;
-    public TypeWeaponSupportiveParametr SupportivePatametr;
+    public TypeWeaponSupportiveParameter SupportivePatametr;
 }

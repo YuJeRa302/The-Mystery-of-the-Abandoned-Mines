@@ -6,17 +6,21 @@ namespace Assets.Source.Game.Scripts
     public class GamePanelsViewModel
     {
         private readonly GamePanelsModel _gamePanelsModel;
-
+        
         public GamePanelsViewModel(GamePanelsModel gamePanelsModel)
         {
             _gamePanelsModel = gamePanelsModel;
             _gamePanelsModel.StageCompleted += () => StageCompleted?.Invoke();
             _gamePanelsModel.CardPoolCreated += () => CardPoolCreated?.Invoke();
+            _gamePanelsModel.GameEnded += () => GameEnded?.Invoke();
         }
 
         public event Action StageCompleted;
         public event Action CardPoolCreated;
+        public event Action GameEnded;
 
+        public bool GetLevelType() => _gamePanelsModel.GetLevelType();
+        public WeaponData CreateRewardWeapon() => _gamePanelsModel.CreateRewardWeapon();
         public Player GetPlayer() => _gamePanelsModel.GetPlayer();
         public List<CardData> GetMainCardPool => _gamePanelsModel.GetMainCardPool();
         public void CreateCardPool() => _gamePanelsModel.CreateCardPool();

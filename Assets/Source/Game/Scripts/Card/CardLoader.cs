@@ -14,21 +14,17 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private List<CardData> _cardData;
         [SerializeField] private List<CardData> _defaultCardData;
 
-        private CardDeck _cardDeck;
+        private Player _player;
         private List<CardData> _mainCardsPool = new ();
 
         public event Action CardPoolCreated;
 
         public List<CardData> MainCardsPool => _mainCardsPool;
 
-        public void Initialize(CardDeck deck)
+        public void Initialize(Player player)
         {
-            _cardDeck = deck;
-
-            foreach (var data in _cardData)
-            {
-                _cardDeck.InitState(data);
-            }
+            _player = player;
+            _player.InitStateCardDeck(_cardData);
         }
 
         public void CreateCardPool()
@@ -46,9 +42,9 @@ namespace Assets.Source.Game.Scripts
             if (cardsData.Count > _minValue)
             {
                 int maxCardsPool;
-                int currentWeightCards = 0;
-                int controlWeight = _cardDeck.GetMinWeightCards();
-                int currentCountCards = _cardDeck.GetCountUnlockedCards();
+
+                int controlWeight = _player.GetMinWeightCards();
+                int currentCountCards = _player.GetCountUnlockedCards();
 
                 if (currentCountCards < _maxCardsPool)
                     maxCardsPool = currentCountCards;
@@ -57,7 +53,7 @@ namespace Assets.Source.Game.Scripts
 
                 for (int index = 0; index < maxCardsPool; index++)
                 {
-                    CardData newCard = AddCard(cardsData, currentWeightCards, controlWeight);
+                    CardData newCard = AddCard(cardsData, controlWeight);
 
                     if (newCard != null)
                         _mainCardsPool.Add(newCard);
@@ -65,16 +61,18 @@ namespace Assets.Source.Game.Scripts
                         _mainCardsPool.Add(AddDefaultCard());
                 }
 
-                _cardDeck.ResetCardState();
+                _player.ResetCardState();
                 CardPoolCreated?.Invoke();
             }
         }
 
-        private CardData AddCard(List<CardData> cardsData, int currentWeightCards, int controlWeight)
+        private CardData AddCard(List<CardData> cardsData, int controlWeight)
         {
+            int currentWeightCards = 0;
+
             foreach (var card in cardsData)
             {
-                CardState cardState = _cardDeck.GetCardStateByData(card);
+                CardState cardState = _player.GetCardStateByData(card);
                 
                 if (cardState.IsLocked == false)
                 {
@@ -85,6 +83,7 @@ namespace Assets.Source.Game.Scripts
                         if (currentWeightCards >= controlWeight)
                         {
                             cardState.IsTaked = true;
+                            currentWeightCards = 0;
                             return card;
                         }
                     }
@@ -103,13 +102,13 @@ namespace Assets.Source.Game.Scripts
         {
             foreach (var card in cards)
             {
-                CardState cardState = _cardDeck.GetCardStateByData(card);
+                CardState cardState = _player.GetCardStateByData(card);
 
                 if (card.Id == cardState.Id)
                 {
                     if (card.TypeCardParameter == TypeCardParameter.Ability)
                     {
-                        if(_cardDeck.CanTakeAbilityCard(card.Id) || card.AttributeData as PassiveAttributeData)
+                        if(_player.TryTakeAbilityCard(card.Id) || card.AttributeData as PassiveAttributeData)
                         {
                             if (card.AttributeData.CardParameters.Count <= cardState.CurrentLevel)
                             {
@@ -117,12 +116,10 @@ namespace Assets.Source.Game.Scripts
 
                                 if (card.AttributeData as AbilityAttributeData)
                                 {
-                                    if (FindPassivCard(cards, (card.AttributeData as AbilityAttributeData).TypeMagic, out CardData passivCard))
+                                    if (TryFindPassivCard(cards, (card.AttributeData as AbilityAttributeData).TypeMagic))
                                     {
                                         if (FindLegendaryCard(cards, (card.AttributeData as AbilityAttributeData).TypeUpgradeMagic, out CardData legendaryCard))
-                                        {
-                                            _cardDeck.GetCardStateByData(legendaryCard).IsLocked = false;
-                                        }
+                                            _player.GetCardStateByData(legendaryCard).IsLocked = false;
                                     }
                                 }
                             }
@@ -152,16 +149,14 @@ namespace Assets.Source.Game.Scripts
             {
                 if (card.LegendaryAbilityData != null)
                 {
-                    if (_cardDeck.GetCardStateByData(card).IsLocked)
+                    if (_player.GetCardStateByData(card).IsLocked)
                     {
                         if (typeMagic == card.LegendaryAbilityData.TypeUpgradeMagic)
                         {
-                            if (_cardDeck.GetCardStateByData(card).CurrentLevel <= card.LegendaryAbilityData.LegendaryAbilityParameters.Count)
+                            if (_player.GetCardStateByData(card).CurrentLevel <= card.LegendaryAbilityData.LegendaryAbilityParameters.Count)
                             {
-                                if (_cardDeck.GetCardStateByData(card).IsCardUpgraded == false)
-                                {
+                                if (_player.GetCardStateByData(card).IsCardUpgraded == false)
                                     legendaryCard = card;
-                                }
                             }
                         }
                     }
@@ -171,9 +166,9 @@ namespace Assets.Source.Game.Scripts
             return legendaryCard != null;
         }
 
-        private bool FindPassivCard(List<CardData> cards, TypeMagic typeMagic, out CardData passivCard)
+        private bool TryFindPassivCard(List<CardData> cards, TypeMagic typeMagic)
         {
-            passivCard = null;
+            CardData passivCard = null;
 
             foreach (var data in cards)
             {
@@ -181,7 +176,7 @@ namespace Assets.Source.Game.Scripts
                 {
                     if ((data.AttributeData as PassiveAttributeData).TypeMagic == typeMagic)
                     {
-                        if (_cardDeck.GetCardStateByData(data).IsLocked == true)
+                        if (_player.GetCardStateByData(data).IsLocked == true)
                         {
                             passivCard = data;
                         }

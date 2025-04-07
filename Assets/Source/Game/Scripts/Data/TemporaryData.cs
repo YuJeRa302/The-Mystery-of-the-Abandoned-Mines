@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class TemporaryData
 {
+    private readonly int _shiftIndex = 1;
+
     private LevelState[] _levelStates;
     private WeaponState[] _weaponStates;
     private int _countLevels;
@@ -215,6 +217,29 @@ public class TemporaryData
         }
 
         ChengedData?.Invoke();
+    }
+
+    public void UpdateWeaponStates(WeaponState weaponState) 
+    {
+        if (weaponState == null)
+            return;
+
+        int newArrayLength = _weaponStates.Length;
+        newArrayLength++;
+        WeaponState[] tempWeaponStates = new WeaponState[newArrayLength];
+
+        for (int index = 0; index < _weaponStates.Length; index++) 
+        {
+            tempWeaponStates[index] = _weaponStates[index];
+        }
+
+        tempWeaponStates[tempWeaponStates.Length - _shiftIndex] = weaponState;
+        _weaponStates = new WeaponState[tempWeaponStates.Length];
+
+        for (int index = 0; index < tempWeaponStates.Length; index++)
+        {
+            _weaponStates[index] = tempWeaponStates[index];
+        }
     }
 
     public void SetCoinsCount(int value) 

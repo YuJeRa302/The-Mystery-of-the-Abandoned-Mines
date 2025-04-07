@@ -80,7 +80,7 @@ namespace Assets.Source.Game.Scripts
 
         private void FillGameParameters() 
         {
-            _playerHealth.text = GamePanelsViewModel.GetPlayer().PlayerHealth.CurrentHealth.ToString();
+            _playerHealth.text = GamePanelsViewModel.GetPlayer().CurrentHealth.ToString();
             _playerDamage.text = GamePanelsViewModel.GetPlayer().PlayerStats.Damage.ToString();
             _coins.text = GamePanelsViewModel.GetPlayer().PlayerWallet.CurrentCoins.ToString();
             _rerollPoints.text = GamePanelsViewModel.GetPlayer().PlayerStats.RerollPoints.ToString();

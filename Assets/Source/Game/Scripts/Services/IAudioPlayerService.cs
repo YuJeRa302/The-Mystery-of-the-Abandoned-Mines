@@ -7,4 +7,6 @@ public interface IAudioPlayerService
     void PlayOneShotButtonClickSound();
     void PlayOneShotButtonHoverSound();
     void PlayOneShotPopupSound();
+    public void AmbientValueChanged(float value);
+    public void SfxValueChanged(float value);
 }

@@ -31,4 +31,8 @@ MonoBehaviour:
       _supportivePatametr: 0
     _particle: {fileID: 0}
   _weaponParameter:
-    WeaponSupportivePatametrs: []
+    WeaponSupportivePatametrs:
+    - Value: 100
+      SupportivePatametr: 2
+    - Value: 100
+      SupportivePatametr: 3

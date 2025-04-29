@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using System;
 using UnityEngine;
@@ -13,20 +14,18 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private MainMenuView _mainMenuView;
         [SerializeField] private WeaponsView _weaponsView;
         [SerializeField] private ClassAbilityView _classAbilityView;
+        [SerializeField] private KnowledgeBaseView _knowledgeBaseView;
         [SerializeField] private ConfigData _configData;
 
-        private MenuSaveAndLoad _saveAndLoad;
+        private SaveAndLoader _saveAndLoad;
         private TemporaryData _temporaryData;
 
         public Action EnebleSave;
 
-        private void Start()
+        private async void Start()
         {
             if (_temporaryData == null)
-            {
-                Build();
-
-            }
+                await Build();
         }
 
         private void OnEnable()
@@ -40,30 +39,26 @@ namespace Assets.Source.Game.Scripts
             DOTween.KillAll();
         }
 
-        public void Initialize(TemporaryData temporaryData)
+        public async void Initialize(TemporaryData temporaryData)
         {
             Time.timeScale = 1;
             DOTween.Clear();
             DOTween.Init();
             _temporaryData = temporaryData;
-            Build();
+            await Build();
         }
 
-        private void Build()
+        private async UniTask Build()
         {
             _saveAndLoad = new();
             EnebleSave?.Invoke();
 
             if (_temporaryData == null)
             {
-                if (_saveAndLoad.TryGetGameData(out GameInfo gameInfo))
-                {
-                    _temporaryData = new TemporaryData(gameInfo);
-                }
-                else
-                {
-                    _temporaryData = new TemporaryData(_configData);
-                }
+                var loadResult = await _saveAndLoad.TryGetGameData();
+                _temporaryData = loadResult.Success
+                    ? new TemporaryData(loadResult.Data)
+                    : new TemporaryData(_configData);
             }
 
             SettingsModel settingsModel = new SettingsModel(_temporaryData);
@@ -72,6 +67,7 @@ namespace Assets.Source.Game.Scripts
             MenuModel menuModel = new MenuModel();
             WeaponsModel weaponsModel = new WeaponsModel(_temporaryData);
             ClassAbilityModel classAbilityModel = new ClassAbilityModel(_temporaryData);
+            KnowledgeBaseModel knowledgeBaseModel = new KnowledgeBaseModel();
 
             MainMenuViewModel mainMenuViewModel = new MainMenuViewModel(menuModel);
             SettingsViewModel settingsViewModel = new SettingsViewModel(settingsModel, menuModel);
@@ -79,6 +75,7 @@ namespace Assets.Source.Game.Scripts
             UpgradeViewModel upgradeViewModel = new UpgradeViewModel(upgradeModel, menuModel);
             WeaponsViewModel weaponsViewModel = new WeaponsViewModel(weaponsModel, menuModel);
             ClassAbilityViewModel classAbilityViewModel = new ClassAbilityViewModel(classAbilityModel, menuModel);
+            KnowledgeBaseViewModel knowledgeBaseViewModel = new KnowledgeBaseViewModel(knowledgeBaseModel, menuModel);
 
             _settingsView.Initialize(settingsViewModel, _audioPlayer);
             _upgradesView.Initialize(upgradeViewModel, _audioPlayer);
@@ -86,6 +83,7 @@ namespace Assets.Source.Game.Scripts
             _levelsView.Initialize(levelsViewModel, _audioPlayer);
             _weaponsView.Initialize(weaponsViewModel, _audioPlayer);
             _classAbilityView.Initialize(classAbilityViewModel, _audioPlayer);
+            _knowledgeBaseView.Initialize(knowledgeBaseViewModel, _audioPlayer);
             _saveAndLoad.Initialize(_temporaryData);
             _temporaryData.SetUpgradesData(_upgradesView.UpgradeDatas);
         }

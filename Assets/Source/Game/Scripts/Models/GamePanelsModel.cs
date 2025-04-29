@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = System.Random;
 
 namespace Assets.Source.Game.Scripts
 {
@@ -30,6 +31,12 @@ namespace Assets.Source.Game.Scripts
             _player = player;
             _levelObserver = levelObserver;
             _cardLoader = cardLoader;
+            AmbientVolumeValue = _temporaryData.AmbientVolume;
+            SfxVolumeValue = _temporaryData.InterfaceVolume;
+            _audioPlayerService.AmbientValueChanged(AmbientVolumeValue);
+            _audioPlayerService.SfxValueChanged(SfxVolumeValue);
+            _audioPlayerService.PlayMainMenuAmbient();
+            IsMuted = _temporaryData.MuteStateSound;
             _levelObserver.StageCompleted += OnStageComplete;
             _levelObserver.GameEnded += OnGameEnded;
             _cardLoader.CardPoolCreated += OnCardPoolCreate;
@@ -81,6 +88,7 @@ namespace Assets.Source.Game.Scripts
         public void SetAmbientVolume(float volume)
         {
             AmbientVolumeValue = volume;
+            _audioPlayerService.AmbientValueChanged(AmbientVolumeValue);
             _temporaryData.SetAmbientVolume(volume);
         }
 
@@ -93,8 +101,8 @@ namespace Assets.Source.Game.Scripts
         public void SetSfxVolume(float volume)
         {
             SfxVolumeValue = volume;
+            _audioPlayerService.SfxValueChanged(SfxVolumeValue);
             _temporaryData.SetInterfaceVolume(volume);
-            Debug.Log(volume);
         }
 
         public void CreateCardPool() 

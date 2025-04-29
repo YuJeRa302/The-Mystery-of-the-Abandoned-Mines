@@ -101,7 +101,7 @@ namespace Assets.Source.Game.Scripts
         public void CreateClassAbilityView(ClassAbilityData classAbilityData, ClassSkillButtonView classSkillButtonView, int currentLevel)
         {
             Ability newAbility;
-            newAbility = _abilityFactory.CreateClassSkill(classAbilityData, false, currentLvl - 1);
+            newAbility = _abilityFactory.CreateClassSkill(classAbilityData, false, currentLevel - 1);
 
             switch (classAbilityData.AbilityType)
             {
@@ -140,7 +140,8 @@ namespace Assets.Source.Game.Scripts
                         newAbility,
                         classSkillButtonView,
                         _player,
-                        (classAbilityData as EpiphanyClassAbilityData).EpiphanyParticle);
+                        (classAbilityData as EpiphanyClassAbilityData).EpiphanyParticle,
+                        (classAbilityData as EpiphanyClassAbilityData).Spell);
                     break;
                 case TypeAbility.ShieldUp:
                     _abilityPresenterFactory.CreateShieldUpAbility(
@@ -154,7 +155,8 @@ namespace Assets.Source.Game.Scripts
                         newAbility,
                         classSkillButtonView,
                         _player,
-                        (classAbilityData as SoulExplosionAbilityData).DamageParticle);
+                        (classAbilityData as SoulExplosionAbilityData).DamageParticle,
+                        (classAbilityData as SoulExplosionAbilityData).Spell);
                     break;
                 case TypeAbility.DarkPact:
                     _abilityPresenterFactory.CreateDarkPactAbilityPresenter(

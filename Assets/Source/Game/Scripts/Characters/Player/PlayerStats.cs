@@ -141,7 +141,7 @@ namespace Assets.Source.Game.Scripts
                         MaxHealthChanged?.Invoke(parameter.Value);
                         break;
                     case TypeParameter.MoveSpeed:
-                        _speed += parameter.Value/2;
+                        _speed += parameter.Value;
                         MoveSpeedChanged?.Invoke(_speed);
                         break;
                 }
@@ -172,7 +172,6 @@ namespace Assets.Source.Game.Scripts
                             switch (upgradeData.TypeParameter)
                             {
                                 case TypeParameter.Armor:
-                                    Debug.Log(upgradeState.CurrentLevel);
                                     _armor += upgradeData.UpgradeParameters[upgradeState.CurrentLevel-1].Value;
                                     ArmorChanged?.Invoke(_armor);
                                     break;
@@ -182,6 +181,7 @@ namespace Assets.Source.Game.Scripts
                                     break;
                                 case TypeParameter.Regeneration:
                                     _regeneration += upgradeData.UpgradeParameters[upgradeState.CurrentLevel-1].Value;
+                                    RegenerationChanged?.Invoke(_regeneration);
                                     break;
                                 case TypeParameter.Reroll:
                                     _rerollPoints += upgradeData.UpgradeParameters[upgradeState.CurrentLevel-1].Value;
@@ -225,7 +225,7 @@ namespace Assets.Source.Game.Scripts
                 }
                 else if (ability.TypeAbility == TypeAbility.MoveSpeedAmplifier)
                 {
-                    _speed += ability.CurrentAbilityValue/2;
+                    _speed += ability.CurrentAbilityValue;
                     MoveSpeedChanged?.Invoke(_speed);
                 }
                 else if (ability.TypeAbility == TypeAbility.Healing)
@@ -249,7 +249,7 @@ namespace Assets.Source.Game.Scripts
                     }
                     else if (parameter.TypeParameter == TypeParameter.MoveSpeed)
                     {
-                        _speed += parameter.Value/2;
+                        _speed += parameter.Value;
                         MoveSpeedChanged?.Invoke(_speed);
                     }
                     else if (parameter.TypeParameter == TypeParameter.HealtReduce)
@@ -268,7 +268,7 @@ namespace Assets.Source.Game.Scripts
                     else if (parameter.TypeParameter == TypeParameter.TargetMoveSpeed)
                     {
                         _ownSpeed = _speed;
-                        _speed = parameter.Value/2;
+                        _speed = parameter.Value;
                         MoveSpeedChanged?.Invoke(_speed);
                     }
                 }
@@ -295,7 +295,7 @@ namespace Assets.Source.Game.Scripts
                 }
                 else if (ability.TypeAbility == TypeAbility.MoveSpeedAmplifier)
                 {
-                    _speed -= ability.CurrentAbilityValue/2;
+                    _speed -= ability.CurrentAbilityValue;
                     MoveSpeedChanged?.Invoke(_speed);
                 }
                 else if (ability.TypeAbility == TypeAbility.Healing)
@@ -319,7 +319,7 @@ namespace Assets.Source.Game.Scripts
                     }
                     else if (parameter.TypeParameter == TypeParameter.MoveSpeed)
                     {
-                        _speed -= parameter.Value/2;
+                        _speed -= parameter.Value;
                         MoveSpeedChanged?.Invoke(_speed);
                     }
                     else if (parameter.TypeParameter == TypeParameter.Regeneration)
@@ -355,16 +355,18 @@ namespace Assets.Source.Game.Scripts
         {
             if (_levels.TryGetValue(level, out int value))
             {
+                _levels.TryGetValue(_currentLevel, out int maxExperienceValue);
+
                 if (_currentExperience >= value)
                 {
                     var difference = _currentExperience - value;
                     _currentLevel++;
+                    LvlUpped?.Invoke();
+                    
                     _currentExperience = difference;
-
-                    LvlUpped?.Invoke();//rework
-                    _levels.TryGetValue(_currentLevel, out int maxExperienceValue);
-                    PlayerLevelChanged?.Invoke(_currentLevel, maxExperienceValue, _currentExperience);
                 }
+                
+                PlayerLevelChanged?.Invoke(_currentLevel, maxExperienceValue, _currentExperience);
             }
         }
 

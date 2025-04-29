@@ -165,7 +165,6 @@ public class TemporaryData
     public void SetWeaponData(WeaponData weaponData) 
     {
         WeaponData = weaponData;
-        ChengedData?.Invoke();
     }
 
     public void SetLevelData(LevelData levelData) 
@@ -186,7 +185,6 @@ public class TemporaryData
     public void SetPlayerClassData(PlayerClassData playerClassData) 
     {
         PlayerClassData = playerClassData;
-        ChengedData?.Invoke();
     }
 
     public void SetUpgradePoints(int value)
@@ -240,6 +238,8 @@ public class TemporaryData
         {
             _weaponStates[index] = tempWeaponStates[index];
         }
+
+        ChengedData?.Invoke();
     }
 
     public void SetCoinsCount(int value) 

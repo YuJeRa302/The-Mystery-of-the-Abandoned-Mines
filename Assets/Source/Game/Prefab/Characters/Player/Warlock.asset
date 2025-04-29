@@ -15,9 +15,11 @@ MonoBehaviour:
   _icon: {fileID: 21300000, guid: c50ecf4cb0747f64487b52e59758d9a7, type: 3}
   _translationName: Warlock
   _translationDescription: WarlockDescription
+  _translationStrengths: WarlockStrengths
   _className: 1
   _animatorController: {fileID: 9100000, guid: e77343a92df3a8c469462b4b982288de, type: 2}
   _classAbilityDatas:
   - {fileID: 11400000, guid: c8f4952d0dd16f24aacbd8d1bab73fdf, type: 2}
   - {fileID: 11400000, guid: 75be47f3d038e2042bd59e827879633c, type: 2}
   - {fileID: 11400000, guid: 6f5869d4487ee714a9b3fa61f6de7450, type: 2}
+  _baseWeapon: {fileID: 11400000, guid: 20106646bd78bbc40978f5eb1f317423, type: 2}

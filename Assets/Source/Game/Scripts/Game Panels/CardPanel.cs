@@ -1,5 +1,5 @@
-using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,6 +12,7 @@ namespace Assets.Source.Game.Scripts
         [Space(20)]
         [SerializeField] private Button _buttonReroll;
         [SerializeField] private Button _buttonTest;
+        [SerializeField] private TMP_Text _countRerolPointConteiner;
         //[SerializeField] private Button _buttonSkip;
 
         private List<CardView> _cardViews = new();
@@ -45,6 +46,8 @@ namespace Assets.Source.Game.Scripts
 
             if (GamePanelsViewModel.GetPlayer().PlayerStats.RerollPoint > 0)
                 _buttonReroll.gameObject.SetActive(true);
+
+            _countRerolPointConteiner.text = GamePanelsViewModel.GetPlayer().PlayerStats.RerollPoint.ToString();
         }
 
         protected override void Close()
@@ -95,6 +98,7 @@ namespace Assets.Source.Game.Scripts
                 GamePanelsViewModel.GetPlayer().UpdateDeck();
                 GamePanelsViewModel.GetPlayer().UpdateCardPanelByRerollPoints();
                 GamePanelsViewModel.CreateCardPool();
+                _countRerolPointConteiner.text = GamePanelsViewModel.GetPlayer().PlayerStats.RerollPoint.ToString();
             }
 
             _buttonReroll.gameObject.SetActive(GamePanelsViewModel.GetPlayer().TryGetRerollPoints());

@@ -24,7 +24,7 @@ namespace Assets.Source.Game.Scripts
         private Player _player;
         private Coroutine _findTarget;
         private Coroutine _coolDownAttack;
-        //private WeaponData _weaponData;
+        private WeaponData _weaponData;
         private DamageParametr _damageParametr;
         private Enemy _currentTarget;
         private float _chanceCritDamage;
@@ -165,7 +165,7 @@ namespace Assets.Source.Game.Scripts
                 _attackRange = 10f;
                 _searchRadius = 10f;
                 WarlockWeaponData paladinWeaponData = weaponData as WarlockWeaponData;
-                _bulletSpawner = new ProjectileSpawner(paladinWeaponData.BulletPrafab, _poolBullet, _shotPoint, _damage, _weaponData.DamageParametrs[0]);
+                _bulletSpawner = new ProjectileSpawner(paladinWeaponData.BulletPrafab, _poolBullet, _shotPoint, _damage, _damageParametr);
             }
 
             foreach (var parametr in DamageParametr.DamageSupportivePatametrs)
@@ -243,6 +243,9 @@ namespace Assets.Source.Game.Scripts
 
         private void ApplyDamage()
         {
+            if (_currentTarget == null)
+                return;
+
             Vector3 directionToTarget = _player.transform.position - _currentTarget.transform.position;
             float distanceToTarget = directionToTarget.magnitude;
             float critDamage;
@@ -256,7 +259,7 @@ namespace Assets.Source.Game.Scripts
                         if (CalculateChance(_chanceCritDamage))
                         {
                             _damage = parametr.Value;
-                            critDamage = parametr.Value *(1 + _critDamageMultiplier / 100);
+                            critDamage = parametr.Value * (1 + _critDamageMultiplier / 100);
                             parametr.ChaneValue(critDamage);
                             _currentTarget.TakeDamageTest(_damageParametr);
                             _lastApplaedDamage = parametr.Value;

@@ -49,6 +49,9 @@ namespace Assets.Source.Game.Scripts
 
         public override void Initialize(GamePanelsViewModel gamePanelsViewModel)
         {
+            _ambientSlider.value = gamePanelsViewModel.GetAmbientVolume();
+            _sfxSlider.value = gamePanelsViewModel.GetSfxVolume();
+            _muteToggle.isOn = gamePanelsViewModel.GetMuteStatus();
             AddListeners();
             CreateLanguageButton();
             base.Initialize(gamePanelsViewModel);

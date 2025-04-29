@@ -35,12 +35,12 @@ namespace Assets.Source.Game.Scripts
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            //_audioPlayerService.PlayOneShotButtonHoverSound();
+            _audioPlayerService.PlayOneShotButtonHoverSound();
         }
 
         public void OnPointerDown(PointerEventData eventData)
         {
-            // _audioPlayerService.PlayOneShotButtonClickSound();
+            _audioPlayerService.PlayOneShotButtonClickSound();
         }
 
         private void Fill(PlayerClassData playerClassData)

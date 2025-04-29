@@ -39,7 +39,7 @@ MonoBehaviour:
       TypeParameter: 11
     - Value: 8
       TypeParameter: 6
-    - Value: 6
+    - Value: 4
       TypeParameter: 4
     - Value: 2
       TypeParameter: 5
@@ -48,7 +48,7 @@ MonoBehaviour:
       TypeParameter: 11
     - Value: 6
       TypeParameter: 6
-    - Value: 8
+    - Value: 5
       TypeParameter: 4
     - Value: 2
       TypeParameter: 5
@@ -56,7 +56,7 @@ MonoBehaviour:
   _damageParametr:
     _typeDamage: 4
     _damageSupportivePatametrs:
-    - _value: 0
+    - _value: 20
       _supportivePatametr: 0
     - _value: 2
       _supportivePatametr: 3

@@ -1,5 +1,7 @@
+using Cysharp.Threading.Tasks;
+
 public interface ISaveAndLoadProgress
 {
-    public bool TryGetGameData(out GameInfo gameInfo);
-    public void SaveData();
+    UniTask<(bool Success, GameInfo Data)> TryGetGameData();
+    UniTask SaveData();
 }

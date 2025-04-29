@@ -26,37 +26,37 @@ MonoBehaviour:
     Value: 0
   _parameters:
   - CardParameters:
-    - Value: 12
+    - Value: 8
       TypeParameter: 0
-    - Value: 2
+    - Value: 1
       TypeParameter: 9
-    - Value: 5
+    - Value: -6
       TypeParameter: 1
     - Value: 20
       TypeParameter: 6
     - Value: 7
       TypeParameter: 5
   - CardParameters:
-    - Value: 15
+    - Value: 12
       TypeParameter: 0
-    - Value: 2
+    - Value: 1
       TypeParameter: 9
-    - Value: 3
+    - Value: -5
       TypeParameter: 1
     - Value: 15
       TypeParameter: 6
     - Value: 8
       TypeParameter: 5
   - CardParameters:
-    - Value: 16
+    - Value: 15
       TypeParameter: 0
-    - Value: 2
+    - Value: 1
       TypeParameter: 9
-    - Value: 2
+    - Value: -4
       TypeParameter: 1
     - Value: 13
       TypeParameter: 6
-    - Value: 9
+    - Value: 8
       TypeParameter: 5
   _abilityType: 10
   _damageParametr:

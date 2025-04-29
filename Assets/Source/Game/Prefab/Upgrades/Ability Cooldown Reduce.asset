@@ -16,11 +16,11 @@ MonoBehaviour:
   _typeParameter: 6
   _upgradeParameters:
   - Cost: 1
-    Value: 0
-  - Cost: 3
-    Value: 0
-  - Cost: 6
-    Value: 0
+    Value: 1
+  - Cost: 1
+    Value: 2
+  - Cost: 1
+    Value: 3
   _name: AbilityCooldown
-  _icon: {fileID: 21300000, guid: b01011e60129ac147a8640d33362d7d9, type: 3}
+  _icon: {fileID: 21300000, guid: ea4fcfc6c39de3047a90ef3617f5e431, type: 3}
   _description: AbilityCooldownDescription

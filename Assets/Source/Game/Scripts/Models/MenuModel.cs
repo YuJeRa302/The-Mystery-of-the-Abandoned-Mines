@@ -8,6 +8,7 @@ public class MenuModel : IDisposable
     public event Action InvokedWeaponsShow;
     public event Action InvokedClassAbilityShow;
     public event Action InvokedMainMenuShow;
+    public event Action InvokeKnowBaswShow;
 
     public void InvokeUpgradesShow() => InvokedUpgradesShow?.Invoke();
     public void InvokeUpgradesHide() => InvokedMainMenuShow?.Invoke();
@@ -20,6 +21,8 @@ public class MenuModel : IDisposable
     public void InvokeClassAbilityShow() => InvokedClassAbilityShow?.Invoke();
     public void InvokeClassAbilityHide() => InvokedMainMenuShow?.Invoke();
     public void InvokeMainMenuShow() => InvokedMainMenuShow?.Invoke();
+    public void InvokeKnowledgeBaseShow() => InvokeKnowBaswShow?.Invoke();
+    public void InvokeKnowledgeBaseHide() => InvokedMainMenuShow?.Invoke();
 
     public void Dispose()
     {

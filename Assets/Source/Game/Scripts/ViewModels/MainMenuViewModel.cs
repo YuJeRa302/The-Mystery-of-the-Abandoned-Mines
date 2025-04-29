@@ -18,6 +18,7 @@ public class MainMenuViewModel : IDisposable
     public void InvokeWeaponsShow() => _menuModel.InvokeWeaponsShow();
     public void InvokeClassAbilityShow() => _menuModel.InvokeClassAbilityShow();
     public void InvokeMainMenuShow() => _menuModel.InvokeMainMenuShow();
+    public void InvokeKnowledgeBaseShow() => _menuModel.InvokeKnowledgeBaseShow();
 
     public void Dispose()
     {

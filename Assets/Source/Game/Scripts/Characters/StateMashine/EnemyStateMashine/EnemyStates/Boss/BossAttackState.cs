@@ -15,7 +15,6 @@ namespace Assets.Source.Game.Scripts
             Boss boss = enemy as Boss;
             _additionalAttackDelay = boss.AdditionalAttackDelay;
             _specialAttackDelay = boss.SpecilaAttackDelay;
-            Debug.Log(_attackDelay);
         }
 
         public override void SubscrabeIvent()
@@ -24,7 +23,6 @@ namespace Assets.Source.Game.Scripts
             {
                 _bulletSpawner = new BulletSpawner(beholder.Bullet, beholder.Pool, beholder.BaseShotPoint, _enemy);
                 _animationController.Attacked += LaunchBullet;
-                Debug.Log("beholder attack");
             }
             else
             {

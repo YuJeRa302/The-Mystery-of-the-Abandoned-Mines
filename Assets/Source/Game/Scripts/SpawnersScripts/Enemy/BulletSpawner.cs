@@ -21,7 +21,6 @@ namespace Assets.Source.Game.Scripts
         public void SpawnBullet()
         {
             Bullet bullet;
-            Debug.Log("SpawnBullet");
 
             if (_pool.TryPoolObject(_bulletBrefab.gameObject, out PoolObject pollBullet))
             {

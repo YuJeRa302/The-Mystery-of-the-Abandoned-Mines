@@ -1,9 +1,10 @@
 using Assets.Source.Game.Scripts;
-using UnityEngine;
+using System;
 
 public class AditionalAttackGoldDragon : BossAdditionalAttackState
 {
-    private float _attackRange;
+    private DragonSpell _spell;
+    private float _damage;
 
     public AditionalAttackGoldDragon(StateMashine stateMashine, Player target, Enemy enemy) : base(stateMashine, target, enemy)
     {
@@ -11,7 +12,9 @@ public class AditionalAttackGoldDragon : BossAdditionalAttackState
         _enemy = enemy;
         _animationController = _enemy.AnimationStateController;
         Boss boss = _enemy as Boss;
-        _attackRange = boss.AdditionalAttackRange;
+        GoldDragon goldDragon = boss as GoldDragon;
+        _spell = goldDragon.DragonSpell;
+        _damage = goldDragon.DamageSpell;
 
         _animationController.AdditionalAttacked += AditionalAttackAppalyDamage;
         _animationController.AnimationCompleted += OnAllowTransition;
@@ -25,12 +28,9 @@ public class AditionalAttackGoldDragon : BossAdditionalAttackState
 
     protected override void AditionalAttackAppalyDamage()
     {
-        _directionToTarget = _enemy.transform.position - _target.transform.position;
-        _distanceToTarget = _directionToTarget.magnitude;
-
-        if (_distanceToTarget <= _attackRange)
-        {
-            Debug.Log("DamagePlayer");
-        }
+        if (_spell.TryFindPlayer(out Player player))
+            player.PlayerHealth.TakeDamage(Convert.ToInt32(_damage));
+        else
+            return;
     }
 }

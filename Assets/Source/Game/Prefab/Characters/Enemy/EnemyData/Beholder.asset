@@ -24,7 +24,7 @@ MonoBehaviour:
   _moveSpeed: 3
   _attackDistance: 15
   _attackDelay: 2
-  _chanceSpawn: 100
+  _chanceSpawn: 50
   _goldReward: 1
   _abilityCoolDown: []
   _abilityDamage: 
@@ -32,3 +32,4 @@ MonoBehaviour:
   _audioClipDie: {fileID: 0}
   _hit: {fileID: 0}
   _prefabEnemy: {fileID: 5570251417566031356, guid: 9e64c2153d0173a4bb49c28b541af086, type: 3}
+  _type: 2

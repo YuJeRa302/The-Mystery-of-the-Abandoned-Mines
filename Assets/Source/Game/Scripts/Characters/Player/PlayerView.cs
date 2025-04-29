@@ -49,7 +49,7 @@ namespace Assets.Source.Game.Scripts
 
         public void TakeClassAbility(ClassAbilityData abilityData, int currentLevel)
         {
-            if (currentLvl == _minValue)
+            if (currentLevel == 0)
                 return;
 
             ClassSkillButtonView abilityView;
@@ -62,7 +62,7 @@ namespace Assets.Source.Game.Scripts
                     currentAbilityCooldown = parametr.Value;
             }
 
-            if (currentLvl <= _minValue)
+            if (currentLevel <= 0)
             {
                 abilityView.Initialize(abilityData.Icon, currentAbilityCooldown);
                 abilityView.SetInerectableButton(false);

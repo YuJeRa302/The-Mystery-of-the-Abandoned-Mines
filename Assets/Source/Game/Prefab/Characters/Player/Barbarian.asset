@@ -15,9 +15,11 @@ MonoBehaviour:
   _icon: {fileID: 21300000, guid: ae7785f19cc193a4d9ab24c58d63be2e, type: 3}
   _translationName: Barbarian
   _translationDescription: BarbarianDescription
+  _translationStrengths: BarbarianStrengths
   _className: 2
   _animatorController: {fileID: 9100000, guid: 69e68a005490dbd418915df6910be143, type: 2}
   _classAbilityDatas:
   - {fileID: 11400000, guid: e87995169eecbc145b41d4f7c245263a, type: 2}
   - {fileID: 11400000, guid: 06ced82e6f03de74786d204f8525c319, type: 2}
   - {fileID: 11400000, guid: 1101a0e702bdc6444a0f9bc4c677e32b, type: 2}
+  _baseWeapon: {fileID: 11400000, guid: 4d660e7d556c44343a5bc39f3b932733, type: 2}

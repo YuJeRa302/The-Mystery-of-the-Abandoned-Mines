@@ -15,9 +15,11 @@ MonoBehaviour:
   _icon: {fileID: 21300000, guid: e128b01dab70e7a498a78577123c2db0, type: 3}
   _translationName: Paladin
   _translationDescription: PaladinDescription
+  _translationStrengths: PaladinStrengths
   _className: 0
   _animatorController: {fileID: 9100000, guid: 19de88611daf4084a8258f1d110d3655, type: 2}
   _classAbilityDatas:
   - {fileID: 11400000, guid: b7a67ac52f7b1ce43a00dca1a164f82a, type: 2}
   - {fileID: 11400000, guid: 60b47b4c6c7e39648b9cb79507e92806, type: 2}
   - {fileID: 11400000, guid: 228e1c59ac5ba974db1112fcbd8fe3bb, type: 2}
+  _baseWeapon: {fileID: 11400000, guid: 02de99d65aa7c2645866e47576648d34, type: 2}

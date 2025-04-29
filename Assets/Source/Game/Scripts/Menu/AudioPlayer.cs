@@ -37,6 +37,16 @@ public class AudioPlayer : MonoBehaviour, IAudioPlayerService
         _sfxAudioSource.PlayOneShot(_buttonHoverAudioClip);
     }
 
+    public void AmbientValueChanged(float value)
+    {
+        _ambientAudioSource.volume = value / 100;
+    }
+
+    public void SfxValueChanged(float value)
+    {
+        _sfxAudioSource.volume = value / 100;
+    }
+
     public void PlayOneShotButtonSound()
     {
         throw new System.NotImplementedException();

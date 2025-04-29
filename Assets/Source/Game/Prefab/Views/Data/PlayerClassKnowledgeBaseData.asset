@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18e338266fa89c44f92ab46290cb530e, type: 3}
+  m_Name: PlayerClassKnowledgeBaseData
+  m_EditorClassIdentifier: 
+  _knowladgeView: {fileID: 5385754471684765695, guid: 4d139a90e98f81544b908a92d49f8d27, type: 3}
+  _playerClassDatas:
+  - {fileID: 11400000, guid: bbace51df70a5204eb024cb99fb0f11e, type: 2}
+  - {fileID: 11400000, guid: 58bf0b437f5b06247864638406b4198e, type: 2}
+  - {fileID: 11400000, guid: 443a12eb8334cd24380eafbd7710991d, type: 2}

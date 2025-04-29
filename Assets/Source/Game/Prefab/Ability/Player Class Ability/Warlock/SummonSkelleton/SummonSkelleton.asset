@@ -28,9 +28,9 @@ MonoBehaviour:
   - CardParameters:
     - Value: 1
       TypeParameter: 8
-    - Value: 8
+    - Value: 12
       TypeParameter: 5
-    - Value: 13
+    - Value: 20
       TypeParameter: 6
     - Value: 13
       TypeParameter: 4
@@ -39,7 +39,7 @@ MonoBehaviour:
       TypeParameter: 8
     - Value: 12
       TypeParameter: 5
-    - Value: 10
+    - Value: 15
       TypeParameter: 6
     - Value: 10
       TypeParameter: 4
@@ -48,7 +48,7 @@ MonoBehaviour:
       TypeParameter: 8
     - Value: 15
       TypeParameter: 5
-    - Value: 10
+    - Value: 15
       TypeParameter: 6
     - Value: 10
       TypeParameter: 4

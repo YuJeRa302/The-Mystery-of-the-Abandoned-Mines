@@ -291,6 +291,10 @@ namespace Assets.Source.Game.Scripts
         private void UpdateAbilityParamters()
         {
             _defaultCooldown -= _abilityCooldownReduction;
+            
+            if (_defaultCooldown <= 0)
+                _defaultCooldown = 1f;
+
             _defaultDuration += _abilityDuration;
             _currentAbilityValue += _abilityValue;
         }

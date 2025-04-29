@@ -30,7 +30,7 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private int _armor = 2;
         [SerializeField] private int _regeneration = 1;
         [SerializeField] private int _countKillEnemy = 0;
-        [SerializeField] private float _moveSpeed = 2;
+        [SerializeField] private float _moveSpeed = 1;
         [SerializeField] private int _currentHealth = 50;
 
         private PlayerView _playerView;
@@ -89,12 +89,14 @@ namespace Assets.Source.Game.Scripts
                 this,
                 levelObserver);
 
+            _wallet = new PlayerWallet();
             _cardDeck = new CardDeck();
-            _playerStats = new PlayerStats(this, _currentLevel, _rerollPoints, _damage, _armor, _regeneration, _countKillEnemy);
             _playerAbilityCaster = new PlayerAbilityCaster(abilityFactory, abilityPresenter, this, temporaryData);
+            _playerStats = new PlayerStats(this, _currentLevel, _rerollPoints, _damage, _armor, _regeneration, _countKillEnemy, temporaryData.UpgradeStates,temporaryData);
             _playerView.Initialize(temporaryData.PlayerClassData.Icon, _throwAbilityPoint, _playerAbilityContainer, _weaponAbilityContainer);
             SetPlayerStats();
             AddListeners();
+            _playerStats.UpgradePlayerStats();
             _playerAbilityCaster.Initialize();
         }
 
@@ -241,7 +243,6 @@ namespace Assets.Source.Game.Scripts
 
         private void OnClassAbilityViewCreated(ClassAbilityData classAbilityData, ClassSkillButtonView classSkillButtonView, int currentLevel)
         {
-            Debug.Log(classAbilityData.Id);
             _playerAbilityCaster.CreateClassAbilityView(classAbilityData, classSkillButtonView, currentLevel);
         }
 
@@ -343,7 +344,7 @@ namespace Assets.Source.Game.Scripts
 
         private void OnDamageChenged(int value)
         {
-            _playerAttacker.�hangeDamage(value);
+            _playerAttacker.ChangeDamage(value);
         }
 
         private void OnRotateToTarget(Transform transform)
@@ -397,8 +398,8 @@ namespace Assets.Source.Game.Scripts
         {
             _playerAbilityCaster.TakeAbility(cardView);
 
-            //cardView.CardState.CurrentLevel++;
-            //cardView.CardState.Weight++;
+            cardView.CardState.CurrentLevel++;
+            cardView.CardState.Weight++;
         }
 
         private void OnUpdateRerollPoints(CardView cardView)

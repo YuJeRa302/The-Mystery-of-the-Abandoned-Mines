@@ -96,6 +96,16 @@ namespace Assets.Source.Game.Scripts
             {
                 int currentEnemyCount = 0;
 
+                if (enemyData.PrefabEnemy is Boss)
+                {
+                    if (currentEnemyCount > 0)
+                    {
+                        yield return null;
+                        _totalEnemyCount--;
+                        _isEnemySpawned = true;
+                    }
+                }
+
                 while (currentEnemyCount++ < enemyData.EnemyCount)
                 {
                     yield return new WaitForSeconds(enemyData.DelaySpawn);

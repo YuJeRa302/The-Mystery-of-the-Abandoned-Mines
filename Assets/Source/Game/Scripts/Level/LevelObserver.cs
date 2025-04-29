@@ -21,12 +21,12 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private GamePanelsView[] _panels;
         [Space(20)]
         [SerializeField] private CardLoader _cardLoader;
+        [SerializeField] private AudioPlayer _audioPlayerService;
 
         private CardPanel _cardPanel;
         private StagePanel _stagePanel;
         private PausePanel _pausePanel;
         private RewardPanel _rewardPanel;
-        private IAudioPlayerService _audioPlayerService;
         private bool _canSeeDoor;
         private EnemySpawner _enemySpawner;
         private TrapsSpawner _trapsSpawner;
@@ -40,7 +40,7 @@ namespace Assets.Source.Game.Scripts
         private AbilityPresenterFactory _abilityPresenterFactory;
         private GamePanelsViewModel _gamePanelsViewModel;
         private GamePanelsModel _gamePanelsModel;
-        private MenuSaveAndLoad _saveAndLoad;
+        private SaveAndLoader _saveAndLoad;
         private AsyncOperation _load;
         private TemporaryData _temporaryData;
 
@@ -105,10 +105,10 @@ namespace Assets.Source.Game.Scripts
             _cardLoader.Initialize(_player);
             _enemySpawner = new EnemySpawner(_enemuPool, this, _player, _currentRoomLevel);
             _cameraControiler.SetLookTarget(_player.transform);
-            _saveAndLoad = new MenuSaveAndLoad();
+            _saveAndLoad = new SaveAndLoader();
             _saveAndLoad.Initialize(temporaryData);
             ContractWeaponDatas = temporaryData.LevelData.IsContractLevel == true ? (temporaryData.LevelData as ContractLevelData).WeaponDatas : null;
-            CreateGamePanelEntities(temporaryData);
+            CreateGamePanelEntities(_temporaryData);
             LoadGamePanels();
             AddListener();
         }
@@ -172,7 +172,6 @@ namespace Assets.Source.Game.Scripts
             _player.PlayerStats.LvlUpped -= OnPlayerUppedLvl;
             _stagePanel.ExitButtonClicked -= OnGameExit;
             _pausePanel.ExitButtonClicked -= OnGameExit;
-            _rewardPanel.ExitButtonClicked -= OnGameExit;
         }
 
         private void OnPlayerUppedLvl()
@@ -218,13 +217,6 @@ namespace Assets.Source.Game.Scripts
                 {
                     _pausePanel = (PausePanel)panel;
                     _pausePanel.ExitButtonClicked += OnGameExit;
-                }
-
-                if (panel as RewardPanel)
-                {
-                    _rewardPanel = (RewardPanel)panel;
-                    _rewardPanel.ListenEndGame(this);
-                    _rewardPanel.ExitButtonClicked += OnGameExit;
                 }
             }
         }

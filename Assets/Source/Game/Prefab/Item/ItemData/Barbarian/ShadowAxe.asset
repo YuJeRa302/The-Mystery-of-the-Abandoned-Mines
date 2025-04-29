@@ -34,9 +34,9 @@ MonoBehaviour:
     WeaponSupportivePatametrs:
     - Value: 50
       SupportivePatametr: 0
-    - Value: 50
-      SupportivePatametr: 2
     - Value: 30
+      SupportivePatametr: 1
+    - Value: 50
       SupportivePatametr: 2
     - Value: 120
       SupportivePatametr: 3

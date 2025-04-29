@@ -21,4 +21,6 @@ MonoBehaviour:
   _typeCardParameter: 3
   _attributeData: {fileID: 0}
   _legendaryAbilityData: {fileID: 11400000, guid: 737729b914d34c0458efc8a078a215ff, type: 2}
-  _suppurtivData: []
+  _suppurtivData:
+  - {fileID: 11400000, guid: ce40cd60d0130a743ae622bb575aa61a, type: 2}
+  - {fileID: 11400000, guid: 35a14793d4d067143842fcf0ad7ea985, type: 2}

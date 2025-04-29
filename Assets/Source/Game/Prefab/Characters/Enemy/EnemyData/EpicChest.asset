@@ -32,3 +32,4 @@ MonoBehaviour:
   _audioClipDie: {fileID: 0}
   _hit: {fileID: 0}
   _prefabEnemy: {fileID: 7403477020662954417, guid: c998161ea4ea4d74ba44f59f46216ebe, type: 3}
+  _type: 1

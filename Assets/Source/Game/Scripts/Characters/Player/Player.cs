@@ -26,7 +26,6 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private int _currentUpgradeExperience = 0;
         [SerializeField] private int _rerollPoints = 2;
         [SerializeField] private int _score = 0;
-        [SerializeField] private int _damage = 10;
         [SerializeField] private int _armor = 2;
         [SerializeField] private int _regeneration = 1;
         [SerializeField] private int _countKillEnemy = 0;
@@ -44,20 +43,32 @@ namespace Assets.Source.Game.Scripts
         private PlayerWallet _wallet;
         private PlayerMovement _playerMovement;
 
+        public event Action PlayerLevelChanged;
+
         public Pool Pool => _poolBullet;
         public Transform PlayerAbilityContainer => _playerAbilityContainer;
         public Transform ThrowAbilityPoint => _throwAbilityPoint;
         public Transform WeaponPoint => _weaponPoint;
         public Transform AdditionalWeaponPoint => _additionalWeaponPoint;
         public Transform ShotPoint => _shotPoint;
-        public PlayerMovement PlayerMovment => _playerMovement;
-        public PlayerAttacker PlayerAttacker => _playerAttacker;
-        public PlayerStats PlayerStats => _playerStats;
         public PlayerAnimation PlayerAnimation => _playerAnimation;
-        public PlayerHealth PlayerHealth => _playerHealth;
-        public PlayerWallet PlayerWallet => _wallet;
         public WeaponData WeaponData => _playerWeapons.GetWeaponData();
+        public DamageSource DamageSource => _playerStats.DamageSource;
         public int CurrentHealth => _playerHealth.GetCurrentHealth();
+        public int Regeneration => _playerStats.Regeneration;
+        public float MoveSpeed => _playerStats.MoveSpeed;
+        public float MaxMoveSpeed => _playerStats.MaxMoveSpeed;
+        public int Armor => _playerStats.Armor;
+        public int Coins => _wallet.CurrentCoins;
+        public int Score => _playerStats.Score;
+        public int RerollPoints => _playerStats.RerollPoints;
+        public int KillCount => _playerStats.CountKillEnemy;
+        public float ChanceCriticalDamage => _playerStats.ChanceCriticalDamage;
+        public float CriticalDamageMultiplier => _playerStats.CriticalDamageMultiplier;
+        public float ChanceVampirism => _playerStats.ChanceVampirism;
+        public float VampirismValue => _playerStats.VampirismValue;
+        public float SearchRadius => _playerStats.SearchRadius;
+        public float AttackRange => _playerStats.AttackRange;
 
         private void OnDestroy()
         {
@@ -76,31 +87,40 @@ namespace Assets.Source.Game.Scripts
         {
             _playerView = playerView;
             _miniMapIcon.sprite = playerClassData.Icon;
-            _playerHealth = new PlayerHealth(_currentHealth, weaponData, this, levelObserver);
+            _playerHealth = new PlayerHealth(this, levelObserver, levelObserver, _currentHealth);
             _playerAnimation = new PlayerAnimation(_animator, _rigidbody, _moveSpeed, playerClassData, this, levelObserver);
-            _playerAttacker = new PlayerAttacker(_shotPoint, this, weaponData, this, levelObserver, _poolBullet);
             _playerWeapons = new PlayerWeapons(this, weaponData, _poolBullet, _critDamageParticle, _vampirismParticle);
+
+            _playerStats = new PlayerStats(
+                weaponData, 
+                temporaryData.PlayerClassData.TypeAttackRange,
+                _currentLevel, 
+                _rerollPoints, 
+                _armor, 
+                _moveSpeed, 
+                _regeneration, 
+                _countKillEnemy);
 
             _playerMovement = new PlayerMovement(
                 levelObserver.CameraControiler.Camera,
                 levelObserver.CameraControiler.VariableJoystick,
                 _rigidbody,
-                _moveSpeed,
+                this,
                 this,
                 levelObserver);
 
+            _playerAttacker = new PlayerAttacker(_shotPoint, this, temporaryData.PlayerClassData.TypeAttackRange, weaponData, this, levelObserver, _poolBullet);
             _wallet = new PlayerWallet();
             _cardDeck = new CardDeck();
             _playerAbilityCaster = new PlayerAbilityCaster(abilityFactory, abilityPresenter, this, temporaryData);
-            _playerStats = new PlayerStats(this, _currentLevel, _rerollPoints, _damage, _armor, _regeneration, _countKillEnemy, temporaryData.UpgradeStates,temporaryData);
             _playerView.Initialize(temporaryData.PlayerClassData.Icon, _throwAbilityPoint, _playerAbilityContainer, _weaponAbilityContainer);
             SetPlayerStats();
             AddListeners();
-            _playerStats.UpgradePlayerStats();
+            _playerStats.UpgradePlayerStats(temporaryData.UpgradeStates, temporaryData.UpgradeDatas);
             _playerAbilityCaster.Initialize();
         }
 
-        public void InitStateCardDeck(List<CardData> cardDatas) 
+        public void InitStateCardDeck(List<CardData> cardDatas)
         {
             foreach (var data in cardDatas)
             {
@@ -133,7 +153,7 @@ namespace Assets.Source.Game.Scripts
             return _cardDeck.GetCardStateByData(cardData);
         }
 
-        public bool TryTakeAbilityCard(int id) 
+        public bool TryTakeAbilityCard(int id)
         {
             return _cardDeck.CanTakeAbilityCard(id);
         }
@@ -153,6 +173,16 @@ namespace Assets.Source.Game.Scripts
             return _cardDeck.GetCountUnlockedCards();
         }
 
+        public void TakeDamage(int value)
+        {
+            _playerHealth.TakeDamage(value);
+        }
+
+        public void GetReward(Enemy enemy)
+        {
+            _playerStats.EnemyDied(enemy);
+        }
+
         private void AddListeners()
         {
             _playerAttacker.Attacked += OnAttack;
@@ -166,10 +196,6 @@ namespace Assets.Source.Game.Scripts
             _playerStats.ExperienceValueChanged += OnExperienceValueChanged;
             _playerStats.UpgradeExperienceValueChanged += OnUpgradeExperienceValueChanged;
             _playerStats.MaxHealthChanged += OnMaxHealthChanged;
-            _playerStats.RegenerationChanged += OnRegenerationChanged;
-            _playerStats.ArmorChanged += OnArmorChenge;
-            _playerStats.DamageChenged += OnDamageChenged;
-            _playerStats.MoveSpeedChanged += OnMoveSpeedChanged;
             _playerStats.Healed += OnHealing;
             _playerStats.HealthReduced += OnReduceHealth;
             _playerStats.AbilityDurationChanged += OnAbilityDurationChange;
@@ -198,7 +224,6 @@ namespace Assets.Source.Game.Scripts
             _playerAttacker.EnemyFinded -= OnRotateToTarget;
             _playerAttacker.CritAttacked -= OnApplayCritDamage;
             _playerAttacker.HealedVampirism -= OnHealingVampirism;
-
             _cardDeck.SetNewAbility -= OnSetNewAbility;
             _cardDeck.RerollPointsUpdated -= OnUpdateRerollPoints;
             _cardDeck.PlayerStatsUpdated -= OnStatsUpdate;
@@ -206,14 +231,9 @@ namespace Assets.Source.Game.Scripts
             _playerStats.ExperienceValueChanged -= OnExperienceValueChanged;
             _playerStats.UpgradeExperienceValueChanged -= OnUpgradeExperienceValueChanged;
             _playerStats.MaxHealthChanged -= OnMaxHealthChanged;
-            _playerStats.RegenerationChanged -= OnRegenerationChanged;
-            _playerStats.ArmorChanged -= OnArmorChenge;
-            _playerStats.DamageChenged -= OnDamageChenged;
-            _playerStats.MoveSpeedChanged -= OnMoveSpeedChanged;
             _playerStats.Healed -= OnHealing;
             _playerStats.HealthReduced -= OnReduceHealth;
             _playerStats.AddingConins -= OnAddCoins;
-
             _playerStats.AbilityDurationChanged -= OnAbilityDurationChange;
             _playerStats.AbilityDamageChanged -= OnAbilityDamageChanged;
             _playerStats.AbilityCooldownReductionChanged -= OnAbilityCooldownReductionChanged;
@@ -289,6 +309,7 @@ namespace Assets.Source.Game.Scripts
         private void OnPlayerLevelChanged(int currenLevel, int maxExperienceValue, int currentExperience)
         {
             _playerView.ChangePlayerLevel(currenLevel, maxExperienceValue, currentExperience);
+            PlayerLevelChanged?.Invoke();
         }
 
         private void OnKillCountChanged(int value)
@@ -311,7 +332,7 @@ namespace Assets.Source.Game.Scripts
             _playerView.ChangeHealth(value);
         }
 
-        public void OnAddCoins(int count)
+        private void OnAddCoins(int count)
         {
             _wallet.AddCoins(count);
         }
@@ -335,16 +356,6 @@ namespace Assets.Source.Game.Scripts
         private void OnHealing(int heal)
         {
             _playerHealth.TakeHealing(heal);
-        }
-
-        private void OnMoveSpeedChanged(float value)
-        {
-            _playerMovement.ChangeMoveSpeed(value);
-        }
-
-        private void OnDamageChenged(int value)
-        {
-            _playerAttacker.ChangeDamage(value);
         }
 
         private void OnRotateToTarget(Transform transform)
@@ -375,6 +386,7 @@ namespace Assets.Source.Game.Scripts
 
         private void OnAbilityUsed(Ability ability)
         {
+            //ability.TypeAbility == TypeAbility.ShieldUp
             _playerStats.AbilityUsed(ability);
         }
 
@@ -384,20 +396,9 @@ namespace Assets.Source.Game.Scripts
             _playerView.ChangeMaxHealthValue(maxHealth, currentHealthValue);
         }
 
-        private void OnRegenerationChanged(int regeneration)
-        {
-            _playerHealth.ChangeRegeniration(regeneration);
-        }
-
-        private void OnArmorChenge(int armor)
-        {
-            _playerHealth.ChangeArmor(armor);
-        }
-
         private void OnSetNewAbility(CardView cardView)
         {
             _playerAbilityCaster.TakeAbility(cardView);
-
             cardView.CardState.CurrentLevel++;
             cardView.CardState.Weight++;
         }
@@ -449,6 +450,7 @@ namespace Assets.Source.Game.Scripts
             _playerWeapons.Dispose();
             _playerMovement.Dispose();
             _playerStats.Dispose();
+            _wallet.Dispose();
         }
     }
 }

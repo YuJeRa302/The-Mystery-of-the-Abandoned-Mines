@@ -86,7 +86,7 @@ public class BuranPresenter : AbilityPresenter
                 {
                     foreach (var enemy in enemies)
                     {
-                        enemy.TakeDamageTest(_ability.DamageParametr);
+                        enemy.TakeDamage(_ability.DamageSource);
                     }
                 }
             }

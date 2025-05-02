@@ -11,28 +11,21 @@ namespace Assets.Source.Game.Scripts
         private readonly System.Random _rnd = new();
         private readonly IGameLoopService _gameLoopService;
         private readonly ICoroutineRunner _coroutineRunner;
+        private readonly int _divider = 100;
+        private readonly int _defaultCriticalDamageMultiplier = 1;
 
         private Transform _shotPoint;
         private ProjectileSpawner _bulletSpawner;
         private Pool _poolBullet;
-        private float _damage;
-        private float _lastApplaedDamage;
-        private float _searchRadius = 5f;//tests
-        private float _attackRange = 5f;//tests
         private float _attackDelay = 2f;
         private float _timeAfterLastAttack = 0f;
         private Player _player;
         private Coroutine _findTarget;
         private Coroutine _coolDownAttack;
-        private WeaponData _weaponData;
-        private DamageParametr _damageParametr;
         private Enemy _currentTarget;
-        private float _chanceCritDamage;
-        private float _critDamageMultiplier;
-        private float _chanceVampirism;
-        private float _vampirismValue;
         private bool _isRangeAttack = false;
         private Dictionary<float, Enemy> _enemies = new Dictionary<float, Enemy>();
+        private TypeAttackRange _typeAttackRange;
 
         public event Action Attacked;
         public event Action CritAttacked;
@@ -42,6 +35,7 @@ namespace Assets.Source.Game.Scripts
         public PlayerAttacker(
             Transform shoPoint,
             Player player,
+            TypeAttackRange typeAttackRange,
             WeaponData weaponData,
             ICoroutineRunner coroutineRunner,
             IGameLoopService gameLoopService,
@@ -51,17 +45,14 @@ namespace Assets.Source.Game.Scripts
             _coroutineRunner = coroutineRunner;
             _shotPoint = shoPoint;
             _player = player;
-            
-            _weaponData = weaponData;
+            _typeAttackRange = typeAttackRange;
             _poolBullet = pool;
-            ApplyWeaponParameters(weaponData);
+            CreateBulletSpawner(weaponData);
             AddListeners();
             _coolDownAttack = _coroutineRunner.StartCoroutine(CoolDownAttack());
         }
 
-        public float Damage => _damage;
         public Enemy CurrentTarget => _currentTarget;
-        public DamageParametr  DamageParametr => _damageParametr;
 
         public void Dispose()
         {
@@ -75,25 +66,18 @@ namespace Assets.Source.Game.Scripts
             GC.SuppressFinalize(this);
         }
 
-        public void ChangeDamage(float value)
-        {
-            _damage = value;
-
-            foreach (var parametr in _damageParametr.DamageSupportivePatametrs)
-            {
-                if (parametr.SupportivePatametr == TypeSupportivePatametr.Damage)
-                {
-                    parametr.ChaneValue(_damage);
-                }
-            }
-        }
-
         public void AttackEnemy()
         {
-            if (_weaponData.TypePlayerClass == TypePlayerClass.Warlock)
+            if (_typeAttackRange == TypeAttackRange.Ranged)
                 InstantiateBullet();
             else
                 ApplyDamage();
+        }
+
+        private void CreateBulletSpawner(WeaponData weaponData)
+        {
+            if (_typeAttackRange == TypeAttackRange.Ranged)
+                _bulletSpawner = new ProjectileSpawner((weaponData as WarlockWeaponData).BulletPrafab, _poolBullet, _shotPoint, _player.DamageSource);
         }
 
         private void AddListeners()
@@ -129,52 +113,6 @@ namespace Assets.Source.Game.Scripts
             _coolDownAttack = _coroutineRunner.StartCoroutine(CoolDownAttack());
         }
 
-        private void ApplyWeaponParameters(WeaponData weaponData) 
-        {
-            foreach (var parametr in _weaponData.WeaponParameter.WeaponSupportivePatametrs)
-            {
-                switch (parametr.SupportivePatametr)
-                {
-                    case TypeWeaponSupportiveParameter.CritChance:
-                        _chanceCritDamage = parametr.Value;
-                        break;
-                    case TypeWeaponSupportiveParameter.CritDamage:
-                        _critDamageMultiplier = parametr.Value;
-                        break;
-                    case TypeWeaponSupportiveParameter.LifeStealChance:
-                        _chanceVampirism = parametr.Value;
-                        break;
-                    case TypeWeaponSupportiveParameter.LifeStealValue:
-                        _vampirismValue = parametr.Value;
-                        break;
-                }
-            }
-
-            List<DamageSupportivePatametr> damageSupportivePatametrs = new List<DamageSupportivePatametr>(weaponData.DamageParametr.DamageSupportivePatametrs);
-
-            for (int i = 0; i < damageSupportivePatametrs.Count; i++)
-            {
-                damageSupportivePatametrs[i] = new DamageSupportivePatametr(weaponData.DamageParametr.DamageSupportivePatametrs[i].Value, 
-                    weaponData.DamageParametr.DamageSupportivePatametrs[i].SupportivePatametr);
-            }
-
-            _damageParametr = new DamageParametr(weaponData.DamageParametr.TypeDamage, damageSupportivePatametrs, weaponData.DamageParametr.Particle);
-
-            if (_weaponData.TypePlayerClass == TypePlayerClass.Warlock)
-            {
-                _attackRange = 10f;
-                _searchRadius = 10f;
-                WarlockWeaponData paladinWeaponData = weaponData as WarlockWeaponData;
-                _bulletSpawner = new ProjectileSpawner(paladinWeaponData.BulletPrafab, _poolBullet, _shotPoint, _damage, _damageParametr);
-            }
-
-            foreach (var parametr in DamageParametr.DamageSupportivePatametrs)
-            {
-                if (parametr.SupportivePatametr == TypeSupportivePatametr.Damage)
-                    _damage = parametr.Value;
-            }
-        }
-
         private IEnumerator CoolDownAttack()
         {
             while (_timeAfterLastAttack <= _attackDelay)
@@ -199,7 +137,7 @@ namespace Assets.Source.Game.Scripts
 
             while (_currentTarget == null)
             {
-                var colliders = Physics.OverlapSphere(_player.transform.position, _searchRadius);
+                var colliders = Physics.OverlapSphere(_player.transform.position, _player.SearchRadius);
 
                 for (int i = 0; i < colliders.Length; i++)
                 {
@@ -207,7 +145,7 @@ namespace Assets.Source.Game.Scripts
                     {
                         float distanceToTarget = Vector3.Distance(enemy.transform.position, _player.transform.position);
 
-                        if (distanceToTarget <= _searchRadius)
+                        if (distanceToTarget <= _player.SearchRadius)
                             if(_enemies.ContainsKey(distanceToTarget) == false)
                                 _enemies.Add(distanceToTarget, enemy);
                     }
@@ -234,7 +172,7 @@ namespace Assets.Source.Game.Scripts
         {
             float distanceToTarget = Vector3.Distance(_currentTarget.transform.position, _player.transform.position);
 
-            if (distanceToTarget <= _attackRange)
+            if (distanceToTarget <= _player.AttackRange)
                 Attacked?.Invoke();
 
             if (_findTarget != null)
@@ -248,37 +186,27 @@ namespace Assets.Source.Game.Scripts
 
             Vector3 directionToTarget = _player.transform.position - _currentTarget.transform.position;
             float distanceToTarget = directionToTarget.magnitude;
-            float critDamage;
 
-            if (_currentTarget != null && distanceToTarget <= _attackRange)
+            if (distanceToTarget <= _player.AttackRange)
             {
-                foreach (var parametr in _damageParametr.DamageSupportivePatametrs)
+                if (CalculateChance(_player.ChanceCriticalDamage))
                 {
-                    if (parametr.SupportivePatametr == TypeSupportivePatametr.Damage)
-                    {
-                        if (CalculateChance(_chanceCritDamage))
-                        {
-                            _damage = parametr.Value;
-                            critDamage = parametr.Value * (1 + _critDamageMultiplier / 100);
-                            parametr.ChaneValue(critDamage);
-                            _currentTarget.TakeDamageTest(_damageParametr);
-                            _lastApplaedDamage = parametr.Value;
-                            parametr.ChaneValue(_damage);
-                            CritAttacked?.Invoke();
-                        }
-                        else
-                        {
-                            _currentTarget.TakeDamageTest(_damageParametr);
-                            _lastApplaedDamage = parametr.Value;
-                        }
-                    }
+                    DamageSource criticalDamageSource = new(
+                        _player.DamageSource.TypeDamage,
+                        _player.DamageSource.DamageParameters,
+                        _player.DamageSource.PoolParticle,
+                        _player.DamageSource.Damage * (_defaultCriticalDamageMultiplier + _player.CriticalDamageMultiplier / _divider));
+
+                    _currentTarget.TakeDamage(criticalDamageSource);
+                    CritAttacked?.Invoke();
+                }
+                else
+                {
+                    _currentTarget.TakeDamage(_player.DamageSource);
                 }
 
-                if (CalculateChance(_chanceVampirism))
-                {
-                    float healing = _lastApplaedDamage * (_vampirismValue / 100);
-                    HealedVampirism?.Invoke(healing);
-                }
+                if (CalculateChance(_player.ChanceVampirism))
+                    HealedVampirism?.Invoke(_player.DamageSource.Damage * (_player.VampirismValue / _divider));
             }
 
             if (_coolDownAttack != null)

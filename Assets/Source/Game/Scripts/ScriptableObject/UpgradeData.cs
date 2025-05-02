@@ -19,5 +19,16 @@ namespace Assets.Source.Game.Scripts
         public List<UpgradeParameter> UpgradeParameters => _upgradeParameters;
         public Sprite Icon => _icon;
         public TypeParameter TypeParameter => _typeParameter;
+
+        public UpgradeParameter GetUpgradeParameterById(int id) 
+        {
+            foreach (UpgradeParameter upgradeParameter in _upgradeParameters)
+            {
+                if (upgradeParameter.Value == id)
+                    return upgradeParameter;
+            }
+
+            return null;
+        }
     }
 }

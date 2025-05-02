@@ -142,7 +142,7 @@ public class SnowfallPresenter : AbilityPresenter
                 {
                     if (_spawnedSpell[i].TryFindEnemy(out Enemy enemy))
                     {
-                        enemy.TakeDamageTest(_ability.DamageParametr);
+                        enemy.TakeDamage(_ability.DamageSource);
                     }
                 }
             }

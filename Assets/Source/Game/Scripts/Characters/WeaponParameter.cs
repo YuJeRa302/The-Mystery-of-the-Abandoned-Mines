@@ -1,6 +1,6 @@
 [System.Serializable]
 
-public class WeaponSupportivePatametr 
+public class WeaponParameter 
 {
     public float Value;
     public TypeWeaponSupportiveParameter SupportivePatametr;

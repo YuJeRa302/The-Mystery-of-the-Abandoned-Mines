@@ -6,7 +6,8 @@ namespace Assets.Source.Game.Scripts
     public class RewardPanel : GamePanelsView
     {
         [SerializeField] private Button _openAdButton;
-        [SerializeField] private Button _closeButton;
+        [SerializeField] private Button _closeAdButton;
+        [SerializeField] private Button _closePanelButton;
         [Space(20)]
         [SerializeField] private Image _weaponIcon;
         [SerializeField] private Image _weaponBackgroundIcon;
@@ -23,23 +24,22 @@ namespace Assets.Source.Game.Scripts
         private void OnDestroy()
         {
             GamePanelsViewModel.GameEnded -= Open;
+            _closePanelButton.onClick.RemoveListener(CloseGame);
+            _openAdButton.onClick.RemoveListener(OpenAds);
         }
 
         public override void Initialize(GamePanelsViewModel gamePanelsViewModel)
         {
             base.Initialize(gamePanelsViewModel);
             GamePanelsViewModel.GameEnded += Open;
+            _closePanelButton.onClick.AddListener(CloseGame);
+            _openAdButton.onClick.AddListener(OpenAds);
         }
 
         protected override void Open()
         {
             CreateViewEntities();
             base.Open();
-        }
-
-        protected override void Close()
-        {
-            base.Close();
         }
 
         private void CreateViewEntities() 

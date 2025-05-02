@@ -93,7 +93,7 @@ namespace Assets.Source.Game.Scripts
                 if (_spell != null)
                 {
                     if (_spell.TryFindEnemy(out Enemy enemy))
-                        enemy.TakeDamageTest(_ability.DamageParametr);
+                        enemy.TakeDamage(_ability.DamageSource);
                 }
             }
         }

@@ -94,7 +94,7 @@ public class StunningBlowAbilityPresenter : AbilityPresenter
         {
             foreach (var enemy in findedEnemies)
             {
-                enemy.TakeDamageTest(_ability.DamageParametr);
+                enemy.TakeDamage(_ability.DamageSource);
             }
         }
     }

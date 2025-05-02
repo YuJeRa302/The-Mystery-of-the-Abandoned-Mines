@@ -14,7 +14,7 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private List<UpgradeParameter> _abilityClassParameters;
         [SerializeField] private List<Parameters> _parameters;
         [SerializeField] private TypeAbility _abilityType;
-        [SerializeField] private DamageParametr _damageParametr; //сюда лист если что
+        [SerializeField] private DamageSource _damageParametr;
 
         public int Id => _id;
         public List<UpgradeParameter> AbilityClassParameters => _abilityClassParameters;
@@ -24,6 +24,6 @@ namespace Assets.Source.Game.Scripts
         public Sprite Icon => _icon;
         public ClassSkillButtonView ButtonView => _buttonView;
         public TypeAbility AbilityType => _abilityType;
-        public DamageParametr DamageParametr => _damageParametr;
+        public DamageSource DamageParametr => _damageParametr;
     }
 }

@@ -88,7 +88,7 @@ public class ThrowAxeAbilityPresenter : AbilityPresenter
             _axemMssile = GameObject.Instantiate(_axemMssilePredab, _throwPoint.position, UnityEngine.Quaternion.identity);
 
             _pool.InstantiatePoolObject(_axemMssile, _axemMssilePredab.name);
-            _axemMssile.Initialaze(_player, _player.PlayerAttacker.DamageParametr, _player.PlayerMovment.MoveSpeed, _ability.CurrentDuration);
+            _axemMssile.Initialaze(_player, _player.DamageSource, _player.MoveSpeed, _ability.CurrentDuration);
         }
 
         _axemMssile.GetComponent<Rigidbody>().AddForce(_throwPoint.forward * _ability.CurrentDuration, ForceMode.Impulse);
@@ -122,7 +122,7 @@ public class ThrowAxeAbilityPresenter : AbilityPresenter
                 {
                     foreach (var enemy in enemies)
                     {
-                        enemy.TakeDamageTest(_player.PlayerAttacker.DamageParametr);
+                        enemy.TakeDamage(_player.DamageSource);
                     }
                 }
             }

@@ -9,6 +9,7 @@ namespace Assets.Source.Game.Scripts
     {
         private readonly int _minValue = 0;
         private readonly ICoroutineRunner _coroutineRunner;
+
         private float _currentDuration;
         private float _defaultDuration;
         private int _currentAbilityValue;
@@ -32,7 +33,7 @@ namespace Assets.Source.Game.Scripts
         private Coroutine _duration;
         private bool _isAbilityUsed = false;
         private bool _isAutoCast = false;
-        private DamageParametr _damageParametr;
+        private DamageSource _damageSource;
 
         public event Action AbilityRemoved;
         public event Action<Ability> AbilityUsed;
@@ -57,7 +58,7 @@ namespace Assets.Source.Game.Scripts
         public float SpellRadius => _spellRadius;
         public bool IsAbilityUsed => _isAbilityUsed;
 
-        public DamageParametr DamageParametr => _damageParametr;
+        public DamageSource DamageSource => _damageSource;
         public int CurrentLevel { get; private set; }
         public int MaxLevel { get; private set; }
         public TypeUpgradeAbility TypeUpgradeMagic { get; private set; }
@@ -118,7 +119,7 @@ namespace Assets.Source.Game.Scripts
 
         public Ability(ClassAbilityData classAbilityData, bool isAutoCast, int currentLvl, ICoroutineRunner coroutineRunner)
         {
-            _damageParametr = classAbilityData.DamageParametr;
+            _damageSource = classAbilityData.DamageParametr;
             FillClassSkillParametr(classAbilityData, currentLvl);
             TypeAbility = classAbilityData.AbilityType;
             _isAutoCast = isAutoCast;
@@ -171,31 +172,10 @@ namespace Assets.Source.Game.Scripts
             }
 
             if (abilityAttributeData as AttackAbilityData)
-            {
-                _damageParametr = (abilityAttributeData as AttackAbilityData).DamageParametr;
-            }
+                _damageSource = (abilityAttributeData as AttackAbilityData).DamageSource;
 
-            if (_damageParametr != null)
-            {
-                foreach (var parametr in _damageParametr.DamageSupportivePatametrs)
-                {
-                    if (parametr.SupportivePatametr == TypeSupportivePatametr.Damage)
-                    {
-                        parametr.ChaneValue(_currentAbilityValue);
-                        //parametr.Value = _currentAbilityValue;
-                    }
-                    else if (parametr.SupportivePatametr == TypeSupportivePatametr.Chance)
-                    {
-                        //parametr.Value = _chance;
-                        parametr.ChaneValue(_chance);
-                    }
-                    else if (parametr.SupportivePatametr == TypeSupportivePatametr.Duration)
-                    {
-                        //parametr.Value = _defaultDuration;
-                        parametr.ChaneValue(_defaultDuration);
-                    }
-                }
-            }
+            if (_damageSource != null)
+                ApplyDamageSource();
         }
 
         private void FillLegendaryAbilityParameters(LegendaryAbilityData legendaryAbilityData)
@@ -208,31 +188,12 @@ namespace Assets.Source.Game.Scripts
                     _currentAbilityValue = parameter.Value;
                 else if (parameter.TypeParameter == TypeParameter.AbilityDuration)
                     _defaultDuration = parameter.Value;
-
-                _damageParametr = legendaryAbilityData.DamageParametr;
-
-                if (_damageParametr != null)
-                {
-                    foreach (var parametr in _damageParametr.DamageSupportivePatametrs)
-                    {
-                        if (parametr.SupportivePatametr == TypeSupportivePatametr.Damage)
-                        {
-                            //parametr.Value = _currentAbilityValue;
-                            parametr.ChaneValue(_currentAbilityValue);
-                        }
-                        else if (parametr.SupportivePatametr == TypeSupportivePatametr.Chance)
-                        {
-                            //parametr.Value = _chance;
-                            parametr.ChaneValue(_chance);
-                        }
-                        else if (parametr.SupportivePatametr == TypeSupportivePatametr.Duration)
-                        {
-                            //parametr.Value = _defaultDuration;
-                            parametr.ChaneValue(_defaultDuration);
-                        }
-                    }
-                }
             }
+
+            _damageSource = legendaryAbilityData.DamageParametr;
+
+            if (_damageSource != null)
+                ApplyDamageSource();
         }
 
         private void FillClassSkillParametr(ClassAbilityData abilityAttributeData, int currentLevel)
@@ -265,27 +226,8 @@ namespace Assets.Source.Game.Scripts
                     _quantily = parameter.Value;
             }
 
-            if (_damageParametr != null)
-            {
-                foreach (var parametr in _damageParametr.DamageSupportivePatametrs)
-                {
-                    if (parametr.SupportivePatametr == TypeSupportivePatametr.Damage)
-                    {
-                        parametr.ChaneValue(_abilityDamage);
-                        //parametr.Value = _abilityDamage;
-                    }
-                    else if (parametr.SupportivePatametr == TypeSupportivePatametr.Chance)
-                    {
-                        parametr.ChaneValue(_chance);
-                        //parametr.Value = _chance;
-                    }
-                    else if (parametr.SupportivePatametr == TypeSupportivePatametr.Duration)
-                    {
-                        parametr.ChaneValue(_defaultDuration);
-                        //parametr.Value = _defaultDuration;
-                    }
-                }
-            }
+            if (_damageSource != null)
+                ApplyDamageSource();
         }
 
         private void UpdateAbilityParamters()
@@ -297,6 +239,24 @@ namespace Assets.Source.Game.Scripts
 
             _defaultDuration += _abilityDuration;
             _currentAbilityValue += _abilityValue;
+        }
+
+        private void ApplyDamageSource() 
+        {
+            _damageSource.ChangeDamage(_currentAbilityValue);
+
+            foreach (var parametr in _damageSource.DamageParameters)
+            {
+                switch (parametr.TypeDamageParameter)
+                {
+                    case TypeDamageParameter.Chance:
+                        parametr.ChangeParameterValue(_chance); // откуда береться значение chance?
+                        break;
+                    case TypeDamageParameter.Duration:
+                        parametr.ChangeParameterValue(_defaultDuration);
+                        break;
+                }
+            }
         }
 
         private void ApplyAbility()

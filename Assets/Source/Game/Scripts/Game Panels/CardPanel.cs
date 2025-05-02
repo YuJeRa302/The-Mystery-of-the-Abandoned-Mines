@@ -44,10 +44,10 @@ namespace Assets.Source.Game.Scripts
             GamePanelsViewModel.CreateCardPool();
             base.Open();
 
-            if (GamePanelsViewModel.GetPlayer().PlayerStats.RerollPoint > 0)
+            if (GamePanelsViewModel.GetPlayer().RerollPoints > 0)
                 _buttonReroll.gameObject.SetActive(true);
 
-            _countRerolPointConteiner.text = GamePanelsViewModel.GetPlayer().PlayerStats.RerollPoint.ToString();
+            _countRerolPointConteiner.text = GamePanelsViewModel.GetPlayer().RerollPoints.ToString();
         }
 
         protected override void Close()
@@ -98,7 +98,7 @@ namespace Assets.Source.Game.Scripts
                 GamePanelsViewModel.GetPlayer().UpdateDeck();
                 GamePanelsViewModel.GetPlayer().UpdateCardPanelByRerollPoints();
                 GamePanelsViewModel.CreateCardPool();
-                _countRerolPointConteiner.text = GamePanelsViewModel.GetPlayer().PlayerStats.RerollPoint.ToString();
+                _countRerolPointConteiner.text = GamePanelsViewModel.GetPlayer().RerollPoints.ToString();
             }
 
             _buttonReroll.gameObject.SetActive(GamePanelsViewModel.GetPlayer().TryGetRerollPoints());

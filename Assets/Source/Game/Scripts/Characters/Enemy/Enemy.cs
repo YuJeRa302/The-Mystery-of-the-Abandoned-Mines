@@ -8,13 +8,14 @@ namespace Assets.Source.Game.Scripts
 {
     public class Enemy : PoolObject
     {
+        private readonly System.Random _rnd = new();
+
         [SerializeField] private EnemyStateMashineExample _stateMashine;
         [SerializeField] private EnemyAnimation _animationController;
         [SerializeField] private Transform _damageEffectConteiner;
         [SerializeField] protected Pool _pool;
         [SerializeField] private HealthBarView _healthView;
 
-        private readonly System.Random _rnd = new();
         private float _attackDistance;
         private float _attackDelay;
         private int _health = 20;
@@ -55,7 +56,7 @@ namespace Assets.Source.Game.Scripts
         public event Action Stuned;
         public event Action EndedStun;
         public event Action<float> DamageTaked;
-        public event Action HealthChenged;
+        public event Action HealthChanged;
 
         private void OnDisable()
         {
@@ -79,7 +80,7 @@ namespace Assets.Source.Game.Scripts
             _stateMashine.InitializeStateMashine(player);
             _healthView.Initialize(this);
             _currentHealth = _health;
-            HealthChenged?.Invoke();
+            HealthChanged?.Invoke();
         }
 
         public void ResetEnemy(int lvlRoom)
@@ -95,96 +96,46 @@ namespace Assets.Source.Game.Scripts
 
             _stateMashine.ResetState();
             _currentHealth = _health;
-            HealthChenged?.Invoke();
+            HealthChanged?.Invoke();
         }
 
-        private void Fill(EnemyData data)
+        public void TakeDamage(DamageSource damageSource)
         {
-            _health = data.Health;
-            _damage = data.Damage;
-            _speed = data.MoveSpeed;
-            _attackDelay = data.AttackDelay;
-            _attackDistance = data.AttackDistance;
-            _id = data.Id;
-            _gold = data.GoldReward;
-            _score = data.Score;
-            _experience = data.ExperienceReward;
-            _upgradeExperience = data.UpgradeExperienceReward;
-            _baseMoveSpeed = _speed;
-        }
-
-        private void TakeDamage(float damage)//+тип урона
-        {
-            if (damage < 0)
-                return;
-
-            if (_currentHealth <= 0)
-                return;
-
-            _currentHealth -= damage;
-            DamageTaked?.Invoke(damage);
-            HealthChenged?.Invoke();
-
-            if (_currentHealth <= 0)
-            {
-                _currentHealth = 0;
-                _isDead = true;
-                Died?.Invoke(this);
-                ReturnToPool();
-            }
-        }
-
-        public void TakeDamageTest(DamageParametr damage)
-        {
-            float damageValue = 0;
+            float damageValue = damageSource.Damage;
             float chance = 0;
             float duration = 0;
             float repulsive = 0;
-            float gradualDamage = 0;
+            float gradual = 0;
             float slowDown = 0;
 
-            foreach (var parametr in damage.DamageSupportivePatametrs)
+            foreach (var parametr in damageSource.DamageParameters)
             {
-                if (parametr.SupportivePatametr == TypeSupportivePatametr.Damage)
+                switch (parametr.TypeDamageParameter)
                 {
-                    damageValue = parametr.Value;
-                }
-                else if (parametr.SupportivePatametr == TypeSupportivePatametr.Chance)
-                {
-                    chance = parametr.Value;
-                }
-                else if (parametr.SupportivePatametr == TypeSupportivePatametr.Duration)
-                {
-                    duration = parametr.Value;
-                }
-                else if (parametr.SupportivePatametr == TypeSupportivePatametr.Repulsive)
-                {
-                    repulsive = parametr.Value;
-                }
-                else if (parametr.SupportivePatametr == TypeSupportivePatametr.GradualDamage)
-                {
-                    gradualDamage = parametr.Value;
-                }
-                else if (parametr.SupportivePatametr == TypeSupportivePatametr.Slowdown)
-                {
-                    slowDown = parametr.Value;
+                    case TypeDamageParameter.Chance:
+                        chance = parametr.Value;
+                        break;
+                    case TypeDamageParameter.Duration:
+                        duration = parametr.Value;
+                        break;
+                    case TypeDamageParameter.Repulsive:
+                        repulsive = parametr.Value;
+                        break;
+                    case TypeDamageParameter.Gradual:
+                        gradual = parametr.Value;
+                        break;
+                    case TypeDamageParameter.Slowdown:
+                        slowDown = parametr.Value;
+                        break;
                 }
             }
 
-            if (damage.TypeDamage== TypeDamage.PhysicalDamage)
-            {
-                foreach (var item in damage.DamageSupportivePatametrs)
-                {
-                    if (item.SupportivePatametr == TypeSupportivePatametr.Damage)
-                    {
-                        TakeDamage(item.Value);
-                    }
-                }
-            }
+            if (damageSource.TypeDamage == TypeDamage.PhysicalDamage)
+                ApplyDamage(damageValue);
 
-            if (damage.TypeDamage == TypeDamage.StunDamage)
+            if (damageSource.TypeDamage == TypeDamage.StunDamage)
             {
-                TakeDamage(damageValue);
+                ApplyDamage(damageValue);
 
                 if (_isDead)
                     return;
@@ -192,12 +143,12 @@ namespace Assets.Source.Game.Scripts
                 if (_rnd.Next(0, 100) <= chance)
                 {
                     CorountineStop(_stunDamage);
-                    _stunDamage = StartCoroutine(Stun(duration, damage.Particle));
+                    _stunDamage = StartCoroutine(Stun(duration, damageSource.PoolParticle));
                 }
             }
-            else if (damage.TypeDamage == TypeDamage.RepulsiveDamage)
+            else if (damageSource.TypeDamage == TypeDamage.RepulsiveDamage)
             {
-                TakeDamage(damageValue);
+                ApplyDamage(damageValue);
 
                 if (_isDead)
                     return;
@@ -205,25 +156,25 @@ namespace Assets.Source.Game.Scripts
                 CorountineStop(_repulsiveDamage);
                 _repulsiveDamage = StartCoroutine(Repulsive(repulsive));
             }
-            else if (damage.TypeDamage == TypeDamage.BurningDamage)
+            else if (damageSource.TypeDamage == TypeDamage.BurningDamage)
             {
-                TakeDamage(damageValue);
+                ApplyDamage(damageValue);
 
                 if (_isDead)
                     return;
 
                 CorountineStop(_burnDamage);
-                _burnDamage = StartCoroutine(Burn(gradualDamage, duration, damage.Particle));
+                _burnDamage = StartCoroutine(Burn(gradual, duration, damageSource.PoolParticle));
             }
-            else if (damage.TypeDamage == TypeDamage.SlowedDamage)
+            else if (damageSource.TypeDamage == TypeDamage.SlowedDamage)
             {
-                TakeDamage(damageValue);
+                ApplyDamage(damageValue);
 
                 if (_isDead)
                     return;
 
                 CorountineStop(_slowDamage);
-                _slowDamage = StartCoroutine(Slowed(duration, slowDown, damage.Particle));
+                _slowDamage = StartCoroutine(Slowed(duration, slowDown, damageSource.PoolParticle));
             }
         }
 
@@ -239,6 +190,42 @@ namespace Assets.Source.Game.Scripts
             _rigidbody.velocity = Vector3.zero;
             _rigidbody.isKinematic = true;
             _currentHealth = _health;
+        }
+
+        private void ApplyDamage(float damage)
+        {
+            if (damage < 0)
+                return;
+
+            if (_currentHealth <= 0)
+                return;
+
+            _currentHealth -= damage;
+            DamageTaked?.Invoke(damage);
+            HealthChanged?.Invoke();
+
+            if (_currentHealth <= 0)
+            {
+                _currentHealth = 0;
+                _isDead = true;
+                Died?.Invoke(this);
+                ReturnToPool();
+            }
+        }
+
+        private void Fill(EnemyData data)
+        {
+            _health = data.Health;
+            _damage = data.Damage;
+            _speed = data.MoveSpeed;
+            _attackDelay = data.AttackDelay;
+            _attackDistance = data.AttackDistance;
+            _id = data.Id;
+            _gold = data.GoldReward;
+            _score = data.Score;
+            _experience = data.ExperienceReward;
+            _upgradeExperience = data.UpgradeExperienceReward;
+            _baseMoveSpeed = _speed;
         }
 
         private void CreateDamageParticle(PoolParticle poolParticle)
@@ -288,7 +275,7 @@ namespace Assets.Source.Game.Scripts
 
                 if (pastSeconds >= 1)
                 {
-                    TakeDamage(damage);
+                    ApplyDamage(damage);
                     pastSeconds = 0;
                     currentTime++;
                 }

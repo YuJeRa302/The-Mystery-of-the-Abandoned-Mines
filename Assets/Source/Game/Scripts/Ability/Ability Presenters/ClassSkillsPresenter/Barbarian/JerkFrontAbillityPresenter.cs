@@ -73,7 +73,7 @@ public class JerkFrontAbillityPresenter : AbilityPresenter
                 particle = GameObject.Instantiate(_poolParticle, _effectConteiner);
                 _pool.InstantiatePoolObject(particle, _poolParticle.name);
                 _spawnedEffects.Add(particle);
-                (particle as DamageParticle).Initialaze(_ability.DamageParametr);
+                (particle as DamageParticle).Initialaze(_ability.DamageSource);
             }
         }
         else

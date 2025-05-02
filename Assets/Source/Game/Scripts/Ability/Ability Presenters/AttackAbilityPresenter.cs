@@ -190,7 +190,7 @@ namespace Assets.Source.Game.Scripts
                         {
                             foreach (var enemy in enemies)
                             {
-                                enemy.TakeDamageTest(_ability.DamageParametr);
+                                enemy.TakeDamage(_ability.DamageSource);
                             }
                         }
                     }
@@ -198,7 +198,7 @@ namespace Assets.Source.Game.Scripts
                     {
                         if (_spell.TryFindEnemy(out Enemy enemy))
                         {
-                            enemy.TakeDamageTest(_ability.DamageParametr);
+                            enemy.TakeDamage(_ability.DamageSource);
                         }
                     }
                 }

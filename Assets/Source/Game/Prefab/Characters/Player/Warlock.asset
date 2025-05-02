@@ -17,6 +17,7 @@ MonoBehaviour:
   _translationDescription: WarlockDescription
   _translationStrengths: WarlockStrengths
   _className: 1
+  _typeAttackRange: 1
   _animatorController: {fileID: 9100000, guid: e77343a92df3a8c469462b4b982288de, type: 2}
   _classAbilityDatas:
   - {fileID: 11400000, guid: c8f4952d0dd16f24aacbd8d1bab73fdf, type: 2}

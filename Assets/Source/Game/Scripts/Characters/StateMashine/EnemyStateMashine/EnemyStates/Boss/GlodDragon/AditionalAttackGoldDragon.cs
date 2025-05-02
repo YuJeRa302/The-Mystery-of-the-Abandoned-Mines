@@ -29,7 +29,7 @@ public class AditionalAttackGoldDragon : BossAdditionalAttackState
     protected override void AditionalAttackAppalyDamage()
     {
         if (_spell.TryFindPlayer(out Player player))
-            player.PlayerHealth.TakeDamage(Convert.ToInt32(_damage));
+            player.TakeDamage(Convert.ToInt32(_damage));
         else
             return;
     }

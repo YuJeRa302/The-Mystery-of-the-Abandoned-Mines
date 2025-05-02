@@ -84,11 +84,11 @@ namespace Assets.Source.Game.Scripts
         private void FillGameParameters() 
         {
             _playerHealth.text = GamePanelsViewModel.GetPlayer().CurrentHealth.ToString();
-            _playerDamage.text = GamePanelsViewModel.GetPlayer().PlayerStats.Damage.ToString();
-            _coins.text = GamePanelsViewModel.GetPlayer().PlayerWallet.CurrentCoins.ToString();
-            _rerollPoints.text = GamePanelsViewModel.GetPlayer().PlayerStats.RerollPoints.ToString();
+            _playerDamage.text = GamePanelsViewModel.GetPlayer().DamageSource.Damage.ToString();
+            _coins.text = GamePanelsViewModel.GetPlayer().Coins.ToString();
+            _rerollPoints.text = GamePanelsViewModel.GetPlayer().RerollPoints.ToString();
             _currentRoomLevel.text = GamePanelsViewModel.GetCurrentRoomLevel().ToString();
-            _killCount.text = GamePanelsViewModel.GetPlayer().PlayerStats.CountKillEnemy.ToString();
+            _killCount.text = GamePanelsViewModel.GetPlayer().KillCount.ToString();
         }
 
         private void CreateLanguageButton() 

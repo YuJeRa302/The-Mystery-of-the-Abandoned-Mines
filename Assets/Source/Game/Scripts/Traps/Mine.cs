@@ -23,7 +23,7 @@ public class Mine : Trap
         float distance = directionToTarget.magnitude;
 
         if (distance <= 4f)
-            player.PlayerHealth.TakeDamage(_damage);
+            player.TakeDamage(_damage);
 
         Instantiate(_explosionEffect, new Vector3(transform.position.x, transform.position.y, transform.position.z), Quaternion.identity);
         gameObject.SetActive(false);

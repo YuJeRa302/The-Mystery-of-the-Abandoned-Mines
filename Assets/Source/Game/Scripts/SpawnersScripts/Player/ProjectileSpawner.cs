@@ -6,16 +6,14 @@ public class ProjectileSpawner
     private PlayerProjectile _bulletBrefab;
     private Pool _pool;
     private Transform _shotPoint;
-    private float _damage;
-    private DamageParametr _damageParametr;
+    private DamageSource _damageSource;
 
-    public ProjectileSpawner(PlayerProjectile playerProjectile, Pool pool, Transform shotPoint, float damage, DamageParametr damageParametr)
+    public ProjectileSpawner(PlayerProjectile playerProjectile, Pool pool, Transform shotPoint, DamageSource damageSource)
     {
         _bulletBrefab = playerProjectile;
         _pool = pool;
         _shotPoint = shotPoint;
-        _damage = damage;
-        _damageParametr = damageParametr;
+        _damageSource = damageSource;
     }
 
     public void SpawnProjectile(Enemy enemy)
@@ -35,6 +33,6 @@ public class ProjectileSpawner
             _pool.InstantiatePoolObject(playerProjectile, _bulletBrefab.name);
         }
 
-        playerProjectile.Initialaze(enemy, _damage, 1f, _damageParametr);
+        playerProjectile.Initialaze(enemy, 1f, _damageSource);// moveSpeedBoost????
     }
 }

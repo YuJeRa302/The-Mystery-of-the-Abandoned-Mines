@@ -115,7 +115,7 @@ public class FirestormPresenter : AbilityPresenter
             {
                 if (_spell.TryFindEnemy(out Enemy enemy))
                 {
-                    enemy.TakeDamageTest(_ability.DamageParametr);
+                    enemy.TakeDamage(_ability.DamageSource);
                     //enemy.TakeDamageTest(_ability.DamageParametr);
                 }
             }

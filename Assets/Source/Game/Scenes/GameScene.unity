@@ -8292,7 +8292,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _openAdButton: {fileID: 93151501}
-  _closeButton: {fileID: 914576345}
+  _closeAdButton: {fileID: 0}
+  _closePanelButton: {fileID: 914576345}
   _weaponIcon: {fileID: 1298815675}
   _weaponBackgroundIcon: {fileID: 1166298278}
   _coins: {fileID: 1777082715}

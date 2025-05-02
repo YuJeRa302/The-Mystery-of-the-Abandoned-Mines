@@ -18,21 +18,21 @@ public class HealthBarView : MonoBehaviour
         if (_helth != null)
         {
             _helth.DamageTaked += OnTakeDamage;
-            _helth.HealthChenged += OnChangeHealthValue;
+            _helth.HealthChanged += OnChangeHealthValue;
         }
     }
 
     private void OnDisable()
     {
         _helth.DamageTaked -= OnTakeDamage;
-        _helth.HealthChenged -= OnChangeHealthValue;
+        _helth.HealthChanged -= OnChangeHealthValue;
     }
 
     public void Initialize(Enemy enemy)
     {
         _helth = enemy;
         _helth.DamageTaked += OnTakeDamage;
-        _helth.HealthChenged += OnChangeHealthValue;
+        _helth.HealthChanged += OnChangeHealthValue;
     }
 
     private void OnChangeHealthValue()

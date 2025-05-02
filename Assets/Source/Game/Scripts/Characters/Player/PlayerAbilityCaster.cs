@@ -180,7 +180,12 @@ namespace Assets.Source.Game.Scripts
 
         public void CreateAbilityView(AbilityView abilityView, ParticleSystem particleSystem, Transform throwPoint)
         {
-            Ability newAbility = _abilityFactory.CreateAbility(_abilityAttributeData, _currentAbilityLevel, _abilityCooldownReduction, _abilityDuration, _abilityDamage, true);
+            Ability newAbility = _abilityFactory.CreateAbility(_abilityAttributeData, 
+                _currentAbilityLevel, 
+                _abilityCooldownReduction, 
+                _abilityDuration, 
+                _abilityDamage, 
+                true);
 
             if (_abilityAttributeData.TypeAbility != TypeAbility.AttackAbility)
             {
@@ -201,7 +206,11 @@ namespace Assets.Source.Game.Scripts
             _abilities.Add(newAbility);
         }
 
-        public void CreateLegendaryAbilityView(AbilityView abilityView, ParticleSystem particleSystem, Transform throwPoint, AbilityAttributeData abilityAttributeData)
+        public void CreateLegendaryAbilityView(
+            AbilityView abilityView,
+            ParticleSystem particleSystem,
+            Transform throwPoint,
+            AbilityAttributeData abilityAttributeData)
         {
             Ability newAbility = _abilityFactory.CreateLegendaryAbility(
                 (abilityAttributeData as AttackAbilityData).LegendaryAbilityData,

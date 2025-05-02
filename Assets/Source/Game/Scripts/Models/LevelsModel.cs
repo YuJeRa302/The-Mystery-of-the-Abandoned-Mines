@@ -104,7 +104,13 @@ public class LevelsModel
 
     private LevelState InitLevelState(LevelData levelData)
     {
-        LevelState levelState = new(levelData.Id, false, 0);
+        LevelState levelState = new()
+        {
+            Id = levelData.Id,
+            IsComplete = false,
+            CurrentCompleteStages = 0
+        };
+
         return levelState;
     }
 }

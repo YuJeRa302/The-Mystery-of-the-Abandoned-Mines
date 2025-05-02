@@ -78,7 +78,7 @@ namespace Assets.Source.Game.Scripts
             float distance = directionToTarget.magnitude;
 
             if (distance <= _attackRange)
-                _target.PlayerHealth.TakeDamage(Convert.ToInt32(_damage));
+                _target.TakeDamage(Convert.ToInt32(_damage));
 
             _canTransit = true;
         }

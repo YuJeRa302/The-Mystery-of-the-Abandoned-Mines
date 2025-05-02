@@ -47,7 +47,7 @@ public class AxemMssile : PoolObject
         }
     }
 
-    public void Initialaze(Player player, DamageParametr damageParametr, float moveSpeedBoost, float duration)
+    public void Initialaze(Player player, DamageSource damageParametr, float moveSpeedBoost, float duration)
     {
         _player = player;
         _weponPrefab = _player.WeaponData.WeaponPrefab;
@@ -55,12 +55,12 @@ public class AxemMssile : PoolObject
         _throwDuration = duration - 2f;
         _dackPlayerDuration = 2f;
 
-        List<DamageSupportivePatametr> damageSupportivePatametrs = new List<DamageSupportivePatametr>(damageParametr.DamageSupportivePatametrs);
+        List<DamageParameter> damageSupportivePatametrs = new List<DamageParameter>(damageParametr.DamageParameters);
 
         for (int i = 0; i < damageSupportivePatametrs.Count; i++)
         {
-            damageSupportivePatametrs[i] = new DamageSupportivePatametr(damageParametr.DamageSupportivePatametrs[i].Value,
-                damageParametr.DamageSupportivePatametrs[i].SupportivePatametr);
+            damageSupportivePatametrs[i] = new DamageParameter(damageParametr.DamageParameters[i].Value,
+                damageParametr.DamageParameters[i].TypeDamageParameter);
         }
 
         _weponPrefab = Instantiate(_player.WeaponData.WeaponPrefab, transform);

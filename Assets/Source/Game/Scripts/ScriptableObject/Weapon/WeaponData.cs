@@ -11,8 +11,8 @@ public class WeaponData : ScriptableObject
     [SerializeField] private WeponPrefab _weaponPrefab;
     [SerializeField] private string _translationName;
     [SerializeField] private Sprite _icon;
-    [SerializeField] private DamageParametr _damageParametr;
-    [SerializeField] private WeaponPatametr _weaponParameter;
+    [SerializeField] private DamageSource _damageSource;
+    [SerializeField] private List<WeaponParameter> _weaponParameters;
 
     public Color TierColor => _tierColor[_tier];
     public int Tier => _tier;
@@ -21,6 +21,6 @@ public class WeaponData : ScriptableObject
     public Sprite Icon => _icon;
     public TypePlayerClass TypePlayerClass => _targetClass;
     public WeponPrefab WeaponPrefab => _weaponPrefab;
-    public DamageParametr DamageParametr => _damageParametr;
-    public WeaponPatametr WeaponParameter => _weaponParameter;
+    public DamageSource DamageSource => _damageSource;
+    public List<WeaponParameter> WeaponParameters => _weaponParameters;
 }

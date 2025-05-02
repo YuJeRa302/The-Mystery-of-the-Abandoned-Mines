@@ -12,6 +12,7 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private string _translationDescription;
         [SerializeField] private string _translationStrengths;
         [SerializeField] private TypePlayerClass _className;
+        [SerializeField] private TypeAttackRange _typeAttackRange;
         [SerializeField] private AnimatorController _animatorController;
         [Space(10)]
         [SerializeField] private List<ClassAbilityData> _classAbilityDatas;
@@ -25,5 +26,6 @@ namespace Assets.Source.Game.Scripts
         public TypePlayerClass TypePlayerClass => _className;
         public WeaponData BaseWeapon => _baseWeapon;
         public string TranslationStrengths => _translationStrengths;
+        public TypeAttackRange TypeAttackRange => _typeAttackRange;
     }
 }

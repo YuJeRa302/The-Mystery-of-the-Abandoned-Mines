@@ -9,7 +9,7 @@ namespace Assets.Source.Game.Scripts
         {
             if (collision.collider.TryGetComponent(out Player player))
             {
-                player.PlayerHealth.TakeDamage(Convert.ToInt32(_damage));
+                player.TakeDamage(Convert.ToInt32(_damage));
                 ReturObjectPool();
             }
 
@@ -23,7 +23,7 @@ namespace Assets.Source.Game.Scripts
         {
             if (other.TryGetComponent(out Player player))
             {
-                player.PlayerHealth.TakeDamage(Convert.ToInt32(_damage));
+                player.TakeDamage(Convert.ToInt32(_damage));
                 ReturObjectPool();
             }
         }

@@ -59,8 +59,18 @@ MonoBehaviour:
     IsEquip: 0
     IsUnlock: 1
   _defaultLevelState:
-  - CurrentComplitStages: 0
-  - CurrentComplitStages: 0
-  - CurrentComplitStages: 0
-  - CurrentComplitStages: 0
-  - CurrentComplitStages: 0
+  - Id: 0
+    IsComplete: 1
+    CurrentCompleteStages: 0
+  - Id: 1
+    IsComplete: 1
+    CurrentCompleteStages: 0
+  - Id: 2
+    IsComplete: 1
+    CurrentCompleteStages: 0
+  - Id: 3
+    IsComplete: 0
+    CurrentCompleteStages: 0
+  - Id: 4
+    IsComplete: 0
+    CurrentCompleteStages: 0

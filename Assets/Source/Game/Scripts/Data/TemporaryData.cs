@@ -44,16 +44,17 @@ public class TemporaryData
     public LevelState[] LevelStates => _levelStates;
     public UpgradeData[] UpgradeDatas { get; private set; }
 
-    public void RescheduleProgress(PlayerWallet wallet, PlayerStats playerStats, int currentStages)
+    public void SaveProgress(Player player, bool levelState)
     {
-        _playerScore += playerStats.Score;
-        Coins += wallet.CurrentCoins;
+        _playerScore += player.Score;
+        Coins += player.Coins;
 
-        if (currentStages >= LevelData.CountStages)
+        CurrentLevelState = new LevelState()
         {
-            currentStages = LevelData.CountStages;
-            CurrentLevelState = new LevelState(LevelData.Id, true, currentStages);
-        }
+            Id = LevelData.Id,
+            IsComplete = levelState,
+            CurrentCompleteStages = LevelData.CountStages
+        };
 
         ChengedData?.Invoke();
     }
@@ -173,9 +174,14 @@ public class TemporaryData
 
         foreach (var state  in LevelStates)
         {
-            if (state.Id == LevelData.Id)
+            if (state.Id == LevelData.Id) 
             {
-                CurrentLevelState = new LevelState(state.Id, state.IsComplete, state.CurrentComplitStages);
+                CurrentLevelState = new LevelState()
+                {
+                    Id = state.Id,
+                    IsComplete = state.IsComplete,
+                    CurrentCompleteStages = state.CurrentCompleteStages
+                };
             }
         }
 

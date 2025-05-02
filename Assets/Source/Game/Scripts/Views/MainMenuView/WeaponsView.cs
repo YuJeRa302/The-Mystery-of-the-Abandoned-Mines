@@ -135,17 +135,17 @@ namespace Assets.Source.Game.Scripts
         private void CreateWeaponStats(WeaponDataView weaponDataView) 
         {
             WeaponStatsView view = Instantiate(_weaponStatsView, _weaponStatsContainer);
-            view.Initialize(_typeDamageTranslationName, weaponDataView.WeaponData.DamageParametr.TypeDamage.ToString(), true);
+            view.Initialize(_typeDamageTranslationName, weaponDataView.WeaponData.DamageSource.TypeDamage.ToString(), true);
             _weaponStatsViews.Add(view);
 
-            foreach (var parametr in weaponDataView.WeaponData.DamageParametr.DamageSupportivePatametrs)
+            foreach (var parametr in weaponDataView.WeaponData.DamageSource.DamageParameters)
             {
                 view = Instantiate(_weaponStatsView, _weaponStatsContainer);
-                view.Initialize(parametr.SupportivePatametr.ToString(), parametr.Value.ToString(), false);
+                view.Initialize(parametr.TypeDamageParameter.ToString(), parametr.Value.ToString(), false);
                 _weaponStatsViews.Add(view);
             }
 
-            foreach (var parametr in weaponDataView.WeaponData.WeaponParameter.WeaponSupportivePatametrs)
+            foreach (var parametr in weaponDataView.WeaponData.WeaponParameters)
             {
                 view = Instantiate(_weaponStatsView, _weaponStatsContainer);
                 view.Initialize(parametr.SupportivePatametr.ToString(), parametr.Value.ToString(), false);

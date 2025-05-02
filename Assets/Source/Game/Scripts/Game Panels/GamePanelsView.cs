@@ -11,6 +11,7 @@ namespace Assets.Source.Game.Scripts
         public Action PanelClosed;
         public Action AdOpened;
         public Action AdClosed;
+        public Action GameClosed;
 
         public virtual void Initialize(GamePanelsViewModel gamePanelsViewModel)
         {
@@ -28,6 +29,23 @@ namespace Assets.Source.Game.Scripts
         {
             gameObject.SetActive(false);
             PanelClosed?.Invoke();
+        }
+
+        protected virtual void CloseGame() 
+        {
+            gameObject.SetActive(false);
+            GameClosed?.Invoke();
+        }
+
+        protected virtual void OpenAds()
+        {
+            AdOpened?.Invoke();
+        }
+
+        protected virtual void CloseAds()
+        {
+            gameObject.SetActive(false);
+            AdClosed?.Invoke();
         }
     }
 }

@@ -1,13 +1,11 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
-using Random = System.Random;
 
 namespace Assets.Source.Game.Scripts
 {
     public class GamePanelsModel
     {
-        private readonly Random _rnd = new ();
+        private readonly System.Random _rnd = new ();
         private readonly TemporaryData _temporaryData;
         private readonly Player _player;
         private readonly LevelObserver _levelObserver;

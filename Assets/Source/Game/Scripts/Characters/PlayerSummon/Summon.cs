@@ -10,7 +10,7 @@ public class Summon : PoolObject
     [SerializeField] private SummonStateMashineExample _mashineExample;
     [SerializeField] private SummonAnimation _animation;
     [SerializeField] private float _moveSpeed;
-    [SerializeField] private DamageParametr _damage;
+    [SerializeField] private DamageSource _damageSource;
 
     private Player _player;
     private Enemy _target;
@@ -24,30 +24,14 @@ public class Summon : PoolObject
     public float DistanceToTarget => _distanceToTarget;
     public float SearchRadius => _searchRadius;
     public float AttackDelay => _attackDelay;
-    public DamageParametr Damage => _damage;
+    public DamageSource DamageSource => _damageSource;
     public float LifeTime => _lifeTime;
     public float MoveSpeed => _moveSpeed;
 
-    public void Initialize(Player player, DamageParametr damageParametr, float lifeTime)
+    public void Initialize(Player player, DamageSource damageSource, float lifeTime)
     {
         _player = player;
-        _damage = _player.PlayerAttacker.DamageParametr;
-
-        foreach (var supportivePatametr in damageParametr.DamageSupportivePatametrs)
-        {
-            if (supportivePatametr.SupportivePatametr == TypeSupportivePatametr.Damage)
-            {
-                foreach (var mainDamge in _damage.DamageSupportivePatametrs)
-                {
-                    if (mainDamge.SupportivePatametr == TypeSupportivePatametr.Damage)
-                    {
-                        //mainDamge.Value = supportivePatametr.Value;
-                        Debug.Log(mainDamge.Value);
-                    }
-                }
-            }
-        }
-
+        _damageSource = damageSource;
         _lifeTime = lifeTime;
         _mashineExample.MashineInitialized += OnStateMashineInitialize;
         _mashineExample.InitializeStateMashine(_player);

@@ -6,8 +6,6 @@ namespace Assets.Source.Game.Scripts
 {
     public class PlayerView : MonoBehaviour
     {
-        private readonly int _firstIndex = 0;
-
         [SerializeField] private GameObject _mobileInterface;
         [Space(20)]
         [SerializeField] private Slider _sliderHP;
@@ -99,7 +97,7 @@ namespace Assets.Source.Game.Scripts
 
             AbilityView abilityView = Instantiate(abilityAttributeData.AbilityView, _abilityObjectContainer);
 
-            foreach (var parametr in abilityAttributeData.LegendaryAbilityData.LegendaryAbilityParameters[_firstIndex].CardParameters)
+            foreach (var parametr in abilityAttributeData.LegendaryAbilityData.LegendaryAbilityParameters[0].CardParameters)
             {
                 if (parametr.TypeParameter == TypeParameter.AbilityCooldown)
                     currentAbilityCooldown = parametr.Value;

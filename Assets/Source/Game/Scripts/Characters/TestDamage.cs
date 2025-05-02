@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class TestDamage : MonoBehaviour
 {
-    [SerializeField] private List<DamageParametr> _damageParametrs;
+    [SerializeField] private List<DamageSource> _damageParametrs;
 }

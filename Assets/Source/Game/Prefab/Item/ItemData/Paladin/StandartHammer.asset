@@ -24,14 +24,14 @@ MonoBehaviour:
   _weaponPrefab: {fileID: 9213339794923256004, guid: dbe5a519df1331947a8a98fdf73929a6, type: 3}
   _translationName: StandardHammer
   _icon: {fileID: 21300000, guid: 576ed9ed1de185845ba4efa9daee2209, type: 3}
-  _damageParametr:
+  _damageSource:
     _typeDamage: 0
-    _damageSupportivePatametrs:
-    - _value: 5
-      _supportivePatametr: 0
+    _damage: 10
+    _damageParameters:
+    - _value: 1
+      _typeDamageParameter: 3
     _particle: {fileID: 0}
-  _weaponParameter:
-    WeaponSupportivePatametrs:
-    - Value: 1
-      SupportivePatametr: 4
+  _weaponParameters:
+  - Value: 1
+    SupportivePatametr: 4
   _additionalWeapon: {fileID: 5634621666115186438, guid: f798da3c4940da64b8c5734b563cd48e, type: 3}

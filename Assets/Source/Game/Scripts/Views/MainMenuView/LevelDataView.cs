@@ -70,7 +70,7 @@ namespace Assets.Source.Game.Scripts
             _name.TranslationName = levelData.TranslationName;
             _icon.color = new Color(levelData.TierColor.r, levelData.TierColor.g, levelData.TierColor.b);
 
-            for (int i = 0; i < levelState.CurrentComplitStages; i++)
+            for (int i = 0; i < levelState.CurrentCompleteStages; i++)
             {
                 Image star = Instantiate(_starLvlPrefab, _starsConteiner);
                 star.sprite = _complitStar;

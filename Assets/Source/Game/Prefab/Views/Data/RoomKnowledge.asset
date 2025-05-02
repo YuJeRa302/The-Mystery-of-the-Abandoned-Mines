@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f248d45e62deb394688fc9dbbc848185, type: 3}
+  m_Name: RoomKnowledge
+  m_EditorClassIdentifier: 
+  _knowladgeView: {fileID: 7327658221104836142, guid: 0391a6040d8231c4fb40455eef98bf22, type: 3}
+  _roomDatas:
+  - {fileID: 11400000, guid: 2d83b6126194a8e439e26db136e20ac1, type: 2}
+  - {fileID: 11400000, guid: 66da06b1247ebf74bb4954ab561ddb24, type: 2}
+  - {fileID: 11400000, guid: 469e1d55d32f99b49b2da6f8fb432dae, type: 2}
+  - {fileID: 11400000, guid: 9fbdca82811956f4197d510ad42c6c8a, type: 2}

@@ -13,6 +13,7 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private EnemyData[] _enemyDatas;
         [SerializeField] private EnemyData[] _epicEnemyDatas;
         [SerializeField] private GameObject[] _traps;
+        [SerializeField] private string _roomDescription;
 
         public int Id => _id;
         public Color[] TierColor => _tierColor;
@@ -21,5 +22,6 @@ namespace Assets.Source.Game.Scripts
         public AnimationCurve ChanceFromDistance => _chanceFromDistance;
         public EnemyData[] EnemyDatas => _enemyDatas;
         public GameObject[] Traps => _traps;
+        public string RoomDescription => _roomDescription;
     }
 }

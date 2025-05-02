@@ -33,6 +33,10 @@ namespace Assets.Source.Game.Scripts
         [Header("[Enemy]")]
         [SerializeField] private Enemy _prefabEnemy;
         [SerializeField] private TypeEnemy _type;
+        [Header("[Knowleadge]")]
+        [SerializeField] private Sprite _enemyIcon;
+        [SerializeField] private string _descripton;
+        [SerializeField] private string _name;
 
         public int Id => _id;
         public int UpgradeExperienceReward => _upgradeExperienceReward;
@@ -57,5 +61,8 @@ namespace Assets.Source.Game.Scripts
         public AudioClip Hit => _hit;
         public Enemy PrefabEnemy => _prefabEnemy;
         public TypeEnemy TypeEnemy => _type;
+        public Sprite Icon => _enemyIcon;
+        public string Descroption => _descripton;
+        public string Name => _name;
     }
 }

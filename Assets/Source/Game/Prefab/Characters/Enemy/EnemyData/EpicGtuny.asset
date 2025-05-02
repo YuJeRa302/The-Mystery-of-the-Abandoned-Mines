@@ -33,3 +33,6 @@ MonoBehaviour:
   _hit: {fileID: 0}
   _prefabEnemy: {fileID: 4406815149001618796, guid: 90bf83ada9f33b54aaefe275db8c2503, type: 3}
   _type: 1
+  _enemyIcon: {fileID: 21300000, guid: 2750995bfcccb374dbf9ed91d92ad768, type: 3}
+  _descripton: GrutEpicDescription
+  _name: GrutEpic

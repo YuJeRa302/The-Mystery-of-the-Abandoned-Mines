@@ -47,6 +47,7 @@ namespace Assets.Source.Game.Scripts
         public int CurrentLevel { get; private set; }
         public bool IsComplete { get; private set; } = false;
         public int CountEnemy => _countEnemy;
+        public Sprite IconRoom => _renderer.sprite;
 
         private void OnDestroy()
         {

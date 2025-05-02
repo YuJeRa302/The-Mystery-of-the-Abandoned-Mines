@@ -32,3 +32,7 @@ MonoBehaviour:
   _audioClipDie: {fileID: 0}
   _hit: {fileID: 0}
   _prefabEnemy: {fileID: 4406815149001618796, guid: b10a0a4cf1f92a94282dd86e6f11f73f, type: 3}
+  _type: 0
+  _enemyIcon: {fileID: 21300000, guid: 0d659b0a4f166034a92ff897f2b221e6, type: 3}
+  _descripton: GrutDescription
+  _name: Grut

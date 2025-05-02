@@ -33,3 +33,6 @@ MonoBehaviour:
   _hit: {fileID: 0}
   _prefabEnemy: {fileID: 190874258655281799, guid: 8a874ac03b442f94595eb25ecec1e2ff, type: 3}
   _type: 1
+  _enemyIcon: {fileID: 21300000, guid: 12323cefa9b090447a57efb4fee5db4c, type: 3}
+  _descripton: LichEpicDiscription
+  _name: LichEpic

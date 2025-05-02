@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Loot RoomData
   m_EditorClassIdentifier: 
   _id: 2
-  _roomName: Loot Room
+  _roomName: LootRoom
   _tierColor:
   - {r: 1, g: 1, b: 1, a: 0}
   - {r: 0.23921569, g: 1, b: 0.21568628, a: 0}
@@ -53,3 +53,4 @@ MonoBehaviour:
   - {fileID: 4699667135979270254, guid: 1865b06fe0b3f7648866fa3cf0dc8804, type: 3}
   - {fileID: 1512387571578294354, guid: 355e22e86afc0684b9e17b64a811a887, type: 3}
   - {fileID: 7292573048194938277, guid: 73fcaf85b37e13d4fa546922db2108b8, type: 3}
+  _roomDescription: LootRoomDescription

@@ -33,3 +33,6 @@ MonoBehaviour:
   _hit: {fileID: 0}
   _prefabEnemy: {fileID: 5570251417566031356, guid: 9e64c2153d0173a4bb49c28b541af086, type: 3}
   _type: 2
+  _enemyIcon: {fileID: 21300000, guid: c263ec1564608384f8ec4f070a30ca86, type: 3}
+  _descripton: BeholderDescroption
+  _name: Beholder

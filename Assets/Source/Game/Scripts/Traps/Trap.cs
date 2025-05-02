@@ -5,6 +5,8 @@ public abstract class Trap : MonoBehaviour
 {
     [SerializeField] protected int _damage;
 
+    public int Damage => _damage;
+
     protected abstract void ApplyDamage(Player player);
 
     private void OnCollisionEnter(Collision collision)

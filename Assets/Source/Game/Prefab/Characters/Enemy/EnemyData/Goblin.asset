@@ -32,3 +32,7 @@ MonoBehaviour:
   _audioClipDie: {fileID: 0}
   _hit: {fileID: 0}
   _prefabEnemy: {fileID: 8451672365369433355, guid: 19df69e515e0a504fbd209f5cc7da013, type: 3}
+  _type: 0
+  _enemyIcon: {fileID: 21300000, guid: 382eb75485aa7f24682faee2eea833f2, type: 3}
+  _descripton: GoblinDescription
+  _name: Goblin

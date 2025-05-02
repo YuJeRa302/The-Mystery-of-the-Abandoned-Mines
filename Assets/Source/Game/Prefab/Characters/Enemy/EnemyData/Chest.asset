@@ -32,3 +32,7 @@ MonoBehaviour:
   _audioClipDie: {fileID: 0}
   _hit: {fileID: 0}
   _prefabEnemy: {fileID: 7403477020662954417, guid: 5e3556b83f01aaf48b2f05b7f137cd79, type: 3}
+  _type: 0
+  _enemyIcon: {fileID: 21300000, guid: 0f3b1e18b8cf1c44fb1e7d082361f4eb, type: 3}
+  _descripton: ChestDescription
+  _name: Chest

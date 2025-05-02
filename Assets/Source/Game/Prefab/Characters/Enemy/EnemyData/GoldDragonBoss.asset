@@ -33,3 +33,6 @@ MonoBehaviour:
   _hit: {fileID: 0}
   _prefabEnemy: {fileID: 2049214740795011026, guid: a91e01a3200617a4c972803680bbed3b, type: 3}
   _type: 2
+  _enemyIcon: {fileID: 21300000, guid: 2bfff529944ea3448ac3c2a605a55b26, type: 3}
+  _descripton: GoldDragonDescription
+  _name: GoldDragon

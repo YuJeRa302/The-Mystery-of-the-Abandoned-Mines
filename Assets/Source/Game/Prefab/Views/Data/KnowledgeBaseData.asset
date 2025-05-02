@@ -23,13 +23,16 @@ MonoBehaviour:
   - _name: GameModes
     _icon: {fileID: -1435687176, guid: 1cbdf543752020f45b7cedcd93cd1a97, type: 3}
     _knowledgeData: {fileID: 0}
+  - _name: RoomType
+    _icon: {fileID: 21300000, guid: ea48f42d704ced14b89d95cf206a788f, type: 3}
+    _knowledgeData: {fileID: 11400000, guid: 856abcf23664b2e4296dd31f59fe7f9d, type: 2}
   _enemySubcategoriesViews:
   - _name: StandartEnemy
     _icon: {fileID: 21300000, guid: 1a01eb51f081e2d4f80eb9d4db6f09f1, type: 3}
-    _knowledgeData: {fileID: 0}
+    _knowledgeData: {fileID: 11400000, guid: 4b9cb13855af0db40a4b905fa8609a70, type: 2}
   - _name: HardEnemy
     _icon: {fileID: 21300000, guid: f4564a0502fffb04e8e1a38d85c6fb34, type: 3}
-    _knowledgeData: {fileID: 0}
+    _knowledgeData: {fileID: 11400000, guid: 9a04ded286301644cb4443717d1615a3, type: 2}
   - _name: Boss
     _icon: {fileID: 21300000, guid: 322058629e47df340a9cfbe5daf6c21a, type: 3}
-    _knowledgeData: {fileID: 0}
+    _knowledgeData: {fileID: 11400000, guid: ec252dd5f9aebe64fac1de69daadb3b4, type: 2}

@@ -18,7 +18,7 @@ namespace Assets.Source.Game.Scripts
         public override void Initialize(GamePanelsViewModel gamePanelsViewModel)
         {
             base.Initialize(gamePanelsViewModel);
-            _miniMapRenderCamera.gameObject.SetActive(false);
+            //_miniMapRenderCamera.gameObject.SetActive(false);
             _openButton.onClick.AddListener(Open);
             _closeButton.onClick.AddListener(Close);
         }
@@ -26,13 +26,13 @@ namespace Assets.Source.Game.Scripts
         protected override void Open()
         {
             base.Open();
-            _miniMapRenderCamera.gameObject.SetActive(true);
+            //_miniMapRenderCamera.gameObject.SetActive(true);
         }
 
         protected override void Close()
         {
             base.Close();
-            _miniMapRenderCamera.gameObject.SetActive(false);
+            //_miniMapRenderCamera.gameObject.SetActive(false);
         }
     }
 }

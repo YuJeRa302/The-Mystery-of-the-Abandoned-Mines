@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Standart RoomData
   m_EditorClassIdentifier: 
   _id: 0
-  _roomName: Room 1
+  _roomName: RoomStandart
   _tierColor:
   - {r: 1, g: 1, b: 1, a: 0}
   - {r: 0.23921569, g: 1, b: 0.21568628, a: 0}
@@ -54,3 +54,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d4333f80f16d8514ab82462f532aae8e, type: 2}
   _epicEnemyDatas: []
   _traps: []
+  _roomDescription: RoomStandartDescription

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Hard RoomData
   m_EditorClassIdentifier: 
   _id: 3
-  _roomName: Hard Room
+  _roomName: HardRoom
   _tierColor:
   - {r: 1, g: 1, b: 1, a: 0}
   - {r: 0.23921569, g: 1, b: 0.21568628, a: 0}
@@ -56,3 +56,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 10b34a6b7f44c6b4e93d2d18cc0ccd1c, type: 2}
   _epicEnemyDatas: []
   _traps: []
+  _roomDescription: HradRoomDescription

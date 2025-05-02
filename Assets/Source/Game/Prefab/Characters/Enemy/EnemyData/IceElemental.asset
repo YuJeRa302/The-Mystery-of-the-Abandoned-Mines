@@ -32,3 +32,7 @@ MonoBehaviour:
   _audioClipDie: {fileID: 0}
   _hit: {fileID: 0}
   _prefabEnemy: {fileID: 8075443872590198991, guid: 6b6170f56e215ae459092616fee34505, type: 3}
+  _type: 0
+  _enemyIcon: {fileID: 21300000, guid: 199324700bbaba848909ab183567f06a, type: 3}
+  _descripton: IceElementalDescription
+  _name: IceElemental

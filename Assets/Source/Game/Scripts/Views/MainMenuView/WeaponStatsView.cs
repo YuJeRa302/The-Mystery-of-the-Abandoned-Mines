@@ -11,13 +11,13 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private Text _valueText;
         [SerializeField] private LeanLocalizedText _nameStats;
         [SerializeField] private Image _imagePatametr;
+        [SerializeField] private Sprite _damageIcon;
         [SerializeField] private List<DamageParametrIcon> _damageParametrIcons;
         [SerializeField] private List<WeaponSupportiveParameterIcon> _weaponSupportiveParameterIcons;
         [SerializeField] private List<DamageSupportivePatametrIcon> _damageSupportiveParameterIcons;
 
         public void Initialize(string translationName, string value, bool isOneParameter)
         {
-            Debug.Log(translationName);
             _nameStats.TranslationName = translationName;
 
             if (isOneParameter == true)
@@ -29,8 +29,16 @@ namespace Assets.Source.Game.Scripts
             }
             else
             {
-                RenderIconParametr(out Sprite icon);
-                _imagePatametr.sprite = icon;
+                if (translationName == "Damage")
+                {
+                    _imagePatametr.sprite = _damageIcon;
+                }
+                else
+                {
+                    RenderIconParametr(out Sprite icon);
+                    _imagePatametr.sprite = icon;
+                }
+
                 _valueText.text = value;
             }
         }

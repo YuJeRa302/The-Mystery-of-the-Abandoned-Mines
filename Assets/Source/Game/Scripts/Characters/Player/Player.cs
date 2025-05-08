@@ -29,7 +29,7 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private int _armor = 2;
         [SerializeField] private int _regeneration = 1;
         [SerializeField] private int _countKillEnemy = 0;
-        [SerializeField] private float _moveSpeed = 1;
+        [SerializeField] private float _moveSpeed = 1.5f;
         [SerializeField] private int _currentHealth = 50;
 
         private PlayerView _playerView;

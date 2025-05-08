@@ -24,7 +24,7 @@ MonoBehaviour:
   _moveSpeed: 3
   _attackDistance: 3
   _attackDelay: 2
-  _chanceSpawn: 23
+  _chanceSpawn: 25
   _goldReward: 1
   _abilityCoolDown: []
   _abilityDamage: 

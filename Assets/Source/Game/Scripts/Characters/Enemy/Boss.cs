@@ -7,9 +7,21 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private float _additionalAttackDelay = 7f;
         [SerializeField] private float _additionalAttackRange = 7f;
         [SerializeField] private float _specilaAttackDelay = 10f;
+        [SerializeField] private int _additionalAttackDamage;
+        [SerializeField] private int _specilAttackDamage;
 
         public float AdditionalAttackDelay => _additionalAttackDelay;
         public float AdditionalAttackRange => _additionalAttackRange;
         public float SpecilaAttackDelay => _specilaAttackDelay;
+        public int AdditionalAttackDamage => _additionalAttackDamage;
+        public int SpecilAttackDamage => _specilAttackDamage;
+
+        public override void ResetEnemy(int lvlRoom)
+        {
+            base.ResetEnemy(lvlRoom);
+
+            _additionalAttackDamage = _additionalAttackDamage * (1 + lvlRoom / 10);
+            _specilAttackDamage = _specilAttackDamage * (1 + lvlRoom / 10);
+        }
     }
 }

@@ -24,15 +24,13 @@ MonoBehaviour:
   _weaponPrefab: {fileID: 8515649394911048743, guid: f9ec3ee8e3f564840adfbdebf9b5715d, type: 3}
   _translationName: StoneAxe
   _icon: {fileID: 21300000, guid: e7ec2aa2eb8cbf94f85195933d1a98bb, type: 3}
-  _damageParametr:
+  _damageSource:
     _typeDamage: 0
-    _damageSupportivePatametrs:
-    - _value: 6
-      _supportivePatametr: 0
+    _damage: 4
+    _damageParameters: []
     _particle: {fileID: 0}
-  _weaponParameter:
-    WeaponSupportivePatametrs:
-    - Value: 100
-      SupportivePatametr: 2
-    - Value: 100
-      SupportivePatametr: 3
+  _weaponParameters:
+  - Value: 100
+    SupportivePatametr: 3
+  - Value: 10
+    SupportivePatametr: 2

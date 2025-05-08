@@ -24,22 +24,20 @@ MonoBehaviour:
   _weaponPrefab: {fileID: 9170008755644550648, guid: 60f2c0cd94305784b9aeab140bcf764f, type: 3}
   _translationName: ShadowHammer
   _icon: {fileID: 21300000, guid: 4b2b7deec6636b84b87f6d436ccc9a2d, type: 3}
-  _damageParametr:
+  _damageSource:
     _typeDamage: 1
-    _damageSupportivePatametrs:
-    - _value: 10
-      _supportivePatametr: 0
-    - _value: 35
-      _supportivePatametr: 1
-    - _value: 3
-      _supportivePatametr: 2
+    _damage: 8
+    _damageParameters:
+    - _value: 40
+      _typeDamageParameter: 0
+    - _value: 2
+      _typeDamageParameter: 1
     _particle: {fileID: -8818530760380164550, guid: 2ed06ab528b7c474eb9246421cd7c791, type: 3}
-  _weaponParameter:
-    WeaponSupportivePatametrs:
-    - Value: 5
-      SupportivePatametr: 4
-    - Value: 50
-      SupportivePatametr: 0
-    - Value: 35
-      SupportivePatametr: 2
+  _weaponParameters:
+  - Value: 8
+    SupportivePatametr: 4
+  - Value: 30
+    SupportivePatametr: 1
+  - Value: 80
+    SupportivePatametr: 0
   _additionalWeapon: {fileID: 8098896844911473184, guid: 759b76270e745944ba9c090e0d0d431e, type: 3}

@@ -16,7 +16,7 @@ MonoBehaviour:
   _level: 0
   _damage: 5
   _health: 20
-  _experienceReward: 5
+  _experienceReward: 10
   _upgradeExperienceReward: 0
   _score: 0
   _delaySpawn: 1
@@ -24,7 +24,7 @@ MonoBehaviour:
   _moveSpeed: 2.22
   _attackDistance: 2
   _attackDelay: 1
-  _chanceSpawn: 100
+  _chanceSpawn: 95
   _goldReward: 1
   _abilityCoolDown: []
   _abilityDamage: 

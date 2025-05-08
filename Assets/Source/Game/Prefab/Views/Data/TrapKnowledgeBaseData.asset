@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e328fa5c7d34c7c408fa680f21d1ddd0, type: 3}
+  m_Name: TrapKnowledgeBaseData
+  m_EditorClassIdentifier: 
+  _knowladgeView: {fileID: 8739030581733408938, guid: 2e9d840750f934b4485ed1f1394b89ba, type: 3}
+  _trapDatas:
+  - {fileID: 11400000, guid: 6c48eba7b4b4981409bb9211752c1f6f, type: 2}
+  - {fileID: 11400000, guid: f287b946857f32c4f93267275f5bc375, type: 2}
+  - {fileID: 11400000, guid: 21dfcc65c42e5ed45b10cd071292d829, type: 2}
+  - {fileID: 11400000, guid: 85b5083b67d606440aab603fff1520c1, type: 2}
+  - {fileID: 11400000, guid: 0d73c1be9be1e7f48bb3bf12085120b1, type: 2}

@@ -2,6 +2,7 @@ using Assets.Source.Game.Scripts;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using YG;
 
 public class TemporaryData
 {
@@ -24,6 +25,11 @@ public class TemporaryData
     public TemporaryData(GameInfo gameInfo)
     {
         InitData(gameInfo);
+    }
+
+    public TemporaryData(SavesYG savesYG)
+    {
+        InitData(savesYG);
     }
 
     public int Coins { get; private set; }
@@ -143,12 +149,10 @@ public class TemporaryData
         if (UpgradePoints >= value)
         {
             UpgradePoints -= value;
-            Debug.Log($"tru {UpgradePoints} {value}");
             return true;
         }
         else
         {
-            Debug.Log($"fal {UpgradePoints} {value}");
             return false;
         }
     }
@@ -310,5 +314,19 @@ public class TemporaryData
         SetUpgradeState(gameInfo.UpgradeStates);
         _levelStates = gameInfo.DefaultLevelState;
         _weaponStates = gameInfo.DefaultWeaponState;
+    }
+
+    private void InitData(SavesYG savesYG)
+    {
+        SetAmbientVolume(savesYG.AmbientVolume);
+        SetInterfaceVolume(savesYG.SfxVolumeVolume);
+        SetCurrentLanguage(savesYG.DefaultLanguage);
+        SetUpgradePoints(savesYG.UpgradePoints);
+        SetMuteStateSound(savesYG.IsMuted);
+        SetCoinsCount(savesYG.Coins);
+        SetClassAbilityState(savesYG.ClassAbilityStates);
+        SetUpgradeState(savesYG.UpgradeStates);
+        _levelStates = savesYG.DefaultLevelState;
+        _weaponStates = savesYG.DefaultWeaponState;
     }
 }

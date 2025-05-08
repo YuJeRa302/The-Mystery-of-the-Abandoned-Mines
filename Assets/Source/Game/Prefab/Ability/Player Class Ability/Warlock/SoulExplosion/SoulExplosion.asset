@@ -55,11 +55,10 @@ MonoBehaviour:
   _abilityType: 13
   _damageParametr:
     _typeDamage: 4
-    _damageSupportivePatametrs:
-    - _value: 20
-      _supportivePatametr: 0
-    - _value: 1.96
-      _supportivePatametr: 3
+    _damage: 40
+    _damageParameters:
+    - _value: 6
+      _typeDamageParameter: 2
     _particle: {fileID: 0}
   _spell: {fileID: 1654424239186438959, guid: 081f8bf11483ab544842add8457b3c62, type: 3}
   _damageParticle: {fileID: 6150129795701918722, guid: c2d6d10a71d2fc742a1041abfd34b88a, type: 3}

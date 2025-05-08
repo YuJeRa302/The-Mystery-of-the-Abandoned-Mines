@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.ParticleSystem;
 
 namespace Assets.Source.Game.Scripts
 {
@@ -83,7 +82,7 @@ namespace Assets.Source.Game.Scripts
             HealthChanged?.Invoke();
         }
 
-        public void ResetEnemy(int lvlRoom)
+        public virtual void ResetEnemy(int lvlRoom)
         {
             _isDead = false;
             _currentHealth = _health;

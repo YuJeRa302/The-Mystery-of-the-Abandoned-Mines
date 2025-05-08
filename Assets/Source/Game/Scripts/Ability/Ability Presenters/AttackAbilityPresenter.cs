@@ -223,9 +223,9 @@ namespace Assets.Source.Game.Scripts
         private IEnumerator RotateSpell()
         {
             float verticalOffset = 0f;
-            float distance = 5f;
+            float distance = 3f;
 
-            _spell.transform.position = _player.transform.position + new Vector3(distance, 1.15f, 0.57f);
+            _spell.transform.position = _player.transform.position + new Vector3(distance, 2f, 0.57f);
 
             while (_ability.IsAbilityEnded == false)
             {

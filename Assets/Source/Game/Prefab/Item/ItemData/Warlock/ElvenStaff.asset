@@ -24,14 +24,12 @@ MonoBehaviour:
   _weaponPrefab: {fileID: 4539451154212996327, guid: 8093a456e040e4c4fbec4aed1b0ede45, type: 3}
   _translationName: ElvenStaff
   _icon: {fileID: 21300000, guid: f110587d930787a4fb59d53b3a1fe93b, type: 3}
-  _damageParametr:
+  _damageSource:
     _typeDamage: 4
-    _damageSupportivePatametrs:
-    - _value: 7
-      _supportivePatametr: 0
-    - _value: 2
-      _supportivePatametr: 3
+    _damage: 5
+    _damageParameters:
+    - _value: 1
+      _typeDamageParameter: 2
     _particle: {fileID: 0}
-  _weaponParameter:
-    WeaponSupportivePatametrs: []
+  _weaponParameters: []
   _bulletPrefab: {fileID: 1066673279660128375, guid: e26ce005b170b884b9515c88b5641b2a, type: 3}

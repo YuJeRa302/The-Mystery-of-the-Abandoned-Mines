@@ -243,7 +243,7 @@ namespace Assets.Source.Game.Scripts
                     switch (parameter.TypeParameter)
                     {
                         case TypeParameter.Damage:
-                            _damageSource.ChangeDamage(_damageSource.Damage + ability.CurrentAbilityValue);
+                            _damageSource.ChangeDamage(_damageSource.Damage + parameter.Value);
                             break;
                         case TypeParameter.Armor:
                             _armor += parameter.Value;

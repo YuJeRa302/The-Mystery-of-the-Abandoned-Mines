@@ -24,15 +24,17 @@ MonoBehaviour:
   _weaponPrefab: {fileID: -4351137862763014755, guid: 6d047b9776780c8408c257072b128521, type: 3}
   _translationName: AxeEvolving
   _icon: {fileID: 21300000, guid: 7e58436bdcbdd034d997f68b7cac4d7a, type: 3}
-  _damageParametr:
+  _damageSource:
     _typeDamage: 0
-    _damageSupportivePatametrs:
-    - _value: 10
-      _supportivePatametr: 0
+    _damage: 9
+    _damageParameters: []
     _particle: {fileID: 0}
-  _weaponParameter:
-    WeaponSupportivePatametrs:
-    - Value: 50
-      SupportivePatametr: 0
-    - Value: 30
-      SupportivePatametr: 1
+  _weaponParameters:
+  - Value: 80
+    SupportivePatametr: 0
+  - Value: 30
+    SupportivePatametr: 1
+  - Value: 30
+    SupportivePatametr: 2
+  - Value: 150
+    SupportivePatametr: 3

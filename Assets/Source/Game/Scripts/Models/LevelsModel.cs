@@ -77,12 +77,13 @@ public class LevelsModel
 
     private void LoadScene(int id)
     {
-        switch (id)
-        {
-            case GameScene.Id:
-                _coroutineRunner.StartCoroutine(LoadScreenLevel(GameScene.LoadAsync(_temporaryData)));
-                break;
-        }
+        _coroutineRunner.StartCoroutine(LoadScreenLevel(GameScene.LoadAsync(_temporaryData)));
+        //switch (id)
+        //{
+        //    case GameScene.Id:
+        //        _coroutineRunner.StartCoroutine(LoadScreenLevel(GameScene.LoadAsync(_temporaryData)));
+        //        break;
+        //}
     }
 
     private IEnumerator LoadScreenLevel(AsyncOperation asyncOperation)

@@ -20,11 +20,11 @@ MonoBehaviour:
   _upgradeExperienceReward: 0
   _score: 0
   _delaySpawn: 1
-  _enemyCount: 4
+  _enemyCount: 2
   _moveSpeed: 2
   _attackDistance: 2
   _attackDelay: 2
-  _chanceSpawn: 30
+  _chanceSpawn: 40
   _goldReward: 1
   _abilityCoolDown: []
   _abilityDamage: 

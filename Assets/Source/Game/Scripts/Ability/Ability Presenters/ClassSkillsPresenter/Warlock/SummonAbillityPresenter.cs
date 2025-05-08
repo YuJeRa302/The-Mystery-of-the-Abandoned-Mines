@@ -72,7 +72,8 @@ public class SummonAbillityPresenter : AbilityPresenter
             summon = GameObject.Instantiate(_summonPrefab, _spawnPoint.position, _spawnPoint.rotation);
 
             _pool.InstantiatePoolObject(summon, _summonPrefab.name);
-            summon.Initialize(_player, _ability.DamageSource, _ability.CurrentDuration);
+            //summon.Initialize(_player, _ability.DamageSource, _ability.CurrentDuration);
+            summon.Initialize(_player, _player.DamageSource, _ability.CurrentDuration);
         }
     }
 

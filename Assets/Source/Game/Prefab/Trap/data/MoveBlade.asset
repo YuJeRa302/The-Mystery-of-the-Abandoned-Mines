@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce6019166afea424fae07f29e4441dd5, type: 3}
+  m_Name: MoveBlade
+  m_EditorClassIdentifier: 
+  _trapPrefab: {fileID: 4699667135979270254, guid: 1865b06fe0b3f7648866fa3cf0dc8804, type: 3}
+  _name: MoveBlade
+  _description: MoveBladeDescription
+  _icon: {fileID: 21300000, guid: ea74404d8cfbfdb4c95fd69b5f7cc1bf, type: 3}

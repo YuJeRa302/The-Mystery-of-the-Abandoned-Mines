@@ -22,13 +22,15 @@ public class BeholderSpecialAttackState : BossSpecialAttackState
         base.EnterState();
         _currentTimeCastSpel = 0f;
         Beholder beholder = _enemy as Beholder;
+        beholder.DragonFlame.Initialize(beholder.SpecilAttackDamage);
         beholder.DragonFlame.gameObject.SetActive(true);
+        
         _sequence = DOTween.Sequence();
-        //_sequence.Append(_transformEnemy.DORotate(new Vector3(0, 360f, 0), _maxTimeCastSpel, RotateMode.FastBeyond360).SetRelative().SetEase(Ease.Linear));
+        _sequence.Append(_transformEnemy.DORotate(new Vector3(0, 90f, 0), 1.5f).SetRelative());
+        _sequence.Append(_transformEnemy.DORotate(new Vector3(0, -90f, 0), 1.5f).SetRelative());
+        _sequence.Append(_transformEnemy.DORotate(new Vector3(0, -90f, 0), 1.5f).SetRelative());
+        _sequence.Append(_transformEnemy.DORotate(new Vector3(0, 90f, 0), 1.5f).SetRelative());
 
-        _sequence.Append(_transformEnemy.DORotate(new Vector3(0, 90f, 0), 2f));
-        _sequence.Append(_transformEnemy.DORotate(new Vector3(0, 180f, 0), 4f));
-       
         SpetiallAttackEvent();
     }
 

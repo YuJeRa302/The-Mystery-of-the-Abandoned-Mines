@@ -24,7 +24,7 @@ MonoBehaviour:
   _countRooms: 4
   _cost: 1500
   _isContractLevel: 1
-  _translationName: 
-  _translationDescription: 
+  _translationName: TEST
+  _translationDescription: TEST
   _icon: {fileID: 21300000, guid: 6886db5fac1305b4d82a95ca744de0c7, type: 3}
   _weaponDatas: []

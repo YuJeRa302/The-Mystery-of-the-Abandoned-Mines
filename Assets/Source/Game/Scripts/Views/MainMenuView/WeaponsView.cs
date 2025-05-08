@@ -137,6 +137,9 @@ namespace Assets.Source.Game.Scripts
             WeaponStatsView view = Instantiate(_weaponStatsView, _weaponStatsContainer);
             view.Initialize(_typeDamageTranslationName, weaponDataView.WeaponData.DamageSource.TypeDamage.ToString(), true);
             _weaponStatsViews.Add(view);
+            WeaponStatsView damageView = Instantiate(_weaponStatsView, _weaponStatsContainer);
+            damageView.Initialize("Damage", weaponDataView.WeaponData.DamageSource.Damage.ToString(), false);
+            _weaponStatsViews.Add(damageView);
 
             foreach (var parametr in weaponDataView.WeaponData.DamageSource.DamageParameters)
             {

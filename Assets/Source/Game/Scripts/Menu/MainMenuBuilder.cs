@@ -2,6 +2,7 @@ using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using System;
 using UnityEngine;
+using YG;
 
 namespace Assets.Source.Game.Scripts
 {
@@ -22,10 +23,11 @@ namespace Assets.Source.Game.Scripts
 
         public Action EnebleSave;
 
-        private async void Start()
+        private void Start()
         {
             if (_temporaryData == null)
-                await Build();
+                if(YandexGame.SDKEnabled)
+                    Build();
         }
 
         private void OnEnable()
@@ -39,26 +41,26 @@ namespace Assets.Source.Game.Scripts
             DOTween.KillAll();
         }
 
-        public async void Initialize(TemporaryData temporaryData)
+        public void Initialize(TemporaryData temporaryData)
         {
             Time.timeScale = 1;
             DOTween.Clear();
             DOTween.Init();
             _temporaryData = temporaryData;
-            await Build();
+            Build();
         }
 
-        private async UniTask Build()
+        private void Build()
         {
             _saveAndLoad = new();
             EnebleSave?.Invoke();
 
             if (_temporaryData == null)
             {
-                var loadResult = await _saveAndLoad.TryGetGameData();
-                _temporaryData = loadResult.Success
-                    ? new TemporaryData(loadResult.Data)
-                    : new TemporaryData(_configData);
+                if(_saveAndLoad.TryGetGameData(out SavesYG gameInfo))
+                    _temporaryData = new TemporaryData(gameInfo);
+                else
+                    _temporaryData = new TemporaryData(_configData);
             }
 
             SettingsModel settingsModel = new SettingsModel(_temporaryData);

@@ -26,10 +26,8 @@ MonoBehaviour:
   _icon: {fileID: 21300000, guid: 576ed9ed1de185845ba4efa9daee2209, type: 3}
   _damageSource:
     _typeDamage: 0
-    _damage: 10
-    _damageParameters:
-    - _value: 1
-      _typeDamageParameter: 3
+    _damage: 3
+    _damageParameters: []
     _particle: {fileID: 0}
   _weaponParameters:
   - Value: 1

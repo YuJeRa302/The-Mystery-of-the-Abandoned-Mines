@@ -30,16 +30,16 @@ namespace Assets.Source.Game.Scripts
         private List<LanguageButtonView> _languageButtonViews = new ();
         private IAudioPlayerService _audioPlayerService;
 
-        public event Action ExitButtonClicked;
+        //public event Action ExitButtonClicked;
 
         private void Awake()
         {
-            _exitButton.onClick.AddListener(ClickButtonExit);
+            _exitButton.onClick.AddListener(CloseGame);
         }
 
         private void ClickButtonExit()
         {
-            ExitButtonClicked?.Invoke();
+            //ExitButtonClicked?.Invoke();
         }
 
         private void OnDestroy()
@@ -67,6 +67,7 @@ namespace Assets.Source.Game.Scripts
         {
             _openButton.onClick.AddListener(Open);
             _resumeButton.onClick.AddListener(Close);
+            _exitButton.onClick.AddListener(CloseGame);
             _ambientSlider.onValueChanged.AddListener(OnAmbientValueChanged);
             _sfxSlider.onValueChanged.AddListener(OnSfxValueChanged);
             _muteToggle.onValueChanged.AddListener(OnMuteValueChanged);
@@ -74,6 +75,7 @@ namespace Assets.Source.Game.Scripts
 
         private void RemoveListeners()
         {
+            _exitButton.onClick.RemoveListener(CloseGame);
             _openButton.onClick.RemoveListener(Open);
             _resumeButton.onClick.RemoveListener(Close);
             _ambientSlider.onValueChanged.RemoveListener(OnAmbientValueChanged);

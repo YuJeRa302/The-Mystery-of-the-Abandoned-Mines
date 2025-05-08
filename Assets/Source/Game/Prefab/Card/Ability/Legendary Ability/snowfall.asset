@@ -31,9 +31,8 @@ MonoBehaviour:
   _parameterView: {fileID: 1961483584371832456, guid: 6d57f6325ba58d6478a1fd35f1ba2831, type: 3}
   _damageParametr:
     _typeDamage: 4
-    _damageSupportivePatametrs:
-    - _value: 0
-      _supportivePatametr: 0
-    - _value: 2
-      _supportivePatametr: 3
+    _damage: 0
+    _damageParameters:
+    - _value: 1
+      _typeDamageParameter: 2
     _particle: {fileID: 0}

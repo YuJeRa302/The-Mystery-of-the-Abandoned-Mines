@@ -20,10 +20,10 @@ MonoBehaviour:
   - {r: 0, g: 0.5411765, b: 1, a: 0}
   - {r: 0.5686275, g: 0.14509805, b: 1, a: 0}
   - {r: 1, g: 0.22745098, b: 0.14509805, a: 0}
-  _countStages: 0
-  _countRooms: 0
+  _countStages: 6
+  _countRooms: 6
   _cost: 0
   _isContractLevel: 0
   _translationName: 
   _translationDescription: 
-  _icon: {fileID: 21300000, guid: dba0c48d5a7e35f4bb87f2e8b57499d0, type: 3}
+  _icon: {fileID: 21300000, guid: 2c4df9274f4db1f4eb7118e0b06c4554, type: 3}

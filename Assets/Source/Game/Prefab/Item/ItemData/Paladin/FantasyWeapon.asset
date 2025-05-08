@@ -24,18 +24,16 @@ MonoBehaviour:
   _weaponPrefab: {fileID: -737242756977397214, guid: 431cac0d95aacae4289f2938eec575b4, type: 3}
   _translationName: FantasyHammer
   _icon: {fileID: 21300000, guid: 39320d00d59e9dd4596f1cc7d936b74d, type: 3}
-  _damageParametr:
+  _damageSource:
     _typeDamage: 1
-    _damageSupportivePatametrs:
-    - _value: 7
-      _supportivePatametr: 0
-    - _value: 30
-      _supportivePatametr: 1
+    _damage: 6
+    _damageParameters:
+    - _value: 25
+      _typeDamageParameter: 0
     - _value: 2
-      _supportivePatametr: 2
+      _typeDamageParameter: 1
     _particle: {fileID: -8818530760380164550, guid: 2ed06ab528b7c474eb9246421cd7c791, type: 3}
-  _weaponParameter:
-    WeaponSupportivePatametrs:
-    - Value: 6
-      SupportivePatametr: 4
+  _weaponParameters:
+  - Value: 6
+    SupportivePatametr: 4
   _additionalWeapon: {fileID: -5167669675695763617, guid: de056d4bdfc524146a1fd6441b2360c1, type: 3}

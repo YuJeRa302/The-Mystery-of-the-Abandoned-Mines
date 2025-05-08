@@ -50,9 +50,8 @@ MonoBehaviour:
   _typeAttackAbility: 1
   _damageParametr:
     _typeDamage: 4
-    _damageSupportivePatametrs:
-    - _value: 0
-      _supportivePatametr: 0
-    - _value: 2
-      _supportivePatametr: 3
+    _damage: 6
+    _damageParameters:
+    - _value: 1
+      _typeDamageParameter: 2
     _particle: {fileID: 0}

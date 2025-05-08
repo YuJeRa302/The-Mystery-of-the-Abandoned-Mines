@@ -23,6 +23,7 @@ namespace Assets.Source.Game.Scripts
         private Dictionary<string, PoolParticle> _deadParticles = new Dictionary<string, PoolParticle>();
         private int _deadEnemy = 0;
         private int _totalEnemyCount;
+        private int _currentEnemyCount;
         private bool _isEnemySpawned = false;
 
         public event Action<Enemy> EnemyDied;
@@ -59,6 +60,7 @@ namespace Assets.Source.Game.Scripts
                 _coroutineRunner.StopCoroutine(_spawnEnemy);
 
             _deadEnemy = 0;
+            _currentEnemyCount = 0;
             _currentRoomLevel = currentRoom.CurrentLevel;
             _spawnPoints = currentRoom.EnemySpawnPoints;
             _totalEnemyCount = GetTotalEnemyCount(currentRoom.RoomData.EnemyDatas);
@@ -98,7 +100,7 @@ namespace Assets.Source.Game.Scripts
 
                 if (enemyData.PrefabEnemy is Boss)
                 {
-                    if (currentEnemyCount > 0)
+                    if (_currentEnemyCount > 0)
                     {
                         yield return null;
                         _totalEnemyCount--;
@@ -106,10 +108,15 @@ namespace Assets.Source.Game.Scripts
                     }
                 }
 
-                while (currentEnemyCount++ < enemyData.EnemyCount)
+                if(_currentEnemyCount < _totalEnemyCount)
                 {
-                    yield return new WaitForSeconds(enemyData.DelaySpawn);
-                    EnemyCreate(enemyData, _rnd.Next(_spawnPoints.Length));
+                    while (currentEnemyCount < enemyData.EnemyCount)
+                    {
+                        yield return new WaitForSeconds(enemyData.DelaySpawn);
+                        EnemyCreate(enemyData, _rnd.Next(_spawnPoints.Length));
+                        currentEnemyCount++;
+                        _currentEnemyCount++;
+                    }
                 }
 
                 _isEnemySpawned = true;

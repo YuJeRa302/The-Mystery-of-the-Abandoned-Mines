@@ -350,7 +350,10 @@ namespace Assets.Source.Game.Scripts
             else 
             {
                 if (_isWeaponSelect == true)
+                {
+                    Debug.Log("NEED LOAD");
                     LoadLevel();
+                }
             }
 
             _audioPlayerService.PlayOneShotButtonClickSound();

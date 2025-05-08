@@ -24,15 +24,13 @@ MonoBehaviour:
   _weaponPrefab: {fileID: -108846339144735249, guid: fa4a9cbe03cac1a4982e8d102e7f8697, type: 3}
   _translationName: AxeIron
   _icon: {fileID: 21300000, guid: 0652f9f0f786c00419b69a9a6fbac662, type: 3}
-  _damageParametr:
+  _damageSource:
     _typeDamage: 0
-    _damageSupportivePatametrs:
-    - _value: 8
-      _supportivePatametr: 0
+    _damage: 6
+    _damageParameters: []
     _particle: {fileID: 0}
-  _weaponParameter:
-    WeaponSupportivePatametrs:
-    - Value: 20
-      SupportivePatametr: 2
-    - Value: 100
-      SupportivePatametr: 3
+  _weaponParameters:
+  - Value: 100
+    SupportivePatametr: 3
+  - Value: 15
+    SupportivePatametr: 2

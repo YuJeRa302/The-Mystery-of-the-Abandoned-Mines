@@ -15298,7 +15298,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0411dc809faaeda439721da81fdea880, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _damage: 3
+  _damage: 5
 --- !u!1 &4224453706029458180
 GameObject:
   m_ObjectHideFlags: 0
@@ -21092,6 +21092,8 @@ MonoBehaviour:
   _additionalAttackDelay: 7
   _additionalAttackRange: 7
   _specilaAttackDelay: 10
+  _additionalAttackDamage: 0
+  _specilAttackDamage: 5
   _bullet: {fileID: 5343375161627747546, guid: 4ec157f3e3b810e41b330f9cca5d629a, type: 3}
   _baseShotPoint: {fileID: 300034447305973027}
   _shotPoints:

@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f815b151b18cff408f7a41d435d2a9c, type: 3}
   m_Name: Small Tip 3
   m_EditorClassIdentifier: 
-  _tipTranslationName: Paladin Descriptions
+  _tipTranslationName: PaladinTip
   _sprite: {fileID: 21300000, guid: e128b01dab70e7a498a78577123c2db0, type: 3}

@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f815b151b18cff408f7a41d435d2a9c, type: 3}
   m_Name: Small TIp 1
   m_EditorClassIdentifier: 
-  _tipTranslationName: Summoner Descriptions
+  _tipTranslationName: WarlockTip
   _sprite: {fileID: 21300000, guid: c50ecf4cb0747f64487b52e59758d9a7, type: 3}

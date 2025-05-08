@@ -119,7 +119,6 @@ namespace Assets.Source.Game.Scripts
 
         public Ability(ClassAbilityData classAbilityData, bool isAutoCast, int currentLvl, ICoroutineRunner coroutineRunner)
         {
-            _damageSource = classAbilityData.DamageParametr;
             FillClassSkillParametr(classAbilityData, currentLvl);
             TypeAbility = classAbilityData.AbilityType;
             _isAutoCast = isAutoCast;
@@ -226,8 +225,12 @@ namespace Assets.Source.Game.Scripts
                     _quantily = parameter.Value;
             }
 
+            _damageSource = abilityAttributeData.DamageParametr;
+
             if (_damageSource != null)
                 ApplyDamageSource();
+
+            _damageSource.ChangeDamage(_abilityDamage);
         }
 
         private void UpdateAbilityParamters()

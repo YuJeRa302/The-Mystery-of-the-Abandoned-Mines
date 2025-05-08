@@ -17,7 +17,7 @@ namespace Assets.Source.Game.Scripts
         private Coroutine _regeneration;
         private Coroutine _timeReduce;
         private float _timeAfterLastAttack = 0;
-        private float _maxTimeAfterAttack = 1f;
+        private float _maxTimeAfterAttack = 0f;
 
         public event Action DamageTaked;
         public event Action<int> HealthChanged;
@@ -28,7 +28,7 @@ namespace Assets.Source.Game.Scripts
             _player = player;
             _coroutineRunner = coroutineRunner;
             _gameLoopService = gameLoopService;
-            _currentHealth = currentHealth;
+            _currentHealth = _maxHealth;
             AddListeners();
             _regeneration = _coroutineRunner.StartCoroutine(RegenerationHealth());
         }

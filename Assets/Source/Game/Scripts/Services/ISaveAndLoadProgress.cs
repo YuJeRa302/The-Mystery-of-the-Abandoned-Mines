@@ -1,7 +1,8 @@
 using Cysharp.Threading.Tasks;
+using YG;
 
 public interface ISaveAndLoadProgress
 {
-    UniTask<(bool Success, GameInfo Data)> TryGetGameData();
-    UniTask SaveData();
+    bool TryGetGameData(out SavesYG gameInfo);
+    void SaveData();
 }

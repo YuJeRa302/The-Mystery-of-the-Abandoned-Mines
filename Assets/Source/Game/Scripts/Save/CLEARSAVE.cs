@@ -1,6 +1,7 @@
 using Assets.Source.Game.Scripts;
 using UnityEngine;
 using UnityEngine.UI;
+using YG;
 
 public class CLEARSAVE : MonoBehaviour
 {
@@ -36,5 +37,7 @@ public class CLEARSAVE : MonoBehaviour
         {
             UnityEngine.PlayerPrefs.DeleteKey(DataKeyLocal);
         }
+        YandexGame.ResetSaveProgress();
+        YandexGame.SaveProgress();
     }
 }

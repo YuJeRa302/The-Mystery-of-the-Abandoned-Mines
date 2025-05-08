@@ -15,7 +15,7 @@ MonoBehaviour:
   _id: 3
   _level: 0
   _damage: 20
-  _health: 100
+  _health: 150
   _experienceReward: 50
   _upgradeExperienceReward: 0
   _score: 0
@@ -24,7 +24,7 @@ MonoBehaviour:
   _moveSpeed: 2
   _attackDistance: 3
   _attackDelay: 5
-  _chanceSpawn: 25
+  _chanceSpawn: 35
   _goldReward: 1
   _abilityCoolDown: []
   _abilityDamage: 

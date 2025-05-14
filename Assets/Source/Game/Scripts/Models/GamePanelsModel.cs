@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Assets.Source.Game.Scripts
 {
@@ -38,11 +39,13 @@ namespace Assets.Source.Game.Scripts
             _levelObserver.StageCompleted += OnStageComplete;
             _levelObserver.GameEnded += OnGameEnded;
             _cardLoader.CardPoolCreated += OnCardPoolCreate;
+            _levelObserver.LootRoomComplited += OnLootRoomComplited;
         }
 
         public event Action StageCompleted;
         public event Action CardPoolCreated;
         public event Action GameEnded;
+        public event Action<int> LootRoomComplitetd;
 
         public string LanguageTag { get; private set; }
         public float AmbientVolumeValue { get; private set; }
@@ -121,6 +124,11 @@ namespace Assets.Source.Game.Scripts
             return _audioPlayerService;
         }
 
+        private void OnLootRoomComplited(int reward)
+        {
+            LootRoomComplitetd?.Invoke(reward);
+        }
+
         private void OnCardPoolCreate() 
         {
             CardPoolCreated?.Invoke();
@@ -150,10 +158,14 @@ namespace Assets.Source.Game.Scripts
 
         private void CreateWeaponDatasForReward() 
         {
+            Debug.Log((_temporaryData.LevelData as ContractLevelData).WeaponDatas.Length);
             for (int index = 0; index < (_temporaryData.LevelData as ContractLevelData).WeaponDatas.Length; index++) 
             {
                 if (_temporaryData.GetWeaponState((_temporaryData.LevelData as ContractLevelData).WeaponDatas[index].Id) == null)
-                    _weaponDatas[index] = (_temporaryData.LevelData as ContractLevelData).WeaponDatas[index];
+                {
+                    Debug.Log(_weaponDatas.Count);
+                    _weaponDatas.Add((_temporaryData.LevelData as ContractLevelData).WeaponDatas[index]);
+                }
             }
         }
 

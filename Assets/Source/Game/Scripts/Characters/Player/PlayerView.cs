@@ -11,6 +11,7 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private Slider _sliderHP;
         [SerializeField] private Slider _sliderXP;
         [SerializeField] private Slider _sliderUpgradePoints;
+        [SerializeField] private Image _playerIcon;
         [Space(20)]
         [SerializeField] private Text _textPlayerLevel;
         [SerializeField] private Text _textUpgradePoints;
@@ -22,7 +23,7 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private Transform _playerEffectsContainer;
         [SerializeField] private Transform _weaponEffectsContainer;
         [Space(20)]
-        [SerializeField] private Image _playerIcon;
+        [SerializeField] private Image _playerMapIcon;
 
         private Transform _throwPoint;
         private ParticleSystem _abilityEffect;
@@ -34,6 +35,7 @@ namespace Assets.Source.Game.Scripts
 
         public void Initialize(Sprite iconPlayer, Transform throwPoint, Transform playerEffectsContainer, Transform weaponEffectsContainer)
         {
+            _playerMapIcon.sprite = iconPlayer;
             _playerIcon.sprite = iconPlayer;
             _weaponEffectsContainer = weaponEffectsContainer;
             _playerEffectsContainer = playerEffectsContainer;

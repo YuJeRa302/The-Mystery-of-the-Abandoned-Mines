@@ -75,6 +75,8 @@ public class LevelsModel
         LoadScene(_currentLevelData.Id);
     }
 
+    public int GetPlayerCoinCount() => _temporaryData.Coins;
+
     private void LoadScene(int id)
     {
         _coroutineRunner.StartCoroutine(LoadScreenLevel(GameScene.LoadAsync(_temporaryData)));

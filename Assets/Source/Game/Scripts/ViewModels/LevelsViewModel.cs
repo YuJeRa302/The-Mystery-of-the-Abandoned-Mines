@@ -29,4 +29,5 @@ public class LevelsViewModel
     public void SelectClass(PlayerClassDataView playerClassDataView) => _levelsModel.SelectClass(playerClassDataView);
     public void SelectWeapon(WeaponDataView weaponDataView) => _levelsModel.SelectWeapon(weaponDataView);
     public void LoadLevel() => _levelsModel.LoadLevel();
+    public int GetPlayerConins() => _levelsModel.GetPlayerCoinCount();
 }

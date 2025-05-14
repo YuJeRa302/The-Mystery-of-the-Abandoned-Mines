@@ -47,6 +47,7 @@ namespace Assets.Source.Game.Scripts
         public event Action GamePaused;
         public event Action GameResumed;
         public event Action StageCompleted;
+        public event Action<int> LootRoomComplited;
 
         public CameraControiler CameraControiler => _cameraControiler;
         public WeaponData[] ContractWeaponDatas { get; private set; }
@@ -151,8 +152,8 @@ namespace Assets.Source.Game.Scripts
         {
             AddRoomListener();
             AddPanelListener();
-            _roomPlacer.StartRoom.SetRoomStatus();//
-            _roomPlacer.StartRoom.RoomEntering += OnRoomEntering;//test
+            _roomPlacer.StartRoom.SetRoomStatus();
+            _roomPlacer.StartRoom.RoomEntering += OnRoomEntering;
             _enemySpawner.EnemyDied += OnEnemyDied;
             _enemySpawner.AllEnemyRoomDied += OnRoomCompleted;
             _player.PlayerLevelChanged += OnPlayerLevelChanged;
@@ -185,7 +186,10 @@ namespace Assets.Source.Game.Scripts
                 room.RoomEntering += OnRoomEntering;
 
                 if (room == room as LootRoomView)
+                {
                     (room as LootRoomView).RoomCompleted += OnRoomCompleted;
+                    (room as LootRoomView).RewardSeted += OnRewardRoomEnded;
+                }
             }
         }
 
@@ -202,6 +206,11 @@ namespace Assets.Source.Game.Scripts
                     _cardPanel = (CardPanel)panel;
                 }
             }
+        }
+
+        private void OnRewardRoomEnded(int reward)
+        {
+            LootRoomComplited?.Invoke(reward);
         }
 
         private void OnGameClosed()

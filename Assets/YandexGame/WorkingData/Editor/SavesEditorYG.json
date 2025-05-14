@@ -3,9 +3,9 @@
     "isFirstSession": true,
     "language": "ru",
     "promptDone": false,
-    "Coins": 2118,
-    "AmbientVolume": 40.0,
-    "SfxVolumeVolume": 40.0,
+    "Coins": 14027,
+    "AmbientVolume": 60.148887634277347,
+    "SfxVolumeVolume": 100.0,
     "IsMuted": false,
     "DefaultLanguage": "ru",
     "UpgradeStates": [
@@ -49,19 +49,19 @@
         },
         {
             "Id": 11,
-            "CurrentLevel": 0
-        },
-        {
-            "Id": 10,
-            "CurrentLevel": 0
-        },
-        {
-            "Id": 13,
             "CurrentLevel": 1
         },
         {
+            "Id": 10,
+            "CurrentLevel": 1
+        },
+        {
+            "Id": 13,
+            "CurrentLevel": 0
+        },
+        {
             "Id": 14,
-            "CurrentLevel": 3
+            "CurrentLevel": 0
         },
         {
             "Id": 9,
@@ -77,7 +77,7 @@
         },
         {
             "Id": 17,
-            "CurrentLevel": 1
+            "CurrentLevel": 0
         }
     ],
     "DefaultWeaponState": [
@@ -93,6 +93,11 @@
         },
         {
             "Id": 2,
+            "IsEquip": false,
+            "IsUnlock": true
+        },
+        {
+            "Id": 4,
             "IsEquip": false,
             "IsUnlock": true
         }
@@ -124,5 +129,5 @@
             "CurrentCompleteStages": 0
         }
     ],
-    "UpgradePoints": 3
+    "UpgradePoints": 1
 }

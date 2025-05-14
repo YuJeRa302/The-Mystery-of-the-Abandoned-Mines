@@ -45,6 +45,7 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private GameObject _levelInfo;
         [SerializeField] private GameObject _dialogPanel;
         [SerializeField] private Text _goldTextDialogPanel;
+        [SerializeField] private Text _currentPlayerGold;
         [Space(20)]
         [SerializeField] private Button _defaultLevelButton;
         [SerializeField] private Button _contractButton;
@@ -392,6 +393,7 @@ namespace Assets.Source.Game.Scripts
         private void ShowDialogPanel() 
         {
             _dialogPanel.SetActive(true);
+            _currentPlayerGold.text = _levelsViewModel.GetPlayerConins().ToString();
             _goldTextDialogPanel.text = _currentLevelDataView.LevelData.Cost.ToString();
         }
 

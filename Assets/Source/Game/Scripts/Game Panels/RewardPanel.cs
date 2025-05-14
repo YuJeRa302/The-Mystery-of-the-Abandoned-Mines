@@ -32,6 +32,7 @@ namespace Assets.Source.Game.Scripts
         {
             base.Initialize(gamePanelsViewModel);
             GamePanelsViewModel.GameEnded += Open;
+            GamePanelsViewModel.LootRoomComplitetd += ShowReward;
             _closePanelButton.onClick.AddListener(CloseGame);
             _openAdButton.onClick.AddListener(OpenAds);
         }
@@ -40,6 +41,14 @@ namespace Assets.Source.Game.Scripts
         {
             CreateViewEntities();
             base.Open();
+        }
+
+        private void ShowReward(int reward)
+        {
+            base.Open();
+            _defaulReward.SetActive(true);
+            Fill();
+            _defaultRewardCoins.text = reward.ToString();
         }
 
         private void CreateViewEntities() 

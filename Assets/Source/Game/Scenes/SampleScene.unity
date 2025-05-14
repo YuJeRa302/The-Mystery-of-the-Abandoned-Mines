@@ -877,6 +877,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: RotateSpice
       objectReference: {fileID: 0}
+    - target: {fileID: 1512387571578294354, guid: 355e22e86afc0684b9e17b64a811a887, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9043017590583423668, guid: 355e22e86afc0684b9e17b64a811a887, type: 3}
       propertyPath: m_LocalPosition.x
       value: -11.22

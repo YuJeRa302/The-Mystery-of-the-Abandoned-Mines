@@ -720,7 +720,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 10, z: 0}
-  m_LocalScale: {x: 7, y: 7, z: 5}
+  m_LocalScale: {x: 5, y: 5, z: 5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8275037830214055370}
@@ -766,7 +766,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: e5da668c6557abb47a17a303cf69943f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a625a7d1449a7fe429d298f7e93cf4a5, type: 3}
   m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -4053,7 +4053,7 @@ MonoBehaviour:
   _confiner: {fileID: 3492189227342795360}
   _navSurface: {fileID: 6904272139552806835}
   _renderer: {fileID: 5654326462669357633}
-  _complitIcon: {fileID: 21300000, guid: de50d1f4106f65545921a17c92cf0250, type: 3}
+  _complitIcon: {fileID: 21300000, guid: a5417450286facb4393b3d79bdf2b81c, type: 3}
   _bossSpawnPoint: {fileID: 3959812300484828081}
 --- !u!192 &2942536252403692243
 OcclusionArea:

@@ -13,11 +13,13 @@ namespace Assets.Source.Game.Scripts
             _gamePanelsModel.StageCompleted += () => StageCompleted?.Invoke();
             _gamePanelsModel.CardPoolCreated += () => CardPoolCreated?.Invoke();
             _gamePanelsModel.GameEnded += () => GameEnded?.Invoke();
+            _gamePanelsModel.LootRoomComplitetd += OnLootRoomComplit;
         }
 
         public event Action StageCompleted;
         public event Action CardPoolCreated;
         public event Action GameEnded;
+        public event Action<int> LootRoomComplitetd;
 
         public bool GetLevelType() => _gamePanelsModel.GetLevelType();
         public WeaponData CreateRewardWeapon() => _gamePanelsModel.CreateRewardWeapon();
@@ -33,5 +35,6 @@ namespace Assets.Source.Game.Scripts
         public void SetAmbientVolume(float volume) => _gamePanelsModel.SetAmbientVolume(volume);
         public void SetSfxVolume(float volume) => _gamePanelsModel.SetSfxVolume(volume);
         public void SetMuteStatus(bool value) => _gamePanelsModel.SetMute(value);
+        private void OnLootRoomComplit(int reward) => LootRoomComplitetd?.Invoke(reward);
     }
 }

@@ -22,5 +22,5 @@ MonoBehaviour:
   - Cost: 5
     Value: 3
   _name: Regeneration
-  _icon: {fileID: 21300000, guid: 853878fc3fe3c7943916a8701384ec62, type: 3}
+  _icon: {fileID: 21300000, guid: dee1e220f48cada4787265f59cf52dfe, type: 3}
   _description: RegenerationDescription

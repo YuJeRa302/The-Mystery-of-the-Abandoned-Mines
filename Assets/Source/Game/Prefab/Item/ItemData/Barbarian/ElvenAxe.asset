@@ -28,11 +28,11 @@ MonoBehaviour:
     _typeDamage: 4
     _damage: 7
     _damageParameters:
-    - _value: 2
+    - _value: 1
       _typeDamageParameter: 2
     _particle: {fileID: 0}
   _weaponParameters:
   - Value: 50
     SupportivePatametr: 0
   - Value: 40
-    SupportivePatametr: 2
+    SupportivePatametr: 1

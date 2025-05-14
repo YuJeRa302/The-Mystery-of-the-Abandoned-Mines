@@ -22,5 +22,5 @@ MonoBehaviour:
   - Cost: 6
     Value: 6
   _name: AbilityDamage
-  _icon: {fileID: 21300000, guid: 062eeb9d5e8ba8f45a9ddfea52518f82, type: 3}
+  _icon: {fileID: 21300000, guid: 73fef658202559b479fcf234584160a3, type: 3}
   _description: AbilityDamageDescription

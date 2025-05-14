@@ -17,7 +17,7 @@ MonoBehaviour:
   _damage: 8
   _health: 20
   _experienceReward: 15
-  _upgradeExperienceReward: 0
+  _upgradeExperienceReward: 15
   _score: 0
   _delaySpawn: 1
   _enemyCount: 2

@@ -13,6 +13,8 @@ public class EpiphanyAbilityPresenter : AbilityPresenter
     private Spell _spell;
     private Spell _spellPrefab;
     private bool _isAbilityUse;
+    private float _spellRadius = 8f;
+    private float _delayDamage = 1f;
 
     public EpiphanyAbilityPresenter(Ability ability,
         AbilityView abilityView,
@@ -88,7 +90,7 @@ public class EpiphanyAbilityPresenter : AbilityPresenter
                 new Vector3(_player.transform.position.x, _player.transform.position.y, _player.transform.position.z),
                 Quaternion.identity);
 
-        _spell.Initialize(_poolParticle, _ability.CurrentDuration, 8f);
+        _spell.Initialize(_poolParticle, _ability.CurrentDuration, _spellRadius);
     }
 
     protected override void OnCooldownValueReseted(float value)
@@ -112,7 +114,7 @@ public class EpiphanyAbilityPresenter : AbilityPresenter
                 }
             }
 
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(_delayDamage);
         }
     }
 }

@@ -66,9 +66,9 @@ namespace Assets.Source.Game.Scripts
         private void ShowReward(int reward)
         {
             base.Open();
-            _defaulReward.SetActive(true);
+            //_defaulReward.SetActive(true);
             Fill();
-            _defaultRewardCoins.text = reward.ToString();
+            //_defaultRewardCoins.text = reward.ToString();
         }
         
         private void OnRewardCallback(int index)

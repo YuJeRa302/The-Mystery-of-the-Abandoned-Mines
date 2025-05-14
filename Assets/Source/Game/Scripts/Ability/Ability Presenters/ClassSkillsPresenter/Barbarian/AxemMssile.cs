@@ -16,7 +16,6 @@ public class AxemMssile : PoolObject
     private float _moveSpeed = 2f;
     private float _moveSpeedBoost = 2f;
     private float _throwDuration;
-    private float _dackPlayerDuration;
     private bool _isReturn = false;
     private List<Enemy> _enemies = new List<Enemy>();
 
@@ -53,7 +52,6 @@ public class AxemMssile : PoolObject
         _weponPrefab = _player.WeaponData.WeaponPrefab;
         _moveSpeedBoost = moveSpeedBoost;
         _throwDuration = duration - 2f;
-        _dackPlayerDuration = 2f;
 
         List<DamageParameter> damageSupportivePatametrs = new List<DamageParameter>(damageParametr.DamageParameters);
 

@@ -76,7 +76,6 @@ public class ShildUpAbilityPresenter : AbilityPresenter
             else
             {
                 particle = GameObject.Instantiate(_poolParticle, _effectConteiner);
-                // particle = GameObject.Instantiate(_poolParticle, _effectConteiner.position, Quaternion.identity);
                 _pool.InstantiatePoolObject(particle, _poolParticle.name);
                 _spawnedEffects.Add(particle);
             }

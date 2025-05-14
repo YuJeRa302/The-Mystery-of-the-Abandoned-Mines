@@ -3,7 +3,7 @@
     "isFirstSession": true,
     "language": "ru",
     "promptDone": false,
-    "Coins": 14027,
+    "Coins": 5527,
     "AmbientVolume": 60.148887634277347,
     "SfxVolumeVolume": 100.0,
     "IsMuted": false,
@@ -65,7 +65,7 @@
         },
         {
             "Id": 9,
-            "CurrentLevel": 0
+            "CurrentLevel": 3
         },
         {
             "Id": 15,

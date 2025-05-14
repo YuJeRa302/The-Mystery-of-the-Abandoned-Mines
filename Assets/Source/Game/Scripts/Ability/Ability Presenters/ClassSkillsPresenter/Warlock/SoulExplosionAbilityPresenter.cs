@@ -13,6 +13,7 @@ public class SoulExplosionAbilityPresenter : AbilityPresenter
     private Spell _spellPrefab;
     private bool _isAbilityUse;
     private Coroutine _damageDealCoroutine;
+    private float _delayDamage = 1f;
 
     public SoulExplosionAbilityPresenter(Ability ability,
         AbilityView abilityView,
@@ -73,21 +74,6 @@ public class SoulExplosionAbilityPresenter : AbilityPresenter
 
     private void CreateParticle()
     {
-        //PoolParticle particle;
-
-        //if (_pool.TryPoolObject(_poolParticle.gameObject, out PoolObject pollParticle))
-        //{
-        //    particle = pollParticle as PoolParticle;
-        //    particle.transform.position = _effectConteiner.position;
-        //    particle.gameObject.SetActive(true);
-        //}
-        //else
-        //{
-        //    particle = GameObject.Instantiate(_poolParticle, _effectConteiner);
-        //    (particle as DamageParticle).Initialaze(_ability.DamageParametr);
-        //    _pool.InstantiatePoolObject(particle, _poolParticle.name);
-        //}
-
         _spell = GameObject.Instantiate(
                 _spellPrefab,
                 new Vector3(_player.transform.position.x, _player.transform.position.y, _player.transform.position.z),
@@ -98,8 +84,7 @@ public class SoulExplosionAbilityPresenter : AbilityPresenter
 
     protected override void OnGameResumed()
     {
-        //if (_isAbilityUse)
-            base.OnGameResumed();
+        base.OnGameResumed();
 
         if (_damageDealCoroutine != null)
             _damageDealCoroutine = _coroutineRunner.StartCoroutine(DealDamage());
@@ -131,7 +116,7 @@ public class SoulExplosionAbilityPresenter : AbilityPresenter
                 }
             }
 
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(_delayDamage);
         }
     }
 }

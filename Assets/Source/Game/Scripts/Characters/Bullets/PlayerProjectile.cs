@@ -9,8 +9,8 @@ public class PlayerProjectile : PoolObject
     private Coroutine _coroutine;
     private Rigidbody _rigidbody;
     private DamageSource _damageSource;
-    private float _moveSpeedBoost;
     private float _projectaleMoveSpeed = 2f;
+    private float _lifeTimeBullet = 6f;
 
     private void OnEnable()
     {
@@ -19,10 +19,10 @@ public class PlayerProjectile : PoolObject
 
     private void FixedUpdate()
     {
-        transform.position = Vector3.Lerp(transform.position, _target.transform.position, 5f * _moveSpeedBoost * Time.fixedDeltaTime);
+        transform.position = Vector3.Lerp(transform.position, _target.transform.position, 5f * Time.fixedDeltaTime);
         _rigidbody.velocity = Vector3.zero;
         _direction = new Vector3(_target.transform.position.x, _target.transform.position.y, _target.transform.position.z).normalized;
-        _rigidbody.AddForce(_direction * _projectaleMoveSpeed * _moveSpeedBoost);
+        _rigidbody.AddForce(_direction * _projectaleMoveSpeed);
         _direction = Vector3.zero;
 
         if (_rigidbody.velocity.y < 0f)
@@ -47,23 +47,19 @@ public class PlayerProjectile : PoolObject
             ReturObjectPool();
     }
 
-    public void Initialaze(Enemy target, float moveSpeedBoost, DamageSource damageSource)
+    public void Initialaze(Enemy target, DamageSource damageSource)
     {
         _target = target;
-        _moveSpeedBoost = moveSpeedBoost;
         _damageSource = damageSource;
 
         if (_coroutine != null)
             StopCoroutine(_coroutine);
 
-        _coroutine = StartCoroutine(BackToPlayer());
+        _coroutine = StartCoroutine(LifeTimeCounter());
     }
-
-    private IEnumerator BackToPlayer()
+    private IEnumerator LifeTimeCounter()
     {
-        while (Vector3.Magnitude(transform.position - _target.transform.position) >= 1f)
-        {
-            yield return null;
-        }
+        yield return new WaitForSeconds(_lifeTimeBullet);
+        ReturObjectPool();
     }
 }

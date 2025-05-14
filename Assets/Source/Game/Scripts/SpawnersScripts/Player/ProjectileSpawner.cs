@@ -33,6 +33,6 @@ public class ProjectileSpawner
             _pool.InstantiatePoolObject(playerProjectile, _bulletBrefab.name);
         }
 
-        playerProjectile.Initialaze(enemy, 1f, _damageSource);// moveSpeedBoost????
+        playerProjectile.Initialaze(enemy, _damageSource);
     }
 }

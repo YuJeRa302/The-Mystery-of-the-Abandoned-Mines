@@ -27,7 +27,6 @@ namespace Assets.Source.Game.Scripts
         public event Action<UpgradeData> StatsSelected;
         public event Action StatsReseted;
 
-        //public MenuSoundPlayer MenuSoundPlayer => MenuPanel.MenuSoundPlayer;
         public List<UpgradeDataView> UpgradeDataViews => _upgradeDataViews;
         public int CurrentUpgradePoints => _currentUpgradePoints;
 

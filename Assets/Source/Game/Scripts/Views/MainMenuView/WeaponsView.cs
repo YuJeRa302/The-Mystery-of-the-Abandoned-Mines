@@ -160,7 +160,6 @@ namespace Assets.Source.Game.Scripts
         {
             gameObject.SetActive(true);
             CreateClass();
-            _nameWeapon.TranslationName = string.Empty;
             _weaponImage.sprite = _defaultSprite;
         }
 

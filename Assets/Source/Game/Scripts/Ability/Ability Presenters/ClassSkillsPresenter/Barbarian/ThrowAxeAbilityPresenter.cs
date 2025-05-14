@@ -67,7 +67,6 @@ public class ThrowAxeAbilityPresenter : AbilityPresenter
 
     protected override void OnGameResumed()
     {
-        //if (_isAbilityUse)
         base.OnGameResumed();
 
         if (_damageDealCoroutine != null)

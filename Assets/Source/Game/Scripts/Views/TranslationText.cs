@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class TranslationText : MonoBehaviour
 {
     [SerializeField] private Text _text;
-    [SerializeField] private LeanLocalizedText _lacizlizedText;
+    [SerializeField] private LeanLocalizedText _leanLocalizedText;
 
     private string _key;
 
@@ -16,6 +16,6 @@ public class TranslationText : MonoBehaviour
 
     private void OnEnable()
     {
-        _lacizlizedText.TranslationName = _key;
+        _leanLocalizedText.TranslationName = _key;
     }
 }

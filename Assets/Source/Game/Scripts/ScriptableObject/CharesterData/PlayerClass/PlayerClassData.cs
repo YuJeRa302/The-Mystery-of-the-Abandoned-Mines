@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using UnityEditor.Animations;
 using UnityEngine;
 
 namespace Assets.Source.Game.Scripts
@@ -13,7 +12,7 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private string _translationStrengths;
         [SerializeField] private TypePlayerClass _className;
         [SerializeField] private TypeAttackRange _typeAttackRange;
-        [SerializeField] private AnimatorController _animatorController;
+        [SerializeField] private RuntimeAnimatorController _animatorController;
         [Space(10)]
         [SerializeField] private List<ClassAbilityData> _classAbilityDatas;
         [SerializeField] private WeaponData _baseWeapon;
@@ -22,7 +21,7 @@ namespace Assets.Source.Game.Scripts
         public string TranslationDescription => _translationDescription;
         public string TranslationName => _translationName;
         public Sprite Icon => _icon;
-        public AnimatorController AnimatorController => _animatorController;
+        public RuntimeAnimatorController AnimatorController => _animatorController;
         public TypePlayerClass TypePlayerClass => _className;
         public WeaponData BaseWeapon => _baseWeapon;
         public string TranslationStrengths => _translationStrengths;

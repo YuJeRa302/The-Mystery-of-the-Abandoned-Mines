@@ -48,7 +48,7 @@ namespace Assets.Source.Game.Scripts
                 LoadCompletePlayerLevels(levelState);
                 CheckLevelState(levelState);
             }
-            else 
+            else
             {
                 SetLevelState(true);
             }

@@ -61,4 +61,10 @@ public class AudioPlayer : MonoBehaviour, IAudioPlayerService
     {
         _ambientAudioSource.Stop();
     }
+
+    public void MuteSound(bool state) 
+    {
+        _ambientAudioSource.mute = state;
+        _sfxAudioSource.mute = state;
+    }
 }

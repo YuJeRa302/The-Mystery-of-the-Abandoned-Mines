@@ -44,6 +44,7 @@ namespace Assets.Source.Game.Scripts
         private PlayerMovement _playerMovement;
 
         public event Action PlayerLevelChanged;
+        public event Action PlayerDied;
 
         public Pool Pool => _poolBullet;
         public Transform PlayerAbilityContainer => _playerAbilityContainer;
@@ -60,6 +61,7 @@ namespace Assets.Source.Game.Scripts
         public float MaxMoveSpeed => _playerStats.MaxMoveSpeed;
         public int Armor => _playerStats.Armor;
         public int Coins => _wallet.CurrentCoins;
+        public int UpgradePoints => _playerStats.UpgradePoints;
         public int Score => _playerStats.Score;
         public int RerollPoints => _playerStats.RerollPoints;
         public int KillCount => _playerStats.CountKillEnemy;
@@ -211,6 +213,7 @@ namespace Assets.Source.Game.Scripts
             _playerAbilityCaster.LegendaryAbilityTaked += OnLegendaryAbilityTaked;
             _playerAbilityCaster.ClassAbilityTaked += OnClassAbilityTaked;
             _playerHealth.HealthChanged += OnHealthChanged;
+            _playerHealth.PlayerDied += () => PlayerDied?.Invoke();
             _playerView.AbilityViewCreated += OnAbilityViewCreated;
             _playerView.PassiveAbilityViewCreated += OnPassiveAbilityViewCreated;
             _playerView.LegendaryAbilityViewCreated += OnLegendaryAbilityViewCreated;
@@ -247,6 +250,7 @@ namespace Assets.Source.Game.Scripts
             _playerAbilityCaster.LegendaryAbilityTaked -= OnLegendaryAbilityTaked;
             _playerAbilityCaster.ClassAbilityTaked -= OnClassAbilityTaked;
             _playerHealth.HealthChanged -= OnHealthChanged;
+            _playerHealth.PlayerDied -= () => PlayerDied?.Invoke();
             _playerView.AbilityViewCreated -= OnAbilityViewCreated;
             _playerView.PassiveAbilityViewCreated -= OnPassiveAbilityViewCreated;
             _playerView.LegendaryAbilityViewCreated -= OnLegendaryAbilityViewCreated;
@@ -319,12 +323,12 @@ namespace Assets.Source.Game.Scripts
 
         private void OnUpgradeExperienceValueChanged(int value)
         {
-            _playerView.ChangeExperience(value);
+            _playerView.ChangeUpgradeExperience(value);
         }
 
         private void OnExperienceValueChanged(int value)
         {
-            _playerView.ChangeUpgradeExperience(value);
+            _playerView.ChangeExperience(value);
         }
 
         private void OnHealthChanged(int value)

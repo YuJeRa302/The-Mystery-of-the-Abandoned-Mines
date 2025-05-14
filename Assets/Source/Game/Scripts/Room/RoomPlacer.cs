@@ -8,38 +8,37 @@ namespace Assets.Source.Game.Scripts
     {
         private readonly System.Random _rnd = new ();
         private readonly int _roomSize = 40;
-        private readonly int _massRoomSize = 11;
-        private readonly int _spawnCenterCoordinate = 5;
         private readonly int _minValue = 0;
         private readonly int _shiftIndex = 1;
-        private readonly int _roomBossId = 1;
-        private readonly int _roomLootId = 2;
+        private readonly int _multiplierRoomSize = 2;
 
         [SerializeField] private RoomData[] _roomDatas;
+        [SerializeField] private RoomData _bossRoomData;
         [SerializeField] private RoomData _defaultRoomData;
         [SerializeField] private RoomView _startRoom;
         [SerializeField] private Transform _playerSpawnPoint;
 
+        private int _spawnCenterCoordinate = 5;
+        private int _maxRoomSize = 11;
         private RoomView[,] _spawnedRooms;
         private List<RoomView> _createdRooms = new ();
         private int _maxRoomCount = 0;
-        private int _maxStages = 0;
-        private int _currentStages = 0;
-        private bool _isLvlComplit;
 
         public List<RoomView> CreatedRooms => _createdRooms;
         public RoomView StartRoom => _startRoom;
 
         public void Initialize(int currentRoomLevel, bool canSeeDoor, int countRooms)
         {
-            _spawnedRooms = new RoomView[_massRoomSize, _massRoomSize];
+            _maxRoomSize = (countRooms * _multiplierRoomSize) + _shiftIndex;
+            _spawnCenterCoordinate = countRooms;
+            _maxRoomCount = countRooms;
+            _spawnedRooms = new RoomView[_maxRoomSize, _maxRoomSize];
             _spawnedRooms[_spawnCenterCoordinate, _spawnCenterCoordinate] = _startRoom;
             _startRoom.SetCameraArial(canSeeDoor);
-            _maxRoomCount = countRooms;
 
             for (int index = 0; index < _maxRoomCount; index++)
             {
-                PlaceOneRoom(currentRoomLevel, canSeeDoor);
+                PlaceOneRoom(currentRoomLevel, canSeeDoor, index);
             }
         }
 
@@ -54,7 +53,7 @@ namespace Assets.Source.Game.Scripts
             _startRoom.ResetAllRemovableWall();
         }
 
-        private void PlaceOneRoom(int currentRoomLevel, bool canSeeDoor)
+        private void PlaceOneRoom(int currentRoomLevel, bool canSeeDoor, int roomIndex)
         {
             HashSet<Vector2Int> freeSpawnSpace = new();
 
@@ -84,16 +83,13 @@ namespace Assets.Source.Game.Scripts
 
             RoomData randomRoomData = GetRandomRoom();
 
-            if (TryGetBossRoom(randomRoomData))
-                randomRoomData = _defaultRoomData;
-
-            if (TryGetLootRoom(randomRoomData))
-                randomRoomData = _defaultRoomData;
+            if (roomIndex + _shiftIndex == _maxRoomCount)
+                randomRoomData =  _bossRoomData;
 
             RoomView newRoom = Instantiate(randomRoomData.Room);
-            int limit = 500;
+            int limitRoomPlace = 500;
 
-            while (limit-- > 0)
+            while (limitRoomPlace-- > 0)
             {
                 Vector2Int position = freeSpawnSpace.ElementAt(_rnd.Next(0, freeSpawnSpace.Count));
 
@@ -157,34 +153,6 @@ namespace Assets.Source.Game.Scripts
             }
 
             return true;
-        }
-
-        private bool TryGetBossRoom(RoomData randomRoomData) 
-        {
-            if (randomRoomData.Id == _roomBossId)
-            {
-                foreach (var room in _createdRooms)
-                {
-                    if (room.RoomData.Id == randomRoomData.Id)
-                        return true;
-                }
-            }
-
-            return false;
-        }
-
-        private bool TryGetLootRoom(RoomData randomRoomData)
-        {
-            if (randomRoomData.Id == _roomLootId)
-            {
-                foreach (var room in _createdRooms)
-                {
-                    if (room.RoomData.Id == randomRoomData.Id)
-                        return true;
-                }
-            }
-
-            return false;
         }
 
         private RoomData GetRandomRoom()

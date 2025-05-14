@@ -1,4 +1,3 @@
-using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using System;
 using UnityEngine;
@@ -17,6 +16,7 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private ClassAbilityView _classAbilityView;
         [SerializeField] private KnowledgeBaseView _knowledgeBaseView;
         [SerializeField] private ConfigData _configData;
+        [SerializeField] private LeaderboardView _leaderboardView;
 
         private SaveAndLoader _saveAndLoad;
         private TemporaryData _temporaryData;
@@ -25,22 +25,19 @@ namespace Assets.Source.Game.Scripts
 
         private void Start()
         {
+            InitYandexGameEntities();
+            AddListeners();
+
             if (_temporaryData == null)
                 if(YandexGame.SDKEnabled)
                     Build();
         }
 
-        private void OnEnable()
-        {
-            DOTween.Clear();
-            DOTween.Init();
-        }
-
         private void OnDestroy()
         {
-            DOTween.KillAll();
+            RemoveListeners();
         }
-
+        
         public void Initialize(TemporaryData temporaryData)
         {
             Time.timeScale = 1;
@@ -63,6 +60,29 @@ namespace Assets.Source.Game.Scripts
                     _temporaryData = new TemporaryData(_configData);
             }
 
+            CreateMenuEntities();
+            _saveAndLoad.Initialize(_temporaryData);
+            _temporaryData.SetUpgradesData(_upgradesView.UpgradeDatas);
+        }
+
+        private void AddListeners()
+        {
+            YandexGame.onVisibilityWindowGame += OnVisibilityWindowGame;
+        }
+
+        private void RemoveListeners() 
+        {
+            YandexGame.onVisibilityWindowGame -= OnVisibilityWindowGame;
+        }
+
+        private void InitYandexGameEntities()
+        {
+            YandexGame.GameplayStart();
+            YandexGame.GameReadyAPI();
+        }
+
+        private void CreateMenuEntities() 
+        {
             SettingsModel settingsModel = new SettingsModel(_temporaryData);
             LevelsModel levelsModel = new LevelsModel(_temporaryData, this);
             UpgradeModel upgradeModel = new UpgradeModel(_temporaryData);
@@ -70,6 +90,7 @@ namespace Assets.Source.Game.Scripts
             WeaponsModel weaponsModel = new WeaponsModel(_temporaryData);
             ClassAbilityModel classAbilityModel = new ClassAbilityModel(_temporaryData);
             KnowledgeBaseModel knowledgeBaseModel = new KnowledgeBaseModel();
+            LeaderboardModel leaderboardModel = new LeaderboardModel(_temporaryData);
 
             MainMenuViewModel mainMenuViewModel = new MainMenuViewModel(menuModel);
             SettingsViewModel settingsViewModel = new SettingsViewModel(settingsModel, menuModel);
@@ -78,6 +99,7 @@ namespace Assets.Source.Game.Scripts
             WeaponsViewModel weaponsViewModel = new WeaponsViewModel(weaponsModel, menuModel);
             ClassAbilityViewModel classAbilityViewModel = new ClassAbilityViewModel(classAbilityModel, menuModel);
             KnowledgeBaseViewModel knowledgeBaseViewModel = new KnowledgeBaseViewModel(knowledgeBaseModel, menuModel);
+            LeaderboardViewModel leaderboardViewModel = new LeaderboardViewModel(leaderboardModel, menuModel);
 
             _settingsView.Initialize(settingsViewModel, _audioPlayer);
             _upgradesView.Initialize(upgradeViewModel, _audioPlayer);
@@ -86,8 +108,27 @@ namespace Assets.Source.Game.Scripts
             _weaponsView.Initialize(weaponsViewModel, _audioPlayer);
             _classAbilityView.Initialize(classAbilityViewModel, _audioPlayer);
             _knowledgeBaseView.Initialize(knowledgeBaseViewModel, _audioPlayer);
-            _saveAndLoad.Initialize(_temporaryData);
-            _temporaryData.SetUpgradesData(_upgradesView.UpgradeDatas);
+            _leaderboardView.Initialize(leaderboardViewModel);
+        }
+
+        private void OnVisibilityWindowGame(bool state)
+        {
+            if (state == true)
+                ResumeGame(state);
+            else
+                PauseGame(state);
+        }
+
+        private void ResumeGame(bool state)
+        {
+            Time.timeScale = Convert.ToInt32(state);
+            //SoundStateChanged?.Invoke(TemporaryData.IsSoundOn);
+        }
+
+        private void PauseGame(bool state)
+        {
+            Time.timeScale = Convert.ToInt32(state);
+            //SoundStateChanged?.Invoke(state);
         }
     }
 }

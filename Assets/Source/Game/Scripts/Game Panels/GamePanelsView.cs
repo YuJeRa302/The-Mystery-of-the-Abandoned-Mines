@@ -9,8 +9,10 @@ namespace Assets.Source.Game.Scripts
 
         public Action PanelOpened;
         public Action PanelClosed;
-        public Action AdOpened;
-        public Action AdClosed;
+        public Action RewardAdOpened;
+        public Action RewardAdClosed;
+        public Action FullscreenAdOpened;
+        public Action FullscreenAdClosed;
         public Action GameClosed;
 
         public virtual void Initialize(GamePanelsViewModel gamePanelsViewModel)
@@ -37,15 +39,25 @@ namespace Assets.Source.Game.Scripts
             GameClosed?.Invoke();
         }
 
-        protected virtual void OpenAds()
+        protected virtual void OpenRewardAds()
         {
-            AdOpened?.Invoke();
+            RewardAdOpened?.Invoke();
         }
 
-        protected virtual void CloseAds()
+        protected virtual void CloseRewardAds()
         {
             gameObject.SetActive(false);
-            AdClosed?.Invoke();
+            RewardAdClosed?.Invoke();
+        }
+
+        protected virtual void OpenFullscreenAds()
+        {
+            FullscreenAdOpened?.Invoke();
+        }
+
+        protected virtual void CloseFullscreenAds()
+        {
+            FullscreenAdClosed?.Invoke();
         }
     }
 }

@@ -20,11 +20,11 @@ namespace Assets.Source.Game.Scripts
         public Sprite Icon => _icon;
         public TypeParameter TypeParameter => _typeParameter;
 
-        public UpgradeParameter GetUpgradeParameterById(int id) 
+        public UpgradeParameter GetUpgradeParameterByCurrentLevel(int currentLevel) 
         {
             foreach (UpgradeParameter upgradeParameter in _upgradeParameters)
             {
-                if (upgradeParameter.Value == id)
+                if (upgradeParameter.CurrentLevel == currentLevel)
                     return upgradeParameter;
             }
 

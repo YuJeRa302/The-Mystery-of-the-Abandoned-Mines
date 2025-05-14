@@ -15,11 +15,14 @@ MonoBehaviour:
   _id: 5
   _typeParameter: 4
   _upgradeParameters:
-  - Cost: 1
+  - CurrentLevel: 1
+    Cost: 1
     Value: 2
-  - Cost: 3
+  - CurrentLevel: 2
+    Cost: 3
     Value: 4
-  - Cost: 6
+  - CurrentLevel: 3
+    Cost: 6
     Value: 6
   _name: AbilityDamage
   _icon: {fileID: 21300000, guid: 73fef658202559b479fcf234584160a3, type: 3}

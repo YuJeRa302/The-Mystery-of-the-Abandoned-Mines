@@ -58,7 +58,7 @@ namespace Assets.Source.Game.Scripts
 
         private void ResetState(int id)
         {
-            if(id != _weaponData.Id)
+            if (id != _weaponData.Id)
                 _stateWeaponImage.sprite = _defaultSprite;
         }
 

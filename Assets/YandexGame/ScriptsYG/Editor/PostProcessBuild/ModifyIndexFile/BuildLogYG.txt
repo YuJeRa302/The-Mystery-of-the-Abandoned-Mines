@@ -1,0 +1,2 @@
+Build path: D:/Project(Unity)/GitHub/TestProject/The Mystery of the Abandoned Mines(Debug)/The Mystery of the Abandoned Mines(Debug)
+Build number: 1

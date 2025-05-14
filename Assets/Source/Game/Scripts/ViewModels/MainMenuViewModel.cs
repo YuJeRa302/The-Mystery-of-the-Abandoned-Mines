@@ -19,6 +19,7 @@ public class MainMenuViewModel : IDisposable
     public void InvokeClassAbilityShow() => _menuModel.InvokeClassAbilityShow();
     public void InvokeMainMenuShow() => _menuModel.InvokeMainMenuShow();
     public void InvokeKnowledgeBaseShow() => _menuModel.InvokeKnowledgeBaseShow();
+    public void InvokeLeaderboardShow() => _menuModel.InvokeLeaderboardShow();
 
     public void Dispose()
     {

@@ -15,11 +15,14 @@ MonoBehaviour:
   _id: 7
   _typeParameter: 7
   _upgradeParameters:
-  - Cost: 1
+  - CurrentLevel: 1
+    Cost: 1
     Value: 1
-  - Cost: 3
+  - CurrentLevel: 2
+    Cost: 3
     Value: 2
-  - Cost: 4
+  - CurrentLevel: 3
+    Cost: 4
     Value: 3
   _name: Reroll
   _icon: {fileID: 21300000, guid: 5876dd65b80b595499a8c8dd22e03db2, type: 3}

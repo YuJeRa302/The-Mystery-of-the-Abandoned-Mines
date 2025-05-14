@@ -15,11 +15,14 @@ MonoBehaviour:
   _id: 6
   _typeParameter: 6
   _upgradeParameters:
-  - Cost: 1
+  - CurrentLevel: 1
+    Cost: 1
     Value: 1
-  - Cost: 1
+  - CurrentLevel: 2
+    Cost: 1
     Value: 2
-  - Cost: 1
+  - CurrentLevel: 3
+    Cost: 1
     Value: 3
   _name: AbilityCooldown
   _icon: {fileID: 21300000, guid: bf195a9bde0f16e41854437fb83a8423, type: 3}

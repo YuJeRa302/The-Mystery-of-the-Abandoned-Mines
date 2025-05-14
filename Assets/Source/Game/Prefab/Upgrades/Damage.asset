@@ -15,11 +15,14 @@ MonoBehaviour:
   _id: 0
   _typeParameter: 0
   _upgradeParameters:
-  - Cost: 1
+  - CurrentLevel: 1
+    Cost: 1
     Value: 1
-  - Cost: 2
+  - CurrentLevel: 2
+    Cost: 2
     Value: 2
-  - Cost: 2
+  - CurrentLevel: 3
+    Cost: 2
     Value: 3
   _name: Damage
   _icon: {fileID: 21300000, guid: d605befd4bec61449b7a5c492aaf2361, type: 3}

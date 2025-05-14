@@ -30,16 +30,9 @@ namespace Assets.Source.Game.Scripts
         private List<LanguageButtonView> _languageButtonViews = new ();
         private IAudioPlayerService _audioPlayerService;
 
-        //public event Action ExitButtonClicked;
-
         private void Awake()
         {
             _exitButton.onClick.AddListener(CloseGame);
-        }
-
-        private void ClickButtonExit()
-        {
-            //ExitButtonClicked?.Invoke();
         }
 
         private void OnDestroy()

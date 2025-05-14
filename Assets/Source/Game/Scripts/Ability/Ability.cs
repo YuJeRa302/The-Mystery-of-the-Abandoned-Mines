@@ -57,7 +57,6 @@ namespace Assets.Source.Game.Scripts
         public int Quantily => _quantily;
         public float SpellRadius => _spellRadius;
         public bool IsAbilityUsed => _isAbilityUsed;
-
         public DamageSource DamageSource => _damageSource;
         public int CurrentLevel { get; private set; }
         public int MaxLevel { get; private set; }

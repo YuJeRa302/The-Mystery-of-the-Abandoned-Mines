@@ -15,11 +15,14 @@ MonoBehaviour:
   _id: 2
   _typeParameter: 2
   _upgradeParameters:
-  - Cost: 2
+  - CurrentLevel: 1
+    Cost: 2
     Value: 1
-  - Cost: 3
+  - CurrentLevel: 2
+    Cost: 3
     Value: 2
-  - Cost: 5
+  - CurrentLevel: 3
+    Cost: 5
     Value: 3
   _name: Regeneration
   _icon: {fileID: 21300000, guid: 853878fc3fe3c7943916a8701384ec62, type: 3}

@@ -15,11 +15,14 @@ MonoBehaviour:
   _id: 1
   _typeParameter: 1
   _upgradeParameters:
-  - Cost: 1
+  - CurrentLevel: 1
+    Cost: 1
     Value: 2
-  - Cost: 1
+  - CurrentLevel: 2
+    Cost: 1
     Value: 3
-  - Cost: 1
+  - CurrentLevel: 3
+    Cost: 1
     Value: 5
   _name: Armor
   _icon: {fileID: 21300000, guid: 570018e27fa24c34091ab0bbdcff209b, type: 3}

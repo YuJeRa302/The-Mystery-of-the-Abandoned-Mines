@@ -1,7 +1,6 @@
 using Assets.Source.Game.Scripts;
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 using YG;
 
 public class TemporaryData
@@ -32,6 +31,8 @@ public class TemporaryData
         InitData(savesYG);
     }
 
+    public bool IsSoundOn { get; private set; } = true;
+    public bool IsGamePause { get; private set; } = false;
     public int Coins { get; private set; }
     public float AmbientVolume { get; private set; }
     public float InterfaceVolume { get; private set; }
@@ -160,6 +161,16 @@ public class TemporaryData
     public LevelState[] GetLevelStates() 
     {
         return _levelStates;
+    }
+
+    public void SetSoundState(bool value)
+    {
+        IsSoundOn = value;
+    }
+
+    public void SetPauseGame(bool state)
+    {
+        IsGamePause = state;
     }
 
     public void SetUpgradesData(List<UpgradeData> upgradeDatas)

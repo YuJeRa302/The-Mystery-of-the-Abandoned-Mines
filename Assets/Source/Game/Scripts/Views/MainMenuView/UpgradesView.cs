@@ -38,7 +38,7 @@ public class UpgradesView : MonoBehaviour
     [SerializeField] private Button _resetButton;
     [SerializeField] private Button _closeButton;
 
-    private List<UpgradeDataView> _upgradeDataViews = new ();
+    private List<UpgradeDataView> _upgradeDataViews = new();
     private UpgradeViewModel _upgradeViewModel;
     private IAudioPlayerService _audioPlayerService;
     DG.Tweening.Sequence _sequence;
@@ -135,7 +135,7 @@ public class UpgradesView : MonoBehaviour
         _audioPlayerService?.PlayOneShotButtonClickSound();
     }
 
-    private void Upgrade() 
+    private void Upgrade()
     {
         _upgradeViewModel.UpgradeStats();
         _audioPlayerService?.PlayOneShotButtonClickSound();
@@ -167,7 +167,7 @@ public class UpgradesView : MonoBehaviour
         {
             valueCurrentLvl = "+" + upgradeDataView.UpgradeData.UpgradeParameters[upgradeDataView.UpgradeState.CurrentLevel - 1].Value.ToString();
 
-            if(upgradeDataView.UpgradeState.CurrentLevel < upgradeDataView.UpgradeData.UpgradeParameters.Count)
+            if (upgradeDataView.UpgradeState.CurrentLevel < upgradeDataView.UpgradeData.UpgradeParameters.Count)
             {
                 valueNextLvl = "+" + upgradeDataView.UpgradeData.UpgradeParameters[upgradeDataView.UpgradeState.CurrentLevel].Value.ToString();
                 _curretnPrice.text = upgradeDataView.UpgradeData.UpgradeParameters[upgradeDataView.UpgradeState.CurrentLevel].Cost.ToString();

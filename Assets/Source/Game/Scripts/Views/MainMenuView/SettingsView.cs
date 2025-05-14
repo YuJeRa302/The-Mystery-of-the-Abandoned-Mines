@@ -13,7 +13,7 @@ public class SettingsView : MonoBehaviour
     [SerializeField] private LanguageButtonView _languageButtonView;
     [SerializeField] private Transform _buttonsContainer;
 
-    private List<LanguageButtonView> _languageButtonViews = new ();
+    private List<LanguageButtonView> _languageButtonViews = new();
     private SettingsViewModel _settingsViewModel;
     private IAudioPlayerService _audioPlayerService;
 

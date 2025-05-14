@@ -15,11 +15,14 @@ MonoBehaviour:
   _id: 4
   _typeParameter: 5
   _upgradeParameters:
-  - Cost: 1
+  - CurrentLevel: 1
+    Cost: 1
     Value: 1
-  - Cost: 3
+  - CurrentLevel: 2
+    Cost: 3
     Value: 2
-  - Cost: 6
+  - CurrentLevel: 3
+    Cost: 6
     Value: 3
   _name: AbilityDuration
   _icon: {fileID: 21300000, guid: 25180e46342b2214a9d68d0f0ce01ca5, type: 3}

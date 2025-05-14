@@ -12,14 +12,16 @@ namespace Assets.Source.Game.Scripts
             _gamePanelsModel = gamePanelsModel;
             _gamePanelsModel.StageCompleted += () => StageCompleted?.Invoke();
             _gamePanelsModel.CardPoolCreated += () => CardPoolCreated?.Invoke();
-            _gamePanelsModel.GameEnded += () => GameEnded?.Invoke();
+            _gamePanelsModel.GameEnded += (bool state) => GameEnded?.Invoke(state);
+            _gamePanelsModel.CardPanelOpened += () => CardPanelOpened?.Invoke();
         }
 
         public event Action StageCompleted;
         public event Action CardPoolCreated;
-        public event Action GameEnded;
+        public event Action CardPanelOpened;
+        public event Action<bool> GameEnded;
 
-        public bool GetLevelType() => _gamePanelsModel.GetLevelType();
+        public bool IsContractLevel => _gamePanelsModel.GetLevelType();
         public WeaponData CreateRewardWeapon() => _gamePanelsModel.CreateRewardWeapon();
         public Player GetPlayer() => _gamePanelsModel.GetPlayer();
         public List<CardData> GetMainCardPool => _gamePanelsModel.GetMainCardPool();

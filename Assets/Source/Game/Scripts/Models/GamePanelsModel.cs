@@ -42,12 +42,18 @@ namespace Assets.Source.Game.Scripts
 
         public event Action StageCompleted;
         public event Action CardPoolCreated;
-        public event Action GameEnded;
+        public event Action CardPanelOpened;
+        public event Action<bool> GameEnded;
 
         public string LanguageTag { get; private set; }
         public float AmbientVolumeValue { get; private set; }
         public float SfxVolumeValue { get; private set; }
         public bool IsMuted { get; private set; }
+
+        public void OpenCardPanel() 
+        {
+            CardPanelOpened?.Invoke();
+        }
 
         public bool GetLevelType() 
         {
@@ -131,9 +137,9 @@ namespace Assets.Source.Game.Scripts
             StageCompleted?.Invoke();
         }
 
-        private void OnGameEnded()
+        private void OnGameEnded(bool state)
         {
-            GameEnded?.Invoke();
+            GameEnded?.Invoke(state);
         }
 
         private void Mute()

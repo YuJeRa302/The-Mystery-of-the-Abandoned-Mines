@@ -2,10 +2,11 @@ using IJunior.TypedScenes;
 using System;
 using System.Collections;
 using UnityEngine;
+using YG;
 
 namespace Assets.Source.Game.Scripts
 {
-    public class LevelObserver : MonoBehaviour, IGameLoopService, ICoroutineRunner // ������� ������ ������ � ���������� ������ WinGame(), LoseGame();
+    public class LevelObserver : MonoBehaviour, IGameLoopService, ICoroutineRunner
     {
         private readonly float _pauseValue = 0;
         private readonly float _resumeValue = 1;
@@ -24,7 +25,6 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private CardLoader _cardLoader;
         [SerializeField] private AudioPlayer _audioPlayerService;
 
-        private CardPanel _cardPanel;
         private bool _canSeeDoor;
         private EnemySpawner _enemySpawner;
         private TrapsSpawner _trapsSpawner;
@@ -33,7 +33,7 @@ namespace Assets.Source.Game.Scripts
         private RoomView _currentRoom;
         private int _currentRoomLevel = 0;
         private int _countStages = 0;
-        private int _currentStages = 0;
+        private int _currentStage = 0;
         private AbilityFactory _abilityFactory;
         private AbilityPresenterFactory _abilityPresenterFactory;
         private GamePanelsViewModel _gamePanelsViewModel;
@@ -42,7 +42,7 @@ namespace Assets.Source.Game.Scripts
         private AsyncOperation _load;
         private TemporaryData _temporaryData;
 
-        public event Action GameEnded;
+        public event Action<bool> GameEnded;
         public event Action GameClosed;
         public event Action GamePaused;
         public event Action GameResumed;
@@ -78,9 +78,9 @@ namespace Assets.Source.Game.Scripts
             bool isLevelComplit = temporaryData.CurrentLevelState.IsComplete;
 
             if (isLevelComplit)
-                _currentStages = 0;
+                _currentStage = 0;
             else
-                _currentStages = temporaryData.CurrentLevelState.CurrentCompleteStages;
+                _currentStage = temporaryData.CurrentLevelState.CurrentCompleteStages;
 
             _trapsSpawner = new TrapsSpawner();
             _roomPlacer.Initialize(_currentRoomLevel, _canSeeDoor, CountRooms);
@@ -111,7 +111,8 @@ namespace Assets.Source.Game.Scripts
 
         public void ResumeByRewarded()
         {
-            throw new NotImplementedException();
+            Time.timeScale = _resumeValue;
+            GameResumed?.Invoke();
         }
 
         public void PauseByRewarded()
@@ -141,7 +142,33 @@ namespace Assets.Source.Game.Scripts
             throw new NotImplementedException();
         }
 
-        private void CreateGamePanelEntities(TemporaryData temporaryData) 
+        private void OnVisibilityWindowGame(bool state)
+        {
+            if (state == true)
+                ResumeGameByVisibilityWindow(state);
+            else
+                PauseGameByVisibilityWindow(state);
+        }
+
+        private void PauseGameByVisibilityWindow(bool state)
+        {
+            _audioPlayerService.MuteSound(state);
+            Time.timeScale = _pauseValue;
+            GamePaused?.Invoke();
+        }
+
+        private void ResumeGameByVisibilityWindow(bool state)
+        {
+            if (_temporaryData.IsGamePause == true)
+                Time.timeScale = _pauseValue;
+            else
+                Time.timeScale = _resumeValue;
+
+            _audioPlayerService.MuteSound(state);
+            GameResumed?.Invoke();
+        }
+
+        private void CreateGamePanelEntities(TemporaryData temporaryData)
         {
             _gamePanelsModel = new GamePanelsModel(temporaryData, _player, this, _cardLoader, _audioPlayerService);
             _gamePanelsViewModel = new GamePanelsViewModel(_gamePanelsModel);
@@ -156,6 +183,8 @@ namespace Assets.Source.Game.Scripts
             _enemySpawner.EnemyDied += OnEnemyDied;
             _enemySpawner.AllEnemyRoomDied += OnRoomCompleted;
             _player.PlayerLevelChanged += OnPlayerLevelChanged;
+            _player.PlayerDied += LoseGame;
+            YandexGame.onVisibilityWindowGame += OnVisibilityWindowGame;
         }
 
         private void RemoveListener()
@@ -166,11 +195,13 @@ namespace Assets.Source.Game.Scripts
             _enemySpawner.EnemyDied -= OnEnemyDied;
             _enemySpawner.AllEnemyRoomDied -= OnRoomCompleted;
             _player.PlayerLevelChanged -= OnPlayerLevelChanged;
+            _player.PlayerDied -= LoseGame;
+            YandexGame.onVisibilityWindowGame -= OnVisibilityWindowGame;
         }
 
         private void OnPlayerLevelChanged()
         {
-            _cardPanel.OpenCard();
+            _gamePanelsModel.OpenCardPanel();
         }
 
         private void OnEnemyDied(Enemy enemy)
@@ -196,11 +227,7 @@ namespace Assets.Source.Game.Scripts
                 panel.PanelOpened += PauseByMenu;
                 panel.PanelClosed += ResumeByMenu;
                 panel.GameClosed += OnGameClosed;
-
-                if (panel as CardPanel)
-                {
-                    _cardPanel = (CardPanel)panel;
-                }
+                panel.RewardAdClosed += ResumeByRewarded;
             }
         }
 
@@ -231,6 +258,7 @@ namespace Assets.Source.Game.Scripts
                 panel.PanelOpened -= PauseByMenu;
                 panel.PanelClosed -= ResumeByMenu;
                 panel.GameClosed -= OnGameClosed;
+                panel.RewardAdClosed -= ResumeByRewarded;
             }
         }
 
@@ -300,10 +328,10 @@ namespace Assets.Source.Game.Scripts
 
         private void StageComplete()
         {
-            _currentStages++;
+            _currentStage++;
 
-            if (_currentStages == _countStages)
-                EndGame();
+            if (_currentStage == _countStages)
+                WinGame();
             else
                 CreateNextStage();
         }
@@ -319,12 +347,18 @@ namespace Assets.Source.Game.Scripts
             AddRoomListener();
         }
 
-        private void EndGame() 
+        private void WinGame() 
         {
             CloseAllGamePanels();
-            RemoveRoomListener();
             _roomPlacer.Clear();
-            GameEnded?.Invoke();
+            GameEnded?.Invoke(true);
+        }
+
+        private void LoseGame() 
+        {
+            CloseAllGamePanels();
+            _roomPlacer.Clear();
+            GameEnded?.Invoke(false);
         }
 
         private IEnumerator LoadScreenLevel(AsyncOperation asyncOperation)

@@ -13,21 +13,15 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private Button _buttonReroll;
         [SerializeField] private Button _buttonTest;
         [SerializeField] private TMP_Text _countRerolPointConteiner;
-        //[SerializeField] private Button _buttonSkip;
 
         private List<CardView> _cardViews = new();
 
         private void OnDestroy()
         {
+            GamePanelsViewModel.CardPanelOpened -= Open;
             GamePanelsViewModel.CardPoolCreated -= Fill;
             _buttonReroll.onClick.RemoveListener(Reroll);
             _buttonTest.onClick.RemoveListener(Open);
-            //_buttonSkip.onClick.RemoveListener(Skip);
-        }
-
-        public void OpenCard()
-        {
-            Open();
         }
 
         public override void Initialize(GamePanelsViewModel gamePanelsViewModel)
@@ -35,8 +29,8 @@ namespace Assets.Source.Game.Scripts
             base.Initialize(gamePanelsViewModel);
             _buttonReroll.onClick.AddListener(Reroll);
             _buttonTest.onClick.AddListener(Open);
-            //_buttonSkip.onClick.AddListener(Skip);
             GamePanelsViewModel.CardPoolCreated += Fill;
+            GamePanelsViewModel.CardPanelOpened += Open;
         }
 
         protected override void Open()
@@ -82,11 +76,6 @@ namespace Assets.Source.Game.Scripts
         private void OnCardTaked(CardView cardView)
         {
             GamePanelsViewModel.GetPlayer().TakeCard(cardView);
-            Close();
-        }
-
-        private void Skip()
-        {
             Close();
         }
 

@@ -164,7 +164,6 @@ namespace Assets.Source.Game.Scripts
 
         private void SetPlayerDie()
         {
-            //Destroy(gameObject);
             PlayerDied?.Invoke();
         }
 

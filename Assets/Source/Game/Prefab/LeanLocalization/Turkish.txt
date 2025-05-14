@@ -224,3 +224,6 @@ MineDescription,"Kara mayını. Üzerine basıldıktan birkaç saniye sonra patl
 MoveBladeDescription,"Yerde ileri geri hareket eden dönen bıçak."
 RotateBladeDescription,"Dönen bıçak. Her iki tarafta da keskin."
 RotateSpiceDescription,"Sivri uçlu dönen plakalar. Dikenler sadece bir tarafta bulunur."
+BuyContractTitle,"Bir sözleşmenin satın alınması"
+AuthorizationTitle,"Yetkilendirme"
+AuthorizationDescriptions,"Liderlik tablosunu görüntülemek için giriş yapmalısınız"

@@ -183,28 +183,28 @@ namespace Assets.Source.Game.Scripts
                             switch (upgradeData.TypeParameter)
                             {
                                 case TypeParameter.Armor:
-                                    _armor += upgradeData.GetUpgradeParameterById(upgradeState.CurrentLevel).Value;
+                                    _armor += upgradeData.GetUpgradeParameterByCurrentLevel(upgradeState.CurrentLevel).Value;
                                     break;
                                 case TypeParameter.Damage:
-                                    _damageSource.ChangeDamage(_damageSource.Damage + upgradeData.GetUpgradeParameterById(upgradeState.CurrentLevel).Value);
+                                    _damageSource.ChangeDamage(_damageSource.Damage + upgradeData.GetUpgradeParameterByCurrentLevel(upgradeState.CurrentLevel).Value);
                                     break;
                                 case TypeParameter.Regeneration:
-                                    _regeneration += upgradeData.GetUpgradeParameterById(upgradeState.CurrentLevel).Value;
+                                    _regeneration += upgradeData.GetUpgradeParameterByCurrentLevel(upgradeState.CurrentLevel).Value;
                                     break;
                                 case TypeParameter.Reroll:
-                                    _rerollPoints += upgradeData.GetUpgradeParameterById(upgradeState.CurrentLevel).Value;
+                                    _rerollPoints += upgradeData.GetUpgradeParameterByCurrentLevel(upgradeState.CurrentLevel).Value;
                                     break;
                                 case TypeParameter.Health:
-                                    MaxHealthChanged?.Invoke(upgradeData.GetUpgradeParameterById(upgradeState.CurrentLevel).Value);
+                                    MaxHealthChanged?.Invoke(upgradeData.GetUpgradeParameterByCurrentLevel(upgradeState.CurrentLevel).Value);
                                     break;
                                 case TypeParameter.AbilityCooldown:
-                                    AbilityCooldownReductionChanged?.Invoke(upgradeData.GetUpgradeParameterById(upgradeState.CurrentLevel).Value);
+                                    AbilityCooldownReductionChanged?.Invoke(upgradeData.GetUpgradeParameterByCurrentLevel(upgradeState.CurrentLevel).Value);
                                     break;
                                 case TypeParameter.AbilityDuration:
-                                    AbilityDurationChanged?.Invoke(upgradeData.GetUpgradeParameterById(upgradeState.CurrentLevel).Value);
+                                    AbilityDurationChanged?.Invoke(upgradeData.GetUpgradeParameterByCurrentLevel(upgradeState.CurrentLevel).Value);
                                     break;
                                 case TypeParameter.AbilityValue:
-                                    AbilityDamageChanged?.Invoke(upgradeData.GetUpgradeParameterById(upgradeState.CurrentLevel).Value);
+                                    AbilityDamageChanged?.Invoke(upgradeData.GetUpgradeParameterByCurrentLevel(upgradeState.CurrentLevel).Value);
                                     break;
                             }
                         }

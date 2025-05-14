@@ -15,6 +15,7 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private Button _openLevelsButton;
         [SerializeField] private Button _openWeaponsButton;
         [SerializeField] private Button _openClassAbilityButton;
+        [SerializeField] private Button _openLeaderboardButton;
         [SerializeField] private Button _opneKnowledgeBaseButton;
         [Space(20)]
         [SerializeField] private List<TipData> _tipsDatas;
@@ -80,6 +81,7 @@ namespace Assets.Source.Game.Scripts
             _openWeaponsButton.onClick.AddListener(ShowWeapons);
             _openClassAbilityButton.onClick.AddListener(ShowClassAbility);
             _opneKnowledgeBaseButton.onClick.AddListener(ShowKnowledgeBase);
+            _openLeaderboardButton.onClick.AddListener(ShowLeaderboard);
             _menuViewModel.InvokedShow += Show;
         }
 
@@ -91,7 +93,15 @@ namespace Assets.Source.Game.Scripts
             _openWeaponsButton.onClick.RemoveListener(ShowWeapons);
             _openClassAbilityButton.onClick.RemoveListener(ShowClassAbility);
             _opneKnowledgeBaseButton.onClick.RemoveListener(ShowKnowledgeBase);
+            _openLeaderboardButton.onClick.RemoveListener(ShowLeaderboard);
             _menuViewModel.InvokedShow -= Show;
+        }
+
+        private void ShowLeaderboard()
+        {
+            _menuViewModel.InvokeLeaderboardShow();
+            _audioPlayerService.PlayOneShotButtonClickSound();
+            gameObject.SetActive(false);
         }
 
         private void ShowKnowledgeBase()
@@ -183,13 +193,11 @@ namespace Assets.Source.Game.Scripts
                 view.transform.localScale = Vector3.zero;
             }
 
-            _sequence = DOTween.Sequence();
-
             foreach (TipView view in _tipViews)
             {
-                _sequence.Append(view.transform.DOScale(_duration, _duration).
+                view.transform.DOScale(_duration, _duration).
                     SetEase(Ease.OutBounce).
-                    SetLink(view.gameObject));
+                    SetLink(view.gameObject);
 
                 yield return delay;
             }

@@ -224,3 +224,6 @@ MineDescription,"Наземная мина. Взрывается через не
 MoveBladeDescription,"Кружащее лезвие, перемещающееся вперед, назад по земле."
 RotateBladeDescription,"Кружащееся лезвие. Острое с обеих сторон."
 RotateSpiceDescription,"Вращающиеся пластины с шипами. Шипы расположены только с одной стороны."
+BuyContractTitle,"Покупка контракта"
+AuthorizationTitle,"Авторизация"
+AuthorizationDescriptions,"Для просмотра таблицы лидеров, необходимо авторизоваться"

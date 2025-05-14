@@ -1,6 +1,5 @@
 using Lean.Localization;
 using System.Collections.Generic;
-using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -38,9 +37,9 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private Button _upgradeButton;
         [SerializeField] private Button _resetButton;
 
-        private List<PlayerClassDataView> _playerClassDataViews = new ();
-        private List<ClassAbilityDataView> _classAbilityDataViews = new ();
-        private List<ClassAbilityStatsView> _classAbilityStatsViews = new ();
+        private List<PlayerClassDataView> _playerClassDataViews = new();
+        private List<ClassAbilityDataView> _classAbilityDataViews = new();
+        private List<ClassAbilityStatsView> _classAbilityStatsViews = new();
         private ClassAbilityViewModel _classAbilityViewModel;
         private IAudioPlayerService _audioPlayerService;
 
@@ -142,7 +141,7 @@ namespace Assets.Source.Game.Scripts
         {
             _coinsText.text = _classAbilityViewModel.GetCoins().ToString();
 
-            foreach(var view in _classAbilityDataViews)
+            foreach (var view in _classAbilityDataViews)
             {
                 if (view.ClassAbilityState.Id == classAbilityState.Id)
                 {
@@ -151,7 +150,7 @@ namespace Assets.Source.Game.Scripts
             }
         }
 
-        private void OnAbilityReseted(PlayerClassData playerClassData) 
+        private void OnAbilityReseted(PlayerClassData playerClassData)
         {
             CreateClassAbility(playerClassData);
         }
@@ -164,7 +163,7 @@ namespace Assets.Source.Game.Scripts
             _classAbilityViewModel.SelectClassAbility(classAbilityDataView);
 
 
-            foreach(var view in _classAbilityStatsViews)
+            foreach (var view in _classAbilityStatsViews)
             {
                 Destroy(view.gameObject);
             }
@@ -220,7 +219,7 @@ namespace Assets.Source.Game.Scripts
                     ClassAbilityStatsView statsView = Instantiate(_classAbilityStatsViewPrefab, _classAbilityStatsConteiner);
                     nameParametr = stats.TypeParameter.ToString();
                     valueCurrentLvl = stats.Value.ToString();
-                    
+
                     statsView.Initialize(nameParametr, valueCurrentLvl, valueNextLvl);
 
                     _classAbilityStatsViews.Add(statsView);
@@ -230,7 +229,7 @@ namespace Assets.Source.Game.Scripts
 
         private bool CantDisplayParametr(TypeParameter typeParameter)
         {
-            if (typeParameter == TypeParameter.AbilityValue ||typeParameter == TypeParameter.TargetMoveSpeed)
+            if (typeParameter == TypeParameter.AbilityValue || typeParameter == TypeParameter.TargetMoveSpeed)
                 return true;
             else
                 return false;

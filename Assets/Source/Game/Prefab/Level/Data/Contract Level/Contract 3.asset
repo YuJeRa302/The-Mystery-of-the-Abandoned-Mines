@@ -9,21 +9,28 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b396784c4833524b92283bc772aca66, type: 3}
+  m_Script: {fileID: 11500000, guid: 4402b0d5cfaf9fe44b82f98caf5baf77, type: 3}
   m_Name: Contract 3
   m_EditorClassIdentifier: 
-  _id: 2
-  _tier: 2
+  _id: 0
+  _tier: 4
   _tierColor:
   - {r: 1, g: 1, b: 1, a: 0}
   - {r: 0.23921569, g: 1, b: 0.21568628, a: 0}
   - {r: 0, g: 0.5411765, b: 1, a: 0}
   - {r: 0.5686275, g: 0.14509805, b: 1, a: 0}
   - {r: 1, g: 0.22745098, b: 0.14509805, a: 0}
-  _countStages: 0
-  _countRooms: 0
-  _cost: 4500
+  _countStages: 3
+  _countRooms: 6
+  _cost: 0
   _isContractLevel: 1
-  _translationName: 
+  _translationName: Malice
   _translationDescription: 
-  _icon: {fileID: 0}
+  _icon: {fileID: 21300000, guid: d98da7031e9e2064c9cb95ea0bd5ae04, type: 3}
+  _weaponDatas:
+  - {fileID: 11400000, guid: 999da9319256207419c5d37e91896a01, type: 2}
+  - {fileID: 11400000, guid: 63e2a65505f8ce544a0b8b2c71298602, type: 2}
+  - {fileID: 11400000, guid: 5bbd08f488a8ca548bfe9a91d77ca97b, type: 2}
+  - {fileID: 11400000, guid: 8da96441fcc95f54aad7120b51280608, type: 2}
+  - {fileID: 11400000, guid: 5d53dc4dce8fa2b459fd473012659e4c, type: 2}
+  - {fileID: 11400000, guid: 8d00eb8a94cc76f43b2e776fe62013d7, type: 2}

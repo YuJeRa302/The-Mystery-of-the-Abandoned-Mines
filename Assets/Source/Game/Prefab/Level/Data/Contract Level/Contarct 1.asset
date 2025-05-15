@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4402b0d5cfaf9fe44b82f98caf5baf77, type: 3}
-  m_Name: Contarct
+  m_Name: Contarct 1
   m_EditorClassIdentifier: 
   _id: 0
-  _tier: 0
+  _tier: 2
   _tierColor:
   - {r: 1, g: 1, b: 1, a: 0}
   - {r: 0.23921569, g: 1, b: 0.21568628, a: 0}
@@ -24,8 +24,13 @@ MonoBehaviour:
   _countRooms: 4
   _cost: 1500
   _isContractLevel: 1
-  _translationName: TEST
+  _translationName: ElvenRuins
   _translationDescription: TEST
-  _icon: {fileID: 21300000, guid: 6886db5fac1305b4d82a95ca744de0c7, type: 3}
+  _icon: {fileID: 21300000, guid: 77ce3ae4b697d234d94382df1de167cd, type: 3}
   _weaponDatas:
+  - {fileID: 11400000, guid: 63d4eea141e6306448339549d40910cf, type: 2}
   - {fileID: 11400000, guid: 99d9d6275d4c5fe4c8b96443bf10203c, type: 2}
+  - {fileID: 11400000, guid: 48f332a793d8f5d43b07c8c22fd2094e, type: 2}
+  - {fileID: 11400000, guid: 064b50bc516d0d140a45c008d5a588b7, type: 2}
+  - {fileID: 11400000, guid: a9914ec9439ad274084c0b5619a32c49, type: 2}
+  - {fileID: 11400000, guid: b1647f4bdb02c6641bd8e6467a8d15ce, type: 2}

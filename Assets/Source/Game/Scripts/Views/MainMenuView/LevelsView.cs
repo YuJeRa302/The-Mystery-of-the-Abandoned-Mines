@@ -19,6 +19,8 @@ namespace Assets.Source.Game.Scripts
         private readonly Color _endColorAnimation = new Color(118f, 73f, 0);
 
         [SerializeField] private Image _levelImage;
+        [SerializeField] private LeanLocalizedText _levelName;
+        [SerializeField] private LeanLocalizedText _levelDescription;
         [SerializeField] private LeanLocalizedText _textHint;
         [Space(20)]
         [SerializeField] private WeaponDataView _weaponDataView;
@@ -316,6 +318,8 @@ namespace Assets.Source.Game.Scripts
         {
             _levelImage.gameObject.SetActive(true);
             _levelImage.sprite = levelDataView.LevelData.Icon;
+            _levelName.TranslationName = levelDataView.LevelData.TranslationName;
+            _levelDescription.TranslationName = levelDataView.LevelData.TranslationDescription;
             _nextButton.interactable = true;
             _levelsViewModel.SelectLevel(levelDataView);
             _currentLevelDataView = levelDataView;

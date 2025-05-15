@@ -24,6 +24,6 @@ MonoBehaviour:
   _countRooms: 6
   _cost: 0
   _isContractLevel: 0
-  _translationName: 
+  _translationName: ThisIsJust
   _translationDescription: 
-  _icon: {fileID: 21300000, guid: 2c4df9274f4db1f4eb7118e0b06c4554, type: 3}
+  _icon: {fileID: 21300000, guid: 7600b62682257474b87cc141dda3758b, type: 3}

@@ -18,7 +18,7 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private Sprite _star;
         [SerializeField] private Sprite _complitStar;
         [SerializeField] private Image _starLvlPrefab;
-        [SerializeField] private Transform _starsConteiner;
+        //[SerializeField] private Transform _starsConteiner;
 
         private LevelData _levelData;
         private LevelState _leveState;
@@ -70,17 +70,17 @@ namespace Assets.Source.Game.Scripts
             _name.TranslationName = levelData.TranslationName;
             _icon.color = new Color(levelData.TierColor.r, levelData.TierColor.g, levelData.TierColor.b);
 
-            for (int i = 0; i < levelState.CurrentCompleteStages; i++)
-            {
-                Image star = Instantiate(_starLvlPrefab, _starsConteiner);
-                star.sprite = _complitStar;
-            }
+            //for (int i = 0; i < levelState.CurrentCompleteStages; i++)
+            //{
+            //    Image star = Instantiate(_starLvlPrefab, _starsConteiner);
+            //    star.sprite = _complitStar;
+            //}
 
-            for (int i = 0; i < levelData.CountStages; i++)
-            {
-                Image star = Instantiate(_starLvlPrefab, _starsConteiner);
-                star.sprite = _star;
-            }
+            //for (int i = 0; i < levelData.CountStages; i++)
+            //{
+            //    Image star = Instantiate(_starLvlPrefab, _starsConteiner);
+            //    star.sprite = _star;
+            //}
         }
 
         private void LoadCompletePlayerLevels(LevelState levelState)

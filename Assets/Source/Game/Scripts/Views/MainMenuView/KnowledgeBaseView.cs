@@ -1,11 +1,4 @@
-using Assets.Source.Game.Scripts;
-using DG.Tweening;
-using Lean.Localization;
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.ConstrainedExecution;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 

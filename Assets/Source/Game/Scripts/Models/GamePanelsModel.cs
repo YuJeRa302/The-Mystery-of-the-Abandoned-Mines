@@ -32,10 +32,10 @@ namespace Assets.Source.Game.Scripts
             _cardLoader = cardLoader;
             AmbientVolumeValue = _temporaryData.AmbientVolume;
             SfxVolumeValue = _temporaryData.InterfaceVolume;
-            _audioPlayerService.AmbientValueChanged(AmbientVolumeValue);
-            _audioPlayerService.SfxValueChanged(SfxVolumeValue);
-            _audioPlayerService.PlayMainMenuAmbient();
-            _audioPlayerService.MuteSoundSettings(_temporaryData.MuteStateSound);
+            _audioPlayer.AmbientValueChanged(AmbientVolumeValue);
+            _audioPlayer.SfxValueChanged(SfxVolumeValue);
+            _audioPlayer.PlayMainMenuAmbient();
+            //_audioPlayer.MuteSoundSettings(_temporaryData.MuteStateSound);
             IsMuted = _temporaryData.MuteStateSound;
             AddListeners();
         }

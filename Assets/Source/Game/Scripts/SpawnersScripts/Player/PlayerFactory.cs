@@ -6,8 +6,6 @@ public class PlayerFactory
     private Transform _spawnPoint;
     private PlayerClassData _classData;
     private Player _playerPrefab;
-    
-    private WeaponData _weaponData;
 
     public PlayerFactory(
         

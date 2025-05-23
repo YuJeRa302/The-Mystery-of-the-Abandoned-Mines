@@ -11,13 +11,6 @@ public class AudioPlayer : MonoBehaviour, IAudioPlayerService
     [SerializeField] private AudioClip _buttonHoverAudioClip;
     [SerializeField] private AudioClip _buttonClickAudioClip;
 
-    private bool _isMyted;
-
-    public void PlayAmbient()
-    {
-        throw new System.NotImplementedException();
-    }
-
     public void PlayCharesterAudio(AudioClip audioClip)
     {
         _sfxAudioSource.PlayOneShot(audioClip);
@@ -54,46 +47,14 @@ public class AudioPlayer : MonoBehaviour, IAudioPlayerService
         _sfxAudioSource.volume = value / 100;
     }
 
-    public void PlayOneShotButtonSound()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void StopAmbient()
-    {
-        throw new System.NotImplementedException();
-    }
-
     public void StopMainMenuAmbient()
     {
         _ambientAudioSource.Stop();
     }
 
-    public void MuteSoundPayse(bool state) 
+    public void MuteSound(bool isMute)
     {
-        if(state == false)
-        {
-            if (_isMyted == true)
-            {
-                return;
-            }
-            else
-            {
-                _ambientAudioSource.mute = state;
-                _sfxAudioSource.mute = state;
-            }
-        }
-        else
-        {
-            _ambientAudioSource.mute = state;
-            _sfxAudioSource.mute = state;
-        }
-    }
-
-    public void MuteSoundSettings(bool state)
-    {
-        _isMyted = state;
-        _ambientAudioSource.mute = _isMyted;
-        _sfxAudioSource.mute = _isMyted;
+        _ambientAudioSource.mute = isMute;
+        _sfxAudioSource.mute = isMute;
     }
 }

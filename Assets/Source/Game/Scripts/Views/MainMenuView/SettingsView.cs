@@ -29,11 +29,6 @@ public class SettingsView : MonoBehaviour
         _ambientSlider.value = settingsViewModel.GetAmbientVolume();
         _sfxSlider.value = settingsViewModel.GetSfxVolume();
         _muteToggle.isOn = settingsViewModel.GetMuteStatus();
-        _audioPlayerService.AmbientValueChanged(settingsViewModel.GetAmbientVolume());
-        _audioPlayerService.SfxValueChanged(settingsViewModel.GetSfxVolume());
-        _audioPlayerService.PlayMainMenuAmbient();
-        _audioPlayerService.MuteSoundSettings(settingsViewModel.GetMuteStatus());
-        Debug.Log(settingsViewModel.GetMuteStatus());
         AddListeners();
         Fill();
         gameObject.SetActive(false);
@@ -85,7 +80,6 @@ public class SettingsView : MonoBehaviour
 
     private void OnMuteValueChanged(bool value)
     {
-        _audioPlayerService.MuteSoundSettings(value);
         _settingsViewModel.SetMuteStatus(value);
     }
     private void Show() => gameObject.SetActive(true);

@@ -92,7 +92,7 @@ namespace Assets.Source.Game.Scripts
         {
             if (_isLootReward)
             {
-                int cointReward = _currentRewardLoot * _multiplier;
+                int cointReward = _currentRewardLoot + _currentRewardLoot;
 
                 DOVirtual.Int(_currentRewardLoot, cointReward, _animationDuration, (value) =>
                 {

@@ -15,6 +15,10 @@ public class SettingsModel
         AmbientVolumeValue = _temporaryData.AmbientVolume;
         SfxVolumeValue = _temporaryData.InterfaceVolume;
         IsMuted = _temporaryData.MuteStateSound;
+        _audioPlayer.AmbientValueChanged(AmbientVolumeValue);
+        _audioPlayer.SfxValueChanged(SfxVolumeValue);
+        _audioPlayer.PlayMainMenuAmbient();
+        _audioPlayer.MuteSound(IsMuted);
         SetLanguage(_temporaryData.Language);
     }
 
@@ -68,7 +72,7 @@ public class SettingsModel
 
     public void SetMute(bool muted)
     {
-        if (!muted)
+        if (muted)
             Mute();
         else
             UnMute();

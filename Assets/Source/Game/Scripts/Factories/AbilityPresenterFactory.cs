@@ -29,8 +29,6 @@ namespace Assets.Source.Game.Scripts
 
         public AmplifierAbilityPresenter CreateAmplifierAbilityPresenter(Ability ability, AbilityView abilityView, ParticleSystem particleSystem)
         {
-            ValidateNotNull(ability, abilityView, particleSystem);
-
             return CreatePresenter<AmplifierAbilityPresenter>(
                 ability,
                 abilityView,
@@ -107,15 +105,6 @@ namespace Assets.Source.Game.Scripts
             var constructor = typeof(T).GetConstructor(parameters.Select(p => p.GetType()).ToArray());
 
             return constructor?.Invoke(parameters) as T;
-        }
-
-        private void ValidateNotNull(params object[] objects)
-        {
-            foreach (var obj in objects)
-            {
-                if (obj == null)
-                    throw new ArgumentNullException("One or more arguments provided to the factory method are null.");
-            }
         }
 
         public GlobularLightningPresenter CreateGlobularLightningPresenter(

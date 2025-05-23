@@ -148,15 +148,14 @@ namespace Assets.Source.Game.Scripts
         private void CreatePlayer(TemporaryData temporaryData) 
         {
             _playerFactory = new PlayerFactory(
-                temporaryData.WeaponData,
                 this,
                 _abilityFactory,
                 _abilityPresenterFactory,
                 _playerPrefab,
                 _spawnPlayerPoint,
-                temporaryData.PlayerClassData,
                 _playerView,
                 temporaryData,
+                _audioPlayerService,
                 out Player player);
 
             _player = player;
@@ -177,7 +176,7 @@ namespace Assets.Source.Game.Scripts
             _trapsSpawner = new TrapsSpawner();
             _roomPlacer.Initialize(_currentRoomLevel, _canSeeDoor, CountRooms);
             _cardLoader.Initialize(_player);
-            _enemySpawner = new EnemySpawner(_enemuPool, this, _player, _currentRoomLevel);
+            _enemySpawner = new EnemySpawner(_enemuPool, this, _player, _currentRoomLevel, _audioPlayerService);
             _cameraControiler.SetLookTarget(_player.transform);
             _saveAndLoad = new SaveAndLoader();
             _saveAndLoad.Initialize(temporaryData);

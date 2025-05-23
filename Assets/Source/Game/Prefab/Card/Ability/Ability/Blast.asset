@@ -41,7 +41,7 @@ MonoBehaviour:
   _abilityType: 5
   _abilityView: {fileID: 7248082733305173889, guid: b41ccdfb932d3874d92c031e66d814ec, type: 3}
   _particleSystem: {fileID: 19882774, guid: f6322404d6e3b914aa01ac044fb9415e, type: 3}
-  _audioClip: {fileID: 0}
+  _audioClip: {fileID: 8300000, guid: dbc17452b5c57c74381e22f45a9e5b2e, type: 3}
   _typeUpgradeMagic: 0
   _typeMagic: 1
   _legendaryAbilityData: {fileID: 11400000, guid: 737729b914d34c0458efc8a078a215ff, type: 2}
@@ -50,7 +50,6 @@ MonoBehaviour:
   _typeAttackAbility: 3
   _damageParametr:
     _typeDamage: 0
-    _damageSupportivePatametrs:
-    - _value: 0
-      _supportivePatametr: 0
+    _damage: 10
+    _damageParameters: []
     _particle: {fileID: 0}

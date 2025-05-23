@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 using YG;
+using static UnityEngine.InputSystem.LowLevel.InputStateHistory;
 
 namespace Assets.Source.Game.Scripts
 {
@@ -15,6 +16,7 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private Button _collectButton;
         [SerializeField] private Button _closeGameButton;
         [SerializeField] private Button _testAdsButton;
+        [SerializeField] private Button _applayReward;
         [Space(20)]
         [SerializeField] private Image _weaponIcon;
         [SerializeField] private Image _weaponBackgroundIcon;
@@ -33,6 +35,8 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private Image _imageGameState;
 
         private WeaponData _currentWeaponData;
+        private bool _isLootReward = false;
+        private int _currentRewardLoot;
 
         private void OnDestroy()
         {
@@ -65,10 +69,9 @@ namespace Assets.Source.Game.Scripts
 
         private void ShowReward(int reward)
         {
+            CreateLootRoomRevard(reward);
+            Debug.Log(reward);
             base.Open();
-            //_defaulReward.SetActive(true);
-            Fill();
-            //_defaultRewardCoins.text = reward.ToString();
         }
         
         private void OnRewardCallback(int index)
@@ -88,23 +91,40 @@ namespace Assets.Source.Game.Scripts
 
         private void OnCloseAdCallback()
         {
-            RewardAdClosed?.Invoke();
-            int coinRewards = GamePanelsViewModel.GetPlayer().Coins * _multiplier;
-            int upgradePointRewards = GamePanelsViewModel.GetPlayer().UpgradePoints * _multiplier;
-
-            DOVirtual.Int(GamePanelsViewModel.GetPlayer().Coins, coinRewards, _animationDuration, (value) =>
+            if (_isLootReward)
             {
-                _coinsText.text = value.ToString();
-            });
+                RewardAdClosed?.Invoke();
+                int cointReward = _currentRewardLoot * _multiplier;
 
-            DOVirtual.Int(GamePanelsViewModel.GetPlayer().UpgradePoints, upgradePointRewards, _animationDuration, (value) =>
+                DOVirtual.Int(_currentRewardLoot, cointReward, _animationDuration, (value) =>
+                {
+                    _defaultContractRewardCoins.text = value.ToString();
+                });
+
+                _openAdButton.gameObject.SetActive(false);
+                _collectButton.gameObject.SetActive(false);
+                _applayReward.gameObject.SetActive(true);
+            }
+            else
             {
-                _upgradePointsText.text = value.ToString();
-            });
+                RewardAdClosed?.Invoke();
+                int coinRewards = GamePanelsViewModel.GetPlayer().Coins * _multiplier;
+                int upgradePointRewards = GamePanelsViewModel.GetPlayer().UpgradePoints * _multiplier;
 
-            _openAdButton.gameObject.SetActive(false);
-            _collectButton.gameObject.SetActive(false);
-            _closeGameButton.gameObject.SetActive(true);
+                DOVirtual.Int(GamePanelsViewModel.GetPlayer().Coins, coinRewards, _animationDuration, (value) =>
+                {
+                    _coinsText.text = value.ToString();
+                });
+
+                DOVirtual.Int(GamePanelsViewModel.GetPlayer().UpgradePoints, upgradePointRewards, _animationDuration, (value) =>
+                {
+                    _upgradePointsText.text = value.ToString();
+                });
+
+                _openAdButton.gameObject.SetActive(false);
+                _collectButton.gameObject.SetActive(false);
+                _closeGameButton.gameObject.SetActive(true);
+            }
         }
 
         private void OnErrorCallback()
@@ -123,8 +143,8 @@ namespace Assets.Source.Game.Scripts
             YandexGame.CloseFullAdEvent += OnCloseFullscreenAdCallback;
             _closeGameButton.onClick.AddListener(CloseGame);
             _openAdButton.onClick.AddListener(OpenRewardAds);
-
-            _testAdsButton.onClick.AddListener(OnCloseAdCallback); // test Ads button
+            _applayReward.onClick.AddListener(PlayerApplayReward);
+            _testAdsButton.onClick.AddListener(OnCloseAdCallback);
         }
 
         private void RemoveListeners()
@@ -136,7 +156,18 @@ namespace Assets.Source.Game.Scripts
             YandexGame.OpenFullAdEvent -= OnOpenFullscreenAdCallback;
             YandexGame.CloseFullAdEvent -= OnCloseFullscreenAdCallback;
             _closeGameButton.onClick.RemoveListener(CloseGame);
+            _applayReward.onClick.RemoveListener(PlayerApplayReward);
             _openAdButton.onClick.RemoveListener(OpenRewardAds);
+        }
+
+        private void PlayerApplayReward()
+        {
+            _isLootReward = false;
+            _currentRewardLoot = 0;
+            _openAdButton.gameObject.SetActive(true);
+            _collectButton.gameObject.SetActive(true);
+            _applayReward.gameObject.SetActive(false);
+            Close();
         }
 
         private void CreateViewEntities(bool gameState) 
@@ -198,6 +229,15 @@ namespace Assets.Source.Game.Scripts
         {
             _defaulContractReward.SetActive(true);
             _defaultContractRewardCoins.text = GamePanelsViewModel.GetPlayer().Coins.ToString();
+            Fill();
+        }
+
+        private void CreateLootRoomRevard(int reward)
+        {
+            _isLootReward = true;
+            _defaulContractReward.SetActive(true);
+            _currentRewardLoot = reward;
+            _defaultContractRewardCoins.text = reward.ToString();
             Fill();
         }
 

@@ -20,12 +20,12 @@ MonoBehaviour:
   - {r: 0, g: 0.5411765, b: 1, a: 0}
   - {r: 0.5686275, g: 0.14509805, b: 1, a: 0}
   - {r: 1, g: 0.22745098, b: 0.14509805, a: 0}
-  _countStages: 1
-  _countRooms: 4
+  _countStages: 5
+  _countRooms: 3
   _cost: 1500
   _isContractLevel: 1
   _translationName: ElvenRuins
-  _translationDescription: TEST
+  _translationDescription: ElvenRuinsDescription
   _icon: {fileID: 21300000, guid: 77ce3ae4b697d234d94382df1de167cd, type: 3}
   _weaponDatas:
   - {fileID: 11400000, guid: 63d4eea141e6306448339549d40910cf, type: 2}

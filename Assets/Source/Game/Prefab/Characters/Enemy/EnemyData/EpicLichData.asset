@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _id: 8
   _level: 0
-  _damage: 30
-  _health: 80
+  _damage: 35
+  _health: 70
   _experienceReward: 100
   _upgradeExperienceReward: 0
   _score: 0
@@ -29,8 +29,8 @@ MonoBehaviour:
   _abilityCoolDown: []
   _abilityDamage: 
   _enemyDieParticleSystem: {fileID: -8729764003642495447, guid: 090d6dbf1da29384393feb27736c7ec6, type: 3}
-  _audioClipDie: {fileID: 0}
-  _hit: {fileID: 0}
+  _audioClipDie: {fileID: 8300000, guid: df0ec39bb7429284fb2f1c3413e68098, type: 3}
+  _hit: {fileID: 8300000, guid: 101106cd810615041bb13f121e59a2d7, type: 3}
   _prefabEnemy: {fileID: 190874258655281799, guid: 8a874ac03b442f94595eb25ecec1e2ff, type: 3}
   _type: 1
   _enemyIcon: {fileID: 21300000, guid: 12323cefa9b090447a57efb4fee5db4c, type: 3}

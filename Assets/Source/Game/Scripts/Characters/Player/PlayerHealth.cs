@@ -18,6 +18,7 @@ namespace Assets.Source.Game.Scripts
         private Coroutine _timeReduce;
         private float _timeAfterLastAttack = 0;
         private float _maxTimeAfterAttack = 0f;
+        private bool _canHealind = true;
 
         public event Action DamageTaked;
         public event Action<int> HealthChanged;
@@ -63,6 +64,17 @@ namespace Assets.Source.Game.Scripts
                         _timeReduce = _coroutineRunner.StartCoroutine(ReduceTimeAfterLastAttack());
                 }
             }
+        }
+
+        public void DisableHealing()
+        {
+            _canHealind = false;
+
+            if (_regeneration != null)
+                _coroutineRunner.StopCoroutine(_regeneration);
+
+            if (_timeReduce != null)
+                _coroutineRunner.StopCoroutine(_timeReduce);
         }
 
         public void TakeHealing(int heal)
@@ -123,12 +135,14 @@ namespace Assets.Source.Game.Scripts
             if (_regeneration != null)
                 _coroutineRunner.StopCoroutine(_regeneration);
 
-            _regeneration = _coroutineRunner.StartCoroutine(RegenerationHealth());
-
             if (_timeReduce != null)
                 _coroutineRunner.StopCoroutine(_timeReduce);
 
-            _timeReduce = _coroutineRunner.StartCoroutine(ReduceTimeAfterLastAttack());
+            if (_canHealind)
+            {
+                _regeneration = _coroutineRunner.StartCoroutine(RegenerationHealth());
+                _timeReduce = _coroutineRunner.StartCoroutine(ReduceTimeAfterLastAttack());
+            }
         }
 
         private void OnHealthChanged(int value)

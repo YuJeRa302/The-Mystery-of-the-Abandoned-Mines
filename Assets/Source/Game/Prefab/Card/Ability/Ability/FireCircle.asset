@@ -41,7 +41,7 @@ MonoBehaviour:
   _abilityType: 5
   _abilityView: {fileID: 7248082733305173889, guid: b41ccdfb932d3874d92c031e66d814ec, type: 3}
   _particleSystem: {fileID: 6480857732340710007, guid: 9f4513e636c142947a9eb74652538061, type: 3}
-  _audioClip: {fileID: 0}
+  _audioClip: {fileID: 8300000, guid: 5ab3fed341228244eb5d59b62ab21593, type: 3}
   _typeUpgradeMagic: 6
   _typeMagic: 0
   _legendaryAbilityData: {fileID: 11400000, guid: 6ccca0c66e13c884e90f15263a0bc5f3, type: 2}

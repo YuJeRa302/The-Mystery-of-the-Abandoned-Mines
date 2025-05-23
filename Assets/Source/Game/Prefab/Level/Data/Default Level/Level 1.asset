@@ -25,5 +25,5 @@ MonoBehaviour:
   _cost: 0
   _isContractLevel: 0
   _translationName: Beginning
-  _translationDescription: Cave Description
+  _translationDescription: BeginningDescription
   _icon: {fileID: 21300000, guid: d27cc6c8f617de14f8e7d6a361c2136e, type: 3}

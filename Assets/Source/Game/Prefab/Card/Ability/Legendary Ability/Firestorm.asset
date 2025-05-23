@@ -38,3 +38,4 @@ MonoBehaviour:
     - _value: 2
       _typeDamageParameter: 1
     _particle: {fileID: 1461602671872348846, guid: 0b5e7793d4d1e854385c5ce9b1e79f47, type: 3}
+  _audioClip: {fileID: 8300000, guid: 14b16ff40093aba47bc467e148746cab, type: 3}

@@ -22,7 +22,7 @@ MonoBehaviour:
   _gameSubcategoriesViews:
   - _name: GameModes
     _icon: {fileID: -1435687176, guid: 1cbdf543752020f45b7cedcd93cd1a97, type: 3}
-    _knowledgeData: {fileID: 0}
+    _knowledgeData: {fileID: 11400000, guid: dbb190c6a8a35e84ebe4e475f1edae09, type: 2}
   - _name: RoomType
     _icon: {fileID: 21300000, guid: ee1a2d2d53002034bac3ea82168c0cc1, type: 3}
     _knowledgeData: {fileID: 11400000, guid: 856abcf23664b2e4296dd31f59fe7f9d, type: 2}

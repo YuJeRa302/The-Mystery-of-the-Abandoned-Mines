@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 namespace Assets.Source.Game.Scripts
@@ -25,16 +26,19 @@ namespace Assets.Source.Game.Scripts
         private int _totalEnemyCount;
         private int _currentEnemyCount;
         private bool _isEnemySpawned = false;
+        private AudioPlayer _audioPlayer;
 
         public event Action<Enemy> EnemyDied;
         public event Action AllEnemyRoomDied;
 
-        public EnemySpawner(Pool enemyPool, ICoroutineRunner coroutineRunner, Player player, int currentLevel)
+        public EnemySpawner(Pool enemyPool, ICoroutineRunner coroutineRunner, Player player, int currentLevel, AudioPlayer audioPlayer)
         {
             _currentRoomsLevel = currentLevel;
             _enemuPool = enemyPool;
             _coroutineRunner = coroutineRunner;
             _player = player;
+            _audioPlayer = audioPlayer;
+            _player.PlayerDied += OnPlayerDead; 
         }
 
         public void Dispose()
@@ -44,6 +48,14 @@ namespace Assets.Source.Game.Scripts
 
             if (_spawnEnemy != null)
                 _coroutineRunner.StopCoroutine(_spawnEnemy);
+
+            _player.PlayerDied -= OnPlayerDead;
+
+            foreach(Enemy enemy in _enemies)
+            {
+                enemy.Died -= OnEnemyDead;
+                enemy.AttackPlayer -= OnEnemyAttack;
+            }
 
             GC.SuppressFinalize(this);
         }
@@ -146,11 +158,17 @@ namespace Assets.Source.Game.Scripts
                 _enemuPool.InstantiatePoolObject(enemy, enemyData.PrefabEnemy.name);
                 enemy.Initialize(_player, _currentRoomLevel, enemyData);
                 enemy.Died += OnEnemyDead;
+                enemy.AttackPlayer += OnEnemyAttack;
                 _enemies.Add(enemy);
 
                 if (_deadParticles.ContainsKey(enemyData.PrefabEnemy.name) == false)
                     _deadParticles.Add(enemyData.PrefabEnemy.name, enemyData.EnemyDieParticleSystem);
             }
+        }
+
+        private void OnEnemyAttack(AudioClip audioClip)
+        {
+            _audioPlayer.PlayCharesterAudio(audioClip);
         }
 
         private bool TryFindEnemy(GameObject enemyType, out Enemy poolEnemy)
@@ -165,6 +183,7 @@ namespace Assets.Source.Game.Scripts
 
         private void OnEnemyDead(Enemy enemy)
         {
+            _audioPlayer.PlayCharesterAudio(enemy.DeathAudio);
             EnemyDied?.Invoke(enemy);
 
             if (_deadParticles.TryGetValue(enemy.NameObject, out PoolParticle particlePrefab))
@@ -201,6 +220,21 @@ namespace Assets.Source.Game.Scripts
                 return true;
             else
                 return false;
+        }
+
+        private void OnPlayerDead()
+        {
+            if (_spawn != null)
+                _coroutineRunner.StopCoroutine(_spawn);
+
+            if (_spawnEnemy != null)
+                _coroutineRunner.StopCoroutine(_spawnEnemy);
+
+            foreach (Enemy enemy in _enemies)
+            {
+                if (enemy.gameObject.activeSelf)
+                    enemy.ReturObjectPool();
+            }
         }
     }
 }

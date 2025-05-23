@@ -36,6 +36,8 @@ namespace Assets.Source.Game.Scripts
         private Coroutine _slowDamage;
         private Coroutine _repulsiveDamage;
         private List<PoolObject> _spawnedEffects = new();
+        private AudioClip _deathAudio;
+        private AudioClip _hitAudio;
 
         public int Id => _id;
         public float AttackDelay => _attackDelay;
@@ -49,13 +51,15 @@ namespace Assets.Source.Game.Scripts
         public int MaxHealth => _health;
         public float CurrentHealth => _currentHealth;
         public EnemyAnimation AnimationStateController => _animationController;
-        public EnemyStateMashineExample StateMashine => _stateMashine;
+        public AudioClip DeathAudio => _deathAudio;
+        public AudioClip HitAudio => _hitAudio;
 
         public event Action<Enemy> Died;
         public event Action Stuned;
         public event Action EndedStun;
         public event Action<float> DamageTaked;
         public event Action HealthChanged;
+        public event Action<AudioClip> AttackPlayer;
 
         private void OnDisable()
         {
@@ -70,6 +74,11 @@ namespace Assets.Source.Game.Scripts
             CorountineStop(_burnDamage);
         }
 
+        private void OnDestroy()
+        {
+            _animationController.Attacked -= OnEnemyAttack;
+        }
+
         public virtual void Initialize(Player player, int lvlRoom, EnemyData data)
         {
             _player = player;
@@ -79,6 +88,7 @@ namespace Assets.Source.Game.Scripts
             _stateMashine.InitializeStateMashine(player);
             _healthView.Initialize(this);
             _currentHealth = _health;
+            _animationController.Attacked += OnEnemyAttack;
             HealthChanged?.Invoke();
         }
 
@@ -225,6 +235,13 @@ namespace Assets.Source.Game.Scripts
             _experience = data.ExperienceReward;
             _upgradeExperience = data.UpgradeExperienceReward;
             _baseMoveSpeed = _speed;
+            _deathAudio = data.AudioClipDie;
+            _hitAudio = data.Hit;
+        }
+
+        private void OnEnemyAttack()
+        {
+            AttackPlayer?.Invoke(_hitAudio);
         }
 
         private void CreateDamageParticle(PoolParticle poolParticle)

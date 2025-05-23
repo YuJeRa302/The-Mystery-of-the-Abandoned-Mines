@@ -35,6 +35,7 @@ namespace Assets.Source.Game.Scripts
             _audioPlayerService.AmbientValueChanged(AmbientVolumeValue);
             _audioPlayerService.SfxValueChanged(SfxVolumeValue);
             _audioPlayerService.PlayMainMenuAmbient();
+            _audioPlayerService.MuteSoundSettings(_temporaryData.MuteStateSound);
             IsMuted = _temporaryData.MuteStateSound;
             _levelObserver.StageCompleted += OnStageComplete;
             _levelObserver.GameEnded += OnGameEnded;
@@ -153,12 +154,14 @@ namespace Assets.Source.Game.Scripts
         private void Mute()
         {
             IsMuted = true;
+            _audioPlayerService.MuteSoundSettings(IsMuted);
             _temporaryData.SetMuteStateSound(IsMuted);
         }
 
         private void UnMute()
         {
             IsMuted = false;
+            _audioPlayerService.MuteSoundSettings(IsMuted);
             _temporaryData.SetMuteStateSound(IsMuted);
         }
 

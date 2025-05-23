@@ -14,7 +14,7 @@ public class TemporaryData
     private string _language;
     private bool _muteStateSound;
 
-    public event Action ChengedData;
+    public event Action ChangedData;
 
     public TemporaryData(ConfigData configData) 
     {
@@ -51,7 +51,7 @@ public class TemporaryData
     public LevelState[] LevelStates => _levelStates;
     public UpgradeData[] UpgradeDatas { get; private set; }
 
-    public void SaveProgress(Player player, bool levelState)
+    public void SaveProgress(Player player, bool isComplit)
     {
         _playerScore += player.Score;
         Coins += player.Coins;
@@ -59,11 +59,11 @@ public class TemporaryData
         CurrentLevelState = new LevelState()
         {
             Id = LevelData.Id,
-            IsComplete = levelState,
+            IsComplete = isComplit,
             CurrentCompleteStages = LevelData.CountStages
         };
 
-        ChengedData?.Invoke();
+        ChangedData?.Invoke();
     }
 
     public ClassAbilityState GetClassAbilityState(int id)
@@ -200,7 +200,7 @@ public class TemporaryData
             }
         }
 
-        ChengedData?.Invoke();
+        ChangedData?.Invoke();
     }
 
     public void SetPlayerClassData(PlayerClassData playerClassData) 
@@ -211,7 +211,7 @@ public class TemporaryData
     public void SetUpgradePoints(int value)
     {
         UpgradePoints = value;
-        ChengedData?.Invoke();
+        ChangedData?.Invoke();
     }
 
     public void SetUpgradeState(List<UpgradeState> upgradeStates)
@@ -223,7 +223,7 @@ public class TemporaryData
             UpgradeStates[index] = new UpgradeState(upgradeStates[index].Id, upgradeStates[index].CurrentLevel);
         }
 
-        ChengedData?.Invoke();
+        ChangedData?.Invoke();
     }
 
     public void SetClassAbilityState(List<ClassAbilityState> classAbilityStates)
@@ -235,7 +235,7 @@ public class TemporaryData
             ClassAbilityStates[index] = new ClassAbilityState(classAbilityStates[index].Id, classAbilityStates[index].CurrentLevel);
         }
 
-        ChengedData?.Invoke();
+        ChangedData?.Invoke();
     }
 
     public void UpdateWeaponStates(WeaponState weaponState) 
@@ -260,43 +260,43 @@ public class TemporaryData
             _weaponStates[index] = tempWeaponStates[index];
         }
 
-        ChengedData?.Invoke();
+        ChangedData?.Invoke();
     }
 
     public void SetCoinsCount(int value) 
     {
         Coins = value;
-        ChengedData?.Invoke();
+        ChangedData?.Invoke();
     }
 
     public void SetCountLevels(int value)
     {
         _countLevels = value;
-        ChengedData?.Invoke();
+        ChangedData?.Invoke();
     }
 
     public void SetCurrentLanguage(string value)
     {
         _language = value;
-        ChengedData?.Invoke();
+        ChangedData?.Invoke();
     }
 
     public void SetAmbientVolume(float value)
     {
         AmbientVolume = value;
-        ChengedData?.Invoke();
+        ChangedData?.Invoke();
     }
 
     public void SetInterfaceVolume(float value)
     {
         InterfaceVolume = value;
-        ChengedData?.Invoke();
+        ChangedData?.Invoke();
     }
 
     public void SetMuteStateSound(bool value) 
     {
         _muteStateSound = value;
-        ChengedData?.Invoke();
+        ChangedData?.Invoke();
     }
 
     private void InitData(ConfigData configData) 

@@ -10,21 +10,21 @@ public class PlayerFactory
     private WeaponData _weaponData;
 
     public PlayerFactory(
-        WeaponData weapon,
+        
         LevelObserver observer,
         AbilityFactory abilityFactory,
         AbilityPresenterFactory abilityPresenterFactory, 
         Player playerPrefab,
         Transform spawnPoint,
-        PlayerClassData classData,
         PlayerView playerView,
         TemporaryData temporaryData,
+        AudioPlayer audioPlayer,
         out Player spawnedPlayer)
     {
         _spawnPoint = spawnPoint;
-        _classData = classData;
+        _classData = temporaryData.PlayerClassData;
         _playerPrefab = playerPrefab;
         spawnedPlayer = GameObject.Instantiate(_playerPrefab, _spawnPoint.position, Quaternion.identity);
-        spawnedPlayer.CreateStats(observer, classData, playerView, weapon, abilityFactory, abilityPresenterFactory, temporaryData);
+        spawnedPlayer.CreateStats(observer, _classData, playerView, temporaryData.WeaponData, abilityFactory, abilityPresenterFactory, temporaryData, audioPlayer);
     }
 }

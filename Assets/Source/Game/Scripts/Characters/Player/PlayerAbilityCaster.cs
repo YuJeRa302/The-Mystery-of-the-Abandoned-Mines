@@ -17,7 +17,9 @@ namespace Assets.Source.Game.Scripts
         private List<PassiveAbilityView> _passiveAbilityViews = new ();
         private AbilityAttributeData _abilityAttributeData;
         private AbilityPresenterFactory _abilityPresenterFactory;
+        private AudioPlayer _audioPlayer;
         private AbilityFactory _abilityFactory;
+
         private int _abilityDuration = 0;
         private int _abilityDamage = 0;
         private int _abilityCooldownReduction = 0;
@@ -31,12 +33,13 @@ namespace Assets.Source.Game.Scripts
         public event Action<Ability> AbilityUsed;
         public event Action<Ability> AbilityEnded;
 
-        public PlayerAbilityCaster(AbilityFactory abilityFactory, AbilityPresenterFactory abilityPresenterFactory, Player player, TemporaryData temporaryData)
+        public PlayerAbilityCaster(AbilityFactory abilityFactory, AbilityPresenterFactory abilityPresenterFactory, Player player, TemporaryData temporaryData, AudioPlayer audioPlayer)
         {
             _abilityFactory = abilityFactory;
             _abilityPresenterFactory = abilityPresenterFactory;
             _player = player;
             _temporaryData = temporaryData;
+            _audioPlayer = audioPlayer;
         }
 
         public void Initialize()
@@ -313,6 +316,7 @@ namespace Assets.Source.Game.Scripts
         private void OnAbilityUsed(Ability ability)
         {
             AbilityUsed?.Invoke(ability);
+            _audioPlayer.PlayCharesterAudio(ability.AudioClip);
         }
 
         private void OnAbilityEnded(Ability ability)

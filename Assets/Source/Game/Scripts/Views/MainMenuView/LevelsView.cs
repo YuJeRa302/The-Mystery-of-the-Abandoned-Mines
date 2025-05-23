@@ -356,7 +356,6 @@ namespace Assets.Source.Game.Scripts
             {
                 if (_isWeaponSelect == true)
                 {
-                    Debug.Log("NEED LOAD");
                     LoadLevel();
                 }
             }

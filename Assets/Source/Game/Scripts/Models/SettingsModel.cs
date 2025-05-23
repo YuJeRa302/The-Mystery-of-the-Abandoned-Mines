@@ -1,4 +1,4 @@
-using System;
+using UnityEngine;
 
 public class SettingsModel
 {
@@ -9,6 +9,7 @@ public class SettingsModel
         _temporaryData = temporaryData;
         AmbientVolumeValue = _temporaryData.AmbientVolume;
         SfxVolumeValue = _temporaryData.InterfaceVolume;
+        IsMuted = _temporaryData.MuteStateSound;
     }
 
     public string LanguageTag { get; private set; }

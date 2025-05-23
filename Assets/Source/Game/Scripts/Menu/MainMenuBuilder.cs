@@ -7,6 +7,9 @@ namespace Assets.Source.Game.Scripts
 {
     public class MainMenuBuilder : MonoBehaviour, ICoroutineRunner
     {
+        private readonly float _pauseValue = 0;
+        private readonly float _resumeValue = 1;
+
         [SerializeField] private AudioPlayer _audioPlayer;
         [SerializeField] private SettingsView _settingsView;
         [SerializeField] private UpgradesView _upgradesView;
@@ -121,14 +124,20 @@ namespace Assets.Source.Game.Scripts
 
         private void ResumeGame(bool state)
         {
-            Time.timeScale = Convert.ToInt32(state);
-            //SoundStateChanged?.Invoke(TemporaryData.IsSoundOn);
+            if (_temporaryData.IsGamePause == true)
+                Time.timeScale = _pauseValue;
+            else
+                Time.timeScale = _resumeValue;
+
+            _audioPlayer.MuteSoundPayse(!state);
+           // GameResumed?.Invoke();
         }
 
         private void PauseGame(bool state)
         {
-            Time.timeScale = Convert.ToInt32(state);
-            //SoundStateChanged?.Invoke(state);
+            _audioPlayer.MuteSoundPayse(!state);
+            Time.timeScale = _pauseValue;
+           // GamePaused?.Invoke();
         }
     }
 }

@@ -33,7 +33,7 @@ namespace Assets.Source.Game.Scripts
         private List<RoomDoorView> _roomDoorViews =  new ();
         private RoomDoorView _openDoor;
         private int _countEnemy;
-        private int _dividerIndexColor = 5;
+        private int _dividerIndexColor = 2;
 
         public event Action<RoomView> RoomEntering;
 

@@ -31,7 +31,7 @@ MonoBehaviour:
   _parameterView: {fileID: 1961483584371832456, guid: 6d57f6325ba58d6478a1fd35f1ba2831, type: 3}
   _damageParametr:
     _typeDamage: 0
-    _damageSupportivePatametrs:
-    - _value: 0
-      _supportivePatametr: 0
+    _damage: 0
+    _damageParameters: []
     _particle: {fileID: 0}
+  _audioClip: {fileID: 8300000, guid: 70f0536454179dd419ecf9a0c14f7984, type: 3}

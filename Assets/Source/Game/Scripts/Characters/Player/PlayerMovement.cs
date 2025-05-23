@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using YG;
 
 public class PlayerMovement : IDisposable
 {
@@ -18,9 +19,8 @@ public class PlayerMovement : IDisposable
     private Rigidbody _rigidbody;
     private InputAction _move;
     private Coroutine _movement;
-    private bool _isModile = false;
     private bool _canRotate = true;
-    private bool _isDecstop = true; //
+    private bool _canMove = true;
 
     public PlayerMovement(
         Camera camera,
@@ -38,7 +38,12 @@ public class PlayerMovement : IDisposable
         _variableJoystick = variableJoystick;
         CreateInputSystem();
         _move = _playerInputSystem.Player.Move;
-        _movement = _coroutineRunner.StartCoroutine(DesktopMove());
+
+        if (YandexGame.EnvironmentData.isDesktop)
+            _movement = _coroutineRunner.StartCoroutine(DesktopMove());
+        else
+            _movement = _coroutineRunner.StartCoroutine(MobileMove());
+
         AddListeners();
     }
 
@@ -54,9 +59,20 @@ public class PlayerMovement : IDisposable
         GC.SuppressFinalize(this);
     }
 
-    public void ChangeRotate()
+    public void DisableMovment()
     {
-        _canRotate = !_canRotate;
+        _canMove = false;
+
+        if (_playerInputSystem != null)
+            _playerInputSystem.Disable();
+
+        if (_movement != null)
+            _coroutineRunner.StopCoroutine(_movement);
+    }
+
+    public void ChangeRotate(bool canRotate)
+    {
+        _canRotate = canRotate;
     }
 
     public void LookAtEnemy(Transform target)
@@ -96,7 +112,8 @@ public class PlayerMovement : IDisposable
         if (_movement != null)
             _coroutineRunner.StopCoroutine(_movement);
 
-        _movement = _coroutineRunner.StartCoroutine(DesktopMove());
+        if (_canMove)
+            _movement = _coroutineRunner.StartCoroutine(DesktopMove());
     }
 
     private IEnumerator MobileMove()
@@ -154,6 +171,10 @@ public class PlayerMovement : IDisposable
                 _rigidbody.rotation = Quaternion.LookRotation(direction, Vector3.up);
             else
                 _rigidbody.angularVelocity = Vector3.zero;
+        }
+        else
+        {
+            Debug.Log("Can't");
         }
 
         _rigidbody.velocity = new Vector3(_rigidbody.velocity.x, 0, _rigidbody.velocity.z);

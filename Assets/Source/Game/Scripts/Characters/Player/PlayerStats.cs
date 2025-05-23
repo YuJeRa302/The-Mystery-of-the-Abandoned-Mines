@@ -117,6 +117,11 @@ namespace Assets.Source.Game.Scripts
             return _rerollPoints == _minValue ? false : true;
         }
 
+        public void TakeLootRoomReward(int reward)
+        {
+            AddingConins?.Invoke(reward);
+        }
+
         public void UpdateCardPanelByRerollPoints()
         {
             _rerollPoints = Mathf.Clamp(_rerollPoints--, _minValue, _rerollPoints);

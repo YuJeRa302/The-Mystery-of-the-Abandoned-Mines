@@ -8,17 +8,26 @@ namespace Assets.Source.Game.Scripts
         private readonly System.Random _rnd = new ();
         private readonly int _defaultStateLevel = 0;
         private readonly int _defaultStateWeight = 1;
+        private readonly int _defaultLevelCardCount = 3;
+        private readonly int _contrackLevelCardCount = 2;
 
         private List<CardData> _cardDataAbility = new ();
         private List<CardData> _activeCardAbility = new ();
         private List<CardState> _cardState = new ();
+        private int _currentMaxCardCount;
 
         public event Action<CardView> SetNewAbility;
         public event Action<CardView> RerollPointsUpdated;
         public event Action<CardView> PlayerStatsUpdated;
         public event Action<CardView> TakedPassivAbility;
 
-        public CardDeck() { }
+        public CardDeck(bool isCpntractLevel)
+        {
+            if (isCpntractLevel)
+                _currentMaxCardCount = _contrackLevelCardCount;
+            else
+                _currentMaxCardCount = _defaultLevelCardCount;
+        }
 
         public void TakeCard(CardView cardView)
         {
@@ -129,7 +138,7 @@ namespace Assets.Source.Game.Scripts
 
         public bool CanTakeAbilityCard(int id)
         {
-            if (_activeCardAbility.Count < 3)
+            if (_activeCardAbility.Count < _currentMaxCardCount)
             {
                 return true;
             }

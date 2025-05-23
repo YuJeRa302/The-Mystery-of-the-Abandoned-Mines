@@ -11,9 +11,16 @@ public class AudioPlayer : MonoBehaviour, IAudioPlayerService
     [SerializeField] private AudioClip _buttonHoverAudioClip;
     [SerializeField] private AudioClip _buttonClickAudioClip;
 
+    private bool _isMyted;
+
     public void PlayAmbient()
     {
         throw new System.NotImplementedException();
+    }
+
+    public void PlayCharesterAudio(AudioClip audioClip)
+    {
+        _sfxAudioSource.PlayOneShot(audioClip);
     }
 
     public void PlayMainMenuAmbient()
@@ -62,9 +69,31 @@ public class AudioPlayer : MonoBehaviour, IAudioPlayerService
         _ambientAudioSource.Stop();
     }
 
-    public void MuteSound(bool state) 
+    public void MuteSoundPayse(bool state) 
     {
-        _ambientAudioSource.mute = state;
-        _sfxAudioSource.mute = state;
+        if(state == false)
+        {
+            if (_isMyted == true)
+            {
+                return;
+            }
+            else
+            {
+                _ambientAudioSource.mute = state;
+                _sfxAudioSource.mute = state;
+            }
+        }
+        else
+        {
+            _ambientAudioSource.mute = state;
+            _sfxAudioSource.mute = state;
+        }
+    }
+
+    public void MuteSoundSettings(bool state)
+    {
+        _isMyted = state;
+        _ambientAudioSource.mute = _isMyted;
+        _sfxAudioSource.mute = _isMyted;
     }
 }

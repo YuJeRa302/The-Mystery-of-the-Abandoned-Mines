@@ -28,7 +28,6 @@ namespace Assets.Source.Game.Scripts
         private float _currentCooldown;
         private float _spellRadius;
         private int _quantily;
-        private AudioClip _audioClip;
         private Coroutine _coolDown;
         private Coroutine _duration;
         private bool _isAbilityUsed = false;
@@ -46,14 +45,7 @@ namespace Assets.Source.Game.Scripts
         public bool IsAbilityEnded { get; private set; } = false;
         public bool IsAutoCast => _isAutoCast;
         public float CurrentDuration => _currentDuration;
-        public float MoveSpeed => _moveSpeed;
-        public float ReduceHealth => _reduceHealth;
         public int CurrentAbilityValue => _currentAbilityValue;
-        public int DefailtDamage => _defailtDamage;
-        public int Regeneration => _regeneration;
-        public int DefailtArmor => _defailtArmor;
-        public int AbilityDamage => _abilityDamage;
-        public int DefailyHealing => _defailyHealing;
         public int Quantily => _quantily;
         public float SpellRadius => _spellRadius;
         public bool IsAbilityUsed => _isAbilityUsed;
@@ -65,6 +57,7 @@ namespace Assets.Source.Game.Scripts
         public TypeAbility TypeAbility { get; private set; }
         public TypeAttackAbility TypeAttackAbility { get; private set; }
         public AbilityAttributeData AbilityAttribute { get; private set; }
+        public AudioClip AudioClip { get; private set; }
 
         public Ability(
             AbilityAttributeData abilityAttributeData,
@@ -78,7 +71,7 @@ namespace Assets.Source.Game.Scripts
             AbilityAttribute = abilityAttributeData;
             _abilityValue = abilityValue;
             FillAbilityParameters(abilityAttributeData, currentLevel);
-            _audioClip = abilityAttributeData.AudioClip;
+            AudioClip = abilityAttributeData.AudioClip;
             _coroutineRunner = coroutineRunner;
             _abilityCooldownReduction = abilityCooldownReduction;
             _abilityDuration = abilityDuration;
@@ -103,7 +96,7 @@ namespace Assets.Source.Game.Scripts
         {
             _abilityValue = abilityValue;
             FillLegendaryAbilityParameters(legendaryAbilityData);
-            _audioClip = abilityAttributeData.AudioClip;
+            AudioClip = legendaryAbilityData.AudioClip;
             _coroutineRunner = coroutineRunner;
             _abilityCooldownReduction = abilityCooldownReduction;
             _abilityDuration = abilityDuration;
@@ -252,7 +245,7 @@ namespace Assets.Source.Game.Scripts
                 switch (parametr.TypeDamageParameter)
                 {
                     case TypeDamageParameter.Chance:
-                        parametr.ChangeParameterValue(_chance); // откуда береться значение chance?
+                        parametr.ChangeParameterValue(_chance);
                         break;
                     case TypeDamageParameter.Duration:
                         parametr.ChangeParameterValue(_defaultDuration);
@@ -266,7 +259,6 @@ namespace Assets.Source.Game.Scripts
             _currentCooldown = _defaultCooldown;
             _currentDuration = _defaultDuration;
             IsAbilityEnded = false;
-            //Player.PlayerSounds.PlayAbilityAudio(_audioClip);
             UpdateAbility(true, _currentCooldown);
             _duration = _coroutineRunner.StartCoroutine(DurationAbility());
             ResumeCoroutine();

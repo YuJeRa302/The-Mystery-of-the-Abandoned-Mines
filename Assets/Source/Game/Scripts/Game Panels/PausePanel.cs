@@ -100,6 +100,10 @@ namespace Assets.Source.Game.Scripts
         private void OnLanguageChanged(string value) => GamePanelsViewModel.SetLanguage(value);
         private void OnAmbientValueChanged(float value) => GamePanelsViewModel.SetAmbientVolume(value);
         private void OnSfxValueChanged(float value) => GamePanelsViewModel.SetSfxVolume(value);
-        private void OnMuteValueChanged(bool value) => GamePanelsViewModel.SetMuteStatus(value);
+
+        private void OnMuteValueChanged(bool value)
+        {
+            GamePanelsViewModel.SetMuteStatus(value);
+        }
     }
 }

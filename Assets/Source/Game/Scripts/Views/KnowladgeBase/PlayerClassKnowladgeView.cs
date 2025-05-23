@@ -23,7 +23,6 @@ public class PlayerClassKnowladgeView : KnowladgeView
         
         foreach(var ability in classData.ClassAbilityDatas)
         {
-            Debug.Log("Instans");
             Image image = Instantiate(_iamgePrafab, _classAbilityIconConteiner);
             image.sprite = ability.Icon;
         }

@@ -85,7 +85,7 @@ namespace Assets.Source.Game.Scripts
             WeaponData weaponData,
             AbilityFactory abilityFactory,
             AbilityPresenterFactory abilityPresenter,
-            TemporaryData temporaryData)
+            TemporaryData temporaryData, AudioPlayer audioPlayer)
         {
             _playerView = playerView;
             _miniMapIcon.sprite = playerClassData.Icon;
@@ -113,8 +113,8 @@ namespace Assets.Source.Game.Scripts
 
             _playerAttacker = new PlayerAttacker(_shotPoint, this, temporaryData.PlayerClassData.TypeAttackRange, weaponData, this, levelObserver, _poolBullet);
             _wallet = new PlayerWallet();
-            _cardDeck = new CardDeck();
-            _playerAbilityCaster = new PlayerAbilityCaster(abilityFactory, abilityPresenter, this, temporaryData);
+            _cardDeck = new CardDeck(temporaryData.LevelData.IsContractLevel);
+            _playerAbilityCaster = new PlayerAbilityCaster(abilityFactory, abilityPresenter, this, temporaryData, audioPlayer);
             _playerView.Initialize(temporaryData.PlayerClassData.Icon, _throwAbilityPoint, _playerAbilityContainer, _weaponAbilityContainer);
             SetPlayerStats();
             AddListeners();
@@ -185,6 +185,11 @@ namespace Assets.Source.Game.Scripts
             _playerStats.EnemyDied(enemy);
         }
 
+        public void GetLootRoomReward(int reward)
+        {
+            _playerStats.TakeLootRoomReward(reward);
+        }
+
         private void AddListeners()
         {
             _playerAttacker.Attacked += OnAttack;
@@ -213,7 +218,7 @@ namespace Assets.Source.Game.Scripts
             _playerAbilityCaster.LegendaryAbilityTaked += OnLegendaryAbilityTaked;
             _playerAbilityCaster.ClassAbilityTaked += OnClassAbilityTaked;
             _playerHealth.HealthChanged += OnHealthChanged;
-            _playerHealth.PlayerDied += () => PlayerDied?.Invoke();
+            _playerHealth.PlayerDied += OnPlayerDead;
             _playerView.AbilityViewCreated += OnAbilityViewCreated;
             _playerView.PassiveAbilityViewCreated += OnPassiveAbilityViewCreated;
             _playerView.LegendaryAbilityViewCreated += OnLegendaryAbilityViewCreated;
@@ -250,7 +255,7 @@ namespace Assets.Source.Game.Scripts
             _playerAbilityCaster.LegendaryAbilityTaked -= OnLegendaryAbilityTaked;
             _playerAbilityCaster.ClassAbilityTaked -= OnClassAbilityTaked;
             _playerHealth.HealthChanged -= OnHealthChanged;
-            _playerHealth.PlayerDied -= () => PlayerDied?.Invoke();
+            _playerHealth.PlayerDied -= OnPlayerDead;
             _playerView.AbilityViewCreated -= OnAbilityViewCreated;
             _playerView.PassiveAbilityViewCreated -= OnPassiveAbilityViewCreated;
             _playerView.LegendaryAbilityViewCreated -= OnLegendaryAbilityViewCreated;
@@ -263,6 +268,13 @@ namespace Assets.Source.Game.Scripts
             _playerView.ChangePlayerLevel(_currentLevel, _playerStats.GetMaxExperienceValue(_currentLevel), _currentExperience);
             _playerView.ChangeKillCount(_countKillEnemy);
             _playerView.ChangeMaxHealthValue(_playerHealth.GetMaxHealth(), _playerHealth.GetCurrentHealth());
+        }
+
+        public void OnPlayerDead()
+        {
+            _playerHealth.DisableHealing();
+            _playerMovement.DisableMovment();
+            PlayerDied?.Invoke();
         }
 
         private void OnClassAbilityViewCreated(ClassAbilityData classAbilityData, ClassSkillButtonView classSkillButtonView, int currentLevel)
@@ -364,7 +376,7 @@ namespace Assets.Source.Game.Scripts
 
         private void OnRotateToTarget(Transform transform)
         {
-            _playerMovement.ChangeRotate();
+            _playerMovement.ChangeRotate(false);
             _playerMovement.LookAtEnemy(transform);
         }
 
@@ -390,7 +402,6 @@ namespace Assets.Source.Game.Scripts
 
         private void OnAbilityUsed(Ability ability)
         {
-            //ability.TypeAbility == TypeAbility.ShieldUp
             _playerStats.AbilityUsed(ability);
         }
 
@@ -437,7 +448,8 @@ namespace Assets.Source.Game.Scripts
 
         private void AttackEnd()
         {
-            _playerMovement.ChangeRotate();
+            _playerMovement.ChangeRotate(true);
+            Debug.Log("End attack");
         }
 
         private void OnAttack()

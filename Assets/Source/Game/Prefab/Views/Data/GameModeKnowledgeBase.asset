@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97b72d0bc89d7da44bc287c0b2a222a9, type: 3}
+  m_Name: GameModeKnowledgeBase
+  m_EditorClassIdentifier: 
+  _knowladgeView: {fileID: 4720266978804331229, guid: 06f7b7e2fc4e4c144aade9696fa2dd16, type: 3}
+  _gameModeData:
+  - {fileID: 11400000, guid: 0a5d4ddc330c57b46899d42dea19ea49, type: 2}
+  - {fileID: 11400000, guid: 6b685994628cca54cbaf85738a5596fe, type: 2}

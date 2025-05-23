@@ -17,6 +17,7 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private TypeMagic _typeMagic;
         [SerializeField] private CardParameterView _parameterView;
         [SerializeField] private DamageSource _damageParametr;
+        [SerializeField] private AudioClip _audioClip;
 
         public string Name => _name;
         public string Description => _discription;
@@ -29,5 +30,6 @@ namespace Assets.Source.Game.Scripts
         public TypeMagic TypeMagic => _typeMagic;
         public CardParameterView CardParameterView => _parameterView;
         public DamageSource DamageParametr => _damageParametr;
+        public AudioClip AudioClip => _audioClip;
     }
 }

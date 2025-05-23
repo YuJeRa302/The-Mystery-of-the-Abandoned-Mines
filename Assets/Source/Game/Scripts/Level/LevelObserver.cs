@@ -87,20 +87,19 @@ namespace Assets.Source.Game.Scripts
             _roomPlacer.Initialize(_currentRoomLevel, _canSeeDoor, CountRooms);
 
             _playerFactory = new PlayerFactory(
-                temporaryData.WeaponData, 
                 this,
                 _abilityFactory,
                 _abilityPresenterFactory,
                 _playerPrefab,
                 _spawnPlayerPoint,
-                temporaryData.PlayerClassData,
                 _playerView,
                 temporaryData,
+                _audioPlayerService,
                 out Player player);
 
             _player = player;
             _cardLoader.Initialize(_player);
-            _enemySpawner = new EnemySpawner(_enemuPool, this, _player, _currentRoomLevel);
+            _enemySpawner = new EnemySpawner(_enemuPool, this, _player, _currentRoomLevel, _audioPlayerService);
             _cameraControiler.SetLookTarget(_player.transform);
             _saveAndLoad = new SaveAndLoader();
             _saveAndLoad.Initialize(temporaryData);
@@ -108,11 +107,13 @@ namespace Assets.Source.Game.Scripts
             CreateGamePanelEntities(_temporaryData);
             LoadGamePanels();
             AddListener();
+            _gamePanelsModel.OpenCardPanel();
         }
 
         public void ResumeByRewarded()
         {
             Time.timeScale = _resumeValue;
+
             GameResumed?.Invoke();
         }
 
@@ -153,7 +154,7 @@ namespace Assets.Source.Game.Scripts
 
         private void PauseGameByVisibilityWindow(bool state)
         {
-            _audioPlayerService.MuteSound(state);
+            _audioPlayerService.MuteSoundPayse(!state);
             Time.timeScale = _pauseValue;
             GamePaused?.Invoke();
         }
@@ -165,7 +166,7 @@ namespace Assets.Source.Game.Scripts
             else
                 Time.timeScale = _resumeValue;
 
-            _audioPlayerService.MuteSound(state);
+            _audioPlayerService.MuteSoundPayse(!state);
             GameResumed?.Invoke();
         }
 
@@ -237,12 +238,12 @@ namespace Assets.Source.Game.Scripts
 
         private void OnRewardRoomEnded(int reward)
         {
+            _player.GetLootRoomReward(reward);
             LootRoomComplited?.Invoke(reward);
         }
 
         private void OnGameClosed()
         {
-            _temporaryData.SaveProgress(_player, false);
             StartCoroutine(LoadScreenLevel(Menu.LoadAsync(_temporaryData)));
         }
 
@@ -360,6 +361,7 @@ namespace Assets.Source.Game.Scripts
         {
             CloseAllGamePanels();
             _roomPlacer.Clear();
+            _temporaryData.SaveProgress(_player, true);
             GameEnded?.Invoke(true);
         }
 
@@ -367,6 +369,7 @@ namespace Assets.Source.Game.Scripts
         {
             CloseAllGamePanels();
             _roomPlacer.Clear();
+            _temporaryData.SaveProgress(_player, false);
             GameEnded?.Invoke(false);
         }
 

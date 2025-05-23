@@ -24,6 +24,8 @@ namespace Assets.Source.Game.Scripts
         [Space(20)]
         [SerializeField] private CardLoader _cardLoader;
         [SerializeField] private AudioPlayer _audioPlayerService;
+        [Space(20)]
+        [SerializeField] private GameObject _canvasLoader;
 
         private bool _canSeeDoor;
         private EnemySpawner _enemySpawner;
@@ -44,8 +46,8 @@ namespace Assets.Source.Game.Scripts
 
         public event Action<bool> GameEnded;
         public event Action GameClosed;
-        public event Action GamePaused;
-        public event Action GameResumed;
+        public event Action<bool> GamePaused;
+        public event Action<bool> GameResumed;
         public event Action StageCompleted;
         public event Action<int> LootRoomComplited;
 
@@ -63,57 +65,26 @@ namespace Assets.Source.Game.Scripts
 
         private void OnDestroy()
         {
-            RemoveListener();
+            RemoveListeners();
             _enemySpawner.Dispose();
             _trapsSpawner.Dispose();
         }
 
         public void Initialize(TemporaryData temporaryData)
         {
-            RegisterServices();
             _temporaryData = temporaryData;
-
-            _canSeeDoor = _cameraControiler.TrySeeDoor(_roomPlacer.StartRoom.WallLeft.gameObject);
-            CountRooms = temporaryData.LevelData.CountRooms;
-            _countStages = temporaryData.LevelData.CountStages;
-            bool isLevelComplit = temporaryData.CurrentLevelState.IsComplete;
-
-            if (isLevelComplit)
-                _currentStage = 0;
-            else
-                _currentStage = temporaryData.CurrentLevelState.CurrentCompleteStages;
-
-            _trapsSpawner = new TrapsSpawner();
-            _roomPlacer.Initialize(_currentRoomLevel, _canSeeDoor, CountRooms);
-
-            _playerFactory = new PlayerFactory(
-                temporaryData.WeaponData, 
-                this,
-                _abilityFactory,
-                _abilityPresenterFactory,
-                _playerPrefab,
-                _spawnPlayerPoint,
-                temporaryData.PlayerClassData,
-                _playerView,
-                temporaryData,
-                out Player player);
-
-            _player = player;
-            _cardLoader.Initialize(_player);
-            _enemySpawner = new EnemySpawner(_enemuPool, this, _player, _currentRoomLevel);
-            _cameraControiler.SetLookTarget(_player.transform);
-            _saveAndLoad = new SaveAndLoader();
-            _saveAndLoad.Initialize(temporaryData);
-            ContractWeaponDatas = temporaryData.LevelData.IsContractLevel == true ? (temporaryData.LevelData as ContractLevelData).WeaponDatas : null;
+            RegisterServices();
+            CreatePlayer(_temporaryData);
+            InitializeLevelEntities(_temporaryData);
             CreateGamePanelEntities(_temporaryData);
             LoadGamePanels();
-            AddListener();
+            AddListeners();
         }
 
         public void ResumeByRewarded()
         {
             Time.timeScale = _resumeValue;
-            GameResumed?.Invoke();
+            GameResumed?.Invoke(true);
         }
 
         public void PauseByRewarded()
@@ -124,13 +95,13 @@ namespace Assets.Source.Game.Scripts
         public void ResumeByMenu()
         {
             Time.timeScale = _resumeValue;
-            GameResumed?.Invoke();
+            GameResumed?.Invoke(_temporaryData.MuteStateSound);
         }
 
         public void PauseByMenu()
         {
             Time.timeScale = _pauseValue;
-            GamePaused?.Invoke();
+            GamePaused?.Invoke(_temporaryData.MuteStateSound);
         }
 
         public void ResumeByInterstitial()
@@ -153,9 +124,8 @@ namespace Assets.Source.Game.Scripts
 
         private void PauseGameByVisibilityWindow(bool state)
         {
-            _audioPlayerService.MuteSound(state);
             Time.timeScale = _pauseValue;
-            GamePaused?.Invoke();
+            GamePaused?.Invoke(!state);
         }
 
         private void ResumeGameByVisibilityWindow(bool state)
@@ -165,8 +135,7 @@ namespace Assets.Source.Game.Scripts
             else
                 Time.timeScale = _resumeValue;
 
-            _audioPlayerService.MuteSound(state);
-            GameResumed?.Invoke();
+            GameResumed?.Invoke(state);
         }
 
         private void CreateGamePanelEntities(TemporaryData temporaryData)
@@ -175,7 +144,46 @@ namespace Assets.Source.Game.Scripts
             _gamePanelsViewModel = new GamePanelsViewModel(_gamePanelsModel);
         }
 
-        private void AddListener()
+        private void CreatePlayer(TemporaryData temporaryData) 
+        {
+            _playerFactory = new PlayerFactory(
+                temporaryData.WeaponData,
+                this,
+                _abilityFactory,
+                _abilityPresenterFactory,
+                _playerPrefab,
+                _spawnPlayerPoint,
+                temporaryData.PlayerClassData,
+                _playerView,
+                temporaryData,
+                out Player player);
+
+            _player = player;
+        }
+
+        private void InitializeLevelEntities(TemporaryData temporaryData) 
+        {
+            _canSeeDoor = _cameraControiler.TrySeeDoor(_roomPlacer.StartRoom.WallLeft.gameObject);
+            _countStages = temporaryData.LevelData.CountStages;
+            _canvasLoader.gameObject.SetActive(false);
+            CountRooms = temporaryData.LevelData.CountRooms;
+
+            if (temporaryData.CurrentLevelState.IsComplete)
+                _currentStage = 0;
+            else
+                _currentStage = temporaryData.CurrentLevelState.CurrentCompleteStages;
+
+            _trapsSpawner = new TrapsSpawner();
+            _roomPlacer.Initialize(_currentRoomLevel, _canSeeDoor, CountRooms);
+            _cardLoader.Initialize(_player);
+            _enemySpawner = new EnemySpawner(_enemuPool, this, _player, _currentRoomLevel);
+            _cameraControiler.SetLookTarget(_player.transform);
+            _saveAndLoad = new SaveAndLoader();
+            _saveAndLoad.Initialize(temporaryData);
+            ContractWeaponDatas = temporaryData.LevelData.IsContractLevel == true ? (temporaryData.LevelData as ContractLevelData).WeaponDatas : null;
+        }
+
+        private void AddListeners()
         {
             AddRoomListener();
             AddPanelListener();
@@ -188,7 +196,7 @@ namespace Assets.Source.Game.Scripts
             YandexGame.onVisibilityWindowGame += OnVisibilityWindowGame;
         }
 
-        private void RemoveListener()
+        private void RemoveListeners()
         {
             RemoveRoomListener();
             RemovePanelListener();
@@ -377,6 +385,7 @@ namespace Assets.Source.Game.Scripts
 
             _load = asyncOperation;
             _load.allowSceneActivation = false;
+            _canvasLoader.gameObject.SetActive(true);
 
             while (_load.progress < _loadControlValue)
             {

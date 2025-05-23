@@ -20,7 +20,7 @@ ElectricSphere,"Elektrik Küresi"
 ElectricSphereDescription,"Oyuncunun etrafında hareket eden bir elektrik küresi yaratır"
 ElectricTrap,"Elektrik Tuzağı"
 ElectricTrapDescription,"Oyuncunun yerinde bir tuzak kurar. İçine düşen düşman hasar alacak"
-Fireball,"Ateş topu
+Fireball,"Ateş topu"
 FireballDescription,"Oyuncu, rakibe zarar veren ve onları ateşe veren bir ateş topu ateşler"
 FireCircle,"Ateş Çemberi"
 FireCircleDescription,"Oyuncunun yerinde bir ateş çemberi oluşturur. Kendisine girenlerin muhaliflerini ateşe veriyor"

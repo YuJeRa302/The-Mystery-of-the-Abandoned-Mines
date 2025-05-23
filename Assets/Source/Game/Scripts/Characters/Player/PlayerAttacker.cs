@@ -92,7 +92,7 @@ namespace Assets.Source.Game.Scripts
             _gameLoopService.GameResumed -= OnGameResumed;
         }
 
-        private void OnGamePaused()
+        private void OnGamePaused(bool state)
         {
             if (_findTarget != null)
                 _coroutineRunner.StopCoroutine(_findTarget);
@@ -101,7 +101,7 @@ namespace Assets.Source.Game.Scripts
                 _coroutineRunner.StopCoroutine(_coolDownAttack);
         }
 
-        private void OnGameResumed()
+        private void OnGameResumed(bool state)
         {
             if (_findTarget != null)
                 _coroutineRunner.StopCoroutine(_findTarget);

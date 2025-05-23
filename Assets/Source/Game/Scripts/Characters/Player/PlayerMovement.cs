@@ -85,13 +85,13 @@ public class PlayerMovement : IDisposable
         _gameLoopService.GameResumed -= OnResumeGame;
     }
 
-    private void OnPauseGame()
+    private void OnPauseGame(bool state)
     {
         if (_movement != null)
             _coroutineRunner.StopCoroutine(_movement);
     }
 
-    private void OnResumeGame()
+    private void OnResumeGame(bool state)
     {
         if (_movement != null)
             _coroutineRunner.StopCoroutine(_movement);

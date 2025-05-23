@@ -12,9 +12,8 @@ public class TemporaryData
     private int _countLevels;
     private int _playerScore;
     private string _language;
-    private bool _muteStateSound;
 
-    public event Action ChengedData;
+    public event Action ChangedData;
 
     public TemporaryData(ConfigData configData) 
     {
@@ -31,7 +30,6 @@ public class TemporaryData
         InitData(savesYG);
     }
 
-    public bool IsSoundOn { get; private set; } = true;
     public bool IsGamePause { get; private set; } = false;
     public int Coins { get; private set; }
     public float AmbientVolume { get; private set; }
@@ -42,7 +40,7 @@ public class TemporaryData
     public ClassAbilityState[] ClassAbilityStates { get; private set; }
     public LevelData LevelData { get; private set; }
     public LevelState CurrentLevelState { get; private set; }
-    public bool MuteStateSound => _muteStateSound;
+    public bool MuteStateSound { get; private set; } = false;
     public int UpgradePoints { get; private set; }
     public int PlayerScore => _playerScore;
     public int CountLevels => _countLevels;
@@ -63,7 +61,7 @@ public class TemporaryData
             CurrentCompleteStages = LevelData.CountStages
         };
 
-        ChengedData?.Invoke();
+        ChangedData?.Invoke();
     }
 
     public ClassAbilityState GetClassAbilityState(int id)
@@ -163,11 +161,6 @@ public class TemporaryData
         return _levelStates;
     }
 
-    public void SetSoundState(bool value)
-    {
-        IsSoundOn = value;
-    }
-
     public void SetPauseGame(bool state)
     {
         IsGamePause = state;
@@ -200,7 +193,7 @@ public class TemporaryData
             }
         }
 
-        ChengedData?.Invoke();
+        ChangedData?.Invoke();
     }
 
     public void SetPlayerClassData(PlayerClassData playerClassData) 
@@ -211,7 +204,7 @@ public class TemporaryData
     public void SetUpgradePoints(int value)
     {
         UpgradePoints = value;
-        ChengedData?.Invoke();
+        ChangedData?.Invoke();
     }
 
     public void SetUpgradeState(List<UpgradeState> upgradeStates)
@@ -223,7 +216,7 @@ public class TemporaryData
             UpgradeStates[index] = new UpgradeState(upgradeStates[index].Id, upgradeStates[index].CurrentLevel);
         }
 
-        ChengedData?.Invoke();
+        ChangedData?.Invoke();
     }
 
     public void SetClassAbilityState(List<ClassAbilityState> classAbilityStates)
@@ -235,7 +228,7 @@ public class TemporaryData
             ClassAbilityStates[index] = new ClassAbilityState(classAbilityStates[index].Id, classAbilityStates[index].CurrentLevel);
         }
 
-        ChengedData?.Invoke();
+        ChangedData?.Invoke();
     }
 
     public void UpdateWeaponStates(WeaponState weaponState) 
@@ -260,50 +253,60 @@ public class TemporaryData
             _weaponStates[index] = tempWeaponStates[index];
         }
 
-        ChengedData?.Invoke();
+        ChangedData?.Invoke();
     }
 
     public void SetCoinsCount(int value) 
     {
         Coins = value;
-        ChengedData?.Invoke();
+        ChangedData?.Invoke();
     }
 
     public void SetCountLevels(int value)
     {
         _countLevels = value;
-        ChengedData?.Invoke();
+        ChangedData?.Invoke();
     }
 
     public void SetCurrentLanguage(string value)
     {
         _language = value;
-        ChengedData?.Invoke();
+        ChangedData?.Invoke();
     }
 
     public void SetAmbientVolume(float value)
     {
         AmbientVolume = value;
-        ChengedData?.Invoke();
+        ChangedData?.Invoke();
     }
 
     public void SetInterfaceVolume(float value)
     {
         InterfaceVolume = value;
-        ChengedData?.Invoke();
+        ChangedData?.Invoke();
     }
 
     public void SetMuteStateSound(bool value) 
     {
-        _muteStateSound = value;
-        ChengedData?.Invoke();
+        MuteStateSound = value;
+        ChangedData?.Invoke();
+    }
+
+    private void SetLanguage()
+    {
+#if UNITY_EDITOR
+        SetCurrentLanguage("ru");
+#else
+        string languageCode = YandexGame.lang;
+        SetCurrentLanguage(languageCode);
+#endif
     }
 
     private void InitData(ConfigData configData) 
     {
         SetAmbientVolume(configData.AmbientVolume);
         SetInterfaceVolume(configData.SfxVolumeVolume);
-        SetCurrentLanguage(configData.DefaultLanguage);
+        SetLanguage();
         SetUpgradePoints(configData.UpgradePoints);
         SetMuteStateSound(configData.IsMuted);
         SetCoinsCount(configData.Coins);

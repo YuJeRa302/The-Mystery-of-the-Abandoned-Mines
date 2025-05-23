@@ -109,7 +109,7 @@ namespace Assets.Source.Game.Scripts
             HealthChanged -= OnHealthChanged;
         }
 
-        private void OnPauseGame()
+        private void OnPauseGame(bool state)
         {
             if (_regeneration != null)
                 _coroutineRunner.StopCoroutine(_regeneration);
@@ -118,7 +118,7 @@ namespace Assets.Source.Game.Scripts
                 _coroutineRunner.StopCoroutine(_timeReduce);
         }
 
-        private void OnResumeGame()
+        private void OnResumeGame(bool state)
         {
             if (_regeneration != null)
                 _coroutineRunner.StopCoroutine(_regeneration);

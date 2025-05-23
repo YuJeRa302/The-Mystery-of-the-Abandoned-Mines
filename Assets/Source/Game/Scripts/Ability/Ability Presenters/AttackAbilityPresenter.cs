@@ -47,7 +47,7 @@ namespace Assets.Source.Game.Scripts
                 _currentDelayAttack = _delayAttackBlast;
         }
 
-        protected override void OnGamePaused()
+        protected override void OnGamePaused(bool state)
         {
             _ability.StopCoroutine();
 
@@ -58,7 +58,7 @@ namespace Assets.Source.Game.Scripts
                 _coroutineRunner.StopCoroutine(_damageDealCoroutine);
         }
 
-        protected override void OnGameResumed()
+        protected override void OnGameResumed(bool state)
         {
             _ability.Use();
 

@@ -90,10 +90,10 @@ public class ShildUpAbilityPresenter : AbilityPresenter
         }
     }
 
-    protected override void OnGameResumed()
+    protected override void OnGameResumed(bool state)
     {
         if (_isAbilityUse || _ability.IsAbilityUsed)
-            base.OnGameResumed();
+            base.OnGameResumed(state);
     }
 
     private void UpShield()

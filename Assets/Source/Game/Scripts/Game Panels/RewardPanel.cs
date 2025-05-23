@@ -7,14 +7,11 @@ namespace Assets.Source.Game.Scripts
 {
     public class RewardPanel : GamePanelsView
     {
-        private readonly int _defaultAdId = 0;
-        private readonly int _multiplier = 2;
         private readonly float _animationDuration = 1f;
 
         [SerializeField] private Button _openAdButton;
         [SerializeField] private Button _collectButton;
         [SerializeField] private Button _closeGameButton;
-        [SerializeField] private Button _testAdsButton;
         [Space(20)]
         [SerializeField] private Image _weaponIcon;
         [SerializeField] private Image _weaponBackgroundIcon;
@@ -32,6 +29,7 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private Text _gameStateText;
         [SerializeField] private Image _imageGameState;
 
+        private bool _isRewardReceived = false;
         private WeaponData _currentWeaponData;
 
         private void OnDestroy()
@@ -48,7 +46,7 @@ namespace Assets.Source.Game.Scripts
         protected override void OpenRewardAds()
         {
             base.OpenRewardAds();
-            YandexGame.RewVideoShow(_defaultAdId);
+            YandexGame.RewVideoShow(0);
         }
 
         protected override void CloseGame()
@@ -66,14 +64,13 @@ namespace Assets.Source.Game.Scripts
         private void ShowReward(int reward)
         {
             base.Open();
-            //_defaulReward.SetActive(true);
             Fill();
-            //_defaultRewardCoins.text = reward.ToString();
         }
         
         private void OnRewardCallback(int index)
         {
-            Debug.Log("Reward");
+            GamePanelsViewModel.GetEndGameReward();
+            _isRewardReceived = true;
         }
 
         private void OnOpenFullscreenAdCallback()
@@ -89,22 +86,17 @@ namespace Assets.Source.Game.Scripts
         private void OnCloseAdCallback()
         {
             RewardAdClosed?.Invoke();
-            int coinRewards = GamePanelsViewModel.GetPlayer().Coins * _multiplier;
-            int upgradePointRewards = GamePanelsViewModel.GetPlayer().UpgradePoints * _multiplier;
 
-            DOVirtual.Int(GamePanelsViewModel.GetPlayer().Coins, coinRewards, _animationDuration, (value) =>
+            if (_isRewardReceived == true) 
             {
-                _coinsText.text = value.ToString();
-            });
-
-            DOVirtual.Int(GamePanelsViewModel.GetPlayer().UpgradePoints, upgradePointRewards, _animationDuration, (value) =>
-            {
-                _upgradePointsText.text = value.ToString();
-            });
-
-            _openAdButton.gameObject.SetActive(false);
-            _collectButton.gameObject.SetActive(false);
-            _closeGameButton.gameObject.SetActive(true);
+                int coinRewards = GamePanelsViewModel.GetPlayer().Coins + GamePanelsViewModel.GetPlayer().Coins;
+                int upgradePointRewards = GamePanelsViewModel.GetPlayer().UpgradePoints + GamePanelsViewModel.GetPlayer().UpgradePoints;
+                SetAnimationText(GamePanelsViewModel.GetPlayer().Coins, coinRewards, _coinsText);
+                SetAnimationText(GamePanelsViewModel.GetPlayer().UpgradePoints, upgradePointRewards, _upgradePointsText);
+                _openAdButton.gameObject.SetActive(false);
+                _collectButton.gameObject.SetActive(false);
+                _closeGameButton.gameObject.SetActive(true);
+            }
         }
 
         private void OnErrorCallback()
@@ -123,8 +115,6 @@ namespace Assets.Source.Game.Scripts
             YandexGame.CloseFullAdEvent += OnCloseFullscreenAdCallback;
             _closeGameButton.onClick.AddListener(CloseGame);
             _openAdButton.onClick.AddListener(OpenRewardAds);
-
-            _testAdsButton.onClick.AddListener(OnCloseAdCallback); // test Ads button
         }
 
         private void RemoveListeners()
@@ -172,6 +162,14 @@ namespace Assets.Source.Game.Scripts
             }
         }
 
+        private void SetAnimationText(int cuurentValue, int rewardValue, Text text) 
+        {
+            DOVirtual.Int(cuurentValue, rewardValue, _animationDuration, (value) =>
+            {
+                text.text = value.ToString();
+            });
+        }
+
         private void CreateDefaultRewards(bool gameState)
         {
             CreateEndScreen(gameState);
@@ -181,17 +179,8 @@ namespace Assets.Source.Game.Scripts
         private void CreateEndScreen(bool gameState) 
         {
             _levelCompleteReward.SetActive(true);
-
-            if (gameState == true)
-            {
-                _imageGameState.sprite = _winGameSprite;
-                _gameStateText.text = "Win";
-            }
-            else 
-            {
-                _imageGameState.sprite = _loseGameSprite;
-                _gameStateText.text = "Lose";
-            }
+            _imageGameState.sprite = gameState == true ? _winGameSprite : _loseGameSprite;
+            _gameStateText.text = gameState == true ? "Win" : "Lose";
         }
 
         private void CreateCoinsRewards()

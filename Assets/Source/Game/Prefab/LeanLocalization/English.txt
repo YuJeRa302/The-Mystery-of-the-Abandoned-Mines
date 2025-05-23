@@ -178,7 +178,7 @@ RedGoblin,"The Red Goblin"
 RedGoblinDiscription,"A huge goblin with skin like a red-hot coal puffs steam from its nostrils, smashing everything around with a club. * Large. Stinky. Fast.*"
 GrutEpicDescription,"A frosty giant in icy armor, whose roar resembles a blizzard, his armor is covered with frost, and his axe leaves behind the icy tombstones of former victims. * Our Lich has nothing to do with it*"
 GrutEpic,"The Ice Orc"
-LichEpic,"The Lich of Filth
+LichEpic,"The Lich of Filth"
 LichEpicDiscription,"The lich's eyes are burning like cursed beacons, and every word he says is a soul—burning spell. * Eyes are the mirror of the soul. It's better not to look at it.*"
 FireElemental,"The Fire Elemental"
 FireElementalDescription,"Assembled from ancient volcanic runes, this elemental burns with the fury of thousands of years of eruptions. * He just ran away from the furnace*"

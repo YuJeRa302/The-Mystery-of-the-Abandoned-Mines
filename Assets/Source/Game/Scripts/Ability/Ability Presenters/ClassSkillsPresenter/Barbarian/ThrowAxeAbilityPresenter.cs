@@ -65,9 +65,9 @@ public class ThrowAxeAbilityPresenter : AbilityPresenter
         _damageDealCoroutine = _coroutineRunner.StartCoroutine(DealDamage());
     }
 
-    protected override void OnGameResumed()
+    protected override void OnGameResumed(bool state)
     {
-        base.OnGameResumed();
+        base.OnGameResumed(state);
 
         if (_damageDealCoroutine != null)
             _damageDealCoroutine = _coroutineRunner.StartCoroutine(DealDamage());

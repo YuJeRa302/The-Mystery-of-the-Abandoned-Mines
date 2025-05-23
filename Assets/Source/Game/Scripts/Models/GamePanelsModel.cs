@@ -1,18 +1,18 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace Assets.Source.Game.Scripts
 {
     public class GamePanelsModel
     {
+        private readonly int _countRerollPointsReward = 2;
         private readonly System.Random _rnd = new ();
         private readonly TemporaryData _temporaryData;
         private readonly Player _player;
         private readonly LevelObserver _levelObserver;
         private readonly CardLoader _cardLoader;
         private readonly int _minWeaponCount = 1;
-        private readonly IAudioPlayerService _audioPlayerService;
+        private readonly AudioPlayer _audioPlayer;
 
         private List<WeaponData> _weaponDatas = new ();
         private WeaponData _rewardWeaponData;
@@ -23,23 +23,20 @@ namespace Assets.Source.Game.Scripts
             Player player,
             LevelObserver levelObserver,
             CardLoader cardLoader,
-            IAudioPlayerService audioPlayerService)
+            AudioPlayer audioPlayer)
         {
-            _audioPlayerService = audioPlayerService;
+            _audioPlayer = audioPlayer;
             _temporaryData = temporaryData;
             _player = player;
             _levelObserver = levelObserver;
             _cardLoader = cardLoader;
             AmbientVolumeValue = _temporaryData.AmbientVolume;
             SfxVolumeValue = _temporaryData.InterfaceVolume;
-            _audioPlayerService.AmbientValueChanged(AmbientVolumeValue);
-            _audioPlayerService.SfxValueChanged(SfxVolumeValue);
-            _audioPlayerService.PlayMainMenuAmbient();
+            _audioPlayer.AmbientValueChanged(AmbientVolumeValue);
+            _audioPlayer.SfxValueChanged(SfxVolumeValue);
+            _audioPlayer.PlayMainMenuAmbient();
             IsMuted = _temporaryData.MuteStateSound;
-            _levelObserver.StageCompleted += OnStageComplete;
-            _levelObserver.GameEnded += OnGameEnded;
-            _cardLoader.CardPoolCreated += OnCardPoolCreate;
-            _levelObserver.LootRoomComplited += OnLootRoomComplited;
+            AddListeners();
         }
 
         public event Action StageCompleted;
@@ -51,7 +48,7 @@ namespace Assets.Source.Game.Scripts
         public string LanguageTag { get; private set; }
         public float AmbientVolumeValue { get; private set; }
         public float SfxVolumeValue { get; private set; }
-        public bool IsMuted { get; private set; }
+        public bool IsMuted { get; private set; } = false;
 
         public void OpenCardPanel() 
         {
@@ -95,7 +92,7 @@ namespace Assets.Source.Game.Scripts
         public void SetAmbientVolume(float volume)
         {
             AmbientVolumeValue = volume;
-            _audioPlayerService.AmbientValueChanged(AmbientVolumeValue);
+            _audioPlayer.AmbientValueChanged(AmbientVolumeValue);
             _temporaryData.SetAmbientVolume(volume);
         }
 
@@ -108,7 +105,7 @@ namespace Assets.Source.Game.Scripts
         public void SetSfxVolume(float volume)
         {
             SfxVolumeValue = volume;
-            _audioPlayerService.SfxValueChanged(SfxVolumeValue);
+            _audioPlayer.SfxValueChanged(SfxVolumeValue);
             _temporaryData.SetInterfaceVolume(volume);
         }
 
@@ -127,7 +124,51 @@ namespace Assets.Source.Game.Scripts
 
         public IAudioPlayerService GetAudioService() 
         {
-            return _audioPlayerService;
+            return _audioPlayer;
+        }
+
+        public void GetRerollPointsReward() 
+        {
+            _player.GetRerollPointsReward(_countRerollPointsReward);
+        }
+
+        public void GetEndGameReward()
+        {
+            _player.GetEndGameReward();
+        }
+
+        public void Mute()
+        {
+            IsMuted = true;
+            _temporaryData.SetMuteStateSound(IsMuted);
+            _audioPlayer.MuteSound(IsMuted);
+        }
+
+        public void UnMute()
+        {
+            IsMuted = false;
+            _temporaryData.SetMuteStateSound(IsMuted);
+            _audioPlayer.MuteSound(IsMuted);
+        }
+
+        private void AddListeners() 
+        {
+            _levelObserver.StageCompleted += OnStageComplete;
+            _levelObserver.GameEnded += OnGameEnded;
+            _levelObserver.LootRoomComplited += OnLootRoomComplited;
+            _levelObserver.GamePaused += OnGamePause;
+            _levelObserver.GameResumed += OnGameResume;
+            _cardLoader.CardPoolCreated += OnCardPoolCreate;
+        }
+
+        private void RemoveListeners() 
+        {
+            _levelObserver.StageCompleted -= OnStageComplete;
+            _levelObserver.GameEnded -= OnGameEnded;
+            _levelObserver.LootRoomComplited -= OnLootRoomComplited;
+            _levelObserver.GamePaused -= OnGamePause;
+            _levelObserver.GameResumed -= OnGameResume;
+            _cardLoader.CardPoolCreated -= OnCardPoolCreate;
         }
 
         private void OnLootRoomComplited(int reward)
@@ -150,28 +191,22 @@ namespace Assets.Source.Game.Scripts
             GameEnded?.Invoke(state);
         }
 
-        private void Mute()
+        private void OnGamePause(bool state)
         {
-            IsMuted = true;
-            _temporaryData.SetMuteStateSound(IsMuted);
+            _audioPlayer.MuteSound(state);
         }
 
-        private void UnMute()
+        private void OnGameResume(bool state)
         {
-            IsMuted = false;
-            _temporaryData.SetMuteStateSound(IsMuted);
+            _audioPlayer.MuteSound(_temporaryData.MuteStateSound);
         }
 
         private void CreateWeaponDatasForReward() 
         {
-            Debug.Log((_temporaryData.LevelData as ContractLevelData).WeaponDatas.Length);
             for (int index = 0; index < (_temporaryData.LevelData as ContractLevelData).WeaponDatas.Length; index++) 
             {
                 if (_temporaryData.GetWeaponState((_temporaryData.LevelData as ContractLevelData).WeaponDatas[index].Id) == null)
-                {
-                    Debug.Log(_weaponDatas.Count);
                     _weaponDatas.Add((_temporaryData.LevelData as ContractLevelData).WeaponDatas[index]);
-                }
             }
         }
 

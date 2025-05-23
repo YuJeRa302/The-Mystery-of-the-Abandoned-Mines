@@ -81,7 +81,7 @@ public class SettingsView : MonoBehaviour
         _settingsViewModel.SetSfxVolume(value);
     }
 
-    private void OnMuteValueChanged(bool value) => _settingsViewModel.SetMuteStatus(value);
+    private void OnMuteValueChanged(bool value) => _settingsViewModel.SetMuteStatus(!value);
     private void Show() => gameObject.SetActive(true);
     private void Hide() => gameObject.SetActive(false);
 }

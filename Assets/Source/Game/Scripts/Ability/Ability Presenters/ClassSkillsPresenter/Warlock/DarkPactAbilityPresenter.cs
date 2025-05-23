@@ -88,10 +88,10 @@ public class DarkPactAbilityPresenter : AbilityPresenter
         }
     }
 
-    protected override void OnGameResumed()
+    protected override void OnGameResumed(bool state)
     {
         if (_isAbilityUse || _ability.IsAbilityUsed)
-            base.OnGameResumed();
+            base.OnGameResumed(state);
     }
 
     protected override void OnCooldownValueReseted(float value)

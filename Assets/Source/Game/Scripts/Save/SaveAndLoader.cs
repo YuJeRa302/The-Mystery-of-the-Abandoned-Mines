@@ -13,7 +13,7 @@ public class SaveAndLoader : ISaveAndLoadProgress
     public void Initialize(TemporaryData temporaryData)
     {
         _temporaryData = temporaryData;
-        _temporaryData.ChengedData += SaveData;
+        _temporaryData.ChangedData += SaveData;
     }
 
     public bool TryGetGameData(out SavesYG gameInfo)

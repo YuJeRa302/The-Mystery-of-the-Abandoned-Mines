@@ -8,9 +8,13 @@ public class MainMenuViewModel : IDisposable
     {
         _menuModel = menuModel;
         _menuModel.InvokedMainMenuShow += () => InvokedShow?.Invoke();
+        _menuModel.GamePaused += (state) => GamePaused?.Invoke(state);
+        _menuModel.GameResumed += (state) => GameResumed?.Invoke(state);
     }
 
     public event Action InvokedShow;
+    public event Action<bool> GamePaused;
+    public event Action<bool> GameResumed;
 
     public void InvokeLevelsShow() => _menuModel.InvokeLevelsShow();
     public void InvokeSettingsShow() => _menuModel.InvokeSettingsShow();

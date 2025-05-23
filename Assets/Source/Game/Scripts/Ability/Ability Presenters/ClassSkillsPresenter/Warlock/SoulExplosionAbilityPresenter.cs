@@ -82,17 +82,17 @@ public class SoulExplosionAbilityPresenter : AbilityPresenter
         _spell.Initialize(_poolParticle, _ability.CurrentDuration, 5f);
     }
 
-    protected override void OnGameResumed()
+    protected override void OnGameResumed(bool state)
     {
-        base.OnGameResumed();
+        base.OnGameResumed(state);
 
         if (_damageDealCoroutine != null)
             _damageDealCoroutine = _coroutineRunner.StartCoroutine(DealDamage());
     }
 
-    protected override void OnGamePaused()
+    protected override void OnGamePaused(bool state)
     {
-        base.OnGamePaused();
+        base.OnGamePaused(state);
     }
 
     protected override void OnCooldownValueReseted(float value)

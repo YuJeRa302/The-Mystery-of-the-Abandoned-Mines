@@ -27,9 +27,9 @@ public class ThunderPresenter : AbilityPresenter
         AddListener();
     }
 
-    protected override void OnGamePaused()
+    protected override void OnGamePaused(bool state)
     {
-        base.OnGamePaused();
+        base.OnGamePaused(state);
 
         if (_blastThrowingCoroutine != null)
             _coroutineRunner.StopCoroutine(_blastThrowingCoroutine);
@@ -38,9 +38,9 @@ public class ThunderPresenter : AbilityPresenter
             _coroutineRunner.StopCoroutine(_damageDealCoroutine);
     }
 
-    protected override void OnGameResumed()
+    protected override void OnGameResumed(bool state)
     {
-        base.OnGameResumed();
+        base.OnGameResumed(state);
 
         if (_damageDealCoroutine != null)
             _damageDealCoroutine = _coroutineRunner.StartCoroutine(DealDamage());

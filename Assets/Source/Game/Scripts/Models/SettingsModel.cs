@@ -1,14 +1,19 @@
-using System;
+using Lean.Localization;
 
 public class SettingsModel
 {
     private readonly TemporaryData _temporaryData;
+    private readonly LeanLocalization _leanLocalization;
+    private readonly AudioPlayer _audioPlayer;
 
-    public SettingsModel(TemporaryData temporaryData)
+    public SettingsModel(TemporaryData temporaryData, LeanLocalization leanLocalization, AudioPlayer audioPlayer)
     {
         _temporaryData = temporaryData;
+        _leanLocalization = leanLocalization;
+        _audioPlayer = audioPlayer;
         AmbientVolumeValue = _temporaryData.AmbientVolume;
         SfxVolumeValue = _temporaryData.InterfaceVolume;
+        SetLanguage(_temporaryData.Language);
     }
 
     public string LanguageTag { get; private set; }
@@ -26,6 +31,7 @@ public class SettingsModel
     {
         LanguageTag = value;
         _temporaryData.SetCurrentLanguage(value);
+        _leanLocalization.SetCurrentLanguage(value);
     }
 
     public void SetSfxVolume(float volume)
@@ -34,21 +40,33 @@ public class SettingsModel
         _temporaryData.SetInterfaceVolume(volume);
     }
 
+    public void OnGamePause(bool state) 
+    {
+        _audioPlayer.MuteSound(!state);
+    }
+
+    public void OnGameResume(bool state) 
+    {
+        _audioPlayer.MuteSound(_temporaryData.MuteStateSound);
+    }
+
     public void Mute()
     {
         IsMuted = true;
         _temporaryData.SetMuteStateSound(IsMuted);
+        _audioPlayer.MuteSound(IsMuted);
     }
 
     public void UnMute()
     {
         IsMuted = false;
         _temporaryData.SetMuteStateSound(IsMuted);
+        _audioPlayer.MuteSound(IsMuted);
     }
 
     public void SetMute(bool muted)
     {
-        if (muted)
+        if (!muted)
             Mute();
         else
             UnMute();

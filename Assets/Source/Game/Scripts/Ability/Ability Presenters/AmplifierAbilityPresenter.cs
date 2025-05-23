@@ -60,12 +60,12 @@ namespace Assets.Source.Game.Scripts
             Dispose();
         }
 
-        private void OnGamePaused()
+        private void OnGamePaused(bool state)
         {
             _ability.StopCoroutine();
         }
 
-        private void OnGameResumed()
+        private void OnGameResumed(bool state)
         {
             _ability.Use();
         }

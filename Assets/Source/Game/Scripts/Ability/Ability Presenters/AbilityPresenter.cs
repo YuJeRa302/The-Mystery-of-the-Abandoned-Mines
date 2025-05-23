@@ -68,12 +68,12 @@ public abstract class AbilityPresenter : IDisposable
         _abilityView.ResetCooldownValue(value);
     }
 
-    protected virtual void OnGamePaused()
+    protected virtual void OnGamePaused(bool state)
     {
         _ability.StopCoroutine();
     }
     
-    protected virtual void OnGameResumed()
+    protected virtual void OnGameResumed(bool state)
     {
         _ability.ResumeCoroutine();
     }

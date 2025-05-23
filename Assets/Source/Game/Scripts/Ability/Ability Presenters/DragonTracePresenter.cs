@@ -30,9 +30,9 @@ public class DragonTracePresenter : AbilityPresenter
         AddListener();
     }
 
-    protected override void OnGamePaused()
+    protected override void OnGamePaused(bool state)
     {
-        base.OnGamePaused();
+        base.OnGamePaused(state);
 
         if (_spawnedSpellCorountine != null)
             _coroutineRunner.StopCoroutine(_spawnedSpellCorountine);
@@ -44,9 +44,9 @@ public class DragonTracePresenter : AbilityPresenter
             _coroutineRunner.StopCoroutine(_damageDealCoroutine);
     }
 
-    protected override void OnGameResumed()
+    protected override void OnGameResumed(bool state)
     {
-        base.OnGameResumed();
+        base.OnGameResumed(state);
 
         if (_spawnedSpellCorountine != null)
             _spawnedSpellCorountine = _coroutineRunner.StartCoroutine(SpawnSpell());

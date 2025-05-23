@@ -101,9 +101,9 @@ public class RageAbillityPresenter : AbilityPresenter
         (_abilityView as ClassSkillButtonView).SetInerectableButton(true);
     }
 
-    protected override void OnGameResumed()
+    protected override void OnGameResumed(bool state)
     {
         if (_isAbilityUse || _ability.IsAbilityUsed)
-            base.OnGameResumed();
+            base.OnGameResumed(state);
     }
 }

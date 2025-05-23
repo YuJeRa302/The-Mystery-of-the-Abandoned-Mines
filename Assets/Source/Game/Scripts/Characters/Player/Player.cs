@@ -120,6 +120,7 @@ namespace Assets.Source.Game.Scripts
             AddListeners();
             _playerStats.UpgradePlayerStats(temporaryData.UpgradeStates, temporaryData.UpgradeDatas);
             _playerAbilityCaster.Initialize();
+            Debug.Log("_wallet.CurrentCoins" + _wallet.CurrentCoins);
         }
 
         public void InitStateCardDeck(List<CardData> cardDatas)
@@ -173,6 +174,17 @@ namespace Assets.Source.Game.Scripts
         public int GetCountUnlockedCards()
         {
             return _cardDeck.GetCountUnlockedCards();
+        }
+
+        public void GetRerollPointsReward(int reward)
+        {
+            _playerStats.GetReward(reward);
+        }
+
+        public void GetEndGameReward()
+        {
+            _wallet.AddCoins(Coins);
+            _playerStats.GetReward(UpgradePoints);
         }
 
         public void TakeDamage(int value)

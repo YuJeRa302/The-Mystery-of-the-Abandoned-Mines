@@ -12,7 +12,6 @@ public class TemporaryData
     private int _countLevels;
     private int _playerScore;
     private string _language;
-    private bool _muteStateSound;
 
     public event Action ChangedData;
 
@@ -31,7 +30,6 @@ public class TemporaryData
         InitData(savesYG);
     }
 
-    public bool IsSoundOn { get; private set; } = true;
     public bool IsGamePause { get; private set; } = false;
     public int Coins { get; private set; }
     public float AmbientVolume { get; private set; }
@@ -42,7 +40,7 @@ public class TemporaryData
     public ClassAbilityState[] ClassAbilityStates { get; private set; }
     public LevelData LevelData { get; private set; }
     public LevelState CurrentLevelState { get; private set; }
-    public bool MuteStateSound => _muteStateSound;
+    public bool MuteStateSound { get; private set; } = false;
     public int UpgradePoints { get; private set; }
     public int PlayerScore => _playerScore;
     public int CountLevels => _countLevels;
@@ -161,11 +159,6 @@ public class TemporaryData
     public LevelState[] GetLevelStates() 
     {
         return _levelStates;
-    }
-
-    public void SetSoundState(bool value)
-    {
-        IsSoundOn = value;
     }
 
     public void SetPauseGame(bool state)
@@ -295,15 +288,25 @@ public class TemporaryData
 
     public void SetMuteStateSound(bool value) 
     {
-        _muteStateSound = value;
+        MuteStateSound = value;
         ChangedData?.Invoke();
+    }
+
+    private void SetLanguage()
+    {
+#if UNITY_EDITOR
+        SetCurrentLanguage("ru");
+#else
+        string languageCode = YandexGame.lang;
+        SetCurrentLanguage(languageCode);
+#endif
     }
 
     private void InitData(ConfigData configData) 
     {
         SetAmbientVolume(configData.AmbientVolume);
         SetInterfaceVolume(configData.SfxVolumeVolume);
-        SetCurrentLanguage(configData.DefaultLanguage);
+        SetLanguage();
         SetUpgradePoints(configData.UpgradePoints);
         SetMuteStateSound(configData.IsMuted);
         SetCoinsCount(configData.Coins);

@@ -7,16 +7,20 @@ public class LevelsModel
 {
     private readonly TemporaryData _temporaryData;
     private readonly ICoroutineRunner _coroutineRunner;
+    private readonly float _loadControlValue = 0.9f;
+    private readonly GameObject _canvasLoader;
 
     private AsyncOperation _load;
     private LevelData _currentLevelData;
     private PlayerClassData _currentPlayerClassData;
     private WeaponData _currentWeaponData;
 
-    public LevelsModel(TemporaryData temporaryData, ICoroutineRunner coroutineRunner)
+    public LevelsModel(TemporaryData temporaryData, ICoroutineRunner coroutineRunner, GameObject canvasLoader)
     {
         _temporaryData = temporaryData;
         _coroutineRunner = coroutineRunner;
+        _canvasLoader = canvasLoader;
+        _canvasLoader.gameObject.SetActive(false);
         LevelStates = _temporaryData.GetLevelStates();
     }
 
@@ -80,12 +84,6 @@ public class LevelsModel
     private void LoadScene(int id)
     {
         _coroutineRunner.StartCoroutine(LoadScreenLevel(GameScene.LoadAsync(_temporaryData)));
-        //switch (id)
-        //{
-        //    case GameScene.Id:
-        //        _coroutineRunner.StartCoroutine(LoadScreenLevel(GameScene.LoadAsync(_temporaryData)));
-        //        break;
-        //}
     }
 
     private IEnumerator LoadScreenLevel(AsyncOperation asyncOperation)
@@ -95,8 +93,9 @@ public class LevelsModel
 
         _load = asyncOperation;
         _load.allowSceneActivation = false;
+        _canvasLoader.gameObject.SetActive(true);
 
-        while (_load.progress < 0.9f)
+        while (_load.progress < _loadControlValue)
         {
             yield return null;
         }
@@ -107,7 +106,7 @@ public class LevelsModel
 
     private LevelState InitLevelState(LevelData levelData)
     {
-        LevelState levelState = new()
+        LevelState levelState = new ()
         {
             Id = levelData.Id,
             IsComplete = false,

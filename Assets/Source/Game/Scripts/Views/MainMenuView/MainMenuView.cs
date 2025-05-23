@@ -1,4 +1,5 @@
 using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -83,6 +84,8 @@ namespace Assets.Source.Game.Scripts
             _opneKnowledgeBaseButton.onClick.AddListener(ShowKnowledgeBase);
             _openLeaderboardButton.onClick.AddListener(ShowLeaderboard);
             _menuViewModel.InvokedShow += Show;
+            _menuViewModel.GamePaused += OnGamePaused;
+            _menuViewModel.GameResumed += OnGameResumed;
         }
 
         private void RemoveListener() 
@@ -95,6 +98,8 @@ namespace Assets.Source.Game.Scripts
             _opneKnowledgeBaseButton.onClick.RemoveListener(ShowKnowledgeBase);
             _openLeaderboardButton.onClick.RemoveListener(ShowLeaderboard);
             _menuViewModel.InvokedShow -= Show;
+            _menuViewModel.GamePaused -= OnGamePaused;
+            _menuViewModel.GameResumed -= OnGameResumed;
         }
 
         private void ShowLeaderboard()
@@ -203,6 +208,16 @@ namespace Assets.Source.Game.Scripts
             }
 
                 _audioPlayerService?.PlayOneShotPopupSound();
+        }
+
+        private void OnGamePaused(bool state) 
+        {
+            Time.timeScale = Convert.ToInt32(state);
+        }
+
+        private void OnGameResumed(bool state) 
+        {
+            Time.timeScale = Convert.ToInt32(state);
         }
 
         private void Show() => gameObject.SetActive(true);

@@ -10,12 +10,12 @@ public class PlayerWallet : IDisposable
 
     public int CurrentCoins => _currentCoins;
 
-    public void AddCoins(int revard)
+    public void AddCoins(int reward)
     {
-        if (revard <= 0)
+        if (reward <= 0)
             return;
 
-        _currentCoins += revard;
+        _currentCoins += reward;
     }
 
     public void Dispose()

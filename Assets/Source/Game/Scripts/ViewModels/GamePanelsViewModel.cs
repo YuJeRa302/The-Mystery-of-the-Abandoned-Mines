@@ -39,6 +39,8 @@ namespace Assets.Source.Game.Scripts
         public void SetAmbientVolume(float volume) => _gamePanelsModel.SetAmbientVolume(volume);
         public void SetSfxVolume(float volume) => _gamePanelsModel.SetSfxVolume(volume);
         public void SetMuteStatus(bool value) => _gamePanelsModel.SetMute(value);
+        public void GetRerollPointsReward() => _gamePanelsModel.GetRerollPointsReward();
+        public void GetEndGameReward() => _gamePanelsModel.GetEndGameReward();
         private void OnLootRoomComplit(int reward) => LootRoomComplitetd?.Invoke(reward);
     }
 }

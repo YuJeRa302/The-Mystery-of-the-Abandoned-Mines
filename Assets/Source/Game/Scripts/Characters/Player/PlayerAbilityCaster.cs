@@ -74,7 +74,7 @@ namespace Assets.Source.Game.Scripts
                 _currentAbilityLevel = cardView.CardState.CurrentLevel;
 
                 if (TryGetAbility(_abilityAttributeData, out Ability ability))
-                    ability.Upgrade(ability.AbilityAttribute, _currentAbilityLevel);
+                    ability.Upgrade(ability.AbilityAttribute, _currentAbilityLevel, _abilityDuration, _abilityDamage, _abilityCooldownReduction);
                 else
                     AbilityTaked?.Invoke(_abilityAttributeData, cardView.CardState.CurrentLevel);
             }

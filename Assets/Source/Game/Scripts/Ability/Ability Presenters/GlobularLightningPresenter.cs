@@ -29,9 +29,9 @@ namespace Assets.Source.Game.Scripts
             AddListener();
         }
 
-        protected override void OnGamePaused()
+        protected override void OnGamePaused(bool state)
         {
-            base.OnGamePaused();
+            base.OnGamePaused(state);
 
             if (_blastThrowingCoroutine != null)
                 _coroutineRunner.StopCoroutine(_blastThrowingCoroutine);
@@ -40,9 +40,9 @@ namespace Assets.Source.Game.Scripts
                 _coroutineRunner.StopCoroutine(_damageDealCoroutine);
         }
 
-        protected override void OnGameResumed()
+        protected override void OnGameResumed(bool state)
         {
-            base.OnGameResumed();
+            base.OnGameResumed(state);
 
             if (_blastThrowingCoroutine != null)
                 _blastThrowingCoroutine = _coroutineRunner.StartCoroutine(RotateSpell());

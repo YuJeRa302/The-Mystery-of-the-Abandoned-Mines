@@ -33,9 +33,9 @@ public class SnowfallPresenter : AbilityPresenter
         AddListener();
     }
 
-    protected override void OnGamePaused()
+    protected override void OnGamePaused(bool state)
     {
-        base.OnGamePaused();
+        base.OnGamePaused(state);
 
         if (_blastThrowingCoroutine != null)
             _coroutineRunner.StopCoroutine(_blastThrowingCoroutine);
@@ -47,9 +47,9 @@ public class SnowfallPresenter : AbilityPresenter
             _coroutineRunner.StopCoroutine(_throwSpellCorountine);
     }
 
-    protected override void OnGameResumed()
+    protected override void OnGameResumed(bool state)
     {
-        base.OnGameResumed();
+        base.OnGameResumed(state);
 
         if (_blastThrowingCoroutine != null)
             _blastThrowingCoroutine = _coroutineRunner.StartCoroutine(ThrowingBlast());

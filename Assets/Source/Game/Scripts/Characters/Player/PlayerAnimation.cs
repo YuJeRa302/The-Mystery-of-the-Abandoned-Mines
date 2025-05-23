@@ -71,13 +71,13 @@ namespace Assets.Source.Game.Scripts
             _gameLoopService.GameResumed -= OnGameResumed;
         }
 
-        private void OnGamePaused()
+        private void OnGamePaused(bool state)
         {
             if (_moveCorontine != null)
                 _coroutineRunner.StopCoroutine(_moveCorontine);
         }
 
-        private void OnGameResumed()
+        private void OnGameResumed(bool state)
         {
             if (_moveCorontine != null)
                 _coroutineRunner.StopCoroutine(_moveCorontine);

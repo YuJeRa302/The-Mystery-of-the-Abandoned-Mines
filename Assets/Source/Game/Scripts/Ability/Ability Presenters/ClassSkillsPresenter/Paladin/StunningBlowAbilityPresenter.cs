@@ -59,9 +59,9 @@ public class StunningBlowAbilityPresenter : AbilityPresenter
         CastBlow();
     }
 
-    protected override void OnGameResumed()
+    protected override void OnGameResumed(bool state)
     {
-        base.OnGameResumed();
+        base.OnGameResumed(state);
     }
 
     private void CastBlow()

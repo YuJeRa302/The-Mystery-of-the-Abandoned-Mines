@@ -13,12 +13,9 @@ namespace Assets.Source.Game.Scripts
         private float _currentDuration;
         private float _defaultDuration;
         private int _currentAbilityValue;
-        private float _abilityCooldownReduction;
-        private float _abilityDuration;
         private float _moveSpeed;
         private float _reduceHealth;
         private float _chance;
-        private int _abilityValue;
         private int _regeneration;
         private int _defailtDamage;
         private int _abilityDamage;
@@ -69,12 +66,9 @@ namespace Assets.Source.Game.Scripts
             ICoroutineRunner coroutineRunner)
         {
             AbilityAttribute = abilityAttributeData;
-            _abilityValue = abilityValue;
             FillAbilityParameters(abilityAttributeData, currentLevel);
             AudioClip = abilityAttributeData.AudioClip;
             _coroutineRunner = coroutineRunner;
-            _abilityCooldownReduction = abilityCooldownReduction;
-            _abilityDuration = abilityDuration;
             _isAutoCast = isAutoCast;
             TypeAbility = abilityAttributeData.TypeAbility;
             TypeAttackAbility = (abilityAttributeData as AttackAbilityData) != null ? (abilityAttributeData as AttackAbilityData).TypeAttackAbility : 0;
@@ -82,7 +76,7 @@ namespace Assets.Source.Game.Scripts
             TypeMagic = abilityAttributeData.TypeMagic;
             MaxLevel = abilityAttributeData.CardParameters.Count;
             _spellRadius = (abilityAttributeData as AttackAbilityData).SpellRadius;
-            UpdateAbilityParamters();
+            UpdateAbilityParamters(abilityDuration, abilityValue, abilityCooldownReduction);
         }
 
         public Ability(
@@ -94,19 +88,16 @@ namespace Assets.Source.Game.Scripts
             bool isAutoCast,
             ICoroutineRunner coroutineRunner)
         {
-            _abilityValue = abilityValue;
             FillLegendaryAbilityParameters(legendaryAbilityData);
             AudioClip = legendaryAbilityData.AudioClip;
             _coroutineRunner = coroutineRunner;
-            _abilityCooldownReduction = abilityCooldownReduction;
-            _abilityDuration = abilityDuration;
             _isAutoCast = isAutoCast;
             TypeAbility = abilityAttributeData.TypeAbility;
             TypeAttackAbility = (abilityAttributeData as AttackAbilityData) != null ? (abilityAttributeData as AttackAbilityData).TypeAttackAbility : 0;
             TypeUpgradeMagic = abilityAttributeData.TypeUpgradeMagic;
             TypeMagic = abilityAttributeData.TypeMagic;
             MaxLevel = abilityAttributeData.CardParameters.Count;
-            UpdateAbilityParamters();
+            UpdateAbilityParamters(abilityDuration, abilityValue, abilityCooldownReduction);
         }
 
         public Ability(ClassAbilityData classAbilityData, bool isAutoCast, int currentLvl, ICoroutineRunner coroutineRunner)
@@ -142,12 +133,19 @@ namespace Assets.Source.Game.Scripts
                 _coroutineRunner.StopCoroutine(_coolDown);
         }
 
-        public void Upgrade(AbilityAttributeData abilityAttributeData, int currentLevel)
+        public void Upgrade(AbilityAttributeData abilityAttributeData, int currentLevel, int abilityDuration, int abilityDamage, int abilityCooldownReduction)
         {
             FillAbilityParameters(abilityAttributeData, currentLevel);
-            UpdateAbilityParamters();
+            UpdateAbilityParamters(abilityDuration, abilityDamage, abilityCooldownReduction);
             CurrentLevel = currentLevel;
             AbilityUpgraded?.Invoke(_defaultCooldown);
+        }
+
+        public void UpdateAbilityParamters(float abilityDuration, int abilityDamage, float abilityCooldownReduction)
+        {
+            _defaultCooldown -= abilityCooldownReduction;
+            _defaultDuration += abilityDuration;
+            _currentAbilityValue += abilityDamage;
         }
 
         private void FillAbilityParameters(AbilityAttributeData abilityAttributeData, int currentLevel)
@@ -223,17 +221,6 @@ namespace Assets.Source.Game.Scripts
                 ApplyDamageSource();
 
             _damageSource.ChangeDamage(_abilityDamage);
-        }
-
-        private void UpdateAbilityParamters()
-        {
-            _defaultCooldown -= _abilityCooldownReduction;
-            
-            if (_defaultCooldown <= 0)
-                _defaultCooldown = 1f;
-
-            _defaultDuration += _abilityDuration;
-            _currentAbilityValue += _abilityValue;
         }
 
         private void ApplyDamageSource() 

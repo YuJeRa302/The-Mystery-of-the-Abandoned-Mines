@@ -127,6 +127,11 @@ namespace Assets.Source.Game.Scripts
             _rerollPoints = Mathf.Clamp(_rerollPoints--, _minValue, _rerollPoints);
         }
 
+        public void GetReward(int value) 
+        {
+            _rerollPoints += value;
+        }
+
         public int GetMaxExperienceValue(int currentLevel)
         {
             _levels.TryGetValue(currentLevel, out int maxLevelExperience);

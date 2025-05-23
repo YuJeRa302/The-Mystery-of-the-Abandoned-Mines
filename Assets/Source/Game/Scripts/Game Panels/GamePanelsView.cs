@@ -46,7 +46,6 @@ namespace Assets.Source.Game.Scripts
 
         protected virtual void CloseRewardAds()
         {
-            gameObject.SetActive(false);
             RewardAdClosed?.Invoke();
         }
 

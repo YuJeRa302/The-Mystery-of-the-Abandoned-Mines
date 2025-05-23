@@ -1,4 +1,5 @@
 using DG.Tweening;
+using Lean.Localization;
 using System;
 using UnityEngine;
 using YG;
@@ -20,6 +21,10 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private KnowledgeBaseView _knowledgeBaseView;
         [SerializeField] private ConfigData _configData;
         [SerializeField] private LeaderboardView _leaderboardView;
+        [Space(20)]
+        [SerializeField] private LeanLocalization _leanLocalization;
+        [Space(20)]
+        [SerializeField] private GameObject _canvasLoader;
 
         private SaveAndLoader _saveAndLoad;
         private TemporaryData _temporaryData;
@@ -29,16 +34,10 @@ namespace Assets.Source.Game.Scripts
         private void Start()
         {
             InitYandexGameEntities();
-            AddListeners();
 
             if (_temporaryData == null)
                 if(YandexGame.SDKEnabled)
                     Build();
-        }
-
-        private void OnDestroy()
-        {
-            RemoveListeners();
         }
         
         public void Initialize(TemporaryData temporaryData)
@@ -68,16 +67,6 @@ namespace Assets.Source.Game.Scripts
             _temporaryData.SetUpgradesData(_upgradesView.UpgradeDatas);
         }
 
-        private void AddListeners()
-        {
-            YandexGame.onVisibilityWindowGame += OnVisibilityWindowGame;
-        }
-
-        private void RemoveListeners() 
-        {
-            YandexGame.onVisibilityWindowGame -= OnVisibilityWindowGame;
-        }
-
         private void InitYandexGameEntities()
         {
             YandexGame.GameplayStart();
@@ -86,8 +75,8 @@ namespace Assets.Source.Game.Scripts
 
         private void CreateMenuEntities() 
         {
-            SettingsModel settingsModel = new SettingsModel(_temporaryData);
-            LevelsModel levelsModel = new LevelsModel(_temporaryData, this);
+            SettingsModel settingsModel = new SettingsModel(_temporaryData, _leanLocalization, _audioPlayer);
+            LevelsModel levelsModel = new LevelsModel(_temporaryData, this, _canvasLoader);
             UpgradeModel upgradeModel = new UpgradeModel(_temporaryData);
             MenuModel menuModel = new MenuModel();
             WeaponsModel weaponsModel = new WeaponsModel(_temporaryData);
@@ -112,32 +101,6 @@ namespace Assets.Source.Game.Scripts
             _classAbilityView.Initialize(classAbilityViewModel, _audioPlayer);
             _knowledgeBaseView.Initialize(knowledgeBaseViewModel, _audioPlayer);
             _leaderboardView.Initialize(leaderboardViewModel);
-        }
-
-        private void OnVisibilityWindowGame(bool state)
-        {
-            if (state == true)
-                ResumeGame(state);
-            else
-                PauseGame(state);
-        }
-
-        private void ResumeGame(bool state)
-        {
-            if (_temporaryData.IsGamePause == true)
-                Time.timeScale = _pauseValue;
-            else
-                Time.timeScale = _resumeValue;
-
-            _audioPlayer.MuteSoundPayse(!state);
-           // GameResumed?.Invoke();
-        }
-
-        private void PauseGame(bool state)
-        {
-            _audioPlayer.MuteSoundPayse(!state);
-            Time.timeScale = _pauseValue;
-           // GamePaused?.Invoke();
         }
     }
 }

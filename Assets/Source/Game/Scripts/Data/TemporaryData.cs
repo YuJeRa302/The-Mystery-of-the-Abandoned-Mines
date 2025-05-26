@@ -20,11 +20,6 @@ public class TemporaryData
         InitData(configData);
     }
 
-    public TemporaryData(GameInfo gameInfo)
-    {
-        InitData(gameInfo);
-    }
-
     public TemporaryData(SavesYG savesYG)
     {
         InitData(savesYG);
@@ -53,6 +48,7 @@ public class TemporaryData
     {
         _playerScore += player.Score;
         Coins += player.Coins;
+        UpgradePoints += player.UpgradePoints;
 
         CurrentLevelState = new LevelState()
         {
@@ -192,8 +188,6 @@ public class TemporaryData
                 };
             }
         }
-
-        ChangedData?.Invoke();
     }
 
     public void SetPlayerClassData(PlayerClassData playerClassData) 
@@ -204,7 +198,6 @@ public class TemporaryData
     public void SetUpgradePoints(int value)
     {
         UpgradePoints = value;
-        ChangedData?.Invoke();
     }
 
     public void SetUpgradeState(List<UpgradeState> upgradeStates)
@@ -271,19 +264,16 @@ public class TemporaryData
     public void SetCurrentLanguage(string value)
     {
         _language = value;
-        ChangedData?.Invoke();
     }
 
     public void SetAmbientVolume(float value)
     {
         AmbientVolume = value;
-        ChangedData?.Invoke();
     }
 
     public void SetInterfaceVolume(float value)
     {
         InterfaceVolume = value;
-        ChangedData?.Invoke();
     }
 
     public void SetMuteStateSound(bool value) 
@@ -314,20 +304,7 @@ public class TemporaryData
         SetUpgradeState(configData.UpgradeStates);
         _levelStates = configData.DefaultLevelState;
         _weaponStates = configData.DefaultWeaponState;
-    }
-
-    private void InitData(GameInfo gameInfo)
-    {
-        SetAmbientVolume(gameInfo.AmbientVolume);
-        SetInterfaceVolume(gameInfo.SfxVolumeVolume);
-        SetCurrentLanguage(gameInfo.DefaultLanguage);
-        SetUpgradePoints(gameInfo.UpgradePoints);
-        SetMuteStateSound(gameInfo.IsMuted);
-        SetCoinsCount(gameInfo.Coins);
-        SetClassAbilityState(gameInfo.ClassAbilityStates);
-        SetUpgradeState(gameInfo.UpgradeStates);
-        _levelStates = gameInfo.DefaultLevelState;
-        _weaponStates = gameInfo.DefaultWeaponState;
+        ChangedData?.Invoke();
     }
 
     private void InitData(SavesYG savesYG)
@@ -342,5 +319,6 @@ public class TemporaryData
         SetUpgradeState(savesYG.UpgradeStates);
         _levelStates = savesYG.DefaultLevelState;
         _weaponStates = savesYG.DefaultWeaponState;
+        ChangedData?.Invoke();
     }
 }

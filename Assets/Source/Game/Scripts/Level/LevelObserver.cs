@@ -1,4 +1,5 @@
 using IJunior.TypedScenes;
+using Lean.Localization;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -26,6 +27,8 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private AudioPlayer _audioPlayerService;
         [Space(20)]
         [SerializeField] private GameObject _canvasLoader;
+        [Space(20)]
+        [SerializeField] private LeanLocalization _leanLocalization;
 
         private bool _canSeeDoor;
         private EnemySpawner _enemySpawner;
@@ -43,6 +46,7 @@ namespace Assets.Source.Game.Scripts
         private SaveAndLoader _saveAndLoad;
         private AsyncOperation _load;
         private TemporaryData _temporaryData;
+        private bool _isWinGame;
 
         public event Action<bool> GameEnded;
         public event Action GameClosed;
@@ -141,7 +145,7 @@ namespace Assets.Source.Game.Scripts
 
         private void CreateGamePanelEntities(TemporaryData temporaryData)
         {
-            _gamePanelsModel = new GamePanelsModel(temporaryData, _player, this, _cardLoader, _audioPlayerService);
+            _gamePanelsModel = new GamePanelsModel(temporaryData, _player, this, _cardLoader, _audioPlayerService, _leanLocalization);
             _gamePanelsViewModel = new GamePanelsViewModel(_gamePanelsModel);
         }
 
@@ -251,6 +255,7 @@ namespace Assets.Source.Game.Scripts
 
         private void OnGameClosed()
         {
+            _temporaryData.SaveProgress(_player, _isWinGame);
             StartCoroutine(LoadScreenLevel(Menu.LoadAsync(_temporaryData)));
         }
 
@@ -368,16 +373,15 @@ namespace Assets.Source.Game.Scripts
         {
             CloseAllGamePanels();
             _roomPlacer.Clear();
-            _temporaryData.SaveProgress(_player, true);
-            GameEnded?.Invoke(true);
+            _isWinGame = true;
+            GameEnded?.Invoke(_isWinGame);
         }
 
         private void LoseGame() 
         {
             CloseAllGamePanels();
             _roomPlacer.Clear();
-            _temporaryData.SaveProgress(_player, false);
-            GameEnded?.Invoke(false);
+            GameEnded?.Invoke(_isWinGame);
         }
 
         private IEnumerator LoadScreenLevel(AsyncOperation asyncOperation)

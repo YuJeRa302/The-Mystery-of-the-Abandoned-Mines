@@ -14,7 +14,7 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private Button _buttonReroll;
         [SerializeField] private Button _buttonAds;
         [SerializeField] private Button _buttonTest;
-        [SerializeField] private TMP_Text _countRerollPointsText;
+        [SerializeField] private Text _countRerollPointsText;
 
         private List<CardView> _cardViews = new();
 

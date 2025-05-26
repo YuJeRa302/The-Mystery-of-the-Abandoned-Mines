@@ -93,7 +93,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6281aa8c084c7934d918b7dba2a17c9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _valueLeanLocalizedText: {fileID: 7609513145881989565}
   _nameStats: {fileID: 7609513145881989565}
   _valueCurrentLvlText: {fileID: 3175629290249852700}
   _valueNextLvlText: {fileID: 3029283143498044454}
@@ -201,7 +200,7 @@ MonoBehaviour:
     m_FontStyle: 0
     m_BestFit: 1
     m_MinSize: 10
-    m_MaxSize: 26
+    m_MaxSize: 30
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -355,7 +354,7 @@ MonoBehaviour:
     m_FontStyle: 0
     m_BestFit: 1
     m_MinSize: 10
-    m_MaxSize: 26
+    m_MaxSize: 30
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -510,7 +509,7 @@ MonoBehaviour:
     m_FontStyle: 0
     m_BestFit: 1
     m_MinSize: 10
-    m_MaxSize: 26
+    m_MaxSize: 30
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1

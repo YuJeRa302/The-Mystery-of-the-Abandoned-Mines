@@ -1,7 +1,7 @@
 public interface IAudioPlayerService
 {
-    void PlayMainMenuAmbient();
-    void StopMainMenuAmbient();
+    void PlayAmbient();
+    void StopAmbient();
     void PlayOneShotButtonClickSound();
     void PlayOneShotButtonHoverSound();
     void PlayOneShotPopupSound();

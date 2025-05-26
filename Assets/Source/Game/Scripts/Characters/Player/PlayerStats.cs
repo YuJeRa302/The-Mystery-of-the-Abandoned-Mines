@@ -9,7 +9,7 @@ namespace Assets.Source.Game.Scripts
         private readonly Dictionary<int, int> _levels = new ();
         private readonly Dictionary<int, int> _upgradeLevels = new ();
         private readonly int _maxExperience = 50;
-        private readonly int _maxUpgradeExperience = 1000;
+        private readonly int _maxUpgradeExperience = 500;
         private readonly int _minValue = 0;
         private readonly float _moveSpeedAmplifier = 2f;
         private readonly float _defaultAttackRange = 5f;
@@ -40,6 +40,7 @@ namespace Assets.Source.Game.Scripts
         private float _vampirismValue;
         private float _searchRadius;
         private float _attackRange;
+        private PlayerClassData _classData;
 
         public event Action<int> MaxHealthChanged;
         public event Action<float> HealthReduced;
@@ -56,7 +57,7 @@ namespace Assets.Source.Game.Scripts
 
         public PlayerStats(
             WeaponData weaponData,
-            TypeAttackRange typeAttackRange,
+            PlayerClassData calss,
             int currentLevel,
             int rerollPoints,
             int armor,
@@ -71,9 +72,10 @@ namespace Assets.Source.Game.Scripts
             _maxMoveSpeed = _moveSpeed * _moveSpeedAmplifier;
             _regeneration = regeneration;
             _countKillEnemy = countKillEnemy;
+            _classData = calss;
             GenerateLevelPlayer(_maxPlayerLevel);
             GenerateUpgradeLevel(_maxUpgradeLevel);
-            ApplyWeaponParameters(weaponData, typeAttackRange);
+            ApplyWeaponParameters(weaponData, calss.TypeAttackRange);
         }
 
         public DamageSource DamageSource => _damageSource;
@@ -92,6 +94,7 @@ namespace Assets.Source.Game.Scripts
         public float VampirismValue => _vampirismValue;
         public float SearchRadius => _searchRadius;
         public float AttackRange => _attackRange;
+        public PlayerClassData PlayerClassData => _classData;
 
         public void Dispose()
         {

@@ -18,7 +18,6 @@ public class DragonFlame : MonoBehaviour
         {
             if (other.gameObject.TryGetComponent(out Player player))
             {
-                Debug.Log("Player");
                 player.TakeDamage(_damage);
                 _lastDamageTime = Time.time;
             }

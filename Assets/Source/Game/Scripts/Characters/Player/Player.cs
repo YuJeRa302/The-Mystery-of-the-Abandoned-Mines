@@ -42,6 +42,7 @@ namespace Assets.Source.Game.Scripts
         private PlayerHealth _playerHealth;
         private PlayerWallet _wallet;
         private PlayerMovement _playerMovement;
+        private AudioPlayer _audioPlayer;
 
         public event Action PlayerLevelChanged;
         public event Action PlayerDied;
@@ -85,9 +86,11 @@ namespace Assets.Source.Game.Scripts
             WeaponData weaponData,
             AbilityFactory abilityFactory,
             AbilityPresenterFactory abilityPresenter,
-            TemporaryData temporaryData, AudioPlayer audioPlayer)
+            TemporaryData temporaryData, 
+            AudioPlayer audioPlayer)
         {
             _playerView = playerView;
+            _audioPlayer = audioPlayer;
             _miniMapIcon.sprite = playerClassData.Icon;
             _playerHealth = new PlayerHealth(this, levelObserver, levelObserver, _currentHealth);
             _playerAnimation = new PlayerAnimation(_animator, _rigidbody, _moveSpeed, playerClassData, this, levelObserver);
@@ -95,7 +98,7 @@ namespace Assets.Source.Game.Scripts
 
             _playerStats = new PlayerStats(
                 weaponData, 
-                temporaryData.PlayerClassData.TypeAttackRange,
+                temporaryData.PlayerClassData,
                 _currentLevel, 
                 _rerollPoints, 
                 _armor, 
@@ -114,13 +117,12 @@ namespace Assets.Source.Game.Scripts
             _playerAttacker = new PlayerAttacker(_shotPoint, this, temporaryData.PlayerClassData.TypeAttackRange, weaponData, this, levelObserver, _poolBullet);
             _wallet = new PlayerWallet();
             _cardDeck = new CardDeck(temporaryData.LevelData.IsContractLevel);
-            _playerAbilityCaster = new PlayerAbilityCaster(abilityFactory, abilityPresenter, this, temporaryData, audioPlayer);
+            _playerAbilityCaster = new PlayerAbilityCaster(abilityFactory, abilityPresenter, this, temporaryData, _audioPlayer);
             _playerView.Initialize(temporaryData.PlayerClassData.Icon, _throwAbilityPoint, _playerAbilityContainer, _weaponAbilityContainer);
             SetPlayerStats();
             AddListeners();
             _playerStats.UpgradePlayerStats(temporaryData.UpgradeStates, temporaryData.UpgradeDatas);
             _playerAbilityCaster.Initialize();
-            Debug.Log("_wallet.CurrentCoins" + _wallet.CurrentCoins);
         }
 
         public void InitStateCardDeck(List<CardData> cardDatas)
@@ -456,12 +458,12 @@ namespace Assets.Source.Game.Scripts
         {
             _playerAttacker.AttackEnemy();
             _playerWeapons.ChangeTrailEffect();
+            _audioPlayer.PlayCharesterAudio(_playerStats.PlayerClassData.AttackEffect);
         }
 
         private void AttackEnd()
         {
             _playerMovement.ChangeRotate(true);
-            Debug.Log("End attack");
         }
 
         private void OnAttack()

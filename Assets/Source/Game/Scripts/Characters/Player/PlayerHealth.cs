@@ -10,14 +10,13 @@ namespace Assets.Source.Game.Scripts
         private readonly ICoroutineRunner _coroutineRunner;
         private readonly IGameLoopService _gameLoopService;
         private readonly int _minHealth = 0;
+        private readonly int _minDamage = 2;
 
         private int _maxHealth = 100;
         private int _currentHealth;
         private int _delayHealing = 1;
         private Coroutine _regeneration;
         private Coroutine _timeReduce;
-        private float _timeAfterLastAttack = 0;
-        private float _maxTimeAfterAttack = 0f;
         private bool _canHealind = true;
 
         public event Action DamageTaked;
@@ -47,22 +46,14 @@ namespace Assets.Source.Game.Scripts
 
             if (_currentHealth > _minHealth)
             {
-                if(_timeAfterLastAttack <= _minHealth)
-                {
-                    DamageTaked?.Invoke();
-                    var currentDamage = (damage - _player.Armor);
-                    _currentHealth = Mathf.Clamp(_currentHealth - currentDamage, _minHealth, _maxHealth);
-                    HealthChanged?.Invoke(_currentHealth);
-                    _timeAfterLastAttack = _maxTimeAfterAttack;
+                DamageTaked?.Invoke();
+                int currentDamage = damage - _player.Armor;
 
-                    if (_timeReduce == null)
-                        _timeReduce = _coroutineRunner.StartCoroutine(ReduceTimeAfterLastAttack());
-                }
-                else
-                {
-                    if (_timeReduce == null)
-                        _timeReduce = _coroutineRunner.StartCoroutine(ReduceTimeAfterLastAttack());
-                }
+                if (currentDamage <= 1)
+                    currentDamage = _minDamage;
+
+                _currentHealth = Mathf.Clamp(_currentHealth - currentDamage, _minHealth, _maxHealth);
+                HealthChanged?.Invoke(_currentHealth);
             }
         }
 
@@ -139,10 +130,7 @@ namespace Assets.Source.Game.Scripts
                 _coroutineRunner.StopCoroutine(_timeReduce);
 
             if (_canHealind)
-            {
                 _regeneration = _coroutineRunner.StartCoroutine(RegenerationHealth());
-                _timeReduce = _coroutineRunner.StartCoroutine(ReduceTimeAfterLastAttack());
-            }
         }
 
         private void OnHealthChanged(int value)
@@ -163,17 +151,6 @@ namespace Assets.Source.Game.Scripts
             }
 
             _regeneration = null;
-        }
-
-        private IEnumerator ReduceTimeAfterLastAttack()
-        {
-            while (_timeAfterLastAttack > _minHealth)
-            {
-                _timeAfterLastAttack -= Time.deltaTime;
-                yield return null;
-            }
-
-            _timeReduce = null;
         }
 
         private void SetPlayerDie()

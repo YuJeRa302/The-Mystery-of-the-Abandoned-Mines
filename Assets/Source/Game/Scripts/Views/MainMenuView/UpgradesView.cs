@@ -12,7 +12,7 @@ public class UpgradesView : MonoBehaviour
     private readonly string _upgradeNameText = "UpgradeName";
     private readonly string _buttonResetText = "ButtonReset";
     private readonly string _nameText = "Name";
-    private readonly string _descriptionText = "Description";
+    private readonly string _descriptionText = "DescriptionsStats";
     private readonly float _delay = 0.25f;
     private readonly float _duration = 1f;
     private readonly int _breakValue = -1;
@@ -30,7 +30,7 @@ public class UpgradesView : MonoBehaviour
     [SerializeField] private Transform _upgradesContainer;
     [SerializeField] private Transform _statsConteiner;
     [SerializeField] private ClassAbilityStatsView _statsViewPrafab;
-    [SerializeField] private TMP_Text _curretnPrice;
+    [SerializeField] private Text _curretnPrice;
     [Space(20)]
     [SerializeField] private List<UpgradeData> _defaultUpgradeData;
     [Space(20)]
@@ -229,7 +229,6 @@ public class UpgradesView : MonoBehaviour
     private void OnExitButtonClicked()
     {
         _audioPlayerService?.PlayOneShotButtonClickSound();
-        _upgradeViewModel.UpdateTemporaryData();
         gameObject.SetActive(false);
 
         if (_coroutine != null)

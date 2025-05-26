@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.Source.Game.Scripts
@@ -10,7 +11,7 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private PlateDiscovery _plateDiscovery;
         [SerializeField] private int _minValue;
         [SerializeField] private int _maxValue;
-
+        [SerializeField] private List<GameObject> _labyrinth;
 
         public event Action RoomCompleted;
         public event Action<int> RewardSeted;
@@ -28,9 +29,17 @@ namespace Assets.Source.Game.Scripts
         private void SetRoomComplete(Player player)
         {
             RoomCompleted?.Invoke();
-            int curentReward = _rnd.Next(_maxValue, _maxValue);
+            int curentReward = _rnd.Next(_minValue, _maxValue);
             RewardSeted?.Invoke(curentReward);
-           // SetRoomComplitIcon();
+            RemoveLabyrinth();
+        }
+
+        private void RemoveLabyrinth()
+        {
+            foreach (var wall in _labyrinth)
+            {
+                wall.SetActive(false);
+            }
         }
     }
 }

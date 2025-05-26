@@ -70,6 +70,7 @@ public class UpgradeModel : IDisposable
                 _currentStats.CurrentLevel++;
 
             InvokedStatsUpgrade?.Invoke(_currentStats);
+            _temporaryData.SetUpgradeState(_upgradeStates);
         }
         else
         {

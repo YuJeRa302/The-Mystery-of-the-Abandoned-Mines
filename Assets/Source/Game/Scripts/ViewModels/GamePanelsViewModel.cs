@@ -13,7 +13,7 @@ namespace Assets.Source.Game.Scripts
             _gamePanelsModel.StageCompleted += () => StageCompleted?.Invoke();
             _gamePanelsModel.CardPoolCreated += () => CardPoolCreated?.Invoke();
 
-            _gamePanelsModel.LootRoomComplitetd += OnLootRoomComplit;
+            _gamePanelsModel.LootRoomComplitetd += OnLootRoomReward;
 
             _gamePanelsModel.GameEnded += (bool state) => GameEnded?.Invoke(state);
             _gamePanelsModel.CardPanelOpened += () => CardPanelOpened?.Invoke();
@@ -41,6 +41,7 @@ namespace Assets.Source.Game.Scripts
         public void SetMuteStatus(bool value) => _gamePanelsModel.SetMute(value);
         public void GetRerollPointsReward() => _gamePanelsModel.GetRerollPointsReward();
         public void GetEndGameReward() => _gamePanelsModel.GetEndGameReward();
-        private void OnLootRoomComplit(int reward) => LootRoomComplitetd?.Invoke(reward);
+        public void GetLootRoomRewaed(int reward) => _gamePanelsModel.GetLootRoomReward(reward);
+        private void OnLootRoomReward(int reward) => LootRoomComplitetd?.Invoke(reward);
     }
 }

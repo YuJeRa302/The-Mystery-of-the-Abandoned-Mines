@@ -8,8 +8,8 @@ namespace Assets.Source.Game.Scripts
 {
     public abstract class RoomView : MonoBehaviour
     {
-        private readonly Vector3 _standartCameraArial = new Vector3(0, 1.5f, 1.6f);
-        private readonly Vector3 _maxCameraArial = new Vector3(1f, 1.5f, 1.6f);
+        private readonly Vector3 _standartCameraArial = new Vector3(0f, 0f, 1.6f);
+        private readonly Vector3 _maxCameraArial = new Vector3(1f, 0f, 1.6f);
 
         [Header("Room Lights")]
         [SerializeField] private List<Light> _lights;

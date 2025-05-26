@@ -10,7 +10,7 @@ public class PlayerMovement : IDisposable
     private readonly ICoroutineRunner _coroutineRunner;
     private readonly IGameLoopService _gameLoopService;
     private readonly Player _player;
-    private readonly float _amplifierJoystick = 12.7f;
+    private readonly float _amplifierJoystick =1f;
 
     private Camera _camera;
     private VariableJoystick _variableJoystick;
@@ -35,14 +35,21 @@ public class PlayerMovement : IDisposable
         _coroutineRunner = coroutineRunner;
         _rigidbody = rigidbody;
         _camera = camera;
-        _variableJoystick = variableJoystick;
-        CreateInputSystem();
-        _move = _playerInputSystem.Player.Move;
 
         if (YandexGame.EnvironmentData.isDesktop)
+        {
+            CreateInputSystem();
+            _move = _playerInputSystem.Player.Move;
             _movement = _coroutineRunner.StartCoroutine(DesktopMove());
+        }
         else
+        {
+            _variableJoystick = variableJoystick;
             _movement = _coroutineRunner.StartCoroutine(MobileMove());
+        }
+
+        //_variableJoystick = variableJoystick;
+        //_movement = _coroutineRunner.StartCoroutine(MobileMove());
 
         AddListeners();
     }
@@ -113,20 +120,10 @@ public class PlayerMovement : IDisposable
             _coroutineRunner.StopCoroutine(_movement);
 
         if (_canMove)
-            _movement = _coroutineRunner.StartCoroutine(DesktopMove());
-    }
-
-    private IEnumerator MobileMove()
-    {
-        while (_variableJoystick != null)
-        {
-            float mobileSpeed = _player.MoveSpeed * _amplifierJoystick;
-            _direction = Vector3.forward * _variableJoystick.Vertical + Vector3.right * _variableJoystick.Horizontal;
-            _rigidbody.AddForce(_direction * mobileSpeed * Time.fixedDeltaTime, ForceMode.VelocityChange);
-            MobileLookAt();
-
-            yield return null;
-        }
+            if (YandexGame.EnvironmentData.isDesktop)
+                _movement = _coroutineRunner.StartCoroutine(DesktopMove());
+            else
+                _movement = _coroutineRunner.StartCoroutine(MobileMove());
     }
 
     private void MobileLookAt()
@@ -172,12 +169,34 @@ public class PlayerMovement : IDisposable
             else
                 _rigidbody.angularVelocity = Vector3.zero;
         }
-        else
-        {
-            Debug.Log("Can't");
-        }
 
         _rigidbody.velocity = new Vector3(_rigidbody.velocity.x, 0, _rigidbody.velocity.z);
+    }
+
+    private IEnumerator MobileMove()
+    {
+        while (_variableJoystick != null)
+        {
+            Vector2 joystickInput = new Vector2(_variableJoystick.Horizontal, _variableJoystick.Vertical);
+            _direction += joystickInput.x * GetCameraRight(_camera) * _player.MoveSpeed;
+            _direction += joystickInput.y * GetCameraForward(_camera) * _player.MoveSpeed;
+            _rigidbody.AddForce(_direction, ForceMode.Impulse);
+            _direction = Vector3.zero;
+
+            if (_rigidbody.velocity.y < 0f)
+                _rigidbody.velocity -= Vector3.down * Physics.gravity.y * Time.fixedDeltaTime;
+
+            Vector3 horizontalVelocity = _rigidbody.velocity;
+            horizontalVelocity.y = 0;
+
+            if (horizontalVelocity.sqrMagnitude > _player.MaxMoveSpeed * _player.MaxMoveSpeed)
+                _rigidbody.velocity = horizontalVelocity.normalized * _player.MaxMoveSpeed + Vector3.up * _rigidbody.velocity.y;
+
+            _rigidbody.velocity = new Vector3(_rigidbody.velocity.x, 0, _rigidbody.velocity.z);
+            MobileLookAt();
+
+            yield return null;
+        }
     }
 
     private IEnumerator DesktopMove()
@@ -186,7 +205,6 @@ public class PlayerMovement : IDisposable
         {
             _direction += _move.ReadValue<Vector2>().x * GetCameraRight(_camera) * _player.MoveSpeed;
             _direction += _move.ReadValue<Vector2>().y * GetCameraForward(_camera) * _player.MoveSpeed;
-
             _rigidbody.AddForce(_direction, ForceMode.Impulse);
             _direction = Vector3.zero;
 

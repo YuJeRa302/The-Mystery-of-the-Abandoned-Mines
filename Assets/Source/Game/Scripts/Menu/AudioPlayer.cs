@@ -16,10 +16,11 @@ public class AudioPlayer : MonoBehaviour, IAudioPlayerService
         _sfxAudioSource.PlayOneShot(audioClip);
     }
 
-    public void PlayMainMenuAmbient()
+    public void PlayAmbient()
     {
         _ambientAudioSource.clip = _menuAmbientAudioClip;
         _ambientAudioSource.Play();
+        Debug.Log("PLAY AUDIO");
     }
 
     public void PlayOneShotPopupSound()
@@ -47,7 +48,7 @@ public class AudioPlayer : MonoBehaviour, IAudioPlayerService
         _sfxAudioSource.volume = value / 100;
     }
 
-    public void StopMainMenuAmbient()
+    public void StopAmbient()
     {
         _ambientAudioSource.Stop();
     }

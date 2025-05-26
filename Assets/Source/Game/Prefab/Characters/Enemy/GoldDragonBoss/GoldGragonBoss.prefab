@@ -641,8 +641,8 @@ MonoBehaviour:
   _additionalAttackDelay: 7
   _additionalAttackRange: 10
   _specilaAttackDelay: 10
-  _additionalAttackDamage: 0
-  _specilAttackDamage: 10
+  _additionalAttackDamage: 30
+  _specilAttackDamage: 30
   _dragonFlame: {fileID: 5470995749767063128}
   _dragonSpell: {fileID: 9120195942496714565}
   _damageSpell: 20
@@ -19155,7 +19155,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0411dc809faaeda439721da81fdea880, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _damage: 3
+  _damage: 4
 --- !u!1001 &6222571702215848256
 PrefabInstance:
   m_ObjectHideFlags: 0

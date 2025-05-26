@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 using YG;
-using static UnityEngine.InputSystem.LowLevel.InputStateHistory;
+using Lean.Localization;
 
 namespace Assets.Source.Game.Scripts
 {
@@ -28,7 +28,7 @@ namespace Assets.Source.Game.Scripts
         [Space(20)]
         [SerializeField] private Sprite _loseGameSprite;
         [SerializeField] private Sprite _winGameSprite;
-        [SerializeField] private Text _gameStateText;
+        [SerializeField] private LeanLocalizedText _gameStateText;
         [SerializeField] private Image _imageGameState;
 
         private bool _isRewardReceived = false;
@@ -56,11 +56,13 @@ namespace Assets.Source.Game.Scripts
         protected override void CloseGame()
         {
             base.CloseGame();
+            _collectButton.onClick.RemoveListener(CloseGame);
             YandexGame.FullscreenShow();
         }
 
         private void OpenRewardPanel(bool gameState)
         {
+            _collectButton.onClick.AddListener(CloseGame);
             CreateViewEntities(gameState);
             base.Open();
         }
@@ -93,12 +95,8 @@ namespace Assets.Source.Game.Scripts
             if (_isLootReward)
             {
                 int cointReward = _currentRewardLoot + _currentRewardLoot;
-
-                DOVirtual.Int(_currentRewardLoot, cointReward, _animationDuration, (value) =>
-                {
-                    _defaultContractRewardCoins.text = value.ToString();
-                });
-
+                SetAnimationText(_currentRewardLoot, cointReward, _defaultContractRewardCoins);
+                GamePanelsViewModel.GetLootRoomRewaed(_currentRewardLoot);
                 _openAdButton.gameObject.SetActive(false);
                 _collectButton.gameObject.SetActive(false);
                 _applayReward.gameObject.SetActive(true);
@@ -106,15 +104,15 @@ namespace Assets.Source.Game.Scripts
             else
             {
                 if (_isRewardReceived == true) 
-            {
-                int coinRewards = GamePanelsViewModel.GetPlayer().Coins + GamePanelsViewModel.GetPlayer().Coins;
-                int upgradePointRewards = GamePanelsViewModel.GetPlayer().UpgradePoints + GamePanelsViewModel.GetPlayer().UpgradePoints;
-                SetAnimationText(GamePanelsViewModel.GetPlayer().Coins, coinRewards, _coinsText);
-                SetAnimationText(GamePanelsViewModel.GetPlayer().UpgradePoints, upgradePointRewards, _upgradePointsText);
-                _openAdButton.gameObject.SetActive(false);
-                _collectButton.gameObject.SetActive(false);
-                _closeGameButton.gameObject.SetActive(true);
-            }
+                {
+                    int coinRewards = GamePanelsViewModel.GetPlayer().Coins + GamePanelsViewModel.GetPlayer().Coins;
+                    int upgradePointRewards = GamePanelsViewModel.GetPlayer().UpgradePoints + GamePanelsViewModel.GetPlayer().UpgradePoints;
+                    SetAnimationText(GamePanelsViewModel.GetPlayer().Coins, coinRewards, _coinsText);
+                    SetAnimationText(GamePanelsViewModel.GetPlayer().UpgradePoints, upgradePointRewards, _upgradePointsText);
+                    _openAdButton.gameObject.SetActive(false);
+                    _collectButton.gameObject.SetActive(false);
+                    _closeGameButton.gameObject.SetActive(true);
+                }
             }
                 RewardAdClosed?.Invoke();
         }
@@ -153,6 +151,7 @@ namespace Assets.Source.Game.Scripts
 
         private void PlayerApplayReward()
         {
+            _collectButton.onClick.RemoveListener(PlayerApplayReward);
             _isLootReward = false;
             _currentRewardLoot = 0;
             _openAdButton.gameObject.SetActive(true);
@@ -212,7 +211,7 @@ namespace Assets.Source.Game.Scripts
         {
             _levelCompleteReward.SetActive(true);
             _imageGameState.sprite = gameState == true ? _winGameSprite : _loseGameSprite;
-            _gameStateText.text = gameState == true ? "Win" : "Lose";
+            _gameStateText.TranslationName = gameState == true ? "Win" : "Lose";
         }
 
         private void CreateCoinsRewards()
@@ -228,6 +227,7 @@ namespace Assets.Source.Game.Scripts
             _defaulContractReward.SetActive(true);
             _currentRewardLoot = reward;
             _defaultContractRewardCoins.text = reward.ToString();
+            _collectButton.onClick.AddListener(PlayerApplayReward);
             Fill();
         }
 

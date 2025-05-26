@@ -24,3 +24,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 06ced82e6f03de74786d204f8525c319, type: 2}
   - {fileID: 11400000, guid: 1101a0e702bdc6444a0f9bc4c677e32b, type: 2}
   _baseWeapon: {fileID: 11400000, guid: 4d660e7d556c44343a5bc39f3b932733, type: 2}
+  _attackEffect: {fileID: 8300000, guid: 02b6d2ec7d12639488714f43038fc3a8, type: 3}

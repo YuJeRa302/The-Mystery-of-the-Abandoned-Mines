@@ -17,7 +17,7 @@ public class SettingsModel
         IsMuted = _temporaryData.MuteStateSound;
         _audioPlayer.AmbientValueChanged(AmbientVolumeValue);
         _audioPlayer.SfxValueChanged(SfxVolumeValue);
-        _audioPlayer.PlayMainMenuAmbient();
+        _audioPlayer.PlayAmbient();
         _audioPlayer.MuteSound(IsMuted);
         SetLanguage(_temporaryData.Language);
     }

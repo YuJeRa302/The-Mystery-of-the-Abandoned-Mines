@@ -12,7 +12,7 @@ namespace Assets.Source.Game.Scripts
         private readonly string _upgradeNameText = "UpgradeName";
         private readonly string _buttonResetText = "ButtonReset";
         private readonly string _nameText = "Name";
-        private readonly string _descriptionText = "Description";
+        private readonly string _descriptionText = "DescriptionsAbility";
 
         [SerializeField] private LeanLocalizedText _description;
         [SerializeField] private LeanLocalizedText _nameAbility;

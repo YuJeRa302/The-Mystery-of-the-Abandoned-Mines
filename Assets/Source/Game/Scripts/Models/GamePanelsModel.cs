@@ -1,3 +1,4 @@
+using Lean.Localization;
 using System;
 using System.Collections.Generic;
 
@@ -13,6 +14,7 @@ namespace Assets.Source.Game.Scripts
         private readonly CardLoader _cardLoader;
         private readonly int _minWeaponCount = 1;
         private readonly AudioPlayer _audioPlayer;
+        private readonly LeanLocalization _leanLocalization;
 
         private List<WeaponData> _weaponDatas = new ();
         private WeaponData _rewardWeaponData;
@@ -23,19 +25,19 @@ namespace Assets.Source.Game.Scripts
             Player player,
             LevelObserver levelObserver,
             CardLoader cardLoader,
-            AudioPlayer audioPlayer)
+            AudioPlayer audioPlayer, LeanLocalization leanLocalization)
         {
             _audioPlayer = audioPlayer;
             _temporaryData = temporaryData;
             _player = player;
             _levelObserver = levelObserver;
             _cardLoader = cardLoader;
+            _leanLocalization = leanLocalization;
             AmbientVolumeValue = _temporaryData.AmbientVolume;
             SfxVolumeValue = _temporaryData.InterfaceVolume;
             _audioPlayer.AmbientValueChanged(AmbientVolumeValue);
             _audioPlayer.SfxValueChanged(SfxVolumeValue);
-            _audioPlayer.PlayMainMenuAmbient();
-            //_audioPlayer.MuteSoundSettings(_temporaryData.MuteStateSound);
+            _audioPlayer.PlayAmbient();
             IsMuted = _temporaryData.MuteStateSound;
             AddListeners();
         }
@@ -138,6 +140,11 @@ namespace Assets.Source.Game.Scripts
             _player.GetEndGameReward();
         }
 
+        public void GetLootRoomReward(int reward)
+        {
+            _player.GetLootRoomReward(reward);
+        }
+
         public void Mute()
         {
             IsMuted = true;
@@ -189,6 +196,7 @@ namespace Assets.Source.Game.Scripts
 
         private void OnGameEnded(bool state)
         {
+            _audioPlayer.StopAmbient();
             GameEnded?.Invoke(state);
         }
 

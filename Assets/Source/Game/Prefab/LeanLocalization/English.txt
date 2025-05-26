@@ -259,3 +259,6 @@ ThisIsJustDescription,"The final breakthrough, the last floors of the deep dunge
 ElvenRuinsDescription,"The ruins of the underground shelter of the once great race of Elves. Here you can get their ancient weapons."
 LairDescription,"The lair of a previously living mighty red dragon. There is a legend that he guarded the passage to another world."
 MaliceDesciption,"An ancient complex of structures. The people who lived here before revered the ancient evil of the legends. However, the legends turned out to be true."
+Win,"Victory"
+Lose,"Defeat"
+Leaderboard,"Leaderboard"

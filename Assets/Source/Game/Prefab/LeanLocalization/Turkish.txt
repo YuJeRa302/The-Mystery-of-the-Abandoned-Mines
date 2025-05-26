@@ -259,3 +259,6 @@ ThisIsJustDescription,"Son acele, derin zindanın son katları kötülükle dolu
 ElvenRuinsDescription,"Bir zamanlar Elflerin büyük ırkının yeraltı sığınağının kalıntıları. Burada eski silahlarını alabilirsiniz."
 LairDescription,"Daha önce yaşamış güçlü kızıl ejderhanın ini. Başka bir dünyaya geçişi koruduğuna dair bir efsane var."
 MaliceDesciption,"Antik yapılar kompleksi. Daha önce burada yaşayan insanlar efsanelerden eski kötülüklere saygı duyuyorlardı. Ancak efsanelerin doğru olduğu ortaya çıktı."
+Win,"Zafer"
+Lose,"Yenilgi"
+Leaderboard,"Lider Tablosu"

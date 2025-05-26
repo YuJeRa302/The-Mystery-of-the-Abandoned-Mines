@@ -16,6 +16,8 @@ namespace Assets.Source.Game.Scripts
         [Space(10)]
         [SerializeField] private List<ClassAbilityData> _classAbilityDatas;
         [SerializeField] private WeaponData _baseWeapon;
+        [Space(10)]
+        [SerializeField] private AudioClip _attackEffect;
 
         public List<ClassAbilityData> ClassAbilityDatas => _classAbilityDatas;
         public string TranslationDescription => _translationDescription;
@@ -26,5 +28,6 @@ namespace Assets.Source.Game.Scripts
         public WeaponData BaseWeapon => _baseWeapon;
         public string TranslationStrengths => _translationStrengths;
         public TypeAttackRange TypeAttackRange => _typeAttackRange;
+        public AudioClip AttackEffect => _attackEffect;
     }
 }

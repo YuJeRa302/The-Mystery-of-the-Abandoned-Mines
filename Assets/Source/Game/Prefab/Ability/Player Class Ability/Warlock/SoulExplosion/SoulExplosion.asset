@@ -18,11 +18,14 @@ MonoBehaviour:
   _description: SoulExplosionDescription
   _buttonView: {fileID: 7547704264931708372, guid: 226be77f080a72f41b3a154b64b3d4ae, type: 3}
   _abilityClassParameters:
-  - Cost: 1000
+  - CurrentLevel: 0
+    Cost: 1000
     Value: 0
-  - Cost: 0
+  - CurrentLevel: 0
+    Cost: 2500
     Value: 0
-  - Cost: 0
+  - CurrentLevel: 0
+    Cost: 5000
     Value: 0
   _parameters:
   - CardParameters:

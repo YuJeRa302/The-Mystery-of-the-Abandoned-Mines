@@ -4705,7 +4705,7 @@ ParticleSystemRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 135420}
   m_Enabled: 1
-  m_CastShadows: 1
+  m_CastShadows: 0
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
@@ -9486,7 +9486,7 @@ ParticleSystemRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 149928}
   m_Enabled: 1
-  m_CastShadows: 1
+  m_CastShadows: 0
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
@@ -14328,7 +14328,7 @@ ParticleSystemRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 165414}
   m_Enabled: 1
-  m_CastShadows: 1
+  m_CastShadows: 0
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0

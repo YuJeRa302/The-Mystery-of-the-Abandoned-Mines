@@ -1,6 +1,5 @@
 using Assets.Source.Game.Scripts;
 using System;
-using UnityEngine;
 using YG;
 
 public class SaveAndLoader : ISaveAndLoadProgress
@@ -31,7 +30,7 @@ public class SaveAndLoader : ISaveAndLoadProgress
 
         var levelStates = new LevelState[_temporaryData.LevelStates.Length];
         Array.Copy(_temporaryData.LevelStates, levelStates, levelStates.Length);
-        Debug.Log(_temporaryData.MuteStateSound);
+        
         YandexGame.savesData = new SavesYG
         {
             Coins = _temporaryData.Coins,

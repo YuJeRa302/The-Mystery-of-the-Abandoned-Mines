@@ -77,7 +77,6 @@ namespace Assets.Source.Game.Scripts
 
         public void Initialize(LevelsViewModel levelsViewModel, IAudioPlayerService audioPlayerService)
         {
-            _textHint.TranslationName = _chooseLevelType;
             _levelsViewModel = levelsViewModel;
             _audioPlayerService = audioPlayerService;
             _contractButton.interactable = _levelsViewModel.TryUnlockContractButton(_indexUnlockContractButton);

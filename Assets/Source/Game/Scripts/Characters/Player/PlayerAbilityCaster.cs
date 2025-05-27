@@ -53,10 +53,11 @@ namespace Assets.Source.Game.Scripts
         public void TakeAbility(CardView cardView)
         {
             _abilityAttributeData = null;
+            LegendaryAbilityData legendaryAbilityData = (cardView.CardData.AttributeData as AbilityAttributeData).LegendaryAbilityData;
 
-            if (cardView.CardData.LegendaryAbilityData != null)
+            if (legendaryAbilityData != null)
             {
-                if (TrySetLegendaryAbility(cardView.CardData.LegendaryAbilityData.TypeUpgradeMagic, out Ability legendAbility))
+                if (TrySetLegendaryAbility(legendaryAbilityData.TypeUpgradeMagic, out Ability legendAbility))
                     CreateLegendaryAbility(legendAbility, legendAbility.AbilityAttribute);
             }
             

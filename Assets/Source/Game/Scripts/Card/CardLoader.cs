@@ -131,7 +131,9 @@ namespace Assets.Source.Game.Scripts
                     }
                     else if (card.TypeCardParameter == TypeCardParameter.LegendariAbility)
                     {
-                        if (card.LegendaryAbilityData.LegendaryAbilityParameters.Count <= cardState.CurrentLevel)
+                        LegendaryAbilityData legendaryAbilityData = (card.AttributeData as AbilityAttributeData).LegendaryAbilityData;
+
+                        if (legendaryAbilityData.LegendaryAbilityParameters.Count <= cardState.CurrentLevel)
                         {
                             cardState.IsLocked = true;
                             cardState.IsCardUpgraded = true;
@@ -147,13 +149,15 @@ namespace Assets.Source.Game.Scripts
 
             foreach (var card in cards)
             {
-                if (card.LegendaryAbilityData != null)
+                LegendaryAbilityData legendaryAbilityData = (card.AttributeData as AbilityAttributeData).LegendaryAbilityData;
+
+                if (legendaryAbilityData != null)
                 {
                     if (_player.GetCardStateByData(card).IsLocked)
                     {
-                        if (typeMagic == card.LegendaryAbilityData.TypeUpgradeMagic)
+                        if (typeMagic == legendaryAbilityData.TypeUpgradeMagic)
                         {
-                            if (_player.GetCardStateByData(card).CurrentLevel <= card.LegendaryAbilityData.LegendaryAbilityParameters.Count)
+                            if (_player.GetCardStateByData(card).CurrentLevel <= legendaryAbilityData.LegendaryAbilityParameters.Count)
                             {
                                 if (_player.GetCardStateByData(card).IsCardUpgraded == false)
                                     legendaryCard = card;

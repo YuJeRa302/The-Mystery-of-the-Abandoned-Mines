@@ -16,7 +16,7 @@ namespace Assets.Source.Game.Scripts
         public int Id => _id;
         public Color[] TypeCardColor => _typeCardColor;
         public AttributeData AttributeData => _attributeData;
-        public LegendaryAbilityData LegendaryAbilityData => _legendaryAbilityData;
+        //public LegendaryAbilityData LegendaryAbilityData => _legendaryAbilityData;
         public TypeCardParameter TypeCardParameter => _typeCardParameter;
         public List<AttributeData> SuppurtivData => _suppurtivData;
     }

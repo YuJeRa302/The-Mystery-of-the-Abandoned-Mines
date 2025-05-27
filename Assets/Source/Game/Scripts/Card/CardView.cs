@@ -45,9 +45,10 @@ namespace Assets.Source.Game.Scripts
             }
             else
             {
-                _cardIcon.sprite = cardData.LegendaryAbilityData.Icon;
-                _cardName.TranslationName = cardData.LegendaryAbilityData.Name;
-                _description.TranslationName = cardData.LegendaryAbilityData.Description;
+                LegendaryAbilityData legendaryAbilityData = (cardData.AttributeData as AbilityAttributeData).LegendaryAbilityData;
+                _cardIcon.sprite = legendaryAbilityData.Icon;
+                _cardName.TranslationName = legendaryAbilityData.Name;
+                _description.TranslationName = legendaryAbilityData.Description;
             }
 
             _cardImage.color = new Color(
@@ -83,14 +84,16 @@ namespace Assets.Source.Game.Scripts
             }
             else
             {
-                for (int index = 0; index < _cardData.LegendaryAbilityData.LegendaryAbilityParameters[_cardState.CurrentLevel].CardParameters.Count; index++)
+                LegendaryAbilityData legendaryAbilityData = (_cardData.AttributeData as AbilityAttributeData).LegendaryAbilityData;
+
+                for (int index = 0; index < legendaryAbilityData.LegendaryAbilityParameters[_cardState.CurrentLevel].CardParameters.Count; index++)
                 {
-                    CardParameterView view = Instantiate(_cardData.LegendaryAbilityData.CardParameterView, _cardParameterContainer);
+                    CardParameterView view = Instantiate(legendaryAbilityData.CardParameterView, _cardParameterContainer);
                     _cardParametersViews.Add(view);
 
                     view.Initialize(
-                        _cardData.LegendaryAbilityData.LegendaryAbilityParameters[_cardState.CurrentLevel].CardParameters[index].Value,
-                        _cardData.LegendaryAbilityData.LegendaryAbilityParameters[_cardState.CurrentLevel].CardParameters[index].TypeParameter);
+                        legendaryAbilityData.LegendaryAbilityParameters[_cardState.CurrentLevel].CardParameters[index].Value,
+                        legendaryAbilityData.LegendaryAbilityParameters[_cardState.CurrentLevel].CardParameters[index].TypeParameter);
                 }
             }
         }

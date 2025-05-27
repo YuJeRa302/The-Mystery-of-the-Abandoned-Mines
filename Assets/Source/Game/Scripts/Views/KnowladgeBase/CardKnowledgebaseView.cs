@@ -32,9 +32,10 @@ public class CardKnowledgebaseView : KnowladgeView
         }
         else
         {
-            _cardIcon.sprite = cardData.LegendaryAbilityData.Icon;
-            _cardName.TranslationName = cardData.LegendaryAbilityData.Name;
-            _cardDiscription.TranslationName = cardData.LegendaryAbilityData.Description;
+            LegendaryAbilityData legendaryAbilityData = (cardData.AttributeData as AbilityAttributeData).LegendaryAbilityData;
+            _cardIcon.sprite = legendaryAbilityData.Icon;
+            _cardName.TranslationName = legendaryAbilityData.Name;
+            _cardDiscription.TranslationName = legendaryAbilityData.Description;
         }
 
         CreateSupportivParametrField(cardData);
@@ -55,12 +56,14 @@ public class CardKnowledgebaseView : KnowladgeView
             cardView.Initialize(cardData.SuppurtivData[i].Icon, cardData.SuppurtivData[i].NameCard);
         }
 
-        if (cardData.LegendaryAbilityData != null)
+        LegendaryAbilityData legendaryAbilityData = (cardData.AttributeData as AbilityAttributeData).LegendaryAbilityData;
+
+        if (legendaryAbilityData != null)
         {
             if(cardData.TypeCardParameter != TypeCardParameter.LegendariAbility)
             {
                 LinkCardView cardView = Instantiate(_linkCardView, _linkCardConteiner);
-                cardView.Initialize(cardData.LegendaryAbilityData.Icon, cardData.LegendaryAbilityData.Name);
+                cardView.Initialize(legendaryAbilityData.Icon, legendaryAbilityData.Name);
             }
         }
     }
@@ -77,7 +80,9 @@ public class CardKnowledgebaseView : KnowladgeView
         }
         else
         {
-            for (int i = 0; i < cardData.LegendaryAbilityData.LegendaryAbilityParameters.Count; i++)
+            LegendaryAbilityData legendaryAbilityData = (cardData.AttributeData as AbilityAttributeData).LegendaryAbilityData;
+
+            for (int i = 0; i < legendaryAbilityData.LegendaryAbilityParameters.Count; i++)
             {
                 KnowleadgeCardParameterView view = Instantiate(_parameterView, _parametrConteiner);
                 view.Initialize(cardData, i);

@@ -399,6 +399,7 @@ namespace Assets.Source.Game.Scripts
                 {
                     var difference = _currentUpgradeExperience - value;
                     _currentUpgradeLevel++;
+                    _currentUpgradePoints++;
                     _currentUpgradeExperience = difference;
                     _upgradeLevels.TryGetValue(_currentUpgradeLevel, out int maxExperienceValue);
                     PlayerUpgradeLevelChanged?.Invoke(_currentUpgradeLevel, maxExperienceValue, _currentUpgradeExperience);

@@ -17,6 +17,7 @@ namespace Assets.Source.Game.Scripts
         private Vector3 _direction;
         private Vector3 _rotationVector = new Vector3(0, 1, 0);
         private Coroutine _blastThrowingCoroutine;
+        private Coroutine _blastRotateCoroutine;
         private Coroutine _damageDealCoroutine;
         private Transform _throwPoint;
         private ParticleSystem _particleSystem;
@@ -56,6 +57,9 @@ namespace Assets.Source.Game.Scripts
 
             if (_damageDealCoroutine != null)
                 _coroutineRunner.StopCoroutine(_damageDealCoroutine);
+
+            if (_blastRotateCoroutine != null)
+                _coroutineRunner.StopCoroutine(_blastRotateCoroutine);
         }
 
         protected override void OnGameResumed(bool state)
@@ -67,6 +71,9 @@ namespace Assets.Source.Game.Scripts
 
             if (_damageDealCoroutine != null)
                 _damageDealCoroutine = _coroutineRunner.StartCoroutine(DealDamage());
+
+            if (_blastRotateCoroutine != null)
+                _blastRotateCoroutine = _coroutineRunner.StartCoroutine(RotateSpell());
         }
 
         protected override void OnAbilityUsed(Ability ability) 
@@ -96,6 +103,9 @@ namespace Assets.Source.Game.Scripts
 
             if (_damageDealCoroutine != null)
                 _coroutineRunner.StopCoroutine(_damageDealCoroutine);
+
+            if (_blastRotateCoroutine != null)
+                _coroutineRunner.StopCoroutine(_blastRotateCoroutine);
         }
 
         private void CreateRotateSpell()

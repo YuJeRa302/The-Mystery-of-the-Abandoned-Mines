@@ -203,13 +203,11 @@ namespace Assets.Source.Game.Scripts
         private void OnGamePause(bool state)
         {
             _audioPlayer.MuteSound(state);
-            _temporaryData.SetMuteStateSound(IsMuted);
         }
 
         private void OnGameResume(bool state)
         {
             _audioPlayer.MuteSound(_temporaryData.MuteStateSound);
-            _temporaryData.SetMuteStateSound(IsMuted);
         }
 
         private void CreateWeaponDatasForReward() 

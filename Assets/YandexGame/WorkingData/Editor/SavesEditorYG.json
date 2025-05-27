@@ -3,7 +3,7 @@
     "isFirstSession": true,
     "language": "ru",
     "promptDone": false,
-    "Coins": 21808,
+    "Coins": 237658,
     "AmbientVolume": 16.924779891967775,
     "SfxVolumeVolume": 48.1785888671875,
     "IsMuted": false,
@@ -139,5 +139,5 @@
             "CurrentCompleteStages": 0
         }
     ],
-    "UpgradePoints": 3
+    "UpgradePoints": 4
 }

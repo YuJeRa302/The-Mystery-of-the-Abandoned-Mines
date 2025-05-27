@@ -1,5 +1,6 @@
 using Assets.Source.Game.Scripts;
 using System;
+using UnityEngine;
 using YG;
 
 public class SaveAndLoader : ISaveAndLoadProgress
@@ -25,13 +26,7 @@ public class SaveAndLoader : ISaveAndLoadProgress
 
     public void SaveData()
     {
-        var weaponStates = new WeaponState[_temporaryData.WeaponStates.Length];
-        Array.Copy(_temporaryData.WeaponStates, weaponStates, weaponStates.Length);
-
-        var levelStates = new LevelState[_temporaryData.LevelStates.Length];
-        Array.Copy(_temporaryData.LevelStates, levelStates, levelStates.Length);
-        
-        YandexGame.savesData = new SavesYG
+        var newSaveData = new SavesYG
         {
             Coins = _temporaryData.Coins,
             AmbientVolume = _temporaryData.AmbientVolume,
@@ -41,10 +36,20 @@ public class SaveAndLoader : ISaveAndLoadProgress
             UpgradePoints = _temporaryData.UpgradePoints,
             UpgradeStates = new System.Collections.Generic.List<UpgradeState>(_temporaryData.UpgradeStates),
             ClassAbilityStates = new System.Collections.Generic.List<ClassAbilityState>(_temporaryData.ClassAbilityStates),
-            DefaultWeaponState = weaponStates,
-            DefaultLevelState = levelStates
+            DefaultWeaponState = new WeaponState[_temporaryData.WeaponStates.Length],
+            DefaultLevelState = new LevelState[_temporaryData.LevelStates.Length]
         };
 
-        YandexGame.SaveProgress();
+        Array.Copy(_temporaryData.WeaponStates, newSaveData.DefaultWeaponState, newSaveData.DefaultWeaponState.Length);
+        Array.Copy(_temporaryData.LevelStates, newSaveData.DefaultLevelState, newSaveData.DefaultLevelState.Length);
+
+        string oldDataJson = JsonUtility.ToJson(YandexGame.savesData);
+        string newDatatJson = JsonUtility.ToJson(newSaveData);
+
+        if (oldDataJson != newDatatJson)
+        {
+            YandexGame.savesData = newSaveData;
+            YandexGame.SaveProgress();
+        }
     }
 }

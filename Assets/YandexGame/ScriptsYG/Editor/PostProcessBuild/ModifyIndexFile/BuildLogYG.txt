@@ -1,2 +1,2 @@
-Build path: C:/Проекты/Ijunior/The-Mystery-of-the-Abandoned-Mines/Build
-Build number: 7
+Build path: D:/Project(Unity)/GitHub/TestProject/The Mystery of the Abandoned Mines(Debug)/The Mystery of the Abandoned Mines(Debug) 3
+Build number: 11

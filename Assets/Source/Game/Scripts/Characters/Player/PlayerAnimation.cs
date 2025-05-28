@@ -21,7 +21,8 @@ namespace Assets.Source.Game.Scripts
             Rigidbody rigidbody,
             float maxSpeed,
             PlayerClassData classData,
-            Player coroutineRunner,
+            Player player,
+            ICoroutineRunner coroutineRunner,
             IGameLoopService gameLoopService)
         {
             _gameLoopService = gameLoopService;
@@ -30,7 +31,7 @@ namespace Assets.Source.Game.Scripts
             _rigidbody = rigidbody;
             _maxSpeed = maxSpeed;
             _animator.runtimeAnimatorController = classData.AnimatorController;
-            _player = coroutineRunner;
+            _player = player;
             _moveCorontine = _coroutineRunner.StartCoroutine(PlayingAnimationMove());
             AddListeners();
         }

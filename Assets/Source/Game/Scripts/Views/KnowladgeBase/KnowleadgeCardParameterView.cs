@@ -20,13 +20,14 @@ public class KnowleadgeCardParameterView : MonoBehaviour
         }
         else
         {
-            for (int index = 0; index < cardData.LegendaryAbilityData.LegendaryAbilityParameters[currentLvl].CardParameters.Count; index++)
+            LegendaryAbilityData legendaryAbilityData = (cardData.AttributeData as AbilityAttributeData).LegendaryAbilityData;
+            for (int index = 0; index < legendaryAbilityData.LegendaryAbilityParameters[currentLvl].CardParameters.Count; index++)
             {
-                CardParameterView view = Instantiate(cardData.LegendaryAbilityData.CardParameterView, _conteiner);
+                CardParameterView view = Instantiate(legendaryAbilityData.CardParameterView, _conteiner);
 
                 view.Initialize(
-                    cardData.LegendaryAbilityData.LegendaryAbilityParameters[currentLvl].CardParameters[index].Value,
-                    cardData.LegendaryAbilityData.LegendaryAbilityParameters[currentLvl].CardParameters[index].TypeParameter);
+                    legendaryAbilityData.LegendaryAbilityParameters[currentLvl].CardParameters[index].Value,
+                    legendaryAbilityData.LegendaryAbilityParameters[currentLvl].CardParameters[index].TypeParameter);
             }
         }
     }

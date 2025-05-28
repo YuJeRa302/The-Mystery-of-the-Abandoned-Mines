@@ -70,7 +70,6 @@ namespace Assets.Source.Game.Scripts
         private void ShowReward(int reward)
         {
             CreateLootRoomRevard(reward);
-            Debug.Log(reward);
             base.Open();
         }
 
@@ -157,6 +156,7 @@ namespace Assets.Source.Game.Scripts
             _openAdButton.gameObject.SetActive(true);
             _collectButton.gameObject.SetActive(true);
             _applayReward.gameObject.SetActive(false);
+            _defaulContractReward.SetActive(false);
             Close();
         }
 

@@ -15,7 +15,7 @@ MonoBehaviour:
   _id: 0
   _level: 0
   _damage: 30
-  _health: 250
+  _health: 1200
   _experienceReward: 150
   _upgradeExperienceReward: 150
   _score: 100

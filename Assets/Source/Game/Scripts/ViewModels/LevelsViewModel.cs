@@ -28,6 +28,6 @@ public class LevelsViewModel
     public void SelectLevel(LevelDataView levelDataView) => _levelsModel.SelectLevel(levelDataView);
     public void SelectClass(PlayerClassDataView playerClassDataView) => _levelsModel.SelectClass(playerClassDataView);
     public void SelectWeapon(WeaponDataView weaponDataView) => _levelsModel.SelectWeapon(weaponDataView);
-    public void LoadLevel() => _levelsModel.LoadLevel();
+    public void LoadLevel() => _levelsModel.LoadScene();
     public int GetPlayerConins() => _levelsModel.GetPlayerCoinCount();
 }

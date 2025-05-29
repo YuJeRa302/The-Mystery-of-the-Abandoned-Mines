@@ -15,12 +15,12 @@ MonoBehaviour:
   _id: 0
   _roomName: RoomStandart
   _tierColor:
-  - {r: 1, g: 1, b: 1, a: 0}
+  - {r: 0.9529412, g: 0.81960785, b: 0.45490196, a: 0}
   - {r: 0.23921569, g: 1, b: 0.21568628, a: 0}
   - {r: 0, g: 0.5411765, b: 1, a: 0}
   - {r: 0.5686275, g: 0.14509805, b: 1, a: 0}
   - {r: 1, g: 0.22745098, b: 0.14509805, a: 0}
-  _room: {fileID: 6577346141303521551, guid: 7b1c697bf7e9d6d4899a09334c62ce74, type: 3}
+  _room: {fileID: 8856733375309331570, guid: 7b1c697bf7e9d6d4899a09334c62ce74, type: 3}
   _chanceFromDistance:
     serializedVersion: 2
     m_Curve:
@@ -47,11 +47,6 @@ MonoBehaviour:
     m_RotationOrder: 4
   _enemyDatas:
   - {fileID: 11400000, guid: e88a5ccc8245ee745b4fc75cb3a9a14b, type: 2}
-  - {fileID: 11400000, guid: f809bfbac0297dc4a830126088816ad5, type: 2}
-  - {fileID: 11400000, guid: c92657e7a2ab3794487c73c56292055c, type: 2}
-  - {fileID: 11400000, guid: 10b34a6b7f44c6b4e93d2d18cc0ccd1c, type: 2}
-  - {fileID: 11400000, guid: c09a3c0740e3502468be820b02f1d026, type: 2}
-  - {fileID: 11400000, guid: d4333f80f16d8514ab82462f532aae8e, type: 2}
   _epicEnemyDatas: []
   _traps: []
   _roomDescription: RoomStandartDescription

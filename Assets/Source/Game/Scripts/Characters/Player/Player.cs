@@ -73,12 +73,6 @@ namespace Assets.Source.Game.Scripts
         public float SearchRadius => _playerStats.SearchRadius;
         public float AttackRange => _playerStats.AttackRange;
 
-        private void OnDestroy()
-        {
-            RemoveListeners();
-            ReleaseUnmanagedResources();
-        }
-
         public void CreateStats(
             LevelObserver levelObserver,
             PlayerClassData playerClassData,
@@ -93,7 +87,7 @@ namespace Assets.Source.Game.Scripts
             _audioPlayer = audioPlayer;
             _miniMapIcon.sprite = playerClassData.Icon;
             _playerHealth = new PlayerHealth(this, levelObserver, levelObserver, _currentHealth);
-            _playerAnimation = new PlayerAnimation(_animator, _rigidbody, _moveSpeed, playerClassData, this, levelObserver);
+            _playerAnimation = new PlayerAnimation(_animator, _rigidbody, _moveSpeed, playerClassData, this, levelObserver, levelObserver);
             _playerWeapons = new PlayerWeapons(this, weaponData, _poolBullet, _critDamageParticle, _vampirismParticle);
 
             _playerStats = new PlayerStats(
@@ -111,10 +105,18 @@ namespace Assets.Source.Game.Scripts
                 levelObserver.CameraControiler.VariableJoystick,
                 _rigidbody,
                 this,
-                this,
+                levelObserver,
                 levelObserver);
 
-            _playerAttacker = new PlayerAttacker(_shotPoint, this, temporaryData.PlayerClassData.TypeAttackRange, weaponData, this, levelObserver, _poolBullet);
+            _playerAttacker = new PlayerAttacker(
+                _shotPoint,
+                this,
+                temporaryData.PlayerClassData.TypeAttackRange,
+                weaponData,
+                levelObserver,
+                levelObserver,
+                _poolBullet);
+
             _wallet = new PlayerWallet();
             _cardDeck = new CardDeck(temporaryData.LevelData.IsContractLevel);
             _playerAbilityCaster = new PlayerAbilityCaster(abilityFactory, abilityPresenter, this, temporaryData, _audioPlayer);
@@ -123,6 +125,13 @@ namespace Assets.Source.Game.Scripts
             AddListeners();
             _playerStats.UpgradePlayerStats(temporaryData.UpgradeStates, temporaryData.UpgradeDatas);
             _playerAbilityCaster.Initialize();
+        }
+
+        public void Remove()
+        {
+            RemoveListeners();
+            ReleaseUnmanagedResources();
+            Destroy(this);
         }
 
         public void InitStateCardDeck(List<CardData> cardDatas)

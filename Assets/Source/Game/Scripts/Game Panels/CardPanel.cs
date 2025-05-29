@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using YG;
@@ -50,7 +49,7 @@ namespace Assets.Source.Game.Scripts
         protected override void OpenRewardAds()
         {
             base.OpenRewardAds();
-            YandexGame.RewVideoShow(0);
+            YandexGame.RewVideoShow(1);
         }
 
         private void OnRewardCallback(int index)

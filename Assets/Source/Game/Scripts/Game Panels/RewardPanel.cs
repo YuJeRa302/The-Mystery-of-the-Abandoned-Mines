@@ -32,9 +32,9 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private Image _imageGameState;
 
         private bool _isRewardReceived = false;
-        private WeaponData _currentWeaponData;
         private bool _isLootReward = false;
         private int _currentRewardLoot;
+        private WeaponData _currentWeaponData;
 
         private void OnDestroy()
         {
@@ -72,7 +72,7 @@ namespace Assets.Source.Game.Scripts
             CreateLootRoomRevard(reward);
             base.Open();
         }
-        
+
         private void OnRewardCallback(int index)
         {
             GamePanelsViewModel.GetEndGameReward();
@@ -95,14 +95,13 @@ namespace Assets.Source.Game.Scripts
             {
                 int cointReward = _currentRewardLoot + _currentRewardLoot;
                 SetAnimationText(_currentRewardLoot, cointReward, _defaultContractRewardCoins);
-                GamePanelsViewModel.GetLootRoomRewaed(_currentRewardLoot);
                 _openAdButton.gameObject.SetActive(false);
                 _collectButton.gameObject.SetActive(false);
                 _applayReward.gameObject.SetActive(true);
             }
             else
             {
-                if (_isRewardReceived == true) 
+                if (_isRewardReceived == true)
                 {
                     int coinRewards = GamePanelsViewModel.GetPlayer().Coins + GamePanelsViewModel.GetPlayer().Coins;
                     int upgradePointRewards = GamePanelsViewModel.GetPlayer().UpgradePoints + GamePanelsViewModel.GetPlayer().UpgradePoints;
@@ -113,7 +112,8 @@ namespace Assets.Source.Game.Scripts
                     _closeGameButton.gameObject.SetActive(true);
                 }
             }
-                RewardAdClosed?.Invoke();
+
+            RewardAdClosed?.Invoke();
         }
 
         private void OnErrorCallback()
@@ -160,7 +160,7 @@ namespace Assets.Source.Game.Scripts
             Close();
         }
 
-        private void CreateViewEntities(bool gameState) 
+        private void CreateViewEntities(bool gameState)
         {
             if (GamePanelsViewModel.IsContractLevel == true)
                 CreateWeaponRewards(gameState);
@@ -168,7 +168,7 @@ namespace Assets.Source.Game.Scripts
                 CreateDefaultRewards(gameState);
         }
 
-        private void CreateWeaponRewards(bool gameState) 
+        private void CreateWeaponRewards(bool gameState)
         {
             if (gameState == true)
             {
@@ -187,15 +187,15 @@ namespace Assets.Source.Game.Scripts
                     CreateCoinsRewards();
                 }
             }
-            else 
+            else
             {
                 CreateEndScreen(gameState);
             }
         }
 
-        private void SetAnimationText(int cuurentValue, int rewardValue, Text text) 
+        private void SetAnimationText(int currentValue, int rewardValue, Text text)
         {
-            DOVirtual.Int(cuurentValue, rewardValue, _animationDuration, (value) =>
+            DOVirtual.Int(currentValue, rewardValue, _animationDuration, (value) =>
             {
                 text.text = value.ToString();
             });
@@ -207,7 +207,7 @@ namespace Assets.Source.Game.Scripts
             Fill();
         }
 
-        private void CreateEndScreen(bool gameState) 
+        private void CreateEndScreen(bool gameState)
         {
             _levelCompleteReward.SetActive(true);
             _imageGameState.sprite = gameState == true ? _winGameSprite : _loseGameSprite;
@@ -231,7 +231,7 @@ namespace Assets.Source.Game.Scripts
             Fill();
         }
 
-        private void Fill() 
+        private void Fill()
         {
             _coinsText.text = GamePanelsViewModel.GetPlayer().Coins.ToString();
             _upgradePointsText.text = GamePanelsViewModel.GetPlayer().UpgradePoints.ToString();

@@ -13,12 +13,13 @@ public class SettingsView : MonoBehaviour
     [SerializeField] private LanguageButtonView _languageButtonView;
     [SerializeField] private Transform _buttonsContainer;
 
-    private List<LanguageButtonView> _languageButtonViews = new();
+    private List<LanguageButtonView> _languageButtonViews = new ();
     private SettingsViewModel _settingsViewModel;
     private IAudioPlayerService _audioPlayerService;
 
     private void OnDestroy()
     {
+        ClearLanguageButton();
         RemoveListeners();
     }
 
@@ -30,11 +31,11 @@ public class SettingsView : MonoBehaviour
         _sfxSlider.value = settingsViewModel.GetSfxVolume();
         _muteToggle.isOn = settingsViewModel.GetMuteStatus();
         AddListeners();
-        Fill();
+        CreateLanguageButton();
         gameObject.SetActive(false);
     }
 
-    private void Fill()
+    private void CreateLanguageButton()
     {
         foreach (LanguageButtonData languageButton in _languageButtonData)
         {
@@ -43,6 +44,17 @@ public class SettingsView : MonoBehaviour
             view.Initialize(languageButton, _audioPlayerService);
             view.LanguageSelected += OnLanguageChanged;
         }
+    }
+
+    private void ClearLanguageButton()
+    {
+        foreach (LanguageButtonView view in _languageButtonViews)
+        {
+            view.LanguageSelected -= OnLanguageChanged;
+            Destroy(view.gameObject);
+        }
+
+        _languageButtonViews.Clear();
     }
 
     private void AddListeners()

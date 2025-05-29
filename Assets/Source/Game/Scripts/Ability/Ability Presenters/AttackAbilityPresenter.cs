@@ -67,13 +67,17 @@ namespace Assets.Source.Game.Scripts
             _ability.Use();
 
             if (_blastThrowingCoroutine != null)
-                _blastThrowingCoroutine = _coroutineRunner.StartCoroutine(ThrowingBlast());
+                _coroutineRunner.StopCoroutine(_blastThrowingCoroutine);
 
             if (_damageDealCoroutine != null)
-                _damageDealCoroutine = _coroutineRunner.StartCoroutine(DealDamage());
+                _coroutineRunner.StopCoroutine(_damageDealCoroutine);
 
             if (_blastRotateCoroutine != null)
-                _blastRotateCoroutine = _coroutineRunner.StartCoroutine(RotateSpell());
+                _coroutineRunner.StopCoroutine(_blastRotateCoroutine);
+
+            _blastThrowingCoroutine = _coroutineRunner.StartCoroutine(ThrowingBlast());
+            _damageDealCoroutine = _coroutineRunner.StartCoroutine(DealDamage());
+            _blastRotateCoroutine = _coroutineRunner.StartCoroutine(RotateSpell());
         }
 
         protected override void OnAbilityUsed(Ability ability) 

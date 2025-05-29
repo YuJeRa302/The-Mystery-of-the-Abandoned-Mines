@@ -12,6 +12,7 @@ namespace Assets.Source.Game.Scripts
         private readonly float _pauseValue = 0;
         private readonly float _resumeValue = 1;
         private readonly float _loadControlValue = 0.9f;
+        private readonly float _delayLoadScene = 0.8f;
 
         [SerializeField] private RoomPlacer _roomPlacer;
         [SerializeField] private Pool _enemuPool;
@@ -27,7 +28,6 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private AudioPlayer _audioPlayerService;
         [Space(20)]
         [SerializeField] private GameObject _canvasLoader;
-        [Space(20)]
         [SerializeField] private LeanLocalization _leanLocalization;
 
         private bool _canSeeDoor;
@@ -70,6 +70,7 @@ namespace Assets.Source.Game.Scripts
         private void OnDestroy()
         {
             RemoveListeners();
+            _player.Remove();
             _enemySpawner.Dispose();
             _trapsSpawner.Dispose();
         }
@@ -101,12 +102,14 @@ namespace Assets.Source.Game.Scripts
         {
             Time.timeScale = _resumeValue;
             GameResumed?.Invoke(_temporaryData.MuteStateSound);
+            _temporaryData.SetPauseGame(false);
         }
 
         public void PauseByMenu()
         {
             Time.timeScale = _pauseValue;
             GamePaused?.Invoke(_temporaryData.MuteStateSound);
+            _temporaryData.SetPauseGame(true);
         }
 
         public void ResumeByInterstitial()
@@ -149,7 +152,7 @@ namespace Assets.Source.Game.Scripts
             _gamePanelsViewModel = new GamePanelsViewModel(_gamePanelsModel);
         }
 
-        private void CreatePlayer(TemporaryData temporaryData) 
+        private void CreatePlayer(TemporaryData temporaryData)
         {
             _playerFactory = new PlayerFactory(
                 this,
@@ -165,7 +168,7 @@ namespace Assets.Source.Game.Scripts
             _player = player;
         }
 
-        private void InitializeLevelEntities(TemporaryData temporaryData) 
+        private void InitializeLevelEntities(TemporaryData temporaryData)
         {
             _canSeeDoor = _cameraControiler.TrySeeDoor(_roomPlacer.StartRoom.WallLeft.gameObject);
             _countStages = temporaryData.LevelData.CountStages;
@@ -222,7 +225,7 @@ namespace Assets.Source.Game.Scripts
             _player.GetReward(enemy);
         }
 
-        private void AddRoomListener() 
+        private void AddRoomListener()
         {
             foreach (var room in _roomPlacer.CreatedRooms)
             {
@@ -259,7 +262,7 @@ namespace Assets.Source.Game.Scripts
             StartCoroutine(LoadScreenLevel(Menu.LoadAsync(_temporaryData)));
         }
 
-        private void RemoveRoomListener() 
+        private void RemoveRoomListener()
         {
             foreach (var room in _roomPlacer.CreatedRooms)
             {
@@ -305,7 +308,7 @@ namespace Assets.Source.Game.Scripts
 
             if (room.IsComplete == false)
             {
-                if(room.EnemySpawnPoints.Length == 0)
+                if (room.EnemySpawnPoints.Length == 0)
                     _trapsSpawner.Initialize(room);
                 else
                     _enemySpawner.Initialize(room);
@@ -358,7 +361,7 @@ namespace Assets.Source.Game.Scripts
                 CreateNextStage();
         }
 
-        private void CreateNextStage() 
+        private void CreateNextStage()
         {
             RemoveRoomListener();
             _roomPlacer.Clear();
@@ -369,7 +372,7 @@ namespace Assets.Source.Game.Scripts
             AddRoomListener();
         }
 
-        private void WinGame() 
+        private void WinGame()
         {
             CloseAllGamePanels();
             _roomPlacer.Clear();
@@ -377,7 +380,7 @@ namespace Assets.Source.Game.Scripts
             GameEnded?.Invoke(_isWinGame);
         }
 
-        private void LoseGame() 
+        private void LoseGame()
         {
             CloseAllGamePanels();
             _roomPlacer.Clear();
@@ -395,7 +398,7 @@ namespace Assets.Source.Game.Scripts
 
             while (_load.progress < _loadControlValue)
             {
-                yield return null;
+                yield return new WaitForSeconds(_delayLoadScene);
             }
 
             _load.allowSceneActivation = true;

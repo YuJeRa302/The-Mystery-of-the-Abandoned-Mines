@@ -48,19 +48,23 @@ public class SettingsModel
 
     public void OnGamePause(bool state) 
     {
-        _audioPlayer.MuteSound(!state);
+        if(_audioPlayer != null)
+            _audioPlayer.MuteSound(!state);
     }
 
-    public void OnGameResume(bool state) 
+    public void OnGameResume(bool state)
     {
-        _audioPlayer.MuteSound(_temporaryData.MuteStateSound);
+        if (_audioPlayer != null)
+            _audioPlayer.MuteSound(_temporaryData.MuteStateSound);
     }
 
     public void Mute()
     {
         IsMuted = true;
         _temporaryData.SetMuteStateSound(IsMuted);
-        _audioPlayer.MuteSound(IsMuted);
+
+        if (_audioPlayer != null)
+            _audioPlayer.MuteSound(IsMuted);
     }
 
     public void UnMute()

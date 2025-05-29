@@ -1,4 +1,3 @@
-using DG.Tweening;
 using Lean.Localization;
 using System;
 using UnityEngine;
@@ -8,7 +7,6 @@ namespace Assets.Source.Game.Scripts
 {
     public class MainMenuBuilder : MonoBehaviour, ICoroutineRunner
     {
-        private readonly float _pauseValue = 0;
         private readonly float _resumeValue = 1;
 
         [SerializeField] private AudioPlayer _audioPlayer;
@@ -31,20 +29,15 @@ namespace Assets.Source.Game.Scripts
 
         public Action EnebleSave;
 
-        private void Start()
+        private void Awake()
         {
             InitYandexGameEntities();
-
-            if (_temporaryData == null)
-                if(YandexGame.SDKEnabled)
-                    Build();
+            Build();
         }
         
         public void Initialize(TemporaryData temporaryData)
         {
-            Time.timeScale = 1;
-            DOTween.Clear();
-            DOTween.Init();
+            Time.timeScale = _resumeValue;
             _temporaryData = temporaryData;
             Build();
         }
@@ -69,8 +62,8 @@ namespace Assets.Source.Game.Scripts
 
         private void InitYandexGameEntities()
         {
-            YandexGame.GameplayStart();
             YandexGame.GameReadyAPI();
+            YandexGame.GameplayStart();
         }
 
         private void CreateMenuEntities() 

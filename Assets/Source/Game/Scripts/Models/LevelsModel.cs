@@ -7,8 +7,9 @@ public class LevelsModel
 {
     private readonly TemporaryData _temporaryData;
     private readonly ICoroutineRunner _coroutineRunner;
-    private readonly float _loadControlValue = 0.9f;
     private readonly GameObject _canvasLoader;
+    private readonly float _loadControlValue = 0.9f;
+    private readonly float _delayLoadScene = 0.8f;
 
     private AsyncOperation _load;
     private LevelData _currentLevelData;
@@ -74,17 +75,12 @@ public class LevelsModel
         _temporaryData.SetWeaponData(_currentWeaponData);
     }
 
-    public void LoadLevel() 
-    {
-        LoadScene(_currentLevelData.Id);
-    }
-
-    public int GetPlayerCoinCount() => _temporaryData.Coins;
-
-    private void LoadScene(int id)
+    public void LoadScene() 
     {
         _coroutineRunner.StartCoroutine(LoadScreenLevel(GameScene.LoadAsync(_temporaryData)));
     }
+
+    public int GetPlayerCoinCount() => _temporaryData.Coins;
 
     private IEnumerator LoadScreenLevel(AsyncOperation asyncOperation)
     {
@@ -97,7 +93,7 @@ public class LevelsModel
 
         while (_load.progress < _loadControlValue)
         {
-            yield return null;
+            yield return new WaitForSeconds(_delayLoadScene);
         }
 
         _load.allowSceneActivation = true;

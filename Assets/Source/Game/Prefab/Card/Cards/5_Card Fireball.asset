@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _id: 5
   _typeCardColor:
-  - {r: 0.18039216, g: 0.8509804, b: 0, a: 0}
-  - {r: 0.10980392, g: 0.6784314, b: 0.93333334, a: 0}
-  - {r: 1, g: 0.69803923, b: 0.13725491, a: 0}
+  - {r: 0.17895234, g: 0.8490566, b: 0, a: 0}
+  - {r: 0.109803915, g: 0.19406879, b: 0.93333334, a: 0}
+  - {r: 1, g: 0.69671583, b: 0.13679248, a: 0}
   _typeCardParameter: 1
   _attributeData: {fileID: 11400000, guid: 64d0be9ef25fd264e823f76d63a944a5, type: 2}
   _legendaryAbilityData: {fileID: 0}

@@ -18,6 +18,9 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private Sprite _star;
         [SerializeField] private Sprite _complitStar;
         [SerializeField] private Image _starLvlPrefab;
+        [Space(10)]
+        [SerializeField] private Image _bgContractInfo;
+        [SerializeField] private Text _prce;
         //[SerializeField] private Transform _starsConteiner;
 
         private LevelData _levelData;
@@ -50,6 +53,8 @@ namespace Assets.Source.Game.Scripts
             }
             else
             {
+                _bgContractInfo.gameObject.SetActive(true);
+                _prce.text = levelData.Cost.ToString();
                 SetLevelState(true);
             }
         }

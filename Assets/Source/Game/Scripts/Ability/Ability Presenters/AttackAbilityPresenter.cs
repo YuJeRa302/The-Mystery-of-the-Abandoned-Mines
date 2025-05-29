@@ -232,6 +232,7 @@ namespace Assets.Source.Game.Scripts
 
         private IEnumerator RotateSpell()
         {
+            Debug.Log("StartCorontine");
             float verticalOffset = 0f;
             float distance = 3f;
 

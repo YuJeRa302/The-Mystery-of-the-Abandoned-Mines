@@ -32,10 +32,10 @@ public class CardKnowledgebaseView : KnowladgeView
         }
         else
         {
-            LegendaryAbilityData legendaryAbilityData = (cardData.AttributeData as AbilityAttributeData).LegendaryAbilityData;
-            _cardIcon.sprite = legendaryAbilityData.Icon;
-            _cardName.TranslationName = legendaryAbilityData.Name;
-            _cardDiscription.TranslationName = legendaryAbilityData.Description;
+            //LegendaryAbilityData legendaryAbilityData = (cardData.AttributeData as AbilityAttributeData).LegendaryAbilityData;
+            _cardIcon.sprite = cardData.LegendaryAbilityData.Icon;
+            _cardName.TranslationName = cardData.LegendaryAbilityData.Name;
+            _cardDiscription.TranslationName = cardData.LegendaryAbilityData.Description;
         }
 
         CreateSupportivParametrField(cardData);
@@ -56,14 +56,15 @@ public class CardKnowledgebaseView : KnowladgeView
             cardView.Initialize(cardData.SuppurtivData[i].Icon, cardData.SuppurtivData[i].NameCard);
         }
 
-        LegendaryAbilityData legendaryAbilityData = (cardData.AttributeData as AbilityAttributeData).LegendaryAbilityData;
+        //LegendaryAbilityData legendaryAbilityData = (cardData.AttributeData as AbilityAttributeData).LegendaryAbilityData;
 
-        if (legendaryAbilityData != null)
+        if (cardData.LegendaryAbilityData != null)
         {
             if(cardData.TypeCardParameter != TypeCardParameter.LegendariAbility)
             {
                 LinkCardView cardView = Instantiate(_linkCardView, _linkCardConteiner);
-                cardView.Initialize(legendaryAbilityData.Icon, legendaryAbilityData.Name);
+                // cardView.Initialize(legendaryAbilityData.Icon, legendaryAbilityData.Name);
+                cardView.Initialize(cardData.LegendaryAbilityData.Icon, cardData.LegendaryAbilityData.Name);
             }
         }
     }
@@ -80,9 +81,9 @@ public class CardKnowledgebaseView : KnowladgeView
         }
         else
         {
-            LegendaryAbilityData legendaryAbilityData = (cardData.AttributeData as AbilityAttributeData).LegendaryAbilityData;
+            //LegendaryAbilityData legendaryAbilityData = (cardData.AttributeData as AbilityAttributeData).LegendaryAbilityData;
 
-            for (int i = 0; i < legendaryAbilityData.LegendaryAbilityParameters.Count; i++)
+            for (int i = 0; i < cardData.LegendaryAbilityData.LegendaryAbilityParameters.Count; i++)
             {
                 KnowleadgeCardParameterView view = Instantiate(_parameterView, _parametrConteiner);
                 view.Initialize(cardData, i);

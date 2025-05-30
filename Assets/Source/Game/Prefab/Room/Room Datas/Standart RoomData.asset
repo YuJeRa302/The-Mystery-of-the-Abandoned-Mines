@@ -20,7 +20,7 @@ MonoBehaviour:
   - {r: 0, g: 0.5411765, b: 1, a: 0}
   - {r: 0.5686275, g: 0.14509805, b: 1, a: 0}
   - {r: 1, g: 0.22745098, b: 0.14509805, a: 0}
-  _room: {fileID: 8856733375309331570, guid: 7b1c697bf7e9d6d4899a09334c62ce74, type: 3}
+  _room: {fileID: 7187947518307985074, guid: 7b1c697bf7e9d6d4899a09334c62ce74, type: 3}
   _chanceFromDistance:
     serializedVersion: 2
     m_Curve:

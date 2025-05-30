@@ -8,7 +8,7 @@ namespace Assets.Source.Game.Scripts
     {
         private readonly int _countRerollPointsReward = 2;
         private readonly int _minWeaponCount = 1;
-        private readonly System.Random _rnd = new();
+        private readonly System.Random _rnd = new ();
         private readonly TemporaryData _temporaryData;
         private readonly Player _player;
         private readonly LevelObserver _levelObserver;
@@ -16,7 +16,7 @@ namespace Assets.Source.Game.Scripts
         private readonly AudioPlayer _audioPlayer;
         private readonly LeanLocalization _leanLocalization;
 
-        private List<WeaponData> _weaponDatas = new();
+        private List<WeaponData> _weaponDatas = new ();
         private WeaponData _rewardWeaponData;
         private WeaponState _rewardWeaponState;
 
@@ -51,7 +51,6 @@ namespace Assets.Source.Game.Scripts
         public event Action CardPanelOpened;
         public event Action<bool> GameEnded;
 
-        public string LanguageTag { get; private set; }
         public float AmbientVolumeValue { get; private set; }
         public float SfxVolumeValue { get; private set; }
         public bool IsMuted { get; private set; } = false;
@@ -105,7 +104,6 @@ namespace Assets.Source.Game.Scripts
 
         public void SetLanguage(string value)
         {
-            LanguageTag = value;
             _temporaryData.SetCurrentLanguage(value);
             _leanLocalization.SetCurrentLanguage(value);
         }

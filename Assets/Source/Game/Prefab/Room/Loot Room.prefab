@@ -165,8 +165,8 @@ MeshRenderer:
   m_GameObject: {fileID: 147098528622952637}
   m_Enabled: 1
   m_CastShadows: 0
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 0
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
@@ -248,8 +248,8 @@ MeshRenderer:
   m_GameObject: {fileID: 188841260925221131}
   m_Enabled: 1
   m_CastShadows: 0
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 0
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
@@ -532,8 +532,8 @@ MeshRenderer:
   m_GameObject: {fileID: 346439989319565653}
   m_Enabled: 1
   m_CastShadows: 0
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 0
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
@@ -611,6 +611,7 @@ GameObject:
   - component: {fileID: 4584255008057463767}
   - component: {fileID: 7384312052420136921}
   - component: {fileID: 4281319879829998526}
+  - component: {fileID: 8809837907207716078}
   m_Layer: 6
   m_Name: doorwayRight
   m_TagString: Untagged
@@ -659,7 +660,7 @@ MeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 602387180489798861}
   m_Enabled: 1
-  m_CastShadows: 2
+  m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 0
   m_StaticShadowCaster: 0
@@ -729,6 +730,45 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _roomDoor: {fileID: 4829522902276162182}
   _typeRoomSide: 1
+--- !u!205 &8809837907207716078
+LODGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 602387180489798861}
+  serializedVersion: 2
+  m_LocalReferencePoint: {x: -0.026055336, y: 2.23636, z: -3.9785004}
+  m_Size: 1
+  m_FadeMode: 0
+  m_AnimateCrossFading: 0
+  m_LastLODIsBillboard: 0
+  m_LODs:
+  - screenRelativeHeight: 0.03
+    fadeTransitionWidth: 0
+    renderers:
+    - renderer: {fileID: 4584255008057463767}
+    - renderer: {fileID: 2272601949377765791}
+    - renderer: {fileID: 880804705920748303}
+    - renderer: {fileID: 6819618886862381376}
+    - renderer: {fileID: 7084385125326561758}
+    - renderer: {fileID: 6403179991657029654}
+    - renderer: {fileID: 3997674937895431989}
+    - renderer: {fileID: 1052053000837370843}
+    - renderer: {fileID: 5998291330937947334}
+    - renderer: {fileID: 8205724951224618230}
+    - renderer: {fileID: 3636783536001074706}
+    - renderer: {fileID: 7618950925392163913}
+    - renderer: {fileID: 3279072531215224233}
+    - renderer: {fileID: 1397252948176868162}
+    - renderer: {fileID: 8398597032799238445}
+    - renderer: {fileID: 3002703879537208097}
+    - renderer: {fileID: 5502471158009221957}
+    - renderer: {fileID: 3253296240421661152}
+    - renderer: {fileID: 5405775690458795709}
+    - renderer: {fileID: 3476328840481871283}
+    - renderer: {fileID: 2392728244380695265}
+  m_Enabled: 1
 --- !u!1 &610368009861252767
 GameObject:
   m_ObjectHideFlags: 0
@@ -971,8 +1011,8 @@ MeshRenderer:
   m_GameObject: {fileID: 685855072511960462}
   m_Enabled: 1
   m_CastShadows: 0
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 0
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
@@ -1017,6 +1057,7 @@ GameObject:
   - component: {fileID: 5529635863438095179}
   - component: {fileID: 137294161938416688}
   - component: {fileID: 6365596307032370581}
+  - component: {fileID: 7078435547634610821}
   m_Layer: 6
   m_Name: doorwayUpper
   m_TagString: Untagged
@@ -1065,7 +1106,7 @@ MeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 698260819977810002}
   m_Enabled: 1
-  m_CastShadows: 2
+  m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 0
   m_StaticShadowCaster: 0
@@ -1135,6 +1176,45 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _roomDoor: {fileID: 4830677463509641567}
   _typeRoomSide: 2
+--- !u!205 &7078435547634610821
+LODGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 698260819977810002}
+  serializedVersion: 2
+  m_LocalReferencePoint: {x: -0.02605486, y: 2.23636, z: -3.9785004}
+  m_Size: 1
+  m_FadeMode: 0
+  m_AnimateCrossFading: 0
+  m_LastLODIsBillboard: 0
+  m_LODs:
+  - screenRelativeHeight: 0.03
+    fadeTransitionWidth: 0
+    renderers:
+    - renderer: {fileID: 5529635863438095179}
+    - renderer: {fileID: 2271518027209460294}
+    - renderer: {fileID: 2827494486270990482}
+    - renderer: {fileID: 8344976078159707103}
+    - renderer: {fileID: 4233955393040609235}
+    - renderer: {fileID: 3338567807656291800}
+    - renderer: {fileID: 6591075577784801303}
+    - renderer: {fileID: 5058928450386688663}
+    - renderer: {fileID: 2794259587060601006}
+    - renderer: {fileID: 8789973750289385508}
+    - renderer: {fileID: 2861743102275276368}
+    - renderer: {fileID: 2898669605827716751}
+    - renderer: {fileID: 6178971527390994091}
+    - renderer: {fileID: 367282821561313682}
+    - renderer: {fileID: 4445615300620938914}
+    - renderer: {fileID: 7208270172517415123}
+    - renderer: {fileID: 602460443745294566}
+    - renderer: {fileID: 3447232640276271841}
+    - renderer: {fileID: 6897828802781739950}
+    - renderer: {fileID: 538915213148750476}
+    - renderer: {fileID: 6259430606747680792}
+  m_Enabled: 1
 --- !u!1 &733887132977204596
 GameObject:
   m_ObjectHideFlags: 0
@@ -6686,8 +6766,8 @@ MeshRenderer:
   m_GameObject: {fileID: 1344107912341872807}
   m_Enabled: 1
   m_CastShadows: 0
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 0
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
@@ -6854,8 +6934,8 @@ MeshRenderer:
   m_GameObject: {fileID: 1482907046327907597}
   m_Enabled: 1
   m_CastShadows: 0
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 0
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
@@ -7886,12 +7966,13 @@ GameObject:
   - component: {fileID: 3290729172692856294}
   - component: {fileID: 7250641546976954813}
   - component: {fileID: 3810906870183844892}
+  - component: {fileID: 3893434852319151912}
   m_Layer: 6
   m_Name: LeftWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 111
+  m_StaticEditorFlags: 107
   m_IsActive: 1
 --- !u!4 &750348482249876156
 Transform:
@@ -7993,6 +8074,25 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 8, y: 5.18272, z: 0.20760612}
   m_Center: {x: 0.00000023841864, y: 2.3913598, z: -3.8961978}
+--- !u!205 &3893434852319151912
+LODGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2636683144741247786}
+  serializedVersion: 2
+  m_LocalReferencePoint: {x: 0.00000047683716, y: 2.3913598, z: -3.8961987}
+  m_Size: 1
+  m_FadeMode: 0
+  m_AnimateCrossFading: 0
+  m_LastLODIsBillboard: 0
+  m_LODs:
+  - screenRelativeHeight: 0.03
+    fadeTransitionWidth: 0
+    renderers:
+    - renderer: {fileID: 3290729172692856294}
+  m_Enabled: 1
 --- !u!1 &2651619725340592048
 GameObject:
   m_ObjectHideFlags: 0
@@ -8512,6 +8612,7 @@ GameObject:
   - component: {fileID: 6397266823854248058}
   - component: {fileID: 562639840494575601}
   - component: {fileID: 4317696954272050168}
+  - component: {fileID: 6067365012122543972}
   m_Layer: 6
   m_Name: doorwayDown
   m_TagString: Untagged
@@ -8560,7 +8661,7 @@ MeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3189308762296857032}
   m_Enabled: 1
-  m_CastShadows: 2
+  m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 0
   m_StaticShadowCaster: 0
@@ -8630,6 +8731,45 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _roomDoor: {fileID: 4717611815056428911}
   _typeRoomSide: 3
+--- !u!205 &6067365012122543972
+LODGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3189308762296857032}
+  serializedVersion: 2
+  m_LocalReferencePoint: {x: -0.02605486, y: 2.23636, z: -3.9785004}
+  m_Size: 1
+  m_FadeMode: 0
+  m_AnimateCrossFading: 0
+  m_LastLODIsBillboard: 0
+  m_LODs:
+  - screenRelativeHeight: 0.03
+    fadeTransitionWidth: 0
+    renderers:
+    - renderer: {fileID: 6397266823854248058}
+    - renderer: {fileID: 2158452239311744118}
+    - renderer: {fileID: 606016340433050409}
+    - renderer: {fileID: 4238887183522131832}
+    - renderer: {fileID: 5346543246031597532}
+    - renderer: {fileID: 5714657564603247200}
+    - renderer: {fileID: 7660178568651114283}
+    - renderer: {fileID: 1312631705047155355}
+    - renderer: {fileID: 3830676465455092302}
+    - renderer: {fileID: 1159158691644551460}
+    - renderer: {fileID: 8953222552280010371}
+    - renderer: {fileID: 5961395045790989194}
+    - renderer: {fileID: 4302227916320306644}
+    - renderer: {fileID: 5471784388229049506}
+    - renderer: {fileID: 4674700148278072657}
+    - renderer: {fileID: 4869753461815475280}
+    - renderer: {fileID: 5985114609378503042}
+    - renderer: {fileID: 447089848984683514}
+    - renderer: {fileID: 4482108089114198935}
+    - renderer: {fileID: 2511867288553506550}
+    - renderer: {fileID: 8747775749941626914}
+  m_Enabled: 1
 --- !u!1 &3257553177778788058
 GameObject:
   m_ObjectHideFlags: 0
@@ -9194,8 +9334,8 @@ MeshRenderer:
   m_GameObject: {fileID: 3635641019196547495}
   m_Enabled: 1
   m_CastShadows: 0
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 0
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
@@ -11316,8 +11456,8 @@ MeshRenderer:
   m_GameObject: {fileID: 5281454494760308327}
   m_Enabled: 1
   m_CastShadows: 0
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 0
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
@@ -12767,8 +12907,8 @@ MeshRenderer:
   m_GameObject: {fileID: 6619718591030600277}
   m_Enabled: 1
   m_CastShadows: 0
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 0
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
@@ -18101,12 +18241,13 @@ GameObject:
   - component: {fileID: 2410608355487407299}
   - component: {fileID: 4986296985824634658}
   - component: {fileID: 8789433185810109759}
+  - component: {fileID: 3165841586859437574}
   m_Layer: 6
   m_Name: Upper Wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 111
+  m_StaticEditorFlags: 107
   m_IsActive: 1
 --- !u!4 &8279388504238259270
 Transform:
@@ -18208,6 +18349,25 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 7.9999986, y: 5.18272, z: 0.20760608}
   m_Center: {x: 0.00000023841858, y: 2.3913598, z: -3.8961968}
+--- !u!205 &3165841586859437574
+LODGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7043358640740762448}
+  serializedVersion: 2
+  m_LocalReferencePoint: {x: 0.00000047683716, y: 2.3913598, z: -3.8961968}
+  m_Size: 1
+  m_FadeMode: 0
+  m_AnimateCrossFading: 0
+  m_LastLODIsBillboard: 0
+  m_LODs:
+  - screenRelativeHeight: 0.03
+    fadeTransitionWidth: 0
+    renderers:
+    - renderer: {fileID: 2410608355487407299}
+  m_Enabled: 1
 --- !u!1 &7052518827526444420
 GameObject:
   m_ObjectHideFlags: 0
@@ -18535,8 +18695,8 @@ MeshRenderer:
   m_GameObject: {fileID: 7135296740372167174}
   m_Enabled: 1
   m_CastShadows: 0
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 0
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
@@ -18618,8 +18778,8 @@ MeshRenderer:
   m_GameObject: {fileID: 7258774861360960884}
   m_Enabled: 1
   m_CastShadows: 0
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 0
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
@@ -18701,8 +18861,8 @@ MeshRenderer:
   m_GameObject: {fileID: 7289512206233696259}
   m_Enabled: 1
   m_CastShadows: 0
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 0
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
@@ -18933,8 +19093,8 @@ MeshRenderer:
   m_GameObject: {fileID: 7479389041512055889}
   m_Enabled: 1
   m_CastShadows: 0
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 0
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
@@ -24097,12 +24257,13 @@ GameObject:
   - component: {fileID: 1497883489409862387}
   - component: {fileID: 6350394790658978023}
   - component: {fileID: 3613358676880442952}
+  - component: {fileID: 5446231540279316145}
   m_Layer: 6
   m_Name: RightWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 111
+  m_StaticEditorFlags: 107
   m_IsActive: 1
 --- !u!4 &3312770228210484394
 Transform:
@@ -24204,6 +24365,25 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 8, y: 5.18272, z: 0.20760612}
   m_Center: {x: 0.00000023841864, y: 2.3913598, z: -3.8961978}
+--- !u!205 &5446231540279316145
+LODGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7788674396863224622}
+  serializedVersion: 2
+  m_LocalReferencePoint: {x: 0.00000047683716, y: 2.3913598, z: -3.8961987}
+  m_Size: 1
+  m_FadeMode: 0
+  m_AnimateCrossFading: 0
+  m_LastLODIsBillboard: 0
+  m_LODs:
+  - screenRelativeHeight: 0.03
+    fadeTransitionWidth: 0
+    renderers:
+    - renderer: {fileID: 1497883489409862387}
+  m_Enabled: 1
 --- !u!1 &7834747421552798392
 GameObject:
   m_ObjectHideFlags: 0
@@ -24638,8 +24818,8 @@ MeshRenderer:
   m_GameObject: {fileID: 8075810456746105584}
   m_Enabled: 1
   m_CastShadows: 0
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 0
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
@@ -24684,6 +24864,7 @@ GameObject:
   - component: {fileID: 2112632373923814755}
   - component: {fileID: 5077495657319829892}
   - component: {fileID: 8106777536169869972}
+  - component: {fileID: 1942356852667679453}
   m_Layer: 6
   m_Name: doorwayLeft
   m_TagString: Untagged
@@ -24732,7 +24913,7 @@ MeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8138384165369830994}
   m_Enabled: 1
-  m_CastShadows: 2
+  m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 0
   m_StaticShadowCaster: 0
@@ -24802,6 +24983,45 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _roomDoor: {fileID: 8294524787556869482}
   _typeRoomSide: 0
+--- !u!205 &1942356852667679453
+LODGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8138384165369830994}
+  serializedVersion: 2
+  m_LocalReferencePoint: {x: -0.026055336, y: 2.23636, z: -3.9785004}
+  m_Size: 1
+  m_FadeMode: 0
+  m_AnimateCrossFading: 0
+  m_LastLODIsBillboard: 0
+  m_LODs:
+  - screenRelativeHeight: 0.03
+    fadeTransitionWidth: 0
+    renderers:
+    - renderer: {fileID: 2112632373923814755}
+    - renderer: {fileID: 3427270421969536627}
+    - renderer: {fileID: 9161283818850234844}
+    - renderer: {fileID: 1089877636467003468}
+    - renderer: {fileID: 2532303211454199890}
+    - renderer: {fileID: 1038230695278097667}
+    - renderer: {fileID: 7259360803787413010}
+    - renderer: {fileID: 1628132285556798900}
+    - renderer: {fileID: 5154179835469704289}
+    - renderer: {fileID: 1976509939985038613}
+    - renderer: {fileID: 4490618056399635612}
+    - renderer: {fileID: 8083981461407462717}
+    - renderer: {fileID: 6270822543998510118}
+    - renderer: {fileID: 6368788661874667740}
+    - renderer: {fileID: 4627538638585651574}
+    - renderer: {fileID: 499869147765509520}
+    - renderer: {fileID: 3015064475691137561}
+    - renderer: {fileID: 9021458644294671285}
+    - renderer: {fileID: 5825515400269839387}
+    - renderer: {fileID: 3987424599146193662}
+    - renderer: {fileID: 7726680984097845590}
+  m_Enabled: 1
 --- !u!1 &8196666756553126848
 GameObject:
   m_ObjectHideFlags: 0
@@ -25235,8 +25455,8 @@ MeshRenderer:
   m_GameObject: {fileID: 8399353635937859026}
   m_Enabled: 1
   m_CastShadows: 0
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 0
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
@@ -25507,12 +25727,13 @@ GameObject:
   - component: {fileID: 5843324774382636714}
   - component: {fileID: 5911935387431743335}
   - component: {fileID: 1674712163739621980}
+  - component: {fileID: 6483022888080623235}
   m_Layer: 6
   m_Name: Down Wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 111
+  m_StaticEditorFlags: 107
   m_IsActive: 1
 --- !u!4 &8246593702457820992
 Transform:
@@ -25614,6 +25835,25 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 7.9999986, y: 5.18272, z: 0.20760608}
   m_Center: {x: 0.00000023841858, y: 2.3913598, z: -3.8961968}
+--- !u!205 &6483022888080623235
+LODGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8705147446072116662}
+  serializedVersion: 2
+  m_LocalReferencePoint: {x: 0.00000047683716, y: 2.3913598, z: -3.8961968}
+  m_Size: 1
+  m_FadeMode: 0
+  m_AnimateCrossFading: 0
+  m_LastLODIsBillboard: 0
+  m_LODs:
+  - screenRelativeHeight: 0.03
+    fadeTransitionWidth: 0
+    renderers:
+    - renderer: {fileID: 5843324774382636714}
+  m_Enabled: 1
 --- !u!1 &8795357884594764733
 GameObject:
   m_ObjectHideFlags: 0
@@ -30939,8 +31179,8 @@ MeshRenderer:
   m_GameObject: {fileID: 9018736622355354965}
   m_Enabled: 1
   m_CastShadows: 0
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 0
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
@@ -36801,6 +37041,11 @@ Animator:
   m_CorrespondingSourceObject: {fileID: 5472802805002780409, guid: da389f98d36554042874cf88abbff5ef, type: 3}
   m_PrefabInstance: {fileID: 6769624899840106575}
   m_PrefabAsset: {fileID: 0}
+--- !u!23 &2158452239311744118 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 4613609178438126649, guid: da389f98d36554042874cf88abbff5ef, type: 3}
+  m_PrefabInstance: {fileID: 6769624899840106575}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &3498331767225288775 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7889774175931754504, guid: da389f98d36554042874cf88abbff5ef, type: 3}
@@ -37022,6 +37267,11 @@ Transform:
 --- !u!95 &1473686023414069382 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 5472802805002780409, guid: da389f98d36554042874cf88abbff5ef, type: 3}
+  m_PrefabInstance: {fileID: 6881738304115312255}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &2271518027209460294 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 4613609178438126649, guid: da389f98d36554042874cf88abbff5ef, type: 3}
   m_PrefabInstance: {fileID: 6881738304115312255}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &3674589066017926775 stripped
@@ -37246,6 +37496,11 @@ Transform:
 --- !u!95 &1476194774951088991 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 5472802805002780409, guid: da389f98d36554042874cf88abbff5ef, type: 3}
+  m_PrefabInstance: {fileID: 6885777829905886630}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &2272601949377765791 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 4613609178438126649, guid: da389f98d36554042874cf88abbff5ef, type: 3}
   m_PrefabInstance: {fileID: 6885777829905886630}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &3670761057031980462 stripped
@@ -38076,6 +38331,11 @@ MonoBehaviour:
 --- !u!95 &2622648006428095667 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 5472802805002780409, guid: da389f98d36554042874cf88abbff5ef, type: 3}
+  m_PrefabInstance: {fileID: 8040835533506333258}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &3427270421969536627 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 4613609178438126649, guid: da389f98d36554042874cf88abbff5ef, type: 3}
   m_PrefabInstance: {fileID: 8040835533506333258}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &4601324869365103900 stripped

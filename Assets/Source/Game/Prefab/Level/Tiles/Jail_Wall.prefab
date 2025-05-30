@@ -12,12 +12,13 @@ GameObject:
   - component: {fileID: 800616031683392026}
   - component: {fileID: 800616031682425050}
   - component: {fileID: 4924973224439803984}
+  - component: {fileID: 6405230055754595279}
   m_Layer: 0
   m_Name: Jail_Wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 2147483647
+  m_StaticEditorFlags: 121
   m_IsActive: 1
 --- !u!4 &800616031680524858
 Transform:
@@ -52,7 +53,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 2
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
+  m_DynamicOccludee: 0
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 0
@@ -105,3 +106,22 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 4.000004, y: 3.1751027, z: 0.16653202}
   m_Center: {x: -0.0000004768373, y: 1.5442393, z: 0.0032656833}
+--- !u!205 &6405230055754595279
+LODGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 800616031680425498}
+  serializedVersion: 2
+  m_LocalReferencePoint: {x: -0.00000047683716, y: 1.5442393, z: 0.0032656789}
+  m_Size: 1
+  m_FadeMode: 0
+  m_AnimateCrossFading: 0
+  m_LastLODIsBillboard: 0
+  m_LODs:
+  - screenRelativeHeight: 0.03
+    fadeTransitionWidth: 0
+    renderers:
+    - renderer: {fileID: 800616031682425050}
+  m_Enabled: 1

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Assets.Source.Game.Scripts
@@ -67,13 +68,22 @@ namespace Assets.Source.Game.Scripts
             _ability.Use();
 
             if (_blastThrowingCoroutine != null)
+            {
+                _coroutineRunner.StopCoroutine(_blastThrowingCoroutine);
                 _blastThrowingCoroutine = _coroutineRunner.StartCoroutine(ThrowingBlast());
+            }
 
             if (_damageDealCoroutine != null)
+            {
+                _coroutineRunner.StopCoroutine(_damageDealCoroutine);
                 _damageDealCoroutine = _coroutineRunner.StartCoroutine(DealDamage());
+            }
 
             if (_blastRotateCoroutine != null)
+            {
+                _coroutineRunner.StopCoroutine(_blastRotateCoroutine);
                 _blastRotateCoroutine = _coroutineRunner.StartCoroutine(RotateSpell());
+            }
         }
 
         protected override void OnAbilityUsed(Ability ability) 
@@ -119,6 +129,11 @@ namespace Assets.Source.Game.Scripts
                Quaternion.identity);
 
             _spell.Initialize(_particleSystem, _ability.CurrentDuration, _ability.SpellRadius);
+
+            float distance = 3f;
+
+            _spell.transform.position = _player.transform.position + new Vector3(distance, 2f, 0.57f);
+
             _blastRotateCoroutine = _coroutineRunner.StartCoroutine(RotateSpell());
         }
 
@@ -234,8 +249,6 @@ namespace Assets.Source.Game.Scripts
         {
             float verticalOffset = 0f;
             float distance = 3f;
-
-            _spell.transform.position = _player.transform.position + new Vector3(distance, 2f, 0.57f);
 
             while (_ability.IsAbilityEnded == false)
             {

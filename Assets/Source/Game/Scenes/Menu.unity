@@ -296,7 +296,6 @@ Transform:
   - {fileID: 1227517080}
   - {fileID: 1932033766}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &14146710
 GameObject:
@@ -2588,7 +2587,6 @@ RectTransform:
   - {fileID: 1990321681}
   - {fileID: 780589260}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}

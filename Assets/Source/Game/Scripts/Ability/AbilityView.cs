@@ -16,6 +16,11 @@ namespace Assets.Source.Game.Scripts
             AbilityCooldown = currentAbilityCooldown;
         }
 
+        public void Initialize(Sprite sprite)
+        {
+            _abilityIcon.sprite = sprite;
+        }
+
         public virtual void Upgrade(float currentAbilityCooldown)
         {
             AbilityCooldown = currentAbilityCooldown;

@@ -7,7 +7,7 @@ using UnityEngine;
 public class SnowfallPresenter : AbilityPresenter
 {
     private readonly float _delayAttack = 0.3f;
-    private readonly float _blastSpeed = 0.1f;
+    private readonly float _blastSpeed = 12f;
     private readonly int _countSpell = 3;
 
     private LegendaryAbilitySpell _spellPrefab;
@@ -156,7 +156,7 @@ public class SnowfallPresenter : AbilityPresenter
             for (int i = 0; i < _spawnedSpell.Count; i++)
             {
                 if (_spawnedSpell[i] != null)
-                    _spawnedSpell[i].transform.Translate(_direction * _blastSpeed);
+                    _spawnedSpell[i].transform.Translate(_direction * _blastSpeed * Time.deltaTime);
                 else
                     yield return null;
             }

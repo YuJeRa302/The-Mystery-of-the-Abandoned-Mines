@@ -24,6 +24,7 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private Transform _weaponEffectsContainer;
         [Space(20)]
         [SerializeField] private Image _playerMapIcon;
+        [SerializeField] private Sprite _closeAbilityIcon;
 
         private Transform _throwPoint;
         private ParticleSystem _abilityEffect;
@@ -49,12 +50,16 @@ namespace Assets.Source.Game.Scripts
 
         public void TakeClassAbility(ClassAbilityData abilityData, int currentLevel)
         {
-            if (currentLevel == 0)
-                return;
-
             ClassSkillButtonView abilityView;
             float currentAbilityCooldown = 0f;
             abilityView = Instantiate(abilityData.ButtonView, _classAbilityContainer);
+
+            if (currentLevel == 0)
+            {
+                abilityView.Initialize(_closeAbilityIcon);
+                abilityView.SetInerectableButton(false);
+                return;
+            }
 
             foreach (var parametr in abilityData.Parameters[currentLevel-1].CardParameters)
             {
@@ -62,16 +67,8 @@ namespace Assets.Source.Game.Scripts
                     currentAbilityCooldown = parametr.Value;
             }
 
-            if (currentLevel <= 0)
-            {
-                abilityView.Initialize(abilityData.Icon, currentAbilityCooldown);
-                abilityView.SetInerectableButton(false);
-            }
-            else
-            {
-                abilityView.Initialize(abilityData.Icon, currentAbilityCooldown);
-                ClassAbilityViewCreated?.Invoke(abilityData, abilityView, currentLevel);
-            }
+            abilityView.Initialize(abilityData.Icon, currentAbilityCooldown);
+            ClassAbilityViewCreated?.Invoke(abilityData, abilityView, currentLevel);
         }
 
         public void TakePassiveAbility(PassiveAttributeData passiveAttributeData)

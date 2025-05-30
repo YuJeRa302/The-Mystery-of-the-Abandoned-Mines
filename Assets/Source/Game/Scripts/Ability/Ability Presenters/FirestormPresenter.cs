@@ -5,7 +5,7 @@ using UnityEngine;
 public class FirestormPresenter : AbilityPresenter
 {
     private readonly float _delayAttack = 0.3f;
-    private readonly float _blastSpeed = 0.2f;
+    private readonly float _blastSpeed = 12f;
 
     private LegendaryAbilitySpell _spellPrefab;
     private LegendaryAbilitySpell _spell;
@@ -127,7 +127,7 @@ public class FirestormPresenter : AbilityPresenter
         while (_ability.IsAbilityEnded == false)
         {
             if (_spell != null)
-                _spell.transform.Translate(_direction * _blastSpeed);
+                _spell.transform.Translate(_direction * _blastSpeed * Time.deltaTime);
             else
                 yield return null;
 

@@ -20,7 +20,7 @@ MonoBehaviour:
   _upgradeExperienceReward: 20
   _score: 20
   _delaySpawn: 1
-  _enemyCount: 15
+  _enemyCount: 5
   _moveSpeed: 2
   _attackDistance: 11.06
   _attackDelay: 1

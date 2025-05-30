@@ -3,11 +3,11 @@
     "isFirstSession": true,
     "language": "ru",
     "promptDone": false,
-    "Coins": 22293,
-    "AmbientVolume": 15.326927185058594,
-    "SfxVolumeVolume": 48.1785888671875,
+    "Coins": 11000,
+    "AmbientVolume": 40.0,
+    "SfxVolumeVolume": 40.0,
     "IsMuted": false,
-    "DefaultLanguage": "ru",
+    "DefaultLanguage": "tr",
     "UpgradeStates": [
         {
             "Id": 1,
@@ -28,32 +28,20 @@
         {
             "Id": 7,
             "CurrentLevel": 0
-        },
-        {
-            "Id": 6,
-            "CurrentLevel": 0
-        },
-        {
-            "Id": 5,
-            "CurrentLevel": 0
-        },
-        {
-            "Id": 4,
-            "CurrentLevel": 0
         }
     ],
     "ClassAbilityStates": [
         {
             "Id": 12,
-            "CurrentLevel": 1
+            "CurrentLevel": 3
         },
         {
             "Id": 11,
-            "CurrentLevel": 3
+            "CurrentLevel": 0
         },
         {
             "Id": 10,
-            "CurrentLevel": 3
+            "CurrentLevel": 0
         },
         {
             "Id": 13,
@@ -95,21 +83,6 @@
             "Id": 2,
             "IsEquip": false,
             "IsUnlock": true
-        },
-        {
-            "Id": 6,
-            "IsEquip": false,
-            "IsUnlock": true
-        },
-        {
-            "Id": 7,
-            "IsEquip": false,
-            "IsUnlock": true
-        },
-        {
-            "Id": 4,
-            "IsEquip": false,
-            "IsUnlock": true
         }
     ],
     "DefaultLevelState": [
@@ -139,5 +112,5 @@
             "CurrentCompleteStages": 0
         }
     ],
-    "UpgradePoints": 4
+    "UpgradePoints": 3
 }

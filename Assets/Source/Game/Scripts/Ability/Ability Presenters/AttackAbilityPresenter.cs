@@ -10,7 +10,7 @@ namespace Assets.Source.Game.Scripts
         private readonly float _delayAttackBlast = 0.3f;
         private readonly float _delayAOE = 1f;
         private readonly float _delayTargetSpell = 1f;
-        private readonly float _blastSpeed = 0.1f;
+        private readonly float _blastSpeed = 10f;
 
         private Spell _spellPrefab;
         private Spell _spell;
@@ -67,17 +67,13 @@ namespace Assets.Source.Game.Scripts
             _ability.Use();
 
             if (_blastThrowingCoroutine != null)
-                _coroutineRunner.StopCoroutine(_blastThrowingCoroutine);
+                _blastThrowingCoroutine = _coroutineRunner.StartCoroutine(ThrowingBlast());
 
             if (_damageDealCoroutine != null)
-                _coroutineRunner.StopCoroutine(_damageDealCoroutine);
+                _damageDealCoroutine = _coroutineRunner.StartCoroutine(DealDamage());
 
             if (_blastRotateCoroutine != null)
-                _coroutineRunner.StopCoroutine(_blastRotateCoroutine);
-
-            _blastThrowingCoroutine = _coroutineRunner.StartCoroutine(ThrowingBlast());
-            _damageDealCoroutine = _coroutineRunner.StartCoroutine(DealDamage());
-            _blastRotateCoroutine = _coroutineRunner.StartCoroutine(RotateSpell());
+                _blastRotateCoroutine = _coroutineRunner.StartCoroutine(RotateSpell());
         }
 
         protected override void OnAbilityUsed(Ability ability) 
@@ -123,7 +119,7 @@ namespace Assets.Source.Game.Scripts
                Quaternion.identity);
 
             _spell.Initialize(_particleSystem, _ability.CurrentDuration, _ability.SpellRadius);
-            _blastThrowingCoroutine = _coroutineRunner.StartCoroutine(RotateSpell());
+            _blastRotateCoroutine = _coroutineRunner.StartCoroutine(RotateSpell());
         }
 
         private void ThrowBlast()
@@ -226,7 +222,7 @@ namespace Assets.Source.Game.Scripts
             while (_ability.IsAbilityEnded == false)
             {
                 if (_spell != null)
-                    _spell.transform.Translate(_direction * _blastSpeed);
+                    _spell.transform.Translate(_direction * _blastSpeed * Time.deltaTime);
                 else
                     yield return null;
 
@@ -236,7 +232,6 @@ namespace Assets.Source.Game.Scripts
 
         private IEnumerator RotateSpell()
         {
-            Debug.Log("StartCorontine");
             float verticalOffset = 0f;
             float distance = 3f;
 

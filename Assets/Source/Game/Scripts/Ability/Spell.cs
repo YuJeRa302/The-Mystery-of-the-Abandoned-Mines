@@ -5,10 +5,11 @@ namespace Assets.Source.Game.Scripts
 {
     public class Spell : MonoBehaviour
     {
+        protected List<Enemy> Enemies = new ();
+
         [SerializeField] private Transform _effectContainer;
         [SerializeField] private float _findEnemyRange = 4f;
-        
-        protected List<Enemy> _enemies = new List<Enemy>();
+
         private ParticleSystem _abilityEffect;
         private float _spellLifeTime;
 
@@ -48,7 +49,7 @@ namespace Assets.Source.Game.Scripts
 
         public virtual bool TryFindEnemys(out List<Enemy> enemies)
         {
-            _enemies.Clear();
+            Enemies.Clear();
             enemies = new List<Enemy>();
             Collider[] coliderEnemy = Physics.OverlapSphere(transform.position, _findEnemyRange);
 
@@ -56,11 +57,11 @@ namespace Assets.Source.Game.Scripts
             {
                 if (collider.TryGetComponent(out Enemy enemy))
                 {
-                    _enemies.Add(enemy);
+                    Enemies.Add(enemy);
                 }
             }
 
-            enemies.AddRange(_enemies);
+            enemies.AddRange(Enemies);
             return enemies.Count > 0;
         }
 

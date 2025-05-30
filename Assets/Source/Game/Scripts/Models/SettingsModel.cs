@@ -1,4 +1,3 @@
-using UnityEngine;
 using Lean.Localization;
 
 public class SettingsModel
@@ -22,7 +21,6 @@ public class SettingsModel
         SetLanguage(_temporaryData.Language);
     }
 
-    public string LanguageTag { get; private set; }
     public float AmbientVolumeValue { get; private set; }
     public float SfxVolumeValue { get; private set; }
     public bool IsMuted { get; private set; }
@@ -35,7 +33,6 @@ public class SettingsModel
 
     public void SetLanguage(string value)
     {
-        LanguageTag = value;
         _temporaryData.SetCurrentLanguage(value);
         _leanLocalization.SetCurrentLanguage(value);
     }

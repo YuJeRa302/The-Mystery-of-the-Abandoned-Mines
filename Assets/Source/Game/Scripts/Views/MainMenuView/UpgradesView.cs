@@ -3,7 +3,6 @@ using DG.Tweening;
 using Lean.Localization;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -41,7 +40,6 @@ public class UpgradesView : MonoBehaviour
     private List<UpgradeDataView> _upgradeDataViews = new();
     private UpgradeViewModel _upgradeViewModel;
     private IAudioPlayerService _audioPlayerService;
-    DG.Tweening.Sequence _sequence;
     private Coroutine _coroutine;
     private List<ClassAbilityStatsView> _classAbilityStatsViews = new();
 
@@ -55,8 +53,6 @@ public class UpgradesView : MonoBehaviour
 
     private void OnEnable()
     {
-        _sequence.Kill();
-
         if (_coroutine != null)
             StopCoroutine(_coroutine);
     }
@@ -109,6 +105,9 @@ public class UpgradesView : MonoBehaviour
 
     private void Clear()
     {
+        if (_upgradeDataViews.Count == 0)
+            return;
+
         foreach (UpgradeDataView view in _upgradeDataViews)
         {
             view.StatsSelected -= OnStatsSelected;
@@ -182,7 +181,6 @@ public class UpgradesView : MonoBehaviour
         }
 
         statsView.Initialize(nameParametr, valueCurrentLvl, valueNextLvl);
-
         _classAbilityStatsViews.Add(statsView);
     }
 
@@ -193,9 +191,7 @@ public class UpgradesView : MonoBehaviour
         foreach (var view in _upgradeDataViews)
         {
             if (view.UpgradeState.Id == upgradeState.Id)
-            {
                 OnStatsSelected(view);
-            }
         }
     }
 
@@ -214,11 +210,11 @@ public class UpgradesView : MonoBehaviour
         {
             _audioPlayerService?.PlayOneShotPopupSound();
 
-            _sequence.Append(view.transform.DOScale(_duration, _duration)
+            view.transform.DOScale(_duration, _duration)
                 .SetEase(Ease.OutBounce)
-                .SetLink(view.gameObject));
+                .SetLink(view.gameObject);
 
-            yield return delay;
+            yield return new WaitForSeconds(_delay);
         }
     }
 
@@ -237,6 +233,7 @@ public class UpgradesView : MonoBehaviour
     private void Show()
     {
         gameObject.SetActive(true);
+        Clear();
         Fill();
 
         if (_coroutine != null)

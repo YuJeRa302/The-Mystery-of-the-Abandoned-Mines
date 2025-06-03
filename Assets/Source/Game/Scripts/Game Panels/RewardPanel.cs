@@ -59,12 +59,6 @@ namespace Assets.Source.Game.Scripts
             YandexGame.RewVideoShow(0);
         }
 
-        protected override void CloseGame()
-        {
-            base.CloseGame();
-            YandexGame.FullscreenShow();
-        }
-
         private void OpenRewardPanel(bool gameState)
         {
             CreateViewEntities(gameState);
@@ -117,10 +111,15 @@ namespace Assets.Source.Game.Scripts
                 }
             }
 
-            RewardAdClosed?.Invoke();
+            CloseRewardAds();
         }
 
-        private void OnErrorCallback()
+        private void OnErrorFullAdCallback()
+        {
+            CloseFullscreenAds();
+        }
+
+        private void OnErrorRewardAdCallback()
         {
             CloseRewardAds();
         }
@@ -131,9 +130,11 @@ namespace Assets.Source.Game.Scripts
             GamePanelsViewModel.LootRoomComplitetd += ShowReward;
             YandexGame.RewardVideoEvent += OnRewardCallback;
             YandexGame.CloseVideoEvent += OnCloseAdCallback;
-            YandexGame.ErrorVideoEvent += OnErrorCallback;
+            YandexGame.ErrorVideoEvent += OnErrorRewardAdCallback;
             YandexGame.OpenFullAdEvent += OnOpenFullscreenAdCallback;
             YandexGame.CloseFullAdEvent += OnCloseFullscreenAdCallback;
+            YandexGame.ErrorFullAdEvent += OnErrorFullAdCallback;
+            _collectButton.onClick.AddListener(CloseGame);
             _closeGameButton.onClick.AddListener(CloseGame);
             _openAdButton.onClick.AddListener(OpenRewardAds);
             _applayReward.onClick.AddListener(PlayerApplayReward);
@@ -144,16 +145,15 @@ namespace Assets.Source.Game.Scripts
         {
             YandexGame.RewardVideoEvent -= OnRewardCallback;
             YandexGame.CloseVideoEvent -= OnCloseAdCallback;
-            YandexGame.ErrorVideoEvent -= OnErrorCallback;
+            YandexGame.ErrorVideoEvent -= OnErrorRewardAdCallback;
             YandexGame.OpenFullAdEvent -= OnOpenFullscreenAdCallback;
             YandexGame.CloseFullAdEvent -= OnCloseFullscreenAdCallback;
-            GamePanelsViewModel.GameEnded -= OpenRewardPanel;
-            GamePanelsViewModel.LootRoomComplitetd -= ShowReward;
+            YandexGame.ErrorFullAdEvent -= OnErrorFullAdCallback;
             _closeGameButton.onClick.RemoveListener(CloseGame);
+            _collectButton.onClick.RemoveListener(CloseGame);
             _applayReward.onClick.RemoveListener(PlayerApplayReward);
             _openAdButton.onClick.RemoveListener(OpenRewardAds);
             _collectButton.onClick.RemoveListener(CloseGame);
-            Debug.Log($"RewardPanel OnDestroy: disableTG");
         }
 
         private void PlayerApplayReward()

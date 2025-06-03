@@ -12,9 +12,7 @@ namespace Assets.Source.Game.Scripts
             _gamePanelsModel = gamePanelsModel;
             _gamePanelsModel.StageCompleted += () => StageCompleted?.Invoke();
             _gamePanelsModel.CardPoolCreated += () => CardPoolCreated?.Invoke();
-
             _gamePanelsModel.LootRoomComplitetd += OnLootRoomComplete;
-
             _gamePanelsModel.GameEnded += (bool state) => GameEnded?.Invoke(state);
             _gamePanelsModel.CardPanelOpened += () => CardPanelOpened?.Invoke();
         }

@@ -33,13 +33,10 @@ namespace Assets.Source.Game.Scripts
         private IEnumerator _animationTips;
         private IAudioPlayerService _audioPlayerService;
         private MainMenuViewModel _menuViewModel;
-        private DG.Tweening.Sequence _sequence;
         private WaitForSeconds _delayNewTrips;
 
         private void OnEnable()
         {
-            _sequence.Kill();
-
             if (_getTips != null)
                 StopCoroutine(_getTips);
 
@@ -62,7 +59,6 @@ namespace Assets.Source.Game.Scripts
             _audioPlayerService = audioPlayerService;
             _delayNewTrips = new WaitForSeconds(_timeNewTips);
             AddListener();
-            _sequence.Kill();
 
             if (_getTips != null)
                 StopCoroutine(_getTips);
@@ -191,8 +187,6 @@ namespace Assets.Source.Game.Scripts
 
         private IEnumerator SetTipViewAnimation()
         {
-            WaitForSeconds delay = new WaitForSeconds(_delay);
-
             foreach (TipView view in _tipViews)
             {
                 view.transform.localScale = Vector3.zero;
@@ -204,21 +198,15 @@ namespace Assets.Source.Game.Scripts
                     SetEase(Ease.OutBounce).
                     SetLink(view.gameObject);
 
-                yield return delay;
+                yield return new WaitForSeconds(_delay);
             }
 
-                _audioPlayerService?.PlayOneShotPopupSound();
+            _audioPlayerService?.PlayOneShotPopupSound();
         }
 
-        private void OnGamePaused(bool state) 
-        {
-            Time.timeScale = Convert.ToInt32(state);
-        }
+        private void OnGamePaused(bool state) => Time.timeScale = Convert.ToInt32(state);
 
-        private void OnGameResumed(bool state) 
-        {
-            Time.timeScale = Convert.ToInt32(state);
-        }
+        private void OnGameResumed(bool state) => Time.timeScale = Convert.ToInt32(state);
 
         private void Show() => gameObject.SetActive(true);
     }

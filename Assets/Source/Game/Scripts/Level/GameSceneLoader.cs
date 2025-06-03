@@ -7,6 +7,7 @@ public class GameSceneLoader : SceneLoader
 
     public override void OnSceneLoaded(TemporaryData temporaryData)
     {
+        //Сделать префаб Scripts.
         _levelObserver.Initialize(temporaryData);
     }
 }

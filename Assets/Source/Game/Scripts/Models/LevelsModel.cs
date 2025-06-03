@@ -2,6 +2,7 @@ using Assets.Source.Game.Scripts;
 using IJunior.TypedScenes;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LevelsModel
 {
@@ -9,7 +10,6 @@ public class LevelsModel
     private readonly ICoroutineRunner _coroutineRunner;
     private readonly GameObject _canvasLoader;
     private readonly float _loadControlValue = 0.9f;
-    private readonly float _delayLoadScene = 0.8f;
 
     private AsyncOperation _load;
     private LevelData _currentLevelData;
@@ -87,13 +87,13 @@ public class LevelsModel
         if (_load != null)
             yield break;
 
+        _canvasLoader.gameObject.SetActive(true);
         _load = asyncOperation;
         _load.allowSceneActivation = false;
-        _canvasLoader.gameObject.SetActive(true);
 
         while (_load.progress < _loadControlValue)
         {
-            yield return new WaitForSeconds(_delayLoadScene);
+            yield return null;
         }
 
         _load.allowSceneActivation = true;

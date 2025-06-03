@@ -33,8 +33,8 @@ namespace Assets.Source.Game.Scripts
         {
             if (_temporaryData == null)
             {
-                Build();
                 InitYandexGameEntities();
+                Build();
             }
         }
         

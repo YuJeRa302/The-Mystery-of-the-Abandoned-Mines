@@ -1,4 +1,5 @@
 using Lean.Localization;
+using System;
 
 public class SettingsModel
 {
@@ -43,9 +44,9 @@ public class SettingsModel
         _temporaryData.SetInterfaceVolume(volume);
     }
 
-    public void OnGamePause(bool state) 
+    public void OnGamePause(bool state)
     {
-        if(_audioPlayer != null)
+        if (_audioPlayer != null)
             _audioPlayer.MuteSound(!state);
     }
 

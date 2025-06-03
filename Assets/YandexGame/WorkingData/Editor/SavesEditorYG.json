@@ -4,9 +4,9 @@
     "language": "ru",
     "promptDone": false,
     "Coins": 23493,
-    "AmbientVolume": 21.336875915527345,
-    "SfxVolumeVolume": 42.10385513305664,
-    "IsMuted": false,
+    "AmbientVolume": 0.0,
+    "SfxVolumeVolume": 0.0,
+    "IsMuted": true,
     "DefaultLanguage": "ru",
     "UpgradeStates": [
         {

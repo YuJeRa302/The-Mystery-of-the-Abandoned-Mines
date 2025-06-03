@@ -199,8 +199,6 @@ public class UpgradesView : MonoBehaviour
     {
         WaitForSeconds delay = new WaitForSeconds(_delay);
 
-        _sequence = DOTween.Sequence();
-
         foreach (var view in _upgradeDataViews)
         {
             view.transform.localScale = Vector3.zero;

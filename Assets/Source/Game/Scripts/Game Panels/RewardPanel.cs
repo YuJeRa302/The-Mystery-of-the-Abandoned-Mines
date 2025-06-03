@@ -38,7 +38,13 @@ namespace Assets.Source.Game.Scripts
 
         private void OnDestroy()
         {
+            Debug.Log($"RewardPanel OnDestroy: {gameObject.GetInstanceID()}");
             RemoveListeners();
+        }
+
+        private void OnEnable()
+        {
+            //RemoveListeners();
         }
 
         public override void Initialize(GamePanelsViewModel gamePanelsViewModel)
@@ -56,13 +62,11 @@ namespace Assets.Source.Game.Scripts
         protected override void CloseGame()
         {
             base.CloseGame();
-            _collectButton.onClick.RemoveListener(CloseGame);
             YandexGame.FullscreenShow();
         }
 
         private void OpenRewardPanel(bool gameState)
         {
-            _collectButton.onClick.AddListener(CloseGame);
             CreateViewEntities(gameState);
             base.Open();
         }
@@ -133,19 +137,23 @@ namespace Assets.Source.Game.Scripts
             _closeGameButton.onClick.AddListener(CloseGame);
             _openAdButton.onClick.AddListener(OpenRewardAds);
             _applayReward.onClick.AddListener(PlayerApplayReward);
+            _collectButton.onClick.AddListener(CloseGame);
         }
 
         private void RemoveListeners()
         {
-            GamePanelsViewModel.GameEnded -= OpenRewardPanel;
             YandexGame.RewardVideoEvent -= OnRewardCallback;
             YandexGame.CloseVideoEvent -= OnCloseAdCallback;
             YandexGame.ErrorVideoEvent -= OnErrorCallback;
             YandexGame.OpenFullAdEvent -= OnOpenFullscreenAdCallback;
             YandexGame.CloseFullAdEvent -= OnCloseFullscreenAdCallback;
+            GamePanelsViewModel.GameEnded -= OpenRewardPanel;
+            GamePanelsViewModel.LootRoomComplitetd -= ShowReward;
             _closeGameButton.onClick.RemoveListener(CloseGame);
             _applayReward.onClick.RemoveListener(PlayerApplayReward);
             _openAdButton.onClick.RemoveListener(OpenRewardAds);
+            _collectButton.onClick.RemoveListener(CloseGame);
+            Debug.Log($"RewardPanel OnDestroy: disableTG");
         }
 
         private void PlayerApplayReward()

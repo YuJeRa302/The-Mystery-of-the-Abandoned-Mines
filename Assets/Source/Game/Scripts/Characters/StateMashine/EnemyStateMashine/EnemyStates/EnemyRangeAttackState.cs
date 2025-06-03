@@ -14,7 +14,6 @@ public class EnemyRangeAttackState : EnemyAttackState
         _attackDelay = _enemy.AttackDelay;
         _animationController = _enemy.AnimationStateController;
         _bulletSpawner = bulletSpawner;
-        Debug.Log("Init attac state");
     }
 
     public override void SubscrabeIvent()

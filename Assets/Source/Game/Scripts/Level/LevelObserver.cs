@@ -64,11 +64,13 @@ namespace Assets.Source.Game.Scripts
 
         private void Awake()
         {
+            Debug.Log($"LevelObserver Awake: {gameObject.GetInstanceID()}");
             _cameraControiler.ChengeConfiner(_roomPlacer.StartRoom);
         }
 
         private void OnDestroy()
         {
+            Debug.Log($"LevelObserver OnDestroy: {gameObject.GetInstanceID()}");
             RemoveListeners();
             _player.Remove();
             _enemySpawner.Dispose();
@@ -207,11 +209,22 @@ namespace Assets.Source.Game.Scripts
         {
             RemoveRoomListener();
             RemovePanelListener();
-            _roomPlacer.StartRoom.RoomEntering -= OnRoomEntering;
-            _enemySpawner.EnemyDied -= OnEnemyDied;
-            _enemySpawner.AllEnemyRoomDied -= OnRoomCompleted;
-            _player.PlayerLevelChanged -= OnPlayerLevelChanged;
-            _player.PlayerDied -= LoseGame;
+
+            if (_roomPlacer != null)
+                _roomPlacer.StartRoom.RoomEntering -= OnRoomEntering;
+
+            if (_enemySpawner != null)
+            {
+                _enemySpawner.EnemyDied -= OnEnemyDied;
+                _enemySpawner.AllEnemyRoomDied -= OnRoomCompleted;
+            }
+
+            if (_player != null)
+            {
+                _player.PlayerLevelChanged -= OnPlayerLevelChanged;
+                _player.PlayerDied -= LoseGame;
+            }
+
             YandexGame.onVisibilityWindowGame -= OnVisibilityWindowGame;
         }
 
@@ -260,6 +273,13 @@ namespace Assets.Source.Game.Scripts
         {
             _temporaryData.SaveProgress(_player, _isWinGame);
             StartCoroutine(LoadScreenLevel(Menu.LoadAsync(_temporaryData)));
+            //StartCoroutine(LoadMenuAfterDelay());
+        }
+
+        private IEnumerator LoadMenuAfterDelay()
+        {
+            yield return null;
+            StartCoroutine(LoadScreenLevel(Menu.LoadAsync(_temporaryData)));
         }
 
         private void RemoveRoomListener()
@@ -280,6 +300,9 @@ namespace Assets.Source.Game.Scripts
         {
             foreach (var panel in _panels)
             {
+                if (panel == null)
+                    continue;
+
                 panel.PanelOpened -= PauseByMenu;
                 panel.PanelClosed -= ResumeByMenu;
                 panel.GameClosed -= OnGameClosed;

@@ -48,8 +48,8 @@ namespace Assets.Source.Game.Scripts
 
             if (_spawnEnemy != null)
                 _coroutineRunner.StopCoroutine(_spawnEnemy);
-
-            _player.PlayerDied -= OnPlayerDead;
+            if (_player != null)
+                _player.PlayerDied -= OnPlayerDead;
 
             foreach(Enemy enemy in _enemies)
             {

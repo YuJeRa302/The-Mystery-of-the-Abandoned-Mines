@@ -31,8 +31,11 @@ namespace Assets.Source.Game.Scripts
 
         private void Awake()
         {
-            InitYandexGameEntities();
-            Build();
+            if (_temporaryData == null)
+            {
+                Build();
+                InitYandexGameEntities();
+            }
         }
         
         public void Initialize(TemporaryData temporaryData)

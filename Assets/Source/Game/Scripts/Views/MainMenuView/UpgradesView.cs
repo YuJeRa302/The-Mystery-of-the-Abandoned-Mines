@@ -73,6 +73,7 @@ public class UpgradesView : MonoBehaviour
         _resetButtonText.TranslationName = _buttonResetText;
         AddListener();
         gameObject.SetActive(false);
+        Debug.Log("Initialize");
     }
 
     private void AddListener()
@@ -103,6 +104,7 @@ public class UpgradesView : MonoBehaviour
             view.Initialize(upgradeData, upgradeState, _upgradeViewModel, _audioPlayerService);
             view.StatsSelected += OnStatsSelected;
         }
+        Debug.Log("Fill");
     }
 
     private void Clear()
@@ -199,12 +201,6 @@ public class UpgradesView : MonoBehaviour
 
     private IEnumerator SetUpgradeViewsAnimation()
     {
-        if (_upgradeDataViews == null || _upgradeDataViews.Count == 0)
-        {
-            Debug.LogWarning("No upgrade views to animate!");
-            yield break;
-        }
-
         WaitForSeconds delay = new WaitForSeconds(_delay);
 
         _sequence = DOTween.Sequence();

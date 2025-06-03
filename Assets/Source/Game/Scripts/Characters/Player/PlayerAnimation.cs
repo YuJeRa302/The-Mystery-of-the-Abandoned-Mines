@@ -68,8 +68,11 @@ namespace Assets.Source.Game.Scripts
 
         private void RemoveListeners() 
         {
-            _gameLoopService.GamePaused -= OnGamePaused;
-            _gameLoopService.GameResumed -= OnGameResumed;
+            if (_gameLoopService != null)
+            {
+                _gameLoopService.GamePaused -= OnGamePaused;
+                _gameLoopService.GameResumed -= OnGameResumed;
+            }
         }
 
         private void OnGamePaused(bool state)

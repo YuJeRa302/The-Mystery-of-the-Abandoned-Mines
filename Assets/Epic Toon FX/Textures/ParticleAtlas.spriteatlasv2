@@ -1,36 +1,15 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!687078895 &4343727234628468602
-SpriteAtlas:
+--- !u!612988286 &1
+SpriteAtlasAsset:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: ParticleAtlas
-  m_EditorData:
-    serializedVersion: 2
-    textureSettings:
-      serializedVersion: 2
-      anisoLevel: 1
-      compressionQuality: 50
-      maxTextureSize: 2048
-      textureCompression: 0
-      filterMode: 1
-      generateMipMaps: 0
-      readable: 0
-      crunchedCompression: 0
-      sRGB: 1
-    platformSettings: []
-    packingSettings:
-      serializedVersion: 2
-      padding: 8
-      blockOffset: 1
-      allowAlphaSplitting: 0
-      enableRotation: 0
-      enableTightPacking: 0
-      enableAlphaDilation: 0
-    secondaryTextureSettings: {}
-    variantMultiplier: 1
+  m_Name: 
+  serializedVersion: 2
+  m_MasterAtlas: {fileID: 0}
+  m_ImporterData:
     packables:
     - {fileID: 2800000, guid: dc459e47586770b49b1aa54a5bd66f68, type: 3}
     - {fileID: 2800000, guid: a3ba33a4ac48743449b608e6e6a07c7c, type: 3}
@@ -183,13 +162,4 @@ SpriteAtlas:
     - {fileID: 2800000, guid: 6d3324dc6088bc54ea64dac781bfa4ce, type: 3}
     - {fileID: 2800000, guid: dafd609c5a08450469fb588bf0ba6b4b, type: 3}
     - {fileID: 2800000, guid: 0fa02ff091c63524db399372407c1445, type: 3}
-    bindAsDefault: 1
-    isAtlasV2: 0
-    cachedData: {fileID: 0}
-    packedSpriteRenderDataKeys: []
-  m_MasterAtlas: {fileID: 0}
-  m_PackedSprites: []
-  m_PackedSpriteNamesToIndex: []
-  m_RenderDataMap: {}
-  m_Tag: ParticleAtlas
   m_IsVariant: 0

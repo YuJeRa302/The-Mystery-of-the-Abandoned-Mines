@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using YG;
 
 namespace Assets.Source.Game.Scripts
 {
@@ -35,8 +36,11 @@ namespace Assets.Source.Game.Scripts
 
         protected virtual void CloseGame() 
         {
-            gameObject.SetActive(false);
+#if UNITY_EDITOR
             GameClosed?.Invoke();
+#else
+            YandexGame.FullscreenShow();
+#endif
         }
 
         protected virtual void OpenRewardAds()

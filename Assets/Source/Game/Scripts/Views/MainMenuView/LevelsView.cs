@@ -200,6 +200,7 @@ namespace Assets.Source.Game.Scripts
             _weaponsScrollRect.gameObject.SetActive(false);
             _playerClassScrollRect.gameObject.SetActive(false);
             _audioPlayerService.PlayOneShotButtonClickSound();
+            ClearLevels();
             CreateDefaultLevels();
         }
 
@@ -216,6 +217,7 @@ namespace Assets.Source.Game.Scripts
             _weaponsScrollRect.gameObject.SetActive(false);
             _playerClassScrollRect.gameObject.SetActive(false);
             _audioPlayerService.PlayOneShotButtonClickSound();
+            ClearLevels();
             CreateContractLevels();
         }
 
@@ -231,6 +233,7 @@ namespace Assets.Source.Game.Scripts
             _levelInfo.SetActive(false);
             _weaponsScrollRect.gameObject.SetActive(true);
             _playerClassScrollRect.gameObject.SetActive(true);
+            ClearClass();
             CreateClass();
         }
 
@@ -265,6 +268,9 @@ namespace Assets.Source.Game.Scripts
 
         private void ClearLevels()
         {
+            if (_levelDataViews.Count == 0)
+                return;
+
             foreach (LevelDataView view in _levelDataViews)
             {
                 view.LevelSelected += OnLevelSelected;
@@ -276,6 +282,9 @@ namespace Assets.Source.Game.Scripts
 
         private void ClearWeapons()
         {
+            if (_weaponDataViews.Count == 0)
+                return;
+
             foreach (WeaponDataView view in _weaponDataViews)
             {
                 view.Equipped += OnWeaponEquipped;
@@ -287,6 +296,9 @@ namespace Assets.Source.Game.Scripts
 
         private void ClearClass()
         {
+            if (_playerClassDataViews.Count == 0)
+                return;
+
             foreach (PlayerClassDataView view in _playerClassDataViews)
             {
                 view.PlayerClassSelected -= OnPlayerClassSelected;
@@ -354,9 +366,7 @@ namespace Assets.Source.Game.Scripts
             else 
             {
                 if (_isWeaponSelect == true)
-                {
                     LoadLevel();
-                }
             }
 
             _audioPlayerService.PlayOneShotButtonClickSound();

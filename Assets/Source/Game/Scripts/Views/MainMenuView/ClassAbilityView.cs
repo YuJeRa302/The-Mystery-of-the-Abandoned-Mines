@@ -110,6 +110,9 @@ namespace Assets.Source.Game.Scripts
 
         private void ClearClass()
         {
+            if (_playerClassDataViews.Count == 0)
+                return;
+
             foreach (PlayerClassDataView view in _playerClassDataViews)
             {
                 view.PlayerClassSelected -= OnPlayerClassSelected;
@@ -121,6 +124,9 @@ namespace Assets.Source.Game.Scripts
 
         private void ClearClassAbility()
         {
+            if (_classAbilityDataViews.Count == 0)
+                return;
+
             foreach (ClassAbilityDataView view in _classAbilityDataViews)
             {
                 view.AbilitySelected -= OnAbilitySelected;
@@ -263,6 +269,7 @@ namespace Assets.Source.Game.Scripts
         private void Show()
         {
             gameObject.SetActive(true);
+            ClearClass();
             CreateClass();
         }
 

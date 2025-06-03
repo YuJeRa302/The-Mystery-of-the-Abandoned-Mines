@@ -12,7 +12,6 @@ namespace Assets.Source.Game.Scripts
         private readonly float _pauseValue = 0;
         private readonly float _resumeValue = 1;
         private readonly float _loadControlValue = 0.9f;
-        private readonly float _delayLoadScene = 0.8f;
 
         [SerializeField] private RoomPlacer _roomPlacer;
         [SerializeField] private Pool _enemuPool;
@@ -48,9 +47,8 @@ namespace Assets.Source.Game.Scripts
         private TemporaryData _temporaryData;
         private bool _isWinGame;
 
-        public event Action<bool> GameEnded;
-        public event Action GameClosed;
         public event Action<bool> GamePaused;
+        public event Action<bool> GameEnded;
         public event Action<bool> GameResumed;
         public event Action StageCompleted;
         public event Action<int> LootRoomComplited;
@@ -60,19 +58,16 @@ namespace Assets.Source.Game.Scripts
         public int CurrentRoomLevel => _currentRoomLevel;
         public int CountRooms { get; private set; }
         public int CountStages => _countStages;
-        public bool IsPaused => throw new NotImplementedException();
 
         private void Awake()
         {
+            _canvasLoader.gameObject.SetActive(false);
             _cameraControiler.ChengeConfiner(_roomPlacer.StartRoom);
         }
 
         private void OnDestroy()
         {
-            RemoveListeners();
-            _player.Remove();
-            _enemySpawner.Dispose();
-            _trapsSpawner.Dispose();
+            RemoveEntities();
         }
 
         public void Initialize(TemporaryData temporaryData)
@@ -89,13 +84,18 @@ namespace Assets.Source.Game.Scripts
 
         public void ResumeByRewarded()
         {
-            Time.timeScale = _resumeValue;
-            GameResumed?.Invoke(true);
+            if (_temporaryData.IsGamePause == true)
+                Time.timeScale = _pauseValue;
+            else
+                Time.timeScale = _resumeValue;
+
+            GameResumed?.Invoke(_temporaryData.MuteStateSound);
         }
 
         public void PauseByRewarded()
         {
-            throw new NotImplementedException();
+            Time.timeScale = _pauseValue;
+            GamePaused?.Invoke(_temporaryData.MuteStateSound);
         }
 
         public void ResumeByMenu()
@@ -112,22 +112,17 @@ namespace Assets.Source.Game.Scripts
             _temporaryData.SetPauseGame(true);
         }
 
-        public void ResumeByInterstitial()
+        public void ResumeByFullscreenAd()
         {
-            throw new NotImplementedException();
+            Time.timeScale = _resumeValue;
+            StartCoroutine(LoadScreenLevel(Menu.LoadAsync(_temporaryData)));
+            GameResumed?.Invoke(_temporaryData.MuteStateSound);
         }
 
-        public void PauseByInterstitial()
+        public void PauseByFullscreenAd()
         {
-            throw new NotImplementedException();
-        }
-
-        private void OnVisibilityWindowGame(bool state)
-        {
-            if (state == true)
-                ResumeGameByVisibilityWindow(state);
-            else
-                PauseGameByVisibilityWindow(state);
+            Time.timeScale = _pauseValue;
+            GamePaused?.Invoke(_temporaryData.MuteStateSound);
         }
 
         private void PauseGameByVisibilityWindow(bool state)
@@ -172,7 +167,6 @@ namespace Assets.Source.Game.Scripts
         {
             _canSeeDoor = _cameraControiler.TrySeeDoor(_roomPlacer.StartRoom.WallLeft.gameObject);
             _countStages = temporaryData.LevelData.CountStages;
-            _canvasLoader.gameObject.SetActive(false);
             CountRooms = temporaryData.LevelData.CountRooms;
 
             if (temporaryData.CurrentLevelState.IsComplete)
@@ -215,16 +209,6 @@ namespace Assets.Source.Game.Scripts
             YandexGame.onVisibilityWindowGame -= OnVisibilityWindowGame;
         }
 
-        private void OnPlayerLevelChanged()
-        {
-            _gamePanelsModel.OpenCardPanel();
-        }
-
-        private void OnEnemyDied(Enemy enemy)
-        {
-            _player.GetReward(enemy);
-        }
-
         private void AddRoomListener()
         {
             foreach (var room in _roomPlacer.CreatedRooms)
@@ -237,29 +221,6 @@ namespace Assets.Source.Game.Scripts
                     (room as LootRoomView).RewardSeted += OnRewardRoomEnded;
                 }
             }
-        }
-
-        private void AddPanelListener()
-        {
-            foreach (var panel in _panels)
-            {
-                panel.PanelOpened += PauseByMenu;
-                panel.PanelClosed += ResumeByMenu;
-                panel.GameClosed += OnGameClosed;
-                panel.RewardAdClosed += ResumeByRewarded;
-            }
-        }
-
-        private void OnRewardRoomEnded(int reward)
-        {
-            _player.GetLootRoomReward(reward);
-            LootRoomComplited?.Invoke(reward);
-        }
-
-        private void OnGameClosed()
-        {
-            _temporaryData.SaveProgress(_player, _isWinGame);
-            StartCoroutine(LoadScreenLevel(Menu.LoadAsync(_temporaryData)));
         }
 
         private void RemoveRoomListener()
@@ -276,6 +237,20 @@ namespace Assets.Source.Game.Scripts
             }
         }
 
+        private void AddPanelListener()
+        {
+            foreach (var panel in _panels)
+            {
+                panel.PanelOpened += PauseByMenu;
+                panel.PanelClosed += ResumeByMenu;
+                panel.GameClosed += OnGameClosed;
+                panel.RewardAdOpened += PauseByRewarded;
+                panel.RewardAdClosed += ResumeByRewarded;
+                panel.FullscreenAdOpened += PauseByFullscreenAd;
+                panel.FullscreenAdClosed += ResumeByFullscreenAd;
+            }
+        }
+
         private void RemovePanelListener()
         {
             foreach (var panel in _panels)
@@ -283,7 +258,10 @@ namespace Assets.Source.Game.Scripts
                 panel.PanelOpened -= PauseByMenu;
                 panel.PanelClosed -= ResumeByMenu;
                 panel.GameClosed -= OnGameClosed;
+                panel.RewardAdOpened -= PauseByRewarded;
                 panel.RewardAdClosed -= ResumeByRewarded;
+                panel.FullscreenAdOpened -= PauseByFullscreenAd;
+                panel.FullscreenAdClosed -= ResumeByFullscreenAd;
             }
         }
 
@@ -299,50 +277,6 @@ namespace Assets.Source.Game.Scripts
         {
             foreach (var panel in _panels)
                 panel.gameObject.SetActive(false);
-        }
-
-        private void OnRoomEntering(RoomView room)
-        {
-            _currentRoom = room;
-            _cameraControiler.ChengeConfiner(room);
-
-            if (room.IsComplete == false)
-            {
-                if (room.EnemySpawnPoints.Length == 0)
-                    _trapsSpawner.Initialize(room);
-                else
-                    _enemySpawner.Initialize(room);
-
-                LockAllDoors();
-            }
-        }
-
-        private void LockAllDoors()
-        {
-            foreach (var room in _roomPlacer.CreatedRooms)
-            {
-                room.LockRoom();
-            }
-        }
-
-        private void UnlockAllDoors()
-        {
-            foreach (var room in _roomPlacer.CreatedRooms)
-            {
-                //if (room == room as BossRoomView)
-                //    (room as BossRoomView).UnlockBossRoom(_roomPlacer.CreatedRooms.TrueForAll(completeRoom => completeRoom.IsComplete));
-                //else
-                room.UnlockRoom();
-            }
-        }
-
-        private void OnRoomCompleted()
-        {
-            _currentRoom.SetComplete();
-            UnlockAllDoors();
-
-            if (_currentRoom == _currentRoom as BossRoomView)
-                StageComplete();
         }
 
         private void RegisterServices()
@@ -387,18 +321,101 @@ namespace Assets.Source.Game.Scripts
             GameEnded?.Invoke(_isWinGame);
         }
 
+        private void RemoveEntities()
+        {
+            RemoveListeners();
+            _player.Remove();
+            _enemySpawner.Dispose();
+            _trapsSpawner.Dispose();
+        }
+
+        private void LockAllDoors()
+        {
+            foreach (var room in _roomPlacer.CreatedRooms)
+            {
+                room.LockRoom();
+            }
+        }
+
+        private void UnlockAllDoors()
+        {
+            foreach (var room in _roomPlacer.CreatedRooms)
+            {
+                if (room == room as BossRoomView)
+                    (room as BossRoomView).UnlockBossRoom(_roomPlacer.CreatedRooms.TrueForAll(completeRoom => completeRoom.IsComplete));
+                else
+                    room.UnlockRoom();
+            }
+        }
+
+        private void OnVisibilityWindowGame(bool state)
+        {
+            if (state == true)
+                ResumeGameByVisibilityWindow(state);
+            else
+                PauseGameByVisibilityWindow(state);
+        }
+
+        private void OnPlayerLevelChanged()
+        {
+            _gamePanelsModel.OpenCardPanel();
+        }
+
+        private void OnEnemyDied(Enemy enemy)
+        {
+            _player.GetReward(enemy);
+        }
+
+        private void OnRewardRoomEnded(int reward)
+        {
+            _player.GetLootRoomReward(reward);
+            LootRoomComplited?.Invoke(reward);
+        }
+
+        private void OnGameClosed()
+        {
+            _temporaryData.SaveProgress(_player, _isWinGame);
+            StartCoroutine(LoadScreenLevel(Menu.LoadAsync(_temporaryData)));
+            GameEnded?.Invoke(false);
+        }
+
+        private void OnRoomEntering(RoomView room)
+        {
+            _currentRoom = room;
+            _cameraControiler.ChengeConfiner(room);
+
+            if (room.IsComplete == false)
+            {
+                if (room.EnemySpawnPoints.Length == 0)
+                    _trapsSpawner.Initialize(room);
+                else
+                    _enemySpawner.Initialize(room);
+
+                LockAllDoors();
+            }
+        }
+
+        private void OnRoomCompleted()
+        {
+            _currentRoom.SetComplete();
+            UnlockAllDoors();
+
+            if (_currentRoom == _currentRoom as BossRoomView)
+                StageComplete();
+        }
+
         private IEnumerator LoadScreenLevel(AsyncOperation asyncOperation)
         {
             if (_load != null)
                 yield break;
 
+            _canvasLoader.gameObject.SetActive(true);
             _load = asyncOperation;
             _load.allowSceneActivation = false;
-            _canvasLoader.gameObject.SetActive(true);
 
             while (_load.progress < _loadControlValue)
             {
-                yield return new WaitForSeconds(_delayLoadScene);
+                yield return null;
             }
 
             _load.allowSceneActivation = true;

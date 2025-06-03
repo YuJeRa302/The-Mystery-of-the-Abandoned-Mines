@@ -20,7 +20,6 @@ public class AudioPlayer : MonoBehaviour, IAudioPlayerService
     {
         _ambientAudioSource.clip = _menuAmbientAudioClip;
         _ambientAudioSource.Play();
-        Debug.Log("PLAY AUDIO");
     }
 
     public void PlayOneShotPopupSound()

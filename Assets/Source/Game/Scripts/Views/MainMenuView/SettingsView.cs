@@ -31,6 +31,7 @@ public class SettingsView : MonoBehaviour
         _sfxSlider.value = settingsViewModel.GetSfxVolume();
         _muteToggle.isOn = settingsViewModel.GetMuteStatus();
         AddListeners();
+        ClearLanguageButton();
         CreateLanguageButton();
         gameObject.SetActive(false);
     }
@@ -48,6 +49,9 @@ public class SettingsView : MonoBehaviour
 
     private void ClearLanguageButton()
     {
+        if (_languageButtonViews.Count == 0)
+            return;
+
         foreach (LanguageButtonView view in _languageButtonViews)
         {
             view.LanguageSelected -= OnLanguageChanged;

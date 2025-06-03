@@ -29,11 +29,6 @@ namespace Assets.Source.Game.Scripts
         private List<LanguageButtonView> _languageButtonViews = new ();
         private IAudioPlayerService _audioPlayerService;
 
-        private void Awake()
-        {
-            _exitButton.onClick.AddListener(CloseGame);
-        }
-
         private void OnDestroy()
         {
             ClearLanguageButton();
@@ -47,6 +42,7 @@ namespace Assets.Source.Game.Scripts
             _muteToggle.isOn = gamePanelsViewModel.GetMuteStatus();
             _audioPlayerService = gamePanelsViewModel.GetAudioPlayerService();
             AddListeners();
+            ClearLanguageButton();
             CreateLanguageButton();
             base.Initialize(gamePanelsViewModel);
         }
@@ -100,6 +96,9 @@ namespace Assets.Source.Game.Scripts
 
         private void ClearLanguageButton()
         {
+            if (_languageButtonViews.Count == 0)
+                return;
+
             foreach (LanguageButtonView view in _languageButtonViews)
             {
                 view.LanguageSelected -= OnLanguageChanged;
@@ -112,10 +111,6 @@ namespace Assets.Source.Game.Scripts
         private void OnLanguageChanged(string value) => GamePanelsViewModel.SetLanguage(value);
         private void OnAmbientValueChanged(float value) => GamePanelsViewModel.SetAmbientVolume(value);
         private void OnSfxValueChanged(float value) => GamePanelsViewModel.SetSfxVolume(value);
-
-        private void OnMuteValueChanged(bool value)
-        {
-            GamePanelsViewModel.SetMuteStatus(value);
-        }
+        private void OnMuteValueChanged(bool value) => GamePanelsViewModel.SetMuteStatus(value);
     }
 }

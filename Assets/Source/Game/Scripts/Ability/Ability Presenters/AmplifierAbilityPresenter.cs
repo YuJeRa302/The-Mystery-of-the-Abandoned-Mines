@@ -39,7 +39,7 @@ namespace Assets.Source.Game.Scripts
             _ability.AbilityRemoved += Dispose;
             _gameLoopService.GamePaused += OnGamePaused;
             _gameLoopService.GameResumed += OnGameResumed;
-            _gameLoopService.GameClosed += OnGameClosed;
+            _gameLoopService.GameEnded += OnGameClosed;
         }
 
         private void RemoveListener()
@@ -52,10 +52,10 @@ namespace Assets.Source.Game.Scripts
             _ability.AbilityRemoved -= Dispose;
             _gameLoopService.GamePaused -= OnGamePaused;
             _gameLoopService.GameResumed -= OnGameResumed;
-            _gameLoopService.GameClosed -= OnGameClosed;
+            _gameLoopService.GameEnded -= OnGameClosed;
         }
 
-        private void OnGameClosed()
+        private void OnGameClosed(bool state)
         {
             Dispose();
         }

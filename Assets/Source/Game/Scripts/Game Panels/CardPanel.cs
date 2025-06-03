@@ -15,7 +15,7 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private Button _buttonTest;
         [SerializeField] private Text _countRerollPointsText;
 
-        private List<CardView> _cardViews = new();
+        private List<CardView> _cardViews = new ();
 
         private void OnDestroy()
         {

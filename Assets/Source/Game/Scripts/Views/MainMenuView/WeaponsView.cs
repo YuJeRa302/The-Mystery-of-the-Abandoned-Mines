@@ -87,6 +87,9 @@ namespace Assets.Source.Game.Scripts
 
         private void ClearWeapons()
         {
+            if (_weaponDataViews.Count == 0)
+                return;
+
             foreach (WeaponDataView view in _weaponDataViews)
             {
                 view.Equipped += OnWeaponSelected;
@@ -98,6 +101,9 @@ namespace Assets.Source.Game.Scripts
 
         private void ClearWeaponStats()
         {
+            if (_weaponStatsViews.Count == 0)
+                return;
+
             foreach (WeaponStatsView view in _weaponStatsViews)
             {
                 Destroy(view.gameObject);
@@ -108,6 +114,9 @@ namespace Assets.Source.Game.Scripts
 
         private void ClearClass()
         {
+            if (_playerClassDataViews.Count == 0)
+                return;
+
             foreach (PlayerClassDataView view in _playerClassDataViews)
             {
                 view.PlayerClassSelected -= OnPlayerClassSelected;
@@ -159,6 +168,7 @@ namespace Assets.Source.Game.Scripts
         private void Show()
         {
             gameObject.SetActive(true);
+            ClearClass();
             CreateClass();
             _weaponImage.sprite = _defaultSprite;
         }

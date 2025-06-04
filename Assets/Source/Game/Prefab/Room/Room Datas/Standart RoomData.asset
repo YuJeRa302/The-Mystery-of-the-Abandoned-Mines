@@ -46,7 +46,12 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   _enemyDatas:
+  - {fileID: 11400000, guid: f809bfbac0297dc4a830126088816ad5, type: 2}
   - {fileID: 11400000, guid: e88a5ccc8245ee745b4fc75cb3a9a14b, type: 2}
+  - {fileID: 11400000, guid: c09a3c0740e3502468be820b02f1d026, type: 2}
+  - {fileID: 11400000, guid: c92657e7a2ab3794487c73c56292055c, type: 2}
+  - {fileID: 11400000, guid: d4333f80f16d8514ab82462f532aae8e, type: 2}
+  - {fileID: 11400000, guid: 10b34a6b7f44c6b4e93d2d18cc0ccd1c, type: 2}
   _epicEnemyDatas: []
   _traps: []
   _roomDescription: RoomStandartDescription

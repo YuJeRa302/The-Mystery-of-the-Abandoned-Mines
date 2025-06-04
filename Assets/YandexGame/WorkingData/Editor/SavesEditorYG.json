@@ -3,7 +3,7 @@
     "isFirstSession": true,
     "language": "ru",
     "promptDone": false,
-    "Coins": 28393,
+    "Coins": 21582,
     "AmbientVolume": 21.336875915527345,
     "SfxVolumeVolume": 42.10385513305664,
     "IsMuted": false,
@@ -45,7 +45,7 @@
         },
         {
             "Id": 13,
-            "CurrentLevel": 0
+            "CurrentLevel": 3
         },
         {
             "Id": 14,
@@ -65,7 +65,7 @@
         },
         {
             "Id": 17,
-            "CurrentLevel": 0
+            "CurrentLevel": 3
         }
     ],
     "DefaultWeaponState": [

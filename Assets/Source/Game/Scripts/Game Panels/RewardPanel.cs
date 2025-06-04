@@ -41,7 +41,6 @@ namespace Assets.Source.Game.Scripts
 
         private void OnDestroy()
         {
-            Debug.Log($"RewardPanel OnDestroy: {gameObject.GetInstanceID()}");
             RemoveListeners();
         }
 
@@ -104,6 +103,8 @@ namespace Assets.Source.Game.Scripts
                 _defaultRewardMultiplierText.gameObject.SetActive(true);
                 _openAdButton.gameObject.SetActive(false);
                 _collectButton.gameObject.SetActive(false);
+                _collectButton.onClick.RemoveListener(CloseGame);
+                _collectButton.onClick.AddListener(PlayerApplayReward);
                 _applayReward.gameObject.SetActive(true);
             }
             else
@@ -153,7 +154,6 @@ namespace Assets.Source.Game.Scripts
             _closeGameButton.onClick.AddListener(CloseGame);
             _openAdButton.onClick.AddListener(OpenRewardAds);
             _applayReward.onClick.AddListener(PlayerApplayReward);
-            _collectButton.onClick.AddListener(CloseGame);
         }
 
         private void RemoveListeners()
@@ -165,7 +165,6 @@ namespace Assets.Source.Game.Scripts
             YandexGame.CloseFullAdEvent -= OnCloseFullscreenAdCallback;
             YandexGame.ErrorFullAdEvent -= OnErrorFullAdCallback;
             _closeGameButton.onClick.RemoveListener(CloseGame);
-            _collectButton.onClick.RemoveListener(CloseGame);
             _applayReward.onClick.RemoveListener(PlayerApplayReward);
             _openAdButton.onClick.RemoveListener(OpenRewardAds);
             _collectButton.onClick.RemoveListener(CloseGame);
@@ -174,6 +173,7 @@ namespace Assets.Source.Game.Scripts
         private void PlayerApplayReward()
         {
             _collectButton.onClick.RemoveListener(PlayerApplayReward);
+            _collectButton.onClick.AddListener(CloseGame);
             _isLootReward = false;
             _currentRewardLoot = 0;
             _openAdButton.gameObject.SetActive(true);

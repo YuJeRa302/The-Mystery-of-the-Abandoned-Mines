@@ -2,6 +2,8 @@ using IJunior.TypedScenes;
 using Lean.Localization;
 using System;
 using System.Collections;
+using System.Linq;
+using TMPro;
 using UnityEngine;
 using YG;
 
@@ -176,6 +178,13 @@ namespace Assets.Source.Game.Scripts
 
             _trapsSpawner = new TrapsSpawner();
             _roomPlacer.Initialize(_currentRoomLevel, _canSeeDoor, CountRooms);
+
+            foreach (var boosRoom in _roomPlacer.CreatedRooms)
+            {
+                if (boosRoom as BossRoomView)
+                    boosRoom.LockRoom();
+            }
+
             _cardLoader.Initialize(_player);
             _enemySpawner = new EnemySpawner(_enemuPool, this, _player, _currentRoomLevel, _audioPlayerService);
             _cameraControiler.SetLookTarget(_player.transform);
@@ -353,10 +362,15 @@ namespace Assets.Source.Game.Scripts
 
         private void UnlockAllDoors()
         {
+            bool isAllRoomsComplete = _roomPlacer.CreatedRooms
+            .Where(room => !(room is BossRoomView))
+            .All(room => room.IsComplete);
+                Debug.Log(isAllRoomsComplete);
+
             foreach (var room in _roomPlacer.CreatedRooms)
             {
                 if (room == room as BossRoomView)
-                    (room as BossRoomView).UnlockBossRoom(_roomPlacer.CreatedRooms.TrueForAll(completeRoom => completeRoom.IsComplete));
+                    (room as BossRoomView).UnlockBossRoom(isAllRoomsComplete);
                 else
                     room.UnlockRoom();
             }

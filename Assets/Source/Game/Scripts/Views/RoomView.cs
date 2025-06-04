@@ -76,7 +76,7 @@ namespace Assets.Source.Game.Scripts
                 RoomEntering?.Invoke(this);
         }
 
-        public void SetRoomStatus()//test
+        public void SetRoomStatus()
         {
             IsComplete = true;
         }

@@ -41,8 +41,8 @@ namespace Assets.Source.Game.Scripts
 
         public void TakeDamage(int damage)
         {
-            if (_currentHealth == _minHealth)
-                SetPlayerDie();
+            if (_currentHealth <= _minHealth)
+                return;
 
             if (_currentHealth > _minHealth)
             {
@@ -54,6 +54,9 @@ namespace Assets.Source.Game.Scripts
 
                 _currentHealth = Mathf.Clamp(_currentHealth - currentDamage, _minHealth, _maxHealth);
                 HealthChanged?.Invoke(_currentHealth);
+
+                if (_currentHealth <= _minHealth)
+                    SetPlayerDie();
             }
         }
 

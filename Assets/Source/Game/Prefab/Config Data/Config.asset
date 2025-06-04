@@ -60,13 +60,13 @@ MonoBehaviour:
     IsUnlock: 1
   _defaultLevelState:
   - Id: 0
-    IsComplete: 1
+    IsComplete: 0
     CurrentCompleteStages: 0
   - Id: 1
-    IsComplete: 1
+    IsComplete: 0
     CurrentCompleteStages: 0
   - Id: 2
-    IsComplete: 1
+    IsComplete: 0
     CurrentCompleteStages: 0
   - Id: 3
     IsComplete: 0

@@ -30,11 +30,14 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private Sprite _winGameSprite;
         [SerializeField] private LeanLocalizedText _gameStateText;
         [SerializeField] private Image _imageGameState;
+        [SerializeField] private Text[] _mainRewardMultiplierTexts;
+        [SerializeField] private Text _defaultRewardMultiplierText;
 
         private bool _isRewardReceived = false;
         private bool _isLootReward = false;
         private int _currentRewardLoot;
         private WeaponData _currentWeaponData;
+        private GamePanelsViewModel _gamePanelsViewModel;
 
         private void OnDestroy()
         {
@@ -50,13 +53,14 @@ namespace Assets.Source.Game.Scripts
         public override void Initialize(GamePanelsViewModel gamePanelsViewModel)
         {
             base.Initialize(gamePanelsViewModel);
+            _gamePanelsViewModel = gamePanelsViewModel;
             AddListeners();
         }
 
         protected override void OpenRewardAds()
         {
             base.OpenRewardAds();
-            YandexGame.RewVideoShow(0);
+            YandexGame.RewVideoShow(_gamePanelsViewModel.GetDefalutRewardIndex());
         }
 
         private void OpenRewardPanel(bool gameState)
@@ -73,8 +77,11 @@ namespace Assets.Source.Game.Scripts
 
         private void OnRewardCallback(int index)
         {
-            GamePanelsViewModel.GetEndGameReward();
-            _isRewardReceived = true;
+            if (index == _gamePanelsViewModel.GetDefalutRewardIndex()) 
+            {
+                GamePanelsViewModel.GetEndGameReward();
+                _isRewardReceived = true;
+            }
         }
 
         private void OnOpenFullscreenAdCallback()
@@ -92,7 +99,9 @@ namespace Assets.Source.Game.Scripts
             if (_isLootReward)
             {
                 int cointReward = _currentRewardLoot + _currentRewardLoot;
-                SetAnimationText(_currentRewardLoot, cointReward, _defaultContractRewardCoins);
+                //SetAnimationText(_currentRewardLoot, cointReward, _defaultContractRewardCoins);
+                _defaultContractRewardCoins.text = cointReward.ToString();
+                _defaultRewardMultiplierText.gameObject.SetActive(true);
                 _openAdButton.gameObject.SetActive(false);
                 _collectButton.gameObject.SetActive(false);
                 _applayReward.gameObject.SetActive(true);
@@ -101,10 +110,16 @@ namespace Assets.Source.Game.Scripts
             {
                 if (_isRewardReceived == true)
                 {
-                    int coinRewards = GamePanelsViewModel.GetPlayer().Coins + GamePanelsViewModel.GetPlayer().Coins;
-                    int upgradePointRewards = GamePanelsViewModel.GetPlayer().UpgradePoints + GamePanelsViewModel.GetPlayer().UpgradePoints;
-                    SetAnimationText(GamePanelsViewModel.GetPlayer().Coins, coinRewards, _coinsText);
-                    SetAnimationText(GamePanelsViewModel.GetPlayer().UpgradePoints, upgradePointRewards, _upgradePointsText);
+                    _coinsText.text = GamePanelsViewModel.GetPlayer().Coins.ToString();
+                    _upgradePointsText.text = GamePanelsViewModel.GetPlayer().UpgradePoints.ToString();
+
+                    foreach (Text text in _mainRewardMultiplierTexts) 
+                    {
+                        text.gameObject.SetActive(true);
+                    }
+
+                    //SetAnimationText(GamePanelsViewModel.GetPlayer().Coins, coinRewards, _coinsText);
+                    //SetAnimationText(GamePanelsViewModel.GetPlayer().UpgradePoints, upgradePointRewards, _upgradePointsText);
                     _openAdButton.gameObject.SetActive(false);
                     _collectButton.gameObject.SetActive(false);
                     _closeGameButton.gameObject.SetActive(true);

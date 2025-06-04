@@ -95,7 +95,7 @@ namespace Assets.Source.Game.Scripts
         public void PauseByRewarded()
         {
             Time.timeScale = _pauseValue;
-            GamePaused?.Invoke(_temporaryData.MuteStateSound);
+            GamePaused?.Invoke(true);
         }
 
         public void ResumeByMenu()
@@ -122,7 +122,7 @@ namespace Assets.Source.Game.Scripts
         public void PauseByFullscreenAd()
         {
             Time.timeScale = _pauseValue;
-            GamePaused?.Invoke(_temporaryData.MuteStateSound);
+            GamePaused?.Invoke(true);
         }
 
         private void PauseGameByVisibilityWindow(bool state)

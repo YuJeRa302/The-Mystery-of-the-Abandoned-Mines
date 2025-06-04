@@ -1,2 +1,2 @@
-Build path: D:/Project(Unity)/GitHub/TestProject/The Mystery of the Abandoned Mines(Debug)/The Mystery of the Abandoned Mines(Debug) 19
-Build number: 27
+Build path: D:/Project(Unity)/GitHub/TestProject/The Mystery of the Abandoned Mines(Debug)/The Mystery of the Abandoned Mines(Debug) 20
+Build number: 28

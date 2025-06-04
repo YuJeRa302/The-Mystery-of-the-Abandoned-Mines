@@ -37,6 +37,8 @@ namespace Assets.Source.Game.Scripts
         public void GetEndGameReward() => _gamePanelsModel.GetEndGameReward();
         public void GetLootRoomRewaed(int reward) => _gamePanelsModel.GetLootRoomReward(reward);
         public Player GetPlayer() => _gamePanelsModel.GetPlayer();
+        public int GetRerollPointsRewardIndex() => _gamePanelsModel.GetRerollPointsRewardIndex();
+        public int GetDefalutRewardIndex() => _gamePanelsModel.GetDefalutRewardIndex();
         public void SetLanguage(string value) => _gamePanelsModel.SetLanguage(value);
         public void SetAmbientVolume(float volume) => _gamePanelsModel.SetAmbientVolume(volume);
         public void SetSfxVolume(float volume) => _gamePanelsModel.SetSfxVolume(volume);

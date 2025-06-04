@@ -6,6 +6,8 @@ namespace Assets.Source.Game.Scripts
 {
     public class GamePanelsModel
     {
+        private readonly int _defalutRewardIndex = 0;
+        private readonly int _rerollPointsRewardIndex = 1;
         private readonly int _countRerollPointsReward = 2;
         private readonly int _minWeaponCount = 1;
         private readonly System.Random _rnd = new ();
@@ -59,6 +61,16 @@ namespace Assets.Source.Game.Scripts
         public void OpenCardPanel()
         {
             CardPanelOpened?.Invoke();
+        }
+
+        public int GetRerollPointsRewardIndex() 
+        {
+            return _rerollPointsRewardIndex;
+        }
+
+        public int GetDefalutRewardIndex()
+        {
+            return _defalutRewardIndex;
         }
 
         public bool GetLevelType()
@@ -170,16 +182,6 @@ namespace Assets.Source.Game.Scripts
             _levelObserver.GamePaused += OnGamePause;
             _levelObserver.GameResumed += OnGameResume;
             _cardLoader.CardPoolCreated += OnCardPoolCreate;
-        }
-
-        private void RemoveListeners()
-        {
-            _levelObserver.StageCompleted -= OnStageComplete;
-            _levelObserver.GameEnded -= OnGameEnded;
-            _levelObserver.LootRoomComplited -= OnLootRoomComplited;
-            _levelObserver.GamePaused -= OnGamePause;
-            _levelObserver.GameResumed -= OnGameResume;
-            _cardLoader.CardPoolCreated -= OnCardPoolCreate;
         }
 
         private void OnLootRoomComplited(int reward)

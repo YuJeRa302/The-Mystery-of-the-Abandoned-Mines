@@ -16,6 +16,7 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private Text _countRerollPointsText;
 
         private List<CardView> _cardViews = new ();
+        private GamePanelsViewModel _gamePanelsViewModel;
 
         private void OnDestroy()
         {
@@ -25,6 +26,7 @@ namespace Assets.Source.Game.Scripts
         public override void Initialize(GamePanelsViewModel gamePanelsViewModel)
         {
             base.Initialize(gamePanelsViewModel);
+            _gamePanelsViewModel = gamePanelsViewModel;
             AddListeners();
         }
 
@@ -49,12 +51,13 @@ namespace Assets.Source.Game.Scripts
         protected override void OpenRewardAds()
         {
             base.OpenRewardAds();
-            YandexGame.RewVideoShow(1);
+            YandexGame.RewVideoShow(_gamePanelsViewModel.GetRerollPointsRewardIndex());
         }
 
         private void OnRewardCallback(int index)
         {
-            GamePanelsViewModel.GetRerollPointsReward();
+            if (index == _gamePanelsViewModel.GetRerollPointsRewardIndex())
+                GamePanelsViewModel.GetRerollPointsReward();
         }
 
         private void OnCardTaked(CardView cardView)

@@ -2,7 +2,6 @@ using Assets.Source.Game.Scripts;
 using IJunior.TypedScenes;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class LevelsModel
 {

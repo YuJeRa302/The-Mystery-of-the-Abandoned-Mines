@@ -19,7 +19,7 @@ MonoBehaviour:
   _icon: {fileID: 1570952433, guid: dc2e3af32fff16a4fa28920cc9449371, type: 3}
   _legendaryParametersAbility:
   - CardParameters:
-    - Value: 6
+    - Value: 8
       TypeParameter: 4
     - Value: 5
       TypeParameter: 5

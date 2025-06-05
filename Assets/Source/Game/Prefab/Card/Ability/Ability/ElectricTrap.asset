@@ -15,16 +15,9 @@ MonoBehaviour:
   _cardParameterView: {fileID: 1961483584371832456, guid: 6d57f6325ba58d6478a1fd35f1ba2831, type: 3}
   _parameters:
   - CardParameters:
-    - Value: 15
+    - Value: 20
       TypeParameter: 4
     - Value: 10
-      TypeParameter: 5
-    - Value: 10
-      TypeParameter: 6
-  - CardParameters:
-    - Value: 15
-      TypeParameter: 4
-    - Value: 15
       TypeParameter: 5
     - Value: 10
       TypeParameter: 6
@@ -34,6 +27,13 @@ MonoBehaviour:
     - Value: 15
       TypeParameter: 5
     - Value: 10
+      TypeParameter: 6
+  - CardParameters:
+    - Value: 25
+      TypeParameter: 4
+    - Value: 15
+      TypeParameter: 5
+    - Value: 8
       TypeParameter: 6
   _name: ElectricTrap
   _description: ElectricTrapDescription
@@ -50,6 +50,6 @@ MonoBehaviour:
   _typeAttackAbility: 0
   _damageParametr:
     _typeDamage: 0
-    _damage: 0
+    _damage: 25
     _damageParameters: []
     _particle: {fileID: 0}

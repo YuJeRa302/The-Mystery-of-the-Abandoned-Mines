@@ -19,7 +19,7 @@ MonoBehaviour:
   _icon: {fileID: 1868567337, guid: dc2e3af32fff16a4fa28920cc9449371, type: 3}
   _legendaryParametersAbility:
   - CardParameters:
-    - Value: 15
+    - Value: 12
       TypeParameter: 4
     - Value: 8
       TypeParameter: 5
@@ -31,11 +31,11 @@ MonoBehaviour:
   _parameterView: {fileID: 1961483584371832456, guid: 6d57f6325ba58d6478a1fd35f1ba2831, type: 3}
   _damageParametr:
     _typeDamage: 2
-    _damage: 0
+    _damage: 15
     _damageParameters:
     - _value: 2
       _typeDamageParameter: 4
-    - _value: 3
+    - _value: 8
       _typeDamageParameter: 1
     _particle: {fileID: 1461602671872348846, guid: 0b5e7793d4d1e854385c5ce9b1e79f47, type: 3}
   _audioClip: {fileID: 8300000, guid: 5ab3fed341228244eb5d59b62ab21593, type: 3}

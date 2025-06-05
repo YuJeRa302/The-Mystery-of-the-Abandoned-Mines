@@ -32,10 +32,13 @@ namespace Assets.Source.Game.Scripts
         {
             foreach (AbilityEnemyFinder abilityEnemyFinder in _abilityEnemyFinders) 
             {
-                if (abilityEnemyFinder.TryFindEnemy(out Enemy enemy)) 
+                if (abilityEnemyFinder != null)
                 {
-                    enemyFind = enemy;
-                    return true;
+                    if (abilityEnemyFinder.TryFindEnemy(out Enemy enemy))
+                    {
+                        enemyFind = enemy;
+                        return true;
+                    }
                 }
             }
 
@@ -50,9 +53,12 @@ namespace Assets.Source.Game.Scripts
 
             foreach (AbilityEnemyFinder abilityEnemyFinder in _abilityEnemyFinders)
             {
-                if (abilityEnemyFinder.TryFindEnemys(out List<Enemy> findEnemyse))
+                if (abilityEnemyFinder != null)
                 {
-                    _enemies.AddRange(findEnemyse);
+                    if (abilityEnemyFinder.TryFindEnemys(out List<Enemy> findEnemyse))
+                    {
+                        _enemies.AddRange(findEnemyse);
+                    }
                 }
             }
 

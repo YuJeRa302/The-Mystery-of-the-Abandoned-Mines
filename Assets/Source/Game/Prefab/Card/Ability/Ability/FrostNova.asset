@@ -15,13 +15,6 @@ MonoBehaviour:
   _cardParameterView: {fileID: 1961483584371832456, guid: 6d57f6325ba58d6478a1fd35f1ba2831, type: 3}
   _parameters:
   - CardParameters:
-    - Value: 10
-      TypeParameter: 4
-    - Value: 1
-      TypeParameter: 5
-    - Value: 10
-      TypeParameter: 6
-  - CardParameters:
     - Value: 15
       TypeParameter: 4
     - Value: 1
@@ -30,6 +23,13 @@ MonoBehaviour:
       TypeParameter: 6
   - CardParameters:
     - Value: 15
+      TypeParameter: 4
+    - Value: 1
+      TypeParameter: 5
+    - Value: 10
+      TypeParameter: 6
+  - CardParameters:
+    - Value: 20
       TypeParameter: 4
     - Value: 1
       TypeParameter: 5
@@ -50,9 +50,9 @@ MonoBehaviour:
   _typeAttackAbility: 0
   _damageParametr:
     _typeDamage: 3
-    _damage: 10
+    _damage: 15
     _damageParameters:
-    - _value: 30
+    - _value: 45
       _typeDamageParameter: 3
     - _value: 2
       _typeDamageParameter: 1

@@ -19,11 +19,11 @@ MonoBehaviour:
   _icon: {fileID: 567277375, guid: dc2e3af32fff16a4fa28920cc9449371, type: 3}
   _legendaryParametersAbility:
   - CardParameters:
-    - Value: 20
+    - Value: 25
       TypeParameter: 4
     - Value: 15
       TypeParameter: 5
-    - Value: 15
+    - Value: 8
       TypeParameter: 6
   _particle: {fileID: 6702441514761029868, guid: 469e59a9e0f165e4b9cce7f794cde630, type: 3}
   _typeUpgradeMagic: 4

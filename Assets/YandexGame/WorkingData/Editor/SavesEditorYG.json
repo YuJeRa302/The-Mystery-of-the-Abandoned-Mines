@@ -3,7 +3,7 @@
     "isFirstSession": true,
     "language": "ru",
     "promptDone": false,
-    "Coins": 32090,
+    "Coins": 30208,
     "AmbientVolume": 40.0,
     "SfxVolumeVolume": 40.0,
     "IsMuted": false,
@@ -93,17 +93,17 @@
         },
         {
             "Id": 1,
-            "IsComplete": false,
+            "IsComplete": true,
             "CurrentCompleteStages": 0
         },
         {
             "Id": 2,
-            "IsComplete": false,
+            "IsComplete": true,
             "CurrentCompleteStages": 0
         },
         {
             "Id": 3,
-            "IsComplete": false,
+            "IsComplete": true,
             "CurrentCompleteStages": 0
         },
         {
@@ -112,5 +112,5 @@
             "CurrentCompleteStages": 0
         }
     ],
-    "UpgradePoints": 3
+    "UpgradePoints": 7
 }

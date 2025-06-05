@@ -158,6 +158,7 @@ namespace Assets.Source.Game.Scripts
             _closeGameButton.onClick.RemoveListener(CloseGame);
             _applayReward.onClick.RemoveListener(PlayerApplayReward);
             _openAdButton.onClick.RemoveListener(OpenRewardAds);
+            _collectButton.onClick.RemoveListener(CloseGame);
         }
 
         private void PlayerApplayReward()
@@ -170,6 +171,7 @@ namespace Assets.Source.Game.Scripts
             _collectButton.gameObject.SetActive(true);
             _applayReward.gameObject.SetActive(false);
             _defaulContractReward.SetActive(false);
+            _defaultRewardMultiplierText.gameObject.SetActive(false);
             Close();
         }
 
@@ -232,6 +234,7 @@ namespace Assets.Source.Game.Scripts
             _defaulContractReward.SetActive(true);
             _currentRewardLoot = reward;
             _defaultContractRewardCoins.text = reward.ToString();
+            _collectButton.onClick.RemoveListener(CloseGame);
             _collectButton.onClick.AddListener(PlayerApplayReward);
             Fill();
         }

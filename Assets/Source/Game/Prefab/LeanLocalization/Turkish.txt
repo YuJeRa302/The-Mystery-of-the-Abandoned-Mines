@@ -262,3 +262,5 @@ MaliceDesciption,"Antik yapılar kompleksi. Daha önce burada yaşayan insanlar 
 Win,"Zafer"
 Lose,"Yenilgi"
 Leaderboard,"Lider Tablosu"
+Legend,"Efsane"
+Map,"Harita"

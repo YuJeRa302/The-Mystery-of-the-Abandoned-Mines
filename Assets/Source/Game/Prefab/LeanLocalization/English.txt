@@ -262,3 +262,5 @@ MaliceDesciption,"An ancient complex of structures. The people who lived here be
 Win,"Victory"
 Lose,"Defeat"
 Leaderboard,"Leaderboard"
+Legend,"Legend"
+Map,"Map"

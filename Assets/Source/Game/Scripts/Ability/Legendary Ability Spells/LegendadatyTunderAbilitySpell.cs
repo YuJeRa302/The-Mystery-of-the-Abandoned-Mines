@@ -29,9 +29,12 @@ public class LegendadatyTunderAbilitySpell : LegendaryAbilitySpell
 
         foreach (AbilityEnemyFinder abilityEnemyFinder in _abilityEnemyFinders)
         {
-            if (abilityEnemyFinder.TryFindEnemys(out List<Enemy> findEnemyse))
+            if (abilityEnemyFinder != null)
             {
-                _enemies.AddRange(findEnemyse);
+                if (abilityEnemyFinder.TryFindEnemys(out List<Enemy> findEnemyse))
+                {
+                    _enemies.AddRange(findEnemyse);
+                }
             }
         }
 

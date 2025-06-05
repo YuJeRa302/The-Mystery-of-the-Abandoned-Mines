@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Config
   m_EditorClassIdentifier: 
   _upgradePoints: 3
-  _coins: 20000
+  _coins: 3000
   _ambientVolume: 40
   _sfxVolumeVolume: 40
   _isMuted: 0

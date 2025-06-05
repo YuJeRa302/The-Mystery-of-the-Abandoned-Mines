@@ -15,6 +15,13 @@ MonoBehaviour:
   _cardParameterView: {fileID: 1961483584371832456, guid: 6d57f6325ba58d6478a1fd35f1ba2831, type: 3}
   _parameters:
   - CardParameters:
+    - Value: 7
+      TypeParameter: 4
+    - Value: 4
+      TypeParameter: 5
+    - Value: 10
+      TypeParameter: 6
+  - CardParameters:
     - Value: 10
       TypeParameter: 4
     - Value: 5
@@ -22,18 +29,11 @@ MonoBehaviour:
     - Value: 10
       TypeParameter: 6
   - CardParameters:
-    - Value: 15
+    - Value: 12
       TypeParameter: 4
     - Value: 5
       TypeParameter: 5
     - Value: 10
-      TypeParameter: 6
-  - CardParameters:
-    - Value: 15
-      TypeParameter: 4
-    - Value: 5
-      TypeParameter: 5
-    - Value: 8
       TypeParameter: 6
   _name: FireCircle
   _description: FireCircleDescription
@@ -50,10 +50,10 @@ MonoBehaviour:
   _typeAttackAbility: 0
   _damageParametr:
     _typeDamage: 2
-    _damage: 10
+    _damage: 15
     _damageParameters:
     - _value: 1
       _typeDamageParameter: 4
-    - _value: 2
+    - _value: 5
       _typeDamageParameter: 1
     _particle: {fileID: 1461602671872348846, guid: 0b5e7793d4d1e854385c5ce9b1e79f47, type: 3}

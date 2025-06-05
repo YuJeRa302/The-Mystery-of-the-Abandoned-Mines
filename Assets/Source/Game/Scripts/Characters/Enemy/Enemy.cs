@@ -307,7 +307,7 @@ namespace Assets.Source.Game.Scripts
             float currentTime = 0;
             _rigidbody.isKinematic = false;
 
-            while (currentTime <= 0.3f)
+            while (currentTime <= 0.17f)
             {
                 _rigidbody.AddForce(transform.forward * -value, ForceMode.Impulse);
                 currentTime += Time.deltaTime;

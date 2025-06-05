@@ -21,7 +21,7 @@ MonoBehaviour:
   - {r: 0.5686275, g: 0.14509805, b: 1, a: 0}
   - {r: 1, g: 0.22745098, b: 0.14509805, a: 0}
   _countStages: 9
-  _countRooms: 5
+  _countRooms: 4
   _cost: 0
   _isContractLevel: 0
   _translationName: ThisIsJust

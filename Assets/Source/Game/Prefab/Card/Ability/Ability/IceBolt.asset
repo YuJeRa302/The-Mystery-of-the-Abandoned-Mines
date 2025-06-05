@@ -19,21 +19,21 @@ MonoBehaviour:
       TypeParameter: 4
     - Value: 1
       TypeParameter: 5
-    - Value: 10
+    - Value: 8
       TypeParameter: 6
   - CardParameters:
-    - Value: 10
+    - Value: 12
       TypeParameter: 4
     - Value: 1
       TypeParameter: 5
-    - Value: 10
+    - Value: 8
       TypeParameter: 6
   - CardParameters:
-    - Value: 10
+    - Value: 15
       TypeParameter: 4
     - Value: 1
       TypeParameter: 5
-    - Value: 10
+    - Value: 8
       TypeParameter: 6
   _name: IceBolt
   _description: IceBoltDescription
@@ -52,8 +52,8 @@ MonoBehaviour:
     _typeDamage: 1
     _damage: 10
     _damageParameters:
-    - _value: 30
+    - _value: 50
       _typeDamageParameter: 0
-    - _value: 1
+    - _value: 2
       _typeDamageParameter: 1
     _particle: {fileID: -8818530760380164550, guid: 2ed06ab528b7c474eb9246421cd7c791, type: 3}

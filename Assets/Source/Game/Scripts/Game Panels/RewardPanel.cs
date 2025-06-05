@@ -44,11 +44,6 @@ namespace Assets.Source.Game.Scripts
             RemoveListeners();
         }
 
-        private void OnEnable()
-        {
-            //RemoveListeners();
-        }
-
         public override void Initialize(GamePanelsViewModel gamePanelsViewModel)
         {
             base.Initialize(gamePanelsViewModel);
@@ -98,7 +93,6 @@ namespace Assets.Source.Game.Scripts
             if (_isLootReward)
             {
                 int cointReward = _currentRewardLoot + _currentRewardLoot;
-                //SetAnimationText(_currentRewardLoot, cointReward, _defaultContractRewardCoins);
                 _defaultContractRewardCoins.text = cointReward.ToString();
                 _defaultRewardMultiplierText.gameObject.SetActive(true);
                 _openAdButton.gameObject.SetActive(false);
@@ -113,17 +107,14 @@ namespace Assets.Source.Game.Scripts
                 {
                     _coinsText.text = GamePanelsViewModel.GetPlayer().Coins.ToString();
                     _upgradePointsText.text = GamePanelsViewModel.GetPlayer().UpgradePoints.ToString();
+                    _openAdButton.gameObject.SetActive(false);
+                    _collectButton.gameObject.SetActive(false);
+                    _closeGameButton.gameObject.SetActive(true);
 
                     foreach (Text text in _mainRewardMultiplierTexts) 
                     {
                         text.gameObject.SetActive(true);
                     }
-
-                    //SetAnimationText(GamePanelsViewModel.GetPlayer().Coins, coinRewards, _coinsText);
-                    //SetAnimationText(GamePanelsViewModel.GetPlayer().UpgradePoints, upgradePointRewards, _upgradePointsText);
-                    _openAdButton.gameObject.SetActive(false);
-                    _collectButton.gameObject.SetActive(false);
-                    _closeGameButton.gameObject.SetActive(true);
                 }
             }
 
@@ -167,7 +158,6 @@ namespace Assets.Source.Game.Scripts
             _closeGameButton.onClick.RemoveListener(CloseGame);
             _applayReward.onClick.RemoveListener(PlayerApplayReward);
             _openAdButton.onClick.RemoveListener(OpenRewardAds);
-            _collectButton.onClick.RemoveListener(CloseGame);
         }
 
         private void PlayerApplayReward()
@@ -214,14 +204,6 @@ namespace Assets.Source.Game.Scripts
             {
                 CreateEndScreen(gameState);
             }
-        }
-
-        private void SetAnimationText(int currentValue, int rewardValue, Text text)
-        {
-            DOVirtual.Int(currentValue, rewardValue, _animationDuration, (value) =>
-            {
-                text.text = value.ToString();
-            });
         }
 
         private void CreateDefaultRewards(bool gameState)

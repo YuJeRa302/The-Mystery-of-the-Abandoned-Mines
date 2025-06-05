@@ -101,7 +101,7 @@ public class LevelsModel
 
     private LevelState InitLevelState(LevelData levelData)
     {
-        LevelState levelState = new ()
+        LevelState levelState = new()
         {
             Id = levelData.Id,
             IsComplete = false,

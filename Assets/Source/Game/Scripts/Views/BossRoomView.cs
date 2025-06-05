@@ -6,13 +6,6 @@ namespace Assets.Source.Game.Scripts
     {
         [SerializeField] private Transform _bossSpawnPoint;
 
-        private void OnEnable()
-        {
-            LockRoom();
-            //base.UnlockRoom();
-            //SetRoomStatus();
-        }
-
         public void UnlockBossRoom(bool state)
         {
             if (state == false)

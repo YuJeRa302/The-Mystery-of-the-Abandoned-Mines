@@ -69,7 +69,6 @@ public class UpgradesView : MonoBehaviour
         _resetButtonText.TranslationName = _buttonResetText;
         AddListener();
         gameObject.SetActive(false);
-        Debug.Log("Initialize");
     }
 
     private void AddListener()

@@ -3,7 +3,6 @@ using Lean.Localization;
 using System;
 using System.Collections;
 using System.Linq;
-using TMPro;
 using UnityEngine;
 using YG;
 
@@ -11,6 +10,7 @@ namespace Assets.Source.Game.Scripts
 {
     public class LevelObserver : MonoBehaviour, IGameLoopService, ICoroutineRunner
     {
+        private readonly float _minCountRooms = 1;
         private readonly float _pauseValue = 0;
         private readonly float _resumeValue = 1;
         private readonly float _loadControlValue = 0.9f;
@@ -48,6 +48,7 @@ namespace Assets.Source.Game.Scripts
         private AsyncOperation _load;
         private TemporaryData _temporaryData;
         private bool _isWinGame;
+        private bool _isGameInterrupted = true;
 
         public event Action<bool> GamePaused;
         public event Action<bool> GameEnded;
@@ -178,13 +179,7 @@ namespace Assets.Source.Game.Scripts
 
             _trapsSpawner = new TrapsSpawner();
             _roomPlacer.Initialize(_currentRoomLevel, _canSeeDoor, CountRooms);
-
-            foreach (var boosRoom in _roomPlacer.CreatedRooms)
-            {
-                if (boosRoom as BossRoomView)
-                    boosRoom.LockRoom();
-            }
-
+            LockBossRoom();
             _cardLoader.Initialize(_player);
             _enemySpawner = new EnemySpawner(_enemuPool, this, _player, _currentRoomLevel, _audioPlayerService);
             _cameraControiler.SetLookTarget(_player.transform);
@@ -327,6 +322,7 @@ namespace Assets.Source.Game.Scripts
             StageCompleted?.Invoke();
             _roomPlacer.Initialize(_currentRoomLevel, _canSeeDoor, CountRooms);
             AddRoomListener();
+            LockBossRoom();
         }
 
         private void WinGame()
@@ -334,6 +330,7 @@ namespace Assets.Source.Game.Scripts
             CloseAllGamePanels();
             _roomPlacer.Clear();
             _isWinGame = true;
+            _isGameInterrupted = false;
             GameEnded?.Invoke(_isWinGame);
         }
 
@@ -341,6 +338,7 @@ namespace Assets.Source.Game.Scripts
         {
             CloseAllGamePanels();
             _roomPlacer.Clear();
+            _isGameInterrupted = false;
             GameEnded?.Invoke(_isWinGame);
         }
 
@@ -360,17 +358,32 @@ namespace Assets.Source.Game.Scripts
             }
         }
 
+        private void LockBossRoom() 
+        {
+            BossRoomView bossRoom = null;
+
+            foreach (RoomView room in _roomPlacer.CreatedRooms)
+            {
+                if (room as BossRoomView)
+                    bossRoom = (room as BossRoomView);
+            }
+
+            if (CountRooms > _minCountRooms)
+                bossRoom.LockRoom();
+            else
+                bossRoom.UnlockBossRoom(true);
+        }
+
         private void UnlockAllDoors()
         {
             bool isAllRoomsComplete = _roomPlacer.CreatedRooms
             .Where(room => !(room is BossRoomView))
             .All(room => room.IsComplete);
-                Debug.Log(isAllRoomsComplete);
 
             foreach (var room in _roomPlacer.CreatedRooms)
             {
                 if (room == room as BossRoomView)
-                    (room as BossRoomView).UnlockBossRoom(isAllRoomsComplete);
+                     (room as BossRoomView).UnlockBossRoom(isAllRoomsComplete);
                 else
                     room.UnlockRoom();
             }
@@ -402,9 +415,9 @@ namespace Assets.Source.Game.Scripts
 
         private void OnGameClosed()
         {
-            _temporaryData.SaveProgress(_player, _isWinGame);
             StartCoroutine(LoadScreenLevel(Menu.LoadAsync(_temporaryData)));
             GameEnded?.Invoke(false);
+            _temporaryData.SaveProgress(_player, _isWinGame, _isGameInterrupted);
         }
 
         private void OnRoomEntering(RoomView room)
@@ -425,8 +438,11 @@ namespace Assets.Source.Game.Scripts
 
         private void OnRoomCompleted()
         {
-            _currentRoom.SetComplete();
-            UnlockAllDoors();
+            if (_currentRoom != _currentRoom as BossRoomView) 
+            {
+                _currentRoom.SetComplete();
+                UnlockAllDoors();
+            }
 
             if (_currentRoom == _currentRoom as BossRoomView)
                 StageComplete();

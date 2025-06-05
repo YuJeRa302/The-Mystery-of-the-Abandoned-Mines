@@ -44,8 +44,11 @@ public class TemporaryData
     public LevelState[] LevelStates => _levelStates;
     public UpgradeData[] UpgradeDatas { get; private set; }
 
-    public void SaveProgress(Player player, bool isComplit)
+    public void SaveProgress(Player player, bool IsComplete, bool isGameInterrupted)
     {
+        if (isGameInterrupted)
+            return;
+
         _playerScore += player.Score;
         Coins += player.Coins;
         UpgradePoints += player.UpgradePoints;
@@ -53,9 +56,12 @@ public class TemporaryData
         CurrentLevelState = new LevelState()
         {
             Id = LevelData.Id,
-            IsComplete = isComplit,
+            IsComplete = IsComplete,
             CurrentCompleteStages = LevelData.CountStages
         };
+
+        if(CurrentLevelState.IsComplete != false)
+            UpdateLevelStates(CurrentLevelState);
 
         ChangedData?.Invoke();
     }
@@ -222,6 +228,15 @@ public class TemporaryData
         }
 
         ChangedData?.Invoke();
+    }
+
+    public void UpdateLevelStates(LevelState currentLevelState)
+    {
+        for (int index = 0; index < _levelStates.Length; index++)
+        {
+            if (_levelStates[index].Id == currentLevelState.Id)
+                _levelStates[index].IsComplete = currentLevelState.IsComplete;
+        }
     }
 
     public void UpdateWeaponStates(WeaponState weaponState) 

@@ -3,9 +3,9 @@
     "isFirstSession": true,
     "language": "ru",
     "promptDone": false,
-    "Coins": 21582,
-    "AmbientVolume": 21.336875915527345,
-    "SfxVolumeVolume": 42.10385513305664,
+    "Coins": 32090,
+    "AmbientVolume": 40.0,
+    "SfxVolumeVolume": 40.0,
     "IsMuted": false,
     "DefaultLanguage": "ru",
     "UpgradeStates": [
@@ -33,7 +33,7 @@
     "ClassAbilityStates": [
         {
             "Id": 12,
-            "CurrentLevel": 3
+            "CurrentLevel": 0
         },
         {
             "Id": 11,
@@ -93,12 +93,12 @@
         },
         {
             "Id": 1,
-            "IsComplete": true,
+            "IsComplete": false,
             "CurrentCompleteStages": 0
         },
         {
             "Id": 2,
-            "IsComplete": true,
+            "IsComplete": false,
             "CurrentCompleteStages": 0
         },
         {

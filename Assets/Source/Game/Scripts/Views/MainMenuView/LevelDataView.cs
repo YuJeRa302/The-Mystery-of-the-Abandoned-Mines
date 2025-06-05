@@ -20,11 +20,9 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private Image _starLvlPrefab;
         [Space(10)]
         [SerializeField] private Image _bgContractInfo;
-        [SerializeField] private Text _prce;
-        //[SerializeField] private Transform _starsConteiner;
+        [SerializeField] private Text _price;
 
         private LevelData _levelData;
-        private LevelState _leveState;
         private IAudioPlayerService _audioPlayerService;
         private LevelsViewModel _levelsViewModel;
 
@@ -40,23 +38,11 @@ namespace Assets.Source.Game.Scripts
         public void Initialize(LevelData levelData, LevelState levelState, LevelsViewModel levelsViewModel, IAudioPlayerService audioPlayerService)
         {
             _audioPlayerService = audioPlayerService;
-            _leveState = levelState;
             _levelData = levelData;
             _levelsViewModel = levelsViewModel;
             _button.onClick.AddListener(OnSelected);
-            Fill(levelData, levelState);
-
-            if (levelData.IsContractLevel == false)
-            {
-                LoadCompletePlayerLevels(levelState);
-                CheckLevelState(levelState);
-            }
-            else
-            {
-                _bgContractInfo.gameObject.SetActive(true);
-                _prce.text = levelData.Cost.ToString();
-                SetLevelState(true);
-            }
+            Fill(levelData);
+            UpdateLevelState(levelData, levelState);
         }
 
         public void OnPointerEnter(PointerEventData eventData)
@@ -69,44 +55,41 @@ namespace Assets.Source.Game.Scripts
             _audioPlayerService.PlayOneShotButtonClickSound();
         }
 
-        private void Fill(LevelData levelData, LevelState levelState)
+        private void Fill(LevelData levelData)
         {
             _icon.sprite = levelData.Icon;
             _name.TranslationName = levelData.TranslationName;
             _icon.color = new Color(levelData.TierColor.r, levelData.TierColor.g, levelData.TierColor.b);
-
-            //for (int i = 0; i < levelState.CurrentCompleteStages; i++)
-            //{
-            //    Image star = Instantiate(_starLvlPrefab, _starsConteiner);
-            //    star.sprite = _complitStar;
-            //}
-
-            //for (int i = 0; i < levelData.CountStages; i++)
-            //{
-            //    Image star = Instantiate(_starLvlPrefab, _starsConteiner);
-            //    star.sprite = _star;
-            //}
         }
 
-        private void LoadCompletePlayerLevels(LevelState levelState)
+        private void UpdateLevelState(LevelData levelData, LevelState levelState) 
         {
-            bool state = _levelsViewModel.GetLevels().Length > _firstLevelIndex ? _levelsViewModel.GetLevels()[levelState.Id].IsComplete : false;
-            SetLevelState(state);
-
-            if (levelState.Id == _firstLevelIndex)
-                SetLevelState(true);
+            if (levelData.IsContractLevel == false)
+                UpdateDefaultLevelState(levelState);
+            else
+                UpdateContractLevelState(levelData);
         }
 
-        private void CheckLevelState(LevelState levelState)
+        private void UpdateDefaultLevelState(LevelState levelState)
         {
-            if (levelState.Id == _firstLevelIndex)
+            if (levelState.Id == _firstLevelIndex) 
+            {
+                SetImageLevelState(true);
                 return;
+            }
 
             if (_levelsViewModel.GetLevels().Length > _firstLevelIndex)
-                SetLevelState(_levelsViewModel.GetLevels()[levelState.Id - _levelIndexShift].IsComplete);
+                SetImageLevelState(_levelsViewModel.GetLevels()[levelState.Id - _levelIndexShift].IsComplete);
         }
 
-        private void SetLevelState(bool isLevelComplete)
+        private void UpdateContractLevelState(LevelData levelData)
+        {
+            _bgContractInfo.gameObject.SetActive(true);
+            _price.text = levelData.Cost.ToString();
+            SetImageLevelState(true);
+        }
+
+        private void SetImageLevelState(bool isLevelComplete)
         {
             _lockImage.gameObject.SetActive(!isLevelComplete);
         }

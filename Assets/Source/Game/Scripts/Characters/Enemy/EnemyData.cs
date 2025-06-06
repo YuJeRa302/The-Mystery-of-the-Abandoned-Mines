@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.Source.Game.Scripts
@@ -8,25 +9,9 @@ namespace Assets.Source.Game.Scripts
         [Header("[Enemy Stats]")]
         [SerializeField] private int _id;
         [SerializeField] private int _level;
-        [SerializeField] private int _damage;
-        [SerializeField] private int _health;
-        [SerializeField] private int _experienceReward;
-        [SerializeField] private int _upgradeExperienceReward;
-        [SerializeField] private int _score;
-        [SerializeField] private float _delaySpawn;
-        [SerializeField] private int _enemyCount;
-        [SerializeField] private float _moveSpeed;
-        [SerializeField] private float _attackDistance;
-        [SerializeField] private float _attackDelay;
-        [SerializeField] private int _chanceSpawn;
-        [SerializeField] private int _goldReward;
-        [Header("[Ability Stats]")]
-        [SerializeField] private float[] _abilityCoolDown;
-        [SerializeField] private int[] _abilityDamage;
+        [SerializeField] private List<EnemyStats> _enemyStats;
         [Header("[ParticleSystem]")]
-        //[SerializeField] private ParticleSystem _enemyHitParticleSystem;
         [SerializeField] private PoolParticle _enemyDieParticleSystem;
-        //[SerializeField] private ParticleSystem _enemyAbilityParticleSystem;
         [Header("[Enemy Sound]")]
         [SerializeField] private AudioClip _audioClipDie;
         [SerializeField] private AudioClip _hit;
@@ -39,24 +24,8 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private string _name;
 
         public int Id => _id;
-        public int UpgradeExperienceReward => _upgradeExperienceReward;
-        public int EnemyCount => _enemyCount;
-        public float DelaySpawn => _delaySpawn;
         public int Level => _level;
-        public int ChanceSpawn => _chanceSpawn;
-        public int Damage => _damage;
-        public int Health => _health;
-        public int ExperienceReward => _experienceReward;
-        public int Score => _score;
-        public int GoldReward => _goldReward;
-        public float MoveSpeed => _moveSpeed;
-        public float AttackDistance => _attackDistance;
-        public float AttackDelay => _attackDelay;
-        public float[] AbilityCoolDown => _abilityCoolDown;
-        public int[] AbilityDamage => _abilityDamage;
-        //public ParticleSystem EnemyHitParticleSystem => _enemyHitParticleSystem;
         public PoolParticle EnemyDieParticleSystem => _enemyDieParticleSystem;
-        //public ParticleSystem EnemyAbilityParticleSystem => _enemyAbilityParticleSystem;
         public AudioClip AudioClipDie => _audioClipDie;
         public AudioClip Hit => _hit;
         public Enemy PrefabEnemy => _prefabEnemy;
@@ -64,5 +33,6 @@ namespace Assets.Source.Game.Scripts
         public Sprite Icon => _enemyIcon;
         public string Descroption => _descripton;
         public string Name => _name;
+        public List<EnemyStats> EnemyStats => _enemyStats;
     }
 }

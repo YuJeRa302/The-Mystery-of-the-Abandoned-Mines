@@ -38,6 +38,7 @@ namespace Assets.Source.Game.Scripts
         private List<PoolObject> _spawnedEffects = new();
         private AudioClip _deathAudio;
         private AudioClip _hitAudio;
+        private int _tire;
 
         public int Id => _id;
         public float AttackDelay => _attackDelay;
@@ -79,11 +80,12 @@ namespace Assets.Source.Game.Scripts
             _animationController.Attacked -= OnEnemyAttack;
         }
 
-        public virtual void Initialize(Player player, int lvlRoom, EnemyData data)
+        public virtual void Initialize(Player player, int lvlRoom, EnemyData data, int tire)
         {
             _player = player;
             _rigidbody = GetComponent<Rigidbody>();
             _currentLvlRoom = lvlRoom;
+            _tire = tire;
             Fill(data);
             _stateMashine.InitializeStateMashine(player);
             _healthView.Initialize(this);
@@ -224,16 +226,16 @@ namespace Assets.Source.Game.Scripts
 
         private void Fill(EnemyData data)
         {
-            _health = data.Health;
-            _damage = data.Damage;
-            _speed = data.MoveSpeed;
-            _attackDelay = data.AttackDelay;
-            _attackDistance = data.AttackDistance;
+            _health = data.EnemyStats[_tire].Health;
+            _damage = data.EnemyStats[_tire].Damage;
+            _speed = data.EnemyStats[_tire].MoveSpeed;
+            _attackDelay = data.EnemyStats[_tire].AttackDelay;
+            _attackDistance = data.EnemyStats[_tire].AttackDistance;
             _id = data.Id;
-            _gold = data.GoldReward;
-            _score = data.Score;
-            _experience = data.ExperienceReward;
-            _upgradeExperience = data.UpgradeExperienceReward;
+            _gold = data.EnemyStats[_tire].GoldReward;
+            _score = data.EnemyStats[_tire].Score;
+            _experience = data.EnemyStats[_tire].ExperienceReward;
+            _upgradeExperience = data.EnemyStats[_tire].UpgradeExperienceReward;
             _baseMoveSpeed = _speed;
             _deathAudio = data.AudioClipDie;
             _hitAudio = data.Hit;

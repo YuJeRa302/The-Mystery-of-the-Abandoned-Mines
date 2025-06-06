@@ -181,7 +181,7 @@ namespace Assets.Source.Game.Scripts
             _roomPlacer.Initialize(_currentRoomLevel, _canSeeDoor, CountRooms);
             LockBossRoom();
             _cardLoader.Initialize(_player);
-            _enemySpawner = new EnemySpawner(_enemuPool, this, _player, _currentRoomLevel, _audioPlayerService);
+            _enemySpawner = new EnemySpawner(_enemuPool, this, _player, _currentRoomLevel, _audioPlayerService, temporaryData.CurrentLevelState.Tire);
             _cameraControiler.SetLookTarget(_player.transform);
             _saveAndLoad = new SaveAndLoader();
             _saveAndLoad.Initialize(temporaryData);

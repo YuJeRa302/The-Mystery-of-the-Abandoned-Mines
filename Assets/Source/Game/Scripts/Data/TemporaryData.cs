@@ -190,7 +190,8 @@ public class TemporaryData
                 {
                     Id = state.Id,
                     IsComplete = state.IsComplete,
-                    CurrentCompleteStages = state.CurrentCompleteStages
+                    CurrentCompleteStages = state.CurrentCompleteStages,
+                    Tire = state.Tire
                 };
             }
         }

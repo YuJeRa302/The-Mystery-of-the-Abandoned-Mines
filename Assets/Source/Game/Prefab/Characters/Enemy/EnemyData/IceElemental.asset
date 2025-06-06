@@ -14,20 +14,67 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _id: 6
   _level: 0
-  _damage: 20
-  _health: 35
-  _experienceReward: 25
-  _upgradeExperienceReward: 25
-  _score: 25
-  _delaySpawn: 2
-  _enemyCount: 2
-  _moveSpeed: 2
-  _attackDistance: 15
-  _attackDelay: 3
-  _chanceSpawn: 30
-  _goldReward: 35
-  _abilityCoolDown: []
-  _abilityDamage: 
+  _enemyStats:
+  - _damage: 16
+    _health: 16
+    _experienceReward: 35
+    _upgradeExperienceReward: 25
+    _score: 25
+    _delaySpawn: 2
+    _enemyCount: 2
+    _moveSpeed: 2
+    _attackDistance: 15
+    _attackDelay: 3
+    _chanceSpawn: 30
+    _goldReward: 35
+  - _damage: 20
+    _health: 20
+    _experienceReward: 25
+    _upgradeExperienceReward: 25
+    _score: 25
+    _delaySpawn: 2
+    _enemyCount: 2
+    _moveSpeed: 2
+    _attackDistance: 15
+    _attackDelay: 3
+    _chanceSpawn: 30
+    _goldReward: 35
+  - _damage: 20
+    _health: 25
+    _experienceReward: 25
+    _upgradeExperienceReward: 25
+    _score: 25
+    _delaySpawn: 2
+    _enemyCount: 2
+    _moveSpeed: 2
+    _attackDistance: 15
+    _attackDelay: 3
+    _chanceSpawn: 30
+    _goldReward: 35
+  - _damage: 20
+    _health: 25
+    _experienceReward: 25
+    _upgradeExperienceReward: 25
+    _score: 25
+    _delaySpawn: 2
+    _enemyCount: 2
+    _moveSpeed: 2
+    _attackDistance: 15
+    _attackDelay: 3
+    _chanceSpawn: 35
+    _goldReward: 35
+  - _damage: 25
+    _health: 25
+    _experienceReward: 25
+    _upgradeExperienceReward: 25
+    _score: 25
+    _delaySpawn: 2
+    _enemyCount: 3
+    _moveSpeed: 2
+    _attackDistance: 15
+    _attackDelay: 3
+    _chanceSpawn: 35
+    _goldReward: 35
   _enemyDieParticleSystem: {fileID: 5817152979840785881, guid: 8efa0e91da9b04c47ae96c863ac855e9, type: 3}
   _audioClipDie: {fileID: 8300000, guid: df0ec39bb7429284fb2f1c3413e68098, type: 3}
   _hit: {fileID: 8300000, guid: d1857ae27d7a1d54f9c16a2d32e25e6a, type: 3}

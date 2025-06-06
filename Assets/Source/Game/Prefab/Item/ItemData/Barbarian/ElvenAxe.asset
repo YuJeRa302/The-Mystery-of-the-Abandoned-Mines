@@ -26,7 +26,7 @@ MonoBehaviour:
   _icon: {fileID: 21300000, guid: d7ddb847319da1440a0896dec8058ef7, type: 3}
   _damageSource:
     _typeDamage: 4
-    _damage: 7
+    _damage: 9
     _damageParameters:
     - _value: 1
       _typeDamageParameter: 2

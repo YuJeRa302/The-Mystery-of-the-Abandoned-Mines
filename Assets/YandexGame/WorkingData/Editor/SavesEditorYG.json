@@ -3,7 +3,7 @@
     "isFirstSession": true,
     "language": "ru",
     "promptDone": false,
-    "Coins": 30208,
+    "Coins": 17065,
     "AmbientVolume": 40.0,
     "SfxVolumeVolume": 40.0,
     "IsMuted": false,
@@ -53,15 +53,15 @@
         },
         {
             "Id": 9,
-            "CurrentLevel": 0
+            "CurrentLevel": 3
         },
         {
             "Id": 15,
-            "CurrentLevel": 0
+            "CurrentLevel": 3
         },
         {
             "Id": 16,
-            "CurrentLevel": 0
+            "CurrentLevel": 3
         },
         {
             "Id": 17,
@@ -83,34 +83,44 @@
             "Id": 2,
             "IsEquip": false,
             "IsUnlock": true
+        },
+        {
+            "Id": 4,
+            "IsEquip": false,
+            "IsUnlock": true
         }
     ],
     "DefaultLevelState": [
         {
             "Id": 0,
             "IsComplete": true,
-            "CurrentCompleteStages": 0
+            "CurrentCompleteStages": 0,
+            "Tire": 0
         },
         {
             "Id": 1,
             "IsComplete": true,
-            "CurrentCompleteStages": 0
+            "CurrentCompleteStages": 0,
+            "Tire": 0
         },
         {
             "Id": 2,
             "IsComplete": true,
-            "CurrentCompleteStages": 0
+            "CurrentCompleteStages": 0,
+            "Tire": 0
         },
         {
             "Id": 3,
             "IsComplete": true,
-            "CurrentCompleteStages": 0
+            "CurrentCompleteStages": 0,
+            "Tire": 0
         },
         {
             "Id": 4,
             "IsComplete": false,
-            "CurrentCompleteStages": 0
+            "CurrentCompleteStages": 0,
+            "Tire": 0
         }
     ],
-    "UpgradePoints": 7
+    "UpgradePoints": 12
 }

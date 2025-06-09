@@ -43,6 +43,7 @@ namespace Assets.Source.Game.Scripts
             Time.timeScale = _resumeValue;
             _temporaryData = temporaryData;
             Build();
+            Debug.Log("Initialize Game");
         }
 
         private void Build()

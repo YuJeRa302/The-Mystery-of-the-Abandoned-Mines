@@ -118,6 +118,7 @@ namespace Assets.Source.Game.Scripts
         public void ResumeByFullscreenAd()
         {
             Time.timeScale = _resumeValue;
+            _temporaryData.SaveProgress(_player, _isWinGame, _isGameInterrupted);
             StartCoroutine(LoadScreenLevel(Menu.LoadAsync(_temporaryData)));
             GameResumed?.Invoke(_temporaryData.MuteStateSound);
         }
@@ -181,7 +182,7 @@ namespace Assets.Source.Game.Scripts
             _roomPlacer.Initialize(_currentRoomLevel, _canSeeDoor, CountRooms);
             LockBossRoom();
             _cardLoader.Initialize(_player);
-            _enemySpawner = new EnemySpawner(_enemuPool, this, _player, _currentRoomLevel, _audioPlayerService, temporaryData.CurrentLevelState.Tire);
+            _enemySpawner = new EnemySpawner(_enemuPool, this, _player, _currentRoomLevel, _audioPlayerService, temporaryData.CurrentLevelState.Tier);
             _cameraControiler.SetLookTarget(_player.transform);
             _saveAndLoad = new SaveAndLoader();
             _saveAndLoad.Initialize(temporaryData);
@@ -415,9 +416,9 @@ namespace Assets.Source.Game.Scripts
 
         private void OnGameClosed()
         {
+            _temporaryData.SaveProgress(_player, _isWinGame, _isGameInterrupted);
             StartCoroutine(LoadScreenLevel(Menu.LoadAsync(_temporaryData)));
             GameEnded?.Invoke(false);
-            _temporaryData.SaveProgress(_player, _isWinGame, _isGameInterrupted);
         }
 
         private void OnRoomEntering(RoomView room)

@@ -106,7 +106,7 @@ public class LevelsModel
             Id = levelData.Id,
             IsComplete = false,
             CurrentCompleteStages = 0,
-            Tire = levelData.Tier
+            Tier = levelData.Tier
         };
 
         return levelState;

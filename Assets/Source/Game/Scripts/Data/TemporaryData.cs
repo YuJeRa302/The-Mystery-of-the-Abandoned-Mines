@@ -1,6 +1,7 @@
 using Assets.Source.Game.Scripts;
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 using YG;
 
 public class TemporaryData
@@ -46,9 +47,10 @@ public class TemporaryData
 
     public void SaveProgress(Player player, bool IsComplete, bool isGameInterrupted)
     {
+        Debug.Log($"complite - {IsComplete}/n interruped - {isGameInterrupted}");
         if (isGameInterrupted)
             return;
-
+        Debug.Log(player.Score);
         _playerScore += player.Score;
         Coins += player.Coins;
         UpgradePoints += player.UpgradePoints;
@@ -57,7 +59,8 @@ public class TemporaryData
         {
             Id = LevelData.Id,
             IsComplete = IsComplete,
-            CurrentCompleteStages = LevelData.CountStages
+            CurrentCompleteStages = LevelData.CountStages,
+            Tier = LevelData.Tier
         };
 
         if(CurrentLevelState.IsComplete != false)
@@ -191,7 +194,7 @@ public class TemporaryData
                     Id = state.Id,
                     IsComplete = state.IsComplete,
                     CurrentCompleteStages = state.CurrentCompleteStages,
-                    Tire = state.Tire
+                    Tier = state.Tier
                 };
             }
         }

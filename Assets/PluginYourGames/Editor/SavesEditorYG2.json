@@ -95,31 +95,31 @@
             "Id": 0,
             "IsComplete": false,
             "CurrentCompleteStages": 0,
-            "Tire": 0
+            "Tier": 0
         },
         {
             "Id": 1,
             "IsComplete": false,
             "CurrentCompleteStages": 0,
-            "Tire": 0
+            "Tier": 1
         },
         {
             "Id": 2,
             "IsComplete": false,
             "CurrentCompleteStages": 0,
-            "Tire": 0
+            "Tier": 2
         },
         {
             "Id": 3,
             "IsComplete": false,
             "CurrentCompleteStages": 0,
-            "Tire": 0
+            "Tier": 3
         },
         {
             "Id": 4,
             "IsComplete": false,
             "CurrentCompleteStages": 0,
-            "Tire": 0
+            "Tier": 4
         }
     ],
     "UpgradePoints": 3

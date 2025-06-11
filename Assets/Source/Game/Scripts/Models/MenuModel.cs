@@ -5,7 +5,7 @@ public class MenuModel : IDisposable
 {
     public MenuModel() 
     {
-        YandexGame.onVisibilityWindowGame += OnVisibilityWindowGame;
+        YG2.onFocusWindowGame += OnVisibilityWindowGame;
     }
 
     public event Action InvokedUpgradesShow;
@@ -37,7 +37,7 @@ public class MenuModel : IDisposable
 
     public void Dispose()
     {
-        YandexGame.onVisibilityWindowGame -= OnVisibilityWindowGame;
+        YG2.onFocusWindowGame -= OnVisibilityWindowGame;
         GC.SuppressFinalize(this);
     }
 

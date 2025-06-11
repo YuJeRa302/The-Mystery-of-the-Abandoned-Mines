@@ -36,7 +36,7 @@ public class PlayerMovement : IDisposable
         _rigidbody = rigidbody;
         _camera = camera;
 
-        if (YandexGame.EnvironmentData.isDesktop)
+        if (YG2.envir.isDesktop)
         {
             CreateInputSystem();
             _move = _playerInputSystem.Player.Move;
@@ -48,8 +48,8 @@ public class PlayerMovement : IDisposable
             _movement = _coroutineRunner.StartCoroutine(MobileMove());
         }
 
-        //_variableJoystick = variableJoystick;
-        //_movement = _coroutineRunner.StartCoroutine(MobileMove());
+        _variableJoystick = variableJoystick;
+        _movement = _coroutineRunner.StartCoroutine(MobileMove());
 
         AddListeners();
     }
@@ -120,7 +120,7 @@ public class PlayerMovement : IDisposable
             _coroutineRunner.StopCoroutine(_movement);
 
         if (_canMove)
-            if (YandexGame.EnvironmentData.isDesktop)
+            if (YG2.envir.isDesktop)
                 _movement = _coroutineRunner.StartCoroutine(DesktopMove());
             else
                 _movement = _coroutineRunner.StartCoroutine(MobileMove());

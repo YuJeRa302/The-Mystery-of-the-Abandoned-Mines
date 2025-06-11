@@ -1,6 +1,7 @@
 using Assets.Source.Game.Scripts;
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 using YG;
 
 public class TemporaryData
@@ -46,12 +47,18 @@ public class TemporaryData
 
     public void SaveProgress(Player player, bool IsComplete, bool isGameInterrupted)
     {
+        Debug.Log("SaveProgress (isGameInterrupted)" + isGameInterrupted);
+
         if (isGameInterrupted)
             return;
+
 
         _playerScore += player.Score;
         Coins += player.Coins;
         UpgradePoints += player.UpgradePoints;
+
+        Debug.Log("Coins !!!!!!!!! - " + Coins);
+        Debug.Log("player.Score !!!!!!!!! - " + player.Score);
 
         CurrentLevelState = new LevelState()
         {
@@ -60,7 +67,9 @@ public class TemporaryData
             CurrentCompleteStages = LevelData.CountStages
         };
 
-        if(CurrentLevelState.IsComplete != false)
+        Debug.Log("IsComplete !!!!!!!!! - " + CurrentLevelState.IsComplete);
+
+        if (CurrentLevelState.IsComplete != false)
             UpdateLevelStates(CurrentLevelState);
 
         ChangedData?.Invoke();
@@ -303,7 +312,7 @@ public class TemporaryData
 #if UNITY_EDITOR
         SetCurrentLanguage("ru");
 #else
-        string languageCode = YandexGame.lang;
+        string languageCode = YG2.envir.browserLang;
         SetCurrentLanguage(languageCode);
 #endif
     }

@@ -1,0 +1,126 @@
+{
+    "intExample": 5,
+    "strExample": "Hello!",
+    "boolExample": [
+        false,
+        false,
+        false,
+        false
+    ],
+    "idSave": 1,
+    "Coins": 3000,
+    "AmbientVolume": 40.0,
+    "SfxVolumeVolume": 40.0,
+    "IsMuted": false,
+    "DefaultLanguage": "ru",
+    "UpgradeStates": [
+        {
+            "Id": 1,
+            "CurrentLevel": 0
+        },
+        {
+            "Id": 0,
+            "CurrentLevel": 0
+        },
+        {
+            "Id": 3,
+            "CurrentLevel": 0
+        },
+        {
+            "Id": 2,
+            "CurrentLevel": 0
+        },
+        {
+            "Id": 7,
+            "CurrentLevel": 0
+        }
+    ],
+    "ClassAbilityStates": [
+        {
+            "Id": 12,
+            "CurrentLevel": 0
+        },
+        {
+            "Id": 11,
+            "CurrentLevel": 0
+        },
+        {
+            "Id": 10,
+            "CurrentLevel": 0
+        },
+        {
+            "Id": 13,
+            "CurrentLevel": 0
+        },
+        {
+            "Id": 14,
+            "CurrentLevel": 0
+        },
+        {
+            "Id": 9,
+            "CurrentLevel": 0
+        },
+        {
+            "Id": 15,
+            "CurrentLevel": 0
+        },
+        {
+            "Id": 16,
+            "CurrentLevel": 0
+        },
+        {
+            "Id": 17,
+            "CurrentLevel": 0
+        }
+    ],
+    "DefaultWeaponState": [
+        {
+            "Id": 0,
+            "IsEquip": false,
+            "IsUnlock": true
+        },
+        {
+            "Id": 1,
+            "IsEquip": false,
+            "IsUnlock": true
+        },
+        {
+            "Id": 2,
+            "IsEquip": false,
+            "IsUnlock": true
+        }
+    ],
+    "DefaultLevelState": [
+        {
+            "Id": 0,
+            "IsComplete": false,
+            "CurrentCompleteStages": 0,
+            "Tire": 0
+        },
+        {
+            "Id": 1,
+            "IsComplete": false,
+            "CurrentCompleteStages": 0,
+            "Tire": 0
+        },
+        {
+            "Id": 2,
+            "IsComplete": false,
+            "CurrentCompleteStages": 0,
+            "Tire": 0
+        },
+        {
+            "Id": 3,
+            "IsComplete": false,
+            "CurrentCompleteStages": 0,
+            "Tire": 0
+        },
+        {
+            "Id": 4,
+            "IsComplete": false,
+            "CurrentCompleteStages": 0,
+            "Tire": 0
+        }
+    ],
+    "UpgradePoints": 3
+}

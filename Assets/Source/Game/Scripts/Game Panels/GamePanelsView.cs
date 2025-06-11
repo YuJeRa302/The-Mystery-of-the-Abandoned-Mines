@@ -39,7 +39,7 @@ namespace Assets.Source.Game.Scripts
 #if UNITY_EDITOR
             GameClosed?.Invoke();
 #else
-            YandexGame.FullscreenShow();
+            YG2.InterstitialAdvShow();
 #endif
         }
 

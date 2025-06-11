@@ -45,9 +45,9 @@ public class LeaderboardView : MonoBehaviour
 
     private void Authorize()
     {
-        YandexGame.AuthDialog();
+        YG2.OpenAuthDialog();
 
-        if (YandexGame.auth == true)
+        if (YG2.player.auth == true)
             CreateLeaderboard(_leaderboardViewModel.GetScore());
         else
             return;
@@ -57,7 +57,7 @@ public class LeaderboardView : MonoBehaviour
     {
         _authorizationPanel.gameObject.SetActive(false);
         _leaderboardYG.gameObject.SetActive(true);
-        _leaderboardYG.NewScore(score);
+        _leaderboardYG.SetLeaderboard(score);
         _leaderboardYG.UpdateLB();
     }
 
@@ -73,7 +73,7 @@ public class LeaderboardView : MonoBehaviour
     {
         gameObject.SetActive(true);
 
-        if (YandexGame.auth == true)
+        if (YG2.player.auth == true)
             CreateLeaderboard(_leaderboardViewModel.GetScore());
         else
             _authorizationPanel.gameObject.SetActive(true);

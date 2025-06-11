@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.UI;
-using DG.Tweening;
 using YG;
 using Lean.Localization;
 
@@ -8,8 +7,6 @@ namespace Assets.Source.Game.Scripts
 {
     public class RewardPanel : GamePanelsView
     {
-        private readonly float _animationDuration = 1f;
-
         [SerializeField] private Button _openAdButton;
         [SerializeField] private Button _collectButton;
         [SerializeField] private Button _closeGameButton;
@@ -54,7 +51,7 @@ namespace Assets.Source.Game.Scripts
         protected override void OpenRewardAds()
         {
             base.OpenRewardAds();
-            YandexGame.RewVideoShow(_gamePanelsViewModel.GetDefalutRewardIndex());
+            YG2.RewardedAdvShow(_gamePanelsViewModel.GetDefalutRewardIndex());
         }
 
         private void OpenRewardPanel(bool gameState)
@@ -69,7 +66,7 @@ namespace Assets.Source.Game.Scripts
             base.Open();
         }
 
-        private void OnRewardCallback(int index)
+        private void OnRewardCallback(string index)
         {
             if (index == _gamePanelsViewModel.GetDefalutRewardIndex()) 
             {
@@ -135,12 +132,12 @@ namespace Assets.Source.Game.Scripts
         {
             GamePanelsViewModel.GameEnded += OpenRewardPanel;
             GamePanelsViewModel.LootRoomComplitetd += ShowReward;
-            YandexGame.RewardVideoEvent += OnRewardCallback;
-            YandexGame.CloseVideoEvent += OnCloseAdCallback;
-            YandexGame.ErrorVideoEvent += OnErrorRewardAdCallback;
-            YandexGame.OpenFullAdEvent += OnOpenFullscreenAdCallback;
-            YandexGame.CloseFullAdEvent += OnCloseFullscreenAdCallback;
-            YandexGame.ErrorFullAdEvent += OnErrorFullAdCallback;
+            YG2.onRewardAdv += OnRewardCallback;
+            YG2.onCloseRewardedAdv += OnCloseAdCallback;
+            YG2.onErrorRewardedAdv += OnErrorRewardAdCallback;
+            YG2.onOpenInterAdv += OnOpenFullscreenAdCallback;
+            YG2.onCloseInterAdv += OnCloseFullscreenAdCallback;
+            YG2.onErrorInterAdv += OnErrorFullAdCallback;
             _collectButton.onClick.AddListener(CloseGame);
             _closeGameButton.onClick.AddListener(CloseGame);
             _openAdButton.onClick.AddListener(OpenRewardAds);
@@ -149,12 +146,12 @@ namespace Assets.Source.Game.Scripts
 
         private void RemoveListeners()
         {
-            YandexGame.RewardVideoEvent -= OnRewardCallback;
-            YandexGame.CloseVideoEvent -= OnCloseAdCallback;
-            YandexGame.ErrorVideoEvent -= OnErrorRewardAdCallback;
-            YandexGame.OpenFullAdEvent -= OnOpenFullscreenAdCallback;
-            YandexGame.CloseFullAdEvent -= OnCloseFullscreenAdCallback;
-            YandexGame.ErrorFullAdEvent -= OnErrorFullAdCallback;
+            YG2.onRewardAdv -= OnRewardCallback;
+            YG2.onCloseRewardedAdv -= OnCloseAdCallback;
+            YG2.onErrorRewardedAdv -= OnErrorRewardAdCallback;
+            YG2.onOpenInterAdv -= OnOpenFullscreenAdCallback;
+            YG2.onCloseInterAdv -= OnCloseFullscreenAdCallback;
+            YG2.onErrorInterAdv -= OnErrorFullAdCallback;
             _closeGameButton.onClick.RemoveListener(CloseGame);
             _applayReward.onClick.RemoveListener(PlayerApplayReward);
             _openAdButton.onClick.RemoveListener(OpenRewardAds);

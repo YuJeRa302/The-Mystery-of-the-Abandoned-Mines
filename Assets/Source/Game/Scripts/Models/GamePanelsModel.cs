@@ -6,8 +6,8 @@ namespace Assets.Source.Game.Scripts
 {
     public class GamePanelsModel
     {
-        private readonly int _defalutRewardIndex = 0;
-        private readonly int _rerollPointsRewardIndex = 1;
+        private readonly string _defalutRewardIndex = "0";
+        private readonly string _rerollPointsRewardIndex = "1";
         private readonly int _countRerollPointsReward = 2;
         private readonly int _minWeaponCount = 1;
         private readonly System.Random _rnd = new ();
@@ -63,12 +63,12 @@ namespace Assets.Source.Game.Scripts
             CardPanelOpened?.Invoke();
         }
 
-        public int GetRerollPointsRewardIndex() 
+        public string GetRerollPointsRewardIndex() 
         {
             return _rerollPointsRewardIndex;
         }
 
-        public int GetDefalutRewardIndex()
+        public string GetDefalutRewardIndex()
         {
             return _defalutRewardIndex;
         }

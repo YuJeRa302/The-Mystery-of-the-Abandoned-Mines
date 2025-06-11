@@ -198,7 +198,7 @@ namespace Assets.Source.Game.Scripts
             _enemySpawner.AllEnemyRoomDied += OnRoomCompleted;
             _player.PlayerLevelChanged += OnPlayerLevelChanged;
             _player.PlayerDied += LoseGame;
-            YandexGame.onVisibilityWindowGame += OnVisibilityWindowGame;
+            YG2.onFocusWindowGame += OnVisibilityWindowGame;
         }
 
         private void RemoveListeners()
@@ -221,7 +221,7 @@ namespace Assets.Source.Game.Scripts
                 _player.PlayerDied -= LoseGame;
             }
 
-            YandexGame.onVisibilityWindowGame -= OnVisibilityWindowGame;
+            YG2.onFocusWindowGame -= OnVisibilityWindowGame;
         }
 
         private void AddRoomListener()
@@ -415,9 +415,9 @@ namespace Assets.Source.Game.Scripts
 
         private void OnGameClosed()
         {
+            _temporaryData.SaveProgress(_player, _isWinGame, _isGameInterrupted);
             StartCoroutine(LoadScreenLevel(Menu.LoadAsync(_temporaryData)));
             GameEnded?.Invoke(false);
-            _temporaryData.SaveProgress(_player, _isWinGame, _isGameInterrupted);
         }
 
         private void OnRoomEntering(RoomView room)

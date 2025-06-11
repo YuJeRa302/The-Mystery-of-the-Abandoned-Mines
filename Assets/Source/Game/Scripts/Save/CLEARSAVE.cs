@@ -37,7 +37,8 @@ public class CLEARSAVE : MonoBehaviour
         {
             UnityEngine.PlayerPrefs.DeleteKey(DataKeyLocal);
         }
-        YandexGame.ResetSaveProgress();
-        YandexGame.SaveProgress();
+
+        //YandexGame.ResetSaveProgress();
+        //YandexGame.SaveProgress();
     }
 }

@@ -199,7 +199,7 @@ namespace Assets.Source.Game.Scripts
             _enemySpawner.AllEnemyRoomDied += OnRoomCompleted;
             _player.PlayerLevelChanged += OnPlayerLevelChanged;
             _player.PlayerDied += LoseGame;
-            YandexGame.onVisibilityWindowGame += OnVisibilityWindowGame;
+            YG2.onFocusWindowGame += OnVisibilityWindowGame;
         }
 
         private void RemoveListeners()
@@ -222,7 +222,7 @@ namespace Assets.Source.Game.Scripts
                 _player.PlayerDied -= LoseGame;
             }
 
-            YandexGame.onVisibilityWindowGame -= OnVisibilityWindowGame;
+            YG2.onFocusWindowGame -= OnVisibilityWindowGame;
         }
 
         private void AddRoomListener()

@@ -55,6 +55,9 @@ public class TemporaryData
         Coins += player.Coins;
         UpgradePoints += player.UpgradePoints;
 
+        Debug.Log("Coins !!!!!!!!! - " + Coins);
+        Debug.Log("player.Score !!!!!!!!! - " + player.Score);
+
         CurrentLevelState = new LevelState()
         {
             Id = LevelData.Id,
@@ -63,7 +66,9 @@ public class TemporaryData
             Tier = LevelData.Tier
         };
 
-        if(CurrentLevelState.IsComplete != false)
+        Debug.Log("IsComplete !!!!!!!!! - " + CurrentLevelState.IsComplete);
+
+        if (CurrentLevelState.IsComplete != false)
             UpdateLevelStates(CurrentLevelState);
 
         ChangedData?.Invoke();
@@ -306,7 +311,7 @@ public class TemporaryData
 #if UNITY_EDITOR
         SetCurrentLanguage("ru");
 #else
-        string languageCode = YandexGame.lang;
+        string languageCode = YG2.envir.browserLang;
         SetCurrentLanguage(languageCode);
 #endif
     }

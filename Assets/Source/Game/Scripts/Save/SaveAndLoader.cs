@@ -19,9 +19,8 @@ public class SaveAndLoader : ISaveAndLoadProgress
 
     public bool TryGetGameData(out SavesYG gameInfo)
     {
-        gameInfo = YandexGame.savesData;
-
-        return YandexGame.savesData.isFirstSession;
+        gameInfo = YG2.saves;
+        return YG2.isFirstGameSession;
     }
 
     public void SaveData()
@@ -43,13 +42,13 @@ public class SaveAndLoader : ISaveAndLoadProgress
         Array.Copy(_temporaryData.WeaponStates, newSaveData.DefaultWeaponState, newSaveData.DefaultWeaponState.Length);
         Array.Copy(_temporaryData.LevelStates, newSaveData.DefaultLevelState, newSaveData.DefaultLevelState.Length);
 
-        string oldDataJson = JsonUtility.ToJson(YandexGame.savesData);
+        string oldDataJson = JsonUtility.ToJson(YG2.saves);
         string newDatatJson = JsonUtility.ToJson(newSaveData);
 
         if (oldDataJson != newDatatJson)
         {
-            YandexGame.savesData = newSaveData;
-            YandexGame.SaveProgress();
+            YG2.saves = newSaveData;
+            YG2.SaveProgress();
         }
     }
 }

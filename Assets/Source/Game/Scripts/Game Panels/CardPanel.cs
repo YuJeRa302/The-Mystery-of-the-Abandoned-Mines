@@ -51,10 +51,10 @@ namespace Assets.Source.Game.Scripts
         protected override void OpenRewardAds()
         {
             base.OpenRewardAds();
-            YandexGame.RewVideoShow(_gamePanelsViewModel.GetRerollPointsRewardIndex());
+            YG2.RewardedAdvShow(_gamePanelsViewModel.GetRerollPointsRewardIndex());
         }
 
-        private void OnRewardCallback(int index)
+        private void OnRewardCallback(string index)
         {
             if (index == _gamePanelsViewModel.GetRerollPointsRewardIndex())
                 GamePanelsViewModel.GetRerollPointsReward();
@@ -85,9 +85,9 @@ namespace Assets.Source.Game.Scripts
             _buttonAds.onClick.AddListener(OpenRewardAds);
             GamePanelsViewModel.CardPoolCreated += Fill;
             GamePanelsViewModel.CardPanelOpened += Open;
-            YandexGame.RewardVideoEvent += OnRewardCallback;
-            YandexGame.CloseVideoEvent += OnCloseAdCallback;
-            YandexGame.ErrorVideoEvent += OnErrorCallback;
+            YG2.onRewardAdv += OnRewardCallback;
+            YG2.onCloseRewardedAdv += OnCloseAdCallback;
+            YG2.onErrorRewardedAdv += OnErrorCallback;
         }
 
         private void RemoveListeners()
@@ -97,9 +97,9 @@ namespace Assets.Source.Game.Scripts
             _buttonAds.onClick.RemoveListener(OpenRewardAds);
             GamePanelsViewModel.CardPanelOpened -= Open;
             GamePanelsViewModel.CardPoolCreated -= Fill;
-            YandexGame.RewardVideoEvent -= OnRewardCallback;
-            YandexGame.CloseVideoEvent -= OnCloseAdCallback;
-            YandexGame.ErrorVideoEvent -= OnErrorCallback;
+            YG2.onRewardAdv -= OnRewardCallback;
+            YG2.onCloseRewardedAdv -= OnCloseAdCallback;
+            YG2.onErrorRewardedAdv -= OnErrorCallback;
         }
 
         private void Fill()

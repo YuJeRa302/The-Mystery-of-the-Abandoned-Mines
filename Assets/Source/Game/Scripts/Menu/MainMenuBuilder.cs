@@ -66,8 +66,8 @@ namespace Assets.Source.Game.Scripts
 
         private void InitYandexGameEntities()
         {
-            YandexGame.GameReadyAPI();
-            YandexGame.GameplayStart();
+            YG2.GameReadyAPI();
+            YG2.GameplayStart();
         }
 
         private void CreateMenuEntities() 

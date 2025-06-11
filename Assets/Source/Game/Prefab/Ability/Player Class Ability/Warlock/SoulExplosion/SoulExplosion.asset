@@ -25,7 +25,7 @@ MonoBehaviour:
     Cost: 2500
     Value: 0
   - CurrentLevel: 0
-    Cost: 5000
+    Cost: 5500
     Value: 0
   _parameters:
   - CardParameters:
@@ -60,7 +60,7 @@ MonoBehaviour:
     _typeDamage: 4
     _damage: 40
     _damageParameters:
-    - _value: 6
+    - _value: 2
       _typeDamageParameter: 2
     _particle: {fileID: 0}
   _spell: {fileID: 1654424239186438959, guid: 081f8bf11483ab544842add8457b3c62, type: 3}

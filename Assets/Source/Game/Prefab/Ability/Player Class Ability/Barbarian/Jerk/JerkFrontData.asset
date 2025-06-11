@@ -18,11 +18,14 @@ MonoBehaviour:
   _description: JerkFrontDescription
   _buttonView: {fileID: 7547704264931708372, guid: 226be77f080a72f41b3a154b64b3d4ae, type: 3}
   _abilityClassParameters:
-  - Cost: 1000
+  - CurrentLevel: 0
+    Cost: 1000
     Value: 0
-  - Cost: 2500
+  - CurrentLevel: 0
+    Cost: 2500
     Value: 0
-  - Cost: 5000
+  - CurrentLevel: 0
+    Cost: 5000
     Value: 0
   _parameters:
   - CardParameters:
@@ -30,7 +33,7 @@ MonoBehaviour:
       TypeParameter: 11
     - Value: 9
       TypeParameter: 6
-    - Value: 4
+    - Value: 3
       TypeParameter: 4
     - Value: 2
       TypeParameter: 5
@@ -39,7 +42,7 @@ MonoBehaviour:
       TypeParameter: 11
     - Value: 8
       TypeParameter: 6
-    - Value: 4
+    - Value: 3
       TypeParameter: 4
     - Value: 2
       TypeParameter: 5
@@ -48,14 +51,14 @@ MonoBehaviour:
       TypeParameter: 11
     - Value: 6
       TypeParameter: 6
-    - Value: 5
+    - Value: 3
       TypeParameter: 4
     - Value: 2
       TypeParameter: 5
   _abilityType: 9
   _damageParametr:
     _typeDamage: 4
-    _damage: 0
+    _damage: 10
     _damageParameters:
     - _value: 1
       _typeDamageParameter: 2

@@ -40,7 +40,6 @@ namespace Assets.Source.Game.Scripts
             _audioPlayer = audioPlayer;
             _player.PlayerDied += OnPlayerDead;
             _currentTier = tier;
-            Debug.Log(tier);
         }
 
         public void Dispose()

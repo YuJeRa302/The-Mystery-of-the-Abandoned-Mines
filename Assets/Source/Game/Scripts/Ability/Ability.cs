@@ -146,6 +146,7 @@ namespace Assets.Source.Game.Scripts
             _defaultCooldown -= abilityCooldownReduction;
             _defaultDuration += abilityDuration;
             _currentAbilityValue += abilityDamage;
+            ApplyDamageSource();
         }
 
         private void FillAbilityParameters(AbilityAttributeData abilityAttributeData, int currentLevel)
@@ -163,8 +164,8 @@ namespace Assets.Source.Game.Scripts
             if (abilityAttributeData as AttackAbilityData)
                 _damageSource = (abilityAttributeData as AttackAbilityData).DamageSource;
 
-            if (_damageSource != null)
-                ApplyDamageSource();
+            //if (_damageSource != null)
+            //    ApplyDamageSource();
         }
 
         private void FillLegendaryAbilityParameters(LegendaryAbilityData legendaryAbilityData)
@@ -181,8 +182,8 @@ namespace Assets.Source.Game.Scripts
 
             _damageSource = legendaryAbilityData.DamageParametr;
 
-            if (_damageSource != null)
-                ApplyDamageSource();
+            //if (_damageSource != null)
+            //    ApplyDamageSource();
         }
 
         private void FillClassSkillParametr(ClassAbilityData abilityAttributeData, int currentLevel)

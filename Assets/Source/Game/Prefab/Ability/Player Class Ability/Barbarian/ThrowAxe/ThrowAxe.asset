@@ -18,11 +18,14 @@ MonoBehaviour:
   _description: ThrowAxeDescription
   _buttonView: {fileID: 7547704264931708372, guid: 226be77f080a72f41b3a154b64b3d4ae, type: 3}
   _abilityClassParameters:
-  - Cost: 1000
+  - CurrentLevel: 0
+    Cost: 1000
     Value: 0
-  - Cost: 2500
+  - CurrentLevel: 0
+    Cost: 3000
     Value: 0
-  - Cost: 5000
+  - CurrentLevel: 0
+    Cost: 7000
     Value: 0
   _parameters:
   - CardParameters:
@@ -43,8 +46,7 @@ MonoBehaviour:
   _abilityType: 8
   _damageParametr:
     _typeDamage: 0
-    _damageSupportivePatametrs:
-    - _value: 0
-      _supportivePatametr: 0
+    _damage: 0
+    _damageParameters: []
     _particle: {fileID: 0}
   _axemMssile: {fileID: 943455661545071742, guid: 2b72f1a7a98694a47b2b0e7e19d8a7d2, type: 3}

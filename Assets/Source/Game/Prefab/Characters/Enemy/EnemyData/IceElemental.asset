@@ -15,13 +15,13 @@ MonoBehaviour:
   _id: 6
   _level: 0
   _enemyStats:
-  - _damage: 16
-    _health: 16
+  - _damage: 15
+    _health: 15
     _experienceReward: 35
     _upgradeExperienceReward: 25
     _score: 25
     _delaySpawn: 2
-    _enemyCount: 2
+    _enemyCount: 1
     _moveSpeed: 2
     _attackDistance: 15
     _attackDelay: 3

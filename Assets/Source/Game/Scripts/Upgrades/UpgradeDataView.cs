@@ -11,7 +11,6 @@ namespace Assets.Source.Game.Scripts
 
         [SerializeField] private Image _iconStats;
         [SerializeField] private Image[] _upgradeImages;
-        [SerializeField] private Sprite _defaultSprite;
         [SerializeField] private Sprite _upgradeSprite;
         [SerializeField] private Button _button;
 

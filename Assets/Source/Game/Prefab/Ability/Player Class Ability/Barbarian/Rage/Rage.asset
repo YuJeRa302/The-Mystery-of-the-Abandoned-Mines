@@ -18,11 +18,14 @@ MonoBehaviour:
   _description: RageDescription
   _buttonView: {fileID: 7547704264931708372, guid: 226be77f080a72f41b3a154b64b3d4ae, type: 3}
   _abilityClassParameters:
-  - Cost: 1000
+  - CurrentLevel: 0
+    Cost: 1000
     Value: 0
-  - Cost: 1500
+  - CurrentLevel: 0
+    Cost: 2500
     Value: 0
-  - Cost: 5000
+  - CurrentLevel: 0
+    Cost: 5500
     Value: 0
   _parameters:
   - CardParameters:
@@ -61,6 +64,7 @@ MonoBehaviour:
   _abilityType: 10
   _damageParametr:
     _typeDamage: 0
-    _damageSupportivePatametrs: []
+    _damage: 0
+    _damageParameters: []
     _particle: {fileID: 0}
   _rageEffect: {fileID: 1869056104995865337, guid: 12aa6d89f37fe0b41ab0da8adc26824b, type: 3}

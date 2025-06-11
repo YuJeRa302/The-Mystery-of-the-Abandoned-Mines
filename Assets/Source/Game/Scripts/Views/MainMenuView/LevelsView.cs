@@ -9,7 +9,7 @@ namespace Assets.Source.Game.Scripts
 {
     public class LevelsView : MonoBehaviour
     {
-        private readonly int _indexUnlockContractButton = 2;
+        private readonly int _indexUnlockContractButton = 1;
         private readonly string _chooseLevelType = "LevelType";
         private readonly string _chooseLevel = "ChooseLevel";
         private readonly string _choosePlayerClass = "ChoosePlayerClass";
@@ -55,6 +55,10 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private Button _nextButton;
         [SerializeField] private Button _buyButton;
         [SerializeField] private Button _cancelButton;
+        [Space(20)]
+        [SerializeField] private LeanLocalizedText _descriptionContract;
+        [SerializeField] private string _keyLockContract;
+        [SerializeField] private string _keyUnLockContract;
 
         private bool _isContractLevel = false;
         private LevelDataView _currentLevelDataView;
@@ -79,7 +83,8 @@ namespace Assets.Source.Game.Scripts
         {
             _levelsViewModel = levelsViewModel;
             _audioPlayerService = audioPlayerService;
-            _contractButton.interactable = _levelsViewModel.TryUnlockContractButton(_indexUnlockContractButton);
+            // _contractButton.interactable = _levelsViewModel.TryUnlockContractButton(_indexUnlockContractButton);
+            SetInteractableContract();
             AddListener();
             SortWeaponsByTier();
             SortContractsByTier();
@@ -108,6 +113,17 @@ namespace Assets.Source.Game.Scripts
             _contractButton.onClick.RemoveListener(ShowContractLevels);
             _defaultLevelButton.onClick.RemoveListener(ShowDefaultLevels);
             _nextButton.onClick.RemoveListener(OnNextButtonClicked);
+        }
+
+        private void SetInteractableContract()
+        {
+            _contractButton.interactable = _levelsViewModel.TryUnlockContractButton(_indexUnlockContractButton);
+
+            if (_contractButton.interactable)
+                _descriptionContract.TranslationName = _keyUnLockContract;
+            else
+                _descriptionContract.TranslationName = _keyLockContract;
+
         }
 
         private void CreateContractLevels()

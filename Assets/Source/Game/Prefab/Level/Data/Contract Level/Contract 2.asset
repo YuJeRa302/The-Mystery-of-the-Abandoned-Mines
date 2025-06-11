@@ -22,7 +22,7 @@ MonoBehaviour:
   - {r: 1, g: 0.22745098, b: 0.14509805, a: 0}
   _countStages: 7
   _countRooms: 3
-  _cost: 5000
+  _cost: 6500
   _isContractLevel: 1
   _translationName: Lair
   _translationDescription: LairDescription

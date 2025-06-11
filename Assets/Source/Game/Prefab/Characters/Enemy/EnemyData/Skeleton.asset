@@ -15,8 +15,8 @@ MonoBehaviour:
   _id: 12
   _level: 0
   _enemyStats:
-  - _damage: 12
-    _health: 17
+  - _damage: 10
+    _health: 15
     _experienceReward: 25
     _upgradeExperienceReward: 25
     _score: 20
@@ -33,7 +33,7 @@ MonoBehaviour:
     _upgradeExperienceReward: 20
     _score: 20
     _delaySpawn: 0.5
-    _enemyCount: 5
+    _enemyCount: 6
     _moveSpeed: 2.22
     _attackDistance: 3
     _attackDelay: 2

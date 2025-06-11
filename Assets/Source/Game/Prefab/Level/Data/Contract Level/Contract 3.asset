@@ -22,7 +22,7 @@ MonoBehaviour:
   - {r: 1, g: 0.22745098, b: 0.14509805, a: 0}
   _countStages: 9
   _countRooms: 4
-  _cost: 8000
+  _cost: 10000
   _isContractLevel: 1
   _translationName: Malice
   _translationDescription: MaliceDesciption

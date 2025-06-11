@@ -27,12 +27,19 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private List<PlayerClassData> _playerClassDatas;
         [Space(20)]
         [SerializeField] private Button _backButton;
+        [Space(20)]
+        [SerializeField] private GameObject _parametrPanel;
 
         private List<WeaponStatsView> _weaponStatsViews = new ();
         private List<PlayerClassDataView> _playerClassDataViews = new ();
         private List<WeaponDataView> _weaponDataViews = new ();
         private WeaponsViewModel _weaponsViewModel;
         private IAudioPlayerService _audioPlayerService;
+
+        private void OnEnable()
+        {
+            _parametrPanel.SetActive(false);
+        }
 
         private void OnDestroy()
         {
@@ -44,6 +51,7 @@ namespace Assets.Source.Game.Scripts
         {
             _weaponsViewModel = weaponsViewModel;
             _audioPlayerService = audioPlayerService;
+            _parametrPanel.SetActive(false);
             gameObject.SetActive(false);
             _weaponsViewModel.InvokedShow += Show;
             _backButton.onClick.AddListener(OnBackButtonClicked);
@@ -135,6 +143,7 @@ namespace Assets.Source.Game.Scripts
 
         private void OnWeaponSelected(WeaponDataView weaponDataView)
         {
+            _parametrPanel.SetActive(true);
             ClearWeaponStats();
             _nameWeapon.TranslationName = weaponDataView.WeaponData.TranslationName;
             _weaponImage.sprite = weaponDataView.WeaponData.Icon;

@@ -328,6 +328,7 @@ public class TemporaryData
         SetUpgradeState(configData.UpgradeStates);
         _levelStates = configData.DefaultLevelState;
         _weaponStates = configData.DefaultWeaponState;
+        _playerScore = 0;
         ChangedData?.Invoke();
     }
 
@@ -343,6 +344,7 @@ public class TemporaryData
         SetUpgradeState(savesYG.UpgradeStates);
         _levelStates = savesYG.DefaultLevelState;
         _weaponStates = savesYG.DefaultWeaponState;
+        _playerScore = savesYG.Score;
         ChangedData?.Invoke();
     }
 }

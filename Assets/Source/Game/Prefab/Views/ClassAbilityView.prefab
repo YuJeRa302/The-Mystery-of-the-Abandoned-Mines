@@ -466,6 +466,8 @@ GameObject:
   - component: {fileID: 7566623655709067011}
   - component: {fileID: 3404463971586925260}
   - component: {fileID: 6360322611065278402}
+  - component: {fileID: 3440477311015817245}
+  - component: {fileID: 7806795475631801773}
   m_Layer: 5
   m_Name: ClassAbilityView
   m_TagString: Untagged
@@ -595,9 +597,38 @@ MonoBehaviour:
   - {fileID: 2922838888371553560}
   - {fileID: 5550224642159755494}
   - {fileID: 8987162158564587723}
-  _defaultSprite: {fileID: -802667296, guid: 1cbdf543752020f45b7cedcd93cd1a97, type: 3}
   _upgradeSprite: {fileID: -802667296, guid: 1cbdf543752020f45b7cedcd93cd1a97, type: 3}
   _button: {fileID: 3404463971586925260}
+--- !u!114 &3440477311015817245
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6732221333993476639}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 1}
+  m_EffectDistance: {x: 1, y: -1}
+  m_UseGraphicAlpha: 1
+--- !u!114 &7806795475631801773
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6732221333993476639}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 1}
+  m_EffectDistance: {x: 4, y: -2}
+  m_UseGraphicAlpha: 1
 --- !u!1 &9119309871423301070
 GameObject:
   m_ObjectHideFlags: 0

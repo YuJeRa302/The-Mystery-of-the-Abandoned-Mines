@@ -15,6 +15,7 @@ namespace YG
         public WeaponState[] DefaultWeaponState;
         public LevelState[] DefaultLevelState;
         public int UpgradePoints;
+        public int Score;
 
         public SavesYG()
         {

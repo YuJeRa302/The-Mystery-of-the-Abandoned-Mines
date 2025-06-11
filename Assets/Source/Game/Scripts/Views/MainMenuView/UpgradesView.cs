@@ -36,6 +36,8 @@ public class UpgradesView : MonoBehaviour
     [SerializeField] private Button _upgradeButton;
     [SerializeField] private Button _resetButton;
     [SerializeField] private Button _closeButton;
+    [Space(20)]
+    [SerializeField] private GameObject _parametrPanel;
 
     private List<UpgradeDataView> _upgradeDataViews = new();
     private UpgradeViewModel _upgradeViewModel;
@@ -57,6 +59,11 @@ public class UpgradesView : MonoBehaviour
             StopCoroutine(_coroutine);
     }
 
+    private void OnDisable()
+    {
+        _parametrPanel.SetActive(false);
+    }
+
     public void Initialize(UpgradeViewModel upgradeViewModel, IAudioPlayerService audioPlayerService)
     {
         _audioPlayerService = audioPlayerService;
@@ -68,6 +75,7 @@ public class UpgradesView : MonoBehaviour
         _namePanel.TranslationName = _upgradeNameText;
         _resetButtonText.TranslationName = _buttonResetText;
         AddListener();
+        _parametrPanel.SetActive(false);
         gameObject.SetActive(false);
     }
 
@@ -99,7 +107,6 @@ public class UpgradesView : MonoBehaviour
             view.Initialize(upgradeData, upgradeState, _upgradeViewModel, _audioPlayerService);
             view.StatsSelected += OnStatsSelected;
         }
-        Debug.Log("Fill");
     }
 
     private void Clear()
@@ -128,6 +135,7 @@ public class UpgradesView : MonoBehaviour
             }
         }
 
+        _parametrPanel.SetActive(false);
         _upgradeViewModel.ResetUpgrades(currentUpgradePoints);
         _countUpgradePoints.text = _upgradeViewModel.GetUpgradePoints().ToString();
         Clear();
@@ -143,6 +151,7 @@ public class UpgradesView : MonoBehaviour
 
     private void OnStatsSelected(UpgradeDataView upgradeDataView)
     {
+        _parametrPanel.SetActive(true);
         _statsImage.sprite = upgradeDataView.UpgradeData.Icon;
         _nameStats.TranslationName = upgradeDataView.UpgradeData.Name;
         _description.TranslationName = upgradeDataView.UpgradeData.Description;

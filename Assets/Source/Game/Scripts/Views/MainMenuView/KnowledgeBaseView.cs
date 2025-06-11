@@ -15,6 +15,9 @@ public class KnowledgeBaseView : MonoBehaviour
     [Space(20)]
     [SerializeField] private SubcategoriesButtonView _subcategoriesButtonViewPrefab;
     [SerializeField] private KnowledgeBaseData _baseData;
+    [Space(20)]
+    [SerializeField] private GameObject _buttonSubCategories;
+    [SerializeField] private GameObject _infoPanel;
 
     private List<SubcategoriesButtonView> _subcategoriesButtonViews = new List<SubcategoriesButtonView>();
     private List<KnowladgeView> _knowladgeViews = new List<KnowladgeView>();
@@ -22,11 +25,25 @@ public class KnowledgeBaseView : MonoBehaviour
     private KnowledgeBaseViewModel _knowledgeBaseViewModel;
     private IAudioPlayerService _audioPlayerService;
 
+    private void OnDisable()
+    {
+        _buttonSubCategories.SetActive(false);
+        _infoPanel.SetActive(false);
+    }
+
+    private void OnDestroy()
+    {
+        RemoveListener();
+        _knowledgeBaseViewModel.Dispose();
+    }
+
     public void Initialize(KnowledgeBaseViewModel knowledgeBaseViewModel, IAudioPlayerService audioPlayerService)
     {
         _knowledgeBaseViewModel = knowledgeBaseViewModel;
         _audioPlayerService = audioPlayerService;
         AddListener();
+        _buttonSubCategories.SetActive(false);
+        _infoPanel.SetActive(false);
         gameObject.SetActive(false);
     }
 
@@ -39,9 +56,20 @@ public class KnowledgeBaseView : MonoBehaviour
         _closeButton.onClick.AddListener(OnExitButtonClicked);
     }
 
+    private void RemoveListener()
+    {
+        _knowledgeBaseViewModel.InvokedShow -= Show;
+        _playerInfo.onClick.RemoveListener(() => ShowCatigories(_baseData.PlayerSubcategoriesViews));
+        _gameInfo.onClick.RemoveListener(() => ShowCatigories(_baseData.GameSubcategoriesViews));
+        _enemyInfo.onClick.RemoveListener(() => ShowCatigories(_baseData.EnemySubcategoriesViews));
+        _closeButton.onClick.RemoveListener(OnExitButtonClicked);
+    }
+
     private void ShowCatigories(List<SubcategoriesView> subcategories)
     {
         Clear();
+        _buttonSubCategories.SetActive(true);
+        _infoPanel.SetActive(false);
 
         SubcategoriesButtonView subcategoriesButtonView;
 
@@ -57,6 +85,7 @@ public class KnowledgeBaseView : MonoBehaviour
     private void ShowKnowledgeCategory(KnowledgeData knowledgeData)
     {
         ClearInfoConteiner();
+        _infoPanel.SetActive(true);
         knowledgeData.GetView(_knowInfoConteiner, out List<KnowladgeView> knowView);
         _knowladgeViews = knowView;
     }

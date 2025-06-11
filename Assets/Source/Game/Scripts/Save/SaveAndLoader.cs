@@ -36,7 +36,8 @@ public class SaveAndLoader : ISaveAndLoadProgress
             UpgradeStates = new System.Collections.Generic.List<UpgradeState>(_temporaryData.UpgradeStates),
             ClassAbilityStates = new System.Collections.Generic.List<ClassAbilityState>(_temporaryData.ClassAbilityStates),
             DefaultWeaponState = new WeaponState[_temporaryData.WeaponStates.Length],
-            DefaultLevelState = new LevelState[_temporaryData.LevelStates.Length]
+            DefaultLevelState = new LevelState[_temporaryData.LevelStates.Length],
+            Score = _temporaryData.PlayerScore
         };
 
         Array.Copy(_temporaryData.WeaponStates, newSaveData.DefaultWeaponState, newSaveData.DefaultWeaponState.Length);

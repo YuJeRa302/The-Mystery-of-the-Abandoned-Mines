@@ -36,12 +36,20 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private Button _backButton;
         [SerializeField] private Button _upgradeButton;
         [SerializeField] private Button _resetButton;
+        [Space(20)]
+        [SerializeField] private GameObject _parameterPanel;
+        [SerializeField] private GameObject _descriptionPanel;
 
         private List<PlayerClassDataView> _playerClassDataViews = new();
         private List<ClassAbilityDataView> _classAbilityDataViews = new();
         private List<ClassAbilityStatsView> _classAbilityStatsViews = new();
         private ClassAbilityViewModel _classAbilityViewModel;
         private IAudioPlayerService _audioPlayerService;
+
+        private void OnDisable()
+        {
+            SetActiveSubPanel(false);
+        }
 
         private void OnDestroy()
         {
@@ -59,6 +67,7 @@ namespace Assets.Source.Game.Scripts
             _namePanel.TranslationName = _upgradeNameText;
             _resetButtonText.TranslationName = _buttonResetText;
             AddListener();
+            SetActiveSubPanel(false);
             gameObject.SetActive(false);
         }
 
@@ -163,6 +172,8 @@ namespace Assets.Source.Game.Scripts
 
         private void OnAbilitySelected(ClassAbilityDataView classAbilityDataView)
         {
+            SetActiveSubPanel(true);
+
             _abilityImage.sprite = classAbilityDataView.ClassAbilityData.Icon;
             _nameAbility.TranslationName = classAbilityDataView.ClassAbilityData.Name;
             _description.TranslationName = classAbilityDataView.ClassAbilityData.Description;
@@ -282,6 +293,12 @@ namespace Assets.Source.Game.Scripts
             ClearClass();
             _abilityImage.sprite = _defaultSprite;
             _classAbilityViewModel.Hide();
+        }
+
+        private void SetActiveSubPanel(bool isActive)
+        {
+            _descriptionPanel.SetActive(isActive);
+            _parameterPanel.SetActive(isActive);
         }
     }
 }

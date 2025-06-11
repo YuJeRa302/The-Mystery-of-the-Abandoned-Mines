@@ -238,6 +238,8 @@ GameObject:
   - component: {fileID: 4142521707673715814}
   - component: {fileID: 239940771038940697}
   - component: {fileID: 4575521317633889204}
+  - component: {fileID: 3662342404072879753}
+  - component: {fileID: 7433988477508450242}
   m_Layer: 5
   m_Name: UpgradeView
   m_TagString: Untagged
@@ -367,9 +369,38 @@ MonoBehaviour:
   - {fileID: 4656389227963689035}
   - {fileID: 7087617792312448699}
   - {fileID: 173439928498871791}
-  _defaultSprite: {fileID: 21300000, guid: 010a6e5305fa7004f89c5d317b7b47d4, type: 3}
   _upgradeSprite: {fileID: -802667296, guid: 1cbdf543752020f45b7cedcd93cd1a97, type: 3}
   _button: {fileID: 239940771038940697}
+--- !u!114 &3662342404072879753
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4406511787531454752}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 1}
+  m_EffectDistance: {x: 1, y: -1}
+  m_UseGraphicAlpha: 1
+--- !u!114 &7433988477508450242
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4406511787531454752}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 1}
+  m_EffectDistance: {x: 4, y: -2}
+  m_UseGraphicAlpha: 1
 --- !u!1 &6101824378481618405
 GameObject:
   m_ObjectHideFlags: 0

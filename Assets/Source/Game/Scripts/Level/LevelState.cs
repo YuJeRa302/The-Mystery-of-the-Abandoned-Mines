@@ -6,6 +6,6 @@ namespace Assets.Source.Game.Scripts
         public int Id;
         public bool IsComplete;
         public int CurrentCompleteStages;
-        public int Tire;
+        public int Tier;
     }
 }

@@ -20,10 +20,10 @@ public class EnemyKnowladgeView : KnowladgeView
         _description.TranslationName = enemyData.Descroption;
 
         InstantieteEnemyStats(nameof(EnemyStats.Damage), enemyData.EnemyStats[_maxTireIndex].Damage.ToString());
-        InstantieteEnemyStats(nameof(EnemyStats.Health), enemyData.EnemyStats[_maxTireIndex].ToString());
-        InstantieteEnemyStats(nameof(EnemyStats.GoldReward), enemyData.EnemyStats[_maxTireIndex].ToString());
-        InstantieteEnemyStats(nameof(EnemyStats.ExperienceReward), enemyData.EnemyStats[_maxTireIndex].ToString());
-        InstantieteEnemyStats(nameof(EnemyStats.ChanceSpawn), enemyData.EnemyStats[_maxTireIndex].ToString());
+        InstantieteEnemyStats(nameof(EnemyStats.Health), enemyData.EnemyStats[_maxTireIndex].Health.ToString());
+        InstantieteEnemyStats(nameof(EnemyStats.GoldReward), enemyData.EnemyStats[_maxTireIndex].GoldReward.ToString());
+        InstantieteEnemyStats(nameof(EnemyStats.ExperienceReward), enemyData.EnemyStats[_maxTireIndex].ExperienceReward.ToString());
+        InstantieteEnemyStats(nameof(EnemyStats.ChanceSpawn), enemyData.EnemyStats[_maxTireIndex].ChanceSpawn.ToString());
     }
 
     private void InstantieteEnemyStats(string nameStats, string value)

@@ -47,12 +47,10 @@ public class TemporaryData
 
     public void SaveProgress(Player player, bool IsComplete, bool isGameInterrupted)
     {
-        Debug.Log("SaveProgress (isGameInterrupted)" + isGameInterrupted);
-
+        Debug.Log($"complite - {IsComplete}/n interruped - {isGameInterrupted}");
         if (isGameInterrupted)
             return;
-
-
+        Debug.Log(player.Score);
         _playerScore += player.Score;
         Coins += player.Coins;
         UpgradePoints += player.UpgradePoints;
@@ -64,7 +62,8 @@ public class TemporaryData
         {
             Id = LevelData.Id,
             IsComplete = IsComplete,
-            CurrentCompleteStages = LevelData.CountStages
+            CurrentCompleteStages = LevelData.CountStages,
+            Tier = LevelData.Tier
         };
 
         Debug.Log("IsComplete !!!!!!!!! - " + CurrentLevelState.IsComplete);
@@ -200,7 +199,7 @@ public class TemporaryData
                     Id = state.Id,
                     IsComplete = state.IsComplete,
                     CurrentCompleteStages = state.CurrentCompleteStages,
-                    Tire = state.Tire
+                    Tier = state.Tier
                 };
             }
         }

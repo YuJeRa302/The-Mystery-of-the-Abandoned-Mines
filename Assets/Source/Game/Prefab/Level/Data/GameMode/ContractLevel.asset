@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: ContractLevel
   m_EditorClassIdentifier: 
   _icon: {fileID: 21300000, guid: c6cd13650d0afd74f8e9bde6d962184e, type: 3}
-  _name: Levels
+  _name: Contracts
   _description: DescriptionsContractsKB
   _access: AccessContract

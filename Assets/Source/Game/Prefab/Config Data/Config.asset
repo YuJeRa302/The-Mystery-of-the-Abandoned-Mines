@@ -62,15 +62,20 @@ MonoBehaviour:
   - Id: 0
     IsComplete: 0
     CurrentCompleteStages: 0
+    Tier: 0
   - Id: 1
     IsComplete: 0
     CurrentCompleteStages: 0
+    Tier: 1
   - Id: 2
     IsComplete: 0
     CurrentCompleteStages: 0
+    Tier: 2
   - Id: 3
     IsComplete: 0
     CurrentCompleteStages: 0
+    Tier: 3
   - Id: 4
     IsComplete: 0
     CurrentCompleteStages: 0
+    Tier: 4

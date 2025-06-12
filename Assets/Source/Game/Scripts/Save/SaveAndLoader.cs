@@ -20,7 +20,7 @@ public class SaveAndLoader : ISaveAndLoadProgress
     public bool TryGetGameData(out SavesYG gameInfo)
     {
         gameInfo = YG2.saves;
-        return YG2.isFirstGameSession;
+        return YG2.saves.HasSave;
     }
 
     public void SaveData()
@@ -37,7 +37,8 @@ public class SaveAndLoader : ISaveAndLoadProgress
             ClassAbilityStates = new System.Collections.Generic.List<ClassAbilityState>(_temporaryData.ClassAbilityStates),
             DefaultWeaponState = new WeaponState[_temporaryData.WeaponStates.Length],
             DefaultLevelState = new LevelState[_temporaryData.LevelStates.Length],
-            Score = _temporaryData.PlayerScore
+            Score = _temporaryData.PlayerScore,
+            HasSave = true
         };
 
         Array.Copy(_temporaryData.WeaponStates, newSaveData.DefaultWeaponState, newSaveData.DefaultWeaponState.Length);
@@ -50,6 +51,7 @@ public class SaveAndLoader : ISaveAndLoadProgress
         {
             YG2.saves = newSaveData;
             YG2.SaveProgress();
+            Debug.Log(YG2.saves.Score);
         }
     }
 }

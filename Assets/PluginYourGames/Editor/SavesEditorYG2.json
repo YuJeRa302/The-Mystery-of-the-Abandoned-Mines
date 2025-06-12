@@ -123,5 +123,6 @@
         }
     ],
     "UpgradePoints": 3,
-    "Score": 0
+    "Score": 0,
+    "HasSave": true
 }

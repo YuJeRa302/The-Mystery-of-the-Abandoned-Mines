@@ -43,7 +43,6 @@ namespace Assets.Source.Game.Scripts
             Time.timeScale = _resumeValue;
             _temporaryData = temporaryData;
             Build();
-            Debug.Log("Initialize Game");
         }
 
         private void Build()
@@ -54,9 +53,15 @@ namespace Assets.Source.Game.Scripts
             if (_temporaryData == null)
             {
                 if(_saveAndLoad.TryGetGameData(out SavesYG gameInfo))
-                    _temporaryData = new TemporaryData(gameInfo);
+                {
+                    _temporaryData = new TemporaryData(YG2.saves);
+                    Debug.Log("Second");
+                }
                 else
+                {
+                    Debug.Log("First");
                     _temporaryData = new TemporaryData(_configData);
+                }
             }
 
             CreateMenuEntities();

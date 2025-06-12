@@ -16,6 +16,7 @@ namespace YG
         public LevelState[] DefaultLevelState;
         public int UpgradePoints;
         public int Score;
+        public bool HasSave = false;
 
         public SavesYG()
         {

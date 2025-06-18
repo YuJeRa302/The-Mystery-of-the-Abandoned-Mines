@@ -15,7 +15,7 @@ MonoBehaviour:
   _id: 5
   _level: 0
   _enemyStats:
-  - _damage: 15
+  - _damage: 12
     _health: 15
     _experienceReward: 30
     _upgradeExperienceReward: 10

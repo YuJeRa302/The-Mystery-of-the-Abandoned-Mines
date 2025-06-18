@@ -39,6 +39,7 @@ public class PlayerMovement : IDisposable
         if (YG2.envir.isDesktop)
         {
             CreateInputSystem();
+            variableJoystick.gameObject.SetActive(false);
             _move = _playerInputSystem.Player.Move;
             _movement = _coroutineRunner.StartCoroutine(DesktopMove());
         }

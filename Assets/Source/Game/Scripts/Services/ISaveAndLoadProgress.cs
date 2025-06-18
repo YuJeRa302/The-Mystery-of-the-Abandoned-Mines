@@ -2,6 +2,6 @@ using YG;
 
 public interface ISaveAndLoadProgress
 {
-    bool TryGetGameData(out SavesYG gameInfo);
+    bool TryGetGameData();
     void SaveData();
 }

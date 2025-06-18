@@ -52,7 +52,7 @@ namespace Assets.Source.Game.Scripts
 
             if (_temporaryData == null)
             {
-                if(_saveAndLoad.TryGetGameData(out SavesYG gameInfo))
+                if(_saveAndLoad.TryGetGameData())
                 {
                     _temporaryData = new TemporaryData(YG2.saves);
                     Debug.Log("Second");

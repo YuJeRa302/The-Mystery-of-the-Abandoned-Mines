@@ -8,7 +8,7 @@
         false
     ],
     "idSave": 1,
-    "Coins": 3000,
+    "Coins": 279000,
     "AmbientVolume": 40.0,
     "SfxVolumeVolume": 40.0,
     "IsMuted": false,
@@ -58,15 +58,15 @@
         },
         {
             "Id": 9,
-            "CurrentLevel": 0
+            "CurrentLevel": 3
         },
         {
             "Id": 15,
-            "CurrentLevel": 0
+            "CurrentLevel": 3
         },
         {
             "Id": 16,
-            "CurrentLevel": 0
+            "CurrentLevel": 1
         },
         {
             "Id": 17,
@@ -93,31 +93,31 @@
     "DefaultLevelState": [
         {
             "Id": 0,
-            "IsComplete": false,
+            "IsComplete": true,
             "CurrentCompleteStages": 0,
             "Tier": 0
         },
         {
             "Id": 1,
-            "IsComplete": false,
+            "IsComplete": true,
             "CurrentCompleteStages": 0,
             "Tier": 1
         },
         {
             "Id": 2,
-            "IsComplete": false,
+            "IsComplete": true,
             "CurrentCompleteStages": 0,
             "Tier": 2
         },
         {
             "Id": 3,
-            "IsComplete": false,
+            "IsComplete": true,
             "CurrentCompleteStages": 0,
             "Tier": 3
         },
         {
             "Id": 4,
-            "IsComplete": false,
+            "IsComplete": true,
             "CurrentCompleteStages": 0,
             "Tier": 4
         }

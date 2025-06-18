@@ -15,7 +15,7 @@ MonoBehaviour:
   _id: 10
   _level: 0
   _enemyStats:
-  - _damage: 20
+  - _damage: 15
     _health: 45
     _experienceReward: 30
     _upgradeExperienceReward: 30
@@ -27,7 +27,7 @@ MonoBehaviour:
     _attackDelay: 2
     _chanceSpawn: 30
     _goldReward: 90
-  - _damage: 25
+  - _damage: 20
     _health: 50
     _experienceReward: 30
     _upgradeExperienceReward: 30
@@ -51,7 +51,7 @@ MonoBehaviour:
     _attackDelay: 2
     _chanceSpawn: 30
     _goldReward: 90
-  - _damage: 30
+  - _damage: 25
     _health: 55
     _experienceReward: 30
     _upgradeExperienceReward: 30

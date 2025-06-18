@@ -17,9 +17,8 @@ public class SaveAndLoader : ISaveAndLoadProgress
         _temporaryData.ChangedData += SaveData;
     }
 
-    public bool TryGetGameData(out SavesYG gameInfo)
+    public bool TryGetGameData()
     {
-        gameInfo = YG2.saves;
         return YG2.saves.HasSave;
     }
 

@@ -18,7 +18,7 @@ namespace Assets.Source.Game.Scripts
         private readonly float _longSearchRadius = 10f;
 
         private int _maxPlayerLevel = 100;//
-        private int _maxUpgradeLevel = 5;//
+        private int _maxUpgradeLevel = 50;//
 
         private DamageSource _damageSource;
         private float _moveSpeed;

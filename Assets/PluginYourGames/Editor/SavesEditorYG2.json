@@ -12,7 +12,6 @@
     "AmbientVolume": 40.0,
     "SfxVolumeVolume": 40.0,
     "IsMuted": false,
-    "DefaultLanguage": "ru",
     "UpgradeStates": [
         {
             "Id": 1,

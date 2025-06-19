@@ -9,7 +9,7 @@ namespace YG
         public float AmbientVolume;
         public float SfxVolumeVolume;
         public bool IsMuted;
-        public string DefaultLanguage;
+        //public string DefaultLanguage;
         public List<UpgradeState> UpgradeStates;
         public List<ClassAbilityState> ClassAbilityStates;
         public WeaponState[] DefaultWeaponState;

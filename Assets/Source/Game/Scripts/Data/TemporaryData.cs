@@ -336,7 +336,8 @@ public class TemporaryData
     {
         SetAmbientVolume(savesYG.AmbientVolume);
         SetInterfaceVolume(savesYG.SfxVolumeVolume);
-        SetCurrentLanguage(savesYG.DefaultLanguage);
+        SetLanguage();
+        //SetCurrentLanguage(savesYG.DefaultLanguage);
         SetUpgradePoints(savesYG.UpgradePoints);
         SetMuteStateSound(savesYG.IsMuted);
         SetCoinsCount(savesYG.Coins);

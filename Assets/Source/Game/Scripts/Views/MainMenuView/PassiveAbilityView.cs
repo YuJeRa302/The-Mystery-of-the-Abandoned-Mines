@@ -11,7 +11,7 @@ namespace Assets.Source.Game.Scripts
 
         public void Initialize(PassiveAttributeData passiveAttributeData)
         {
-            TypeMagic = passiveAttributeData.TypeMagic;
+            TypeMagic = passiveAttributeData.MagicType;
             _icon.sprite = passiveAttributeData.Icon;
         }
     }

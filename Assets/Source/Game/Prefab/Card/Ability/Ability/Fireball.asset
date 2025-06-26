@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02f9d96df1d2c444dbca494c7fd95bbc, type: 3}
   m_Name: Fireball
   m_EditorClassIdentifier: 
-  _cardParameterView: {fileID: 1961483584371832456, guid: 6d57f6325ba58d6478a1fd35f1ba2831, type: 3}
+  _parameterView: {fileID: 1961483584371832456, guid: 6d57f6325ba58d6478a1fd35f1ba2831, type: 3}
   _parameters:
   - CardParameters:
     - Value: 4
@@ -38,22 +38,22 @@ MonoBehaviour:
   _name: Fireball
   _description: FireballDescription
   _icon: {fileID: 2020403252, guid: dc2e3af32fff16a4fa28920cc9449371, type: 3}
-  _abilityType: 5
-  _abilityView: {fileID: 7248082733305173889, guid: b41ccdfb932d3874d92c031e66d814ec, type: 3}
-  _particleSystem: {fileID: 19898640, guid: 34ec54daa90d14c43bedb249dd5f7c47, type: 3}
-  _audioClip: {fileID: 8300000, guid: 14b16ff40093aba47bc467e148746cab, type: 3}
-  _typeUpgradeMagic: 2
   _typeMagic: 0
-  _legendaryAbilityData: {fileID: 11400000, guid: 8567e61c92159eb4fbd5aef185c27421, type: 2}
-  _spell: {fileID: 1654424239186438959, guid: 081f8bf11483ab544842add8457b3c62, type: 3}
-  _spellRadius: 2
-  _typeAttackAbility: 1
-  _damageParametr:
+  _abilityView: {fileID: 7248082733305173889, guid: b41ccdfb932d3874d92c031e66d814ec, type: 3}
+  _particle: {fileID: 19898640, guid: 34ec54daa90d14c43bedb249dd5f7c47, type: 3}
+  _audioClip: {fileID: 8300000, guid: 14b16ff40093aba47bc467e148746cab, type: 3}
+  _damage:
     _typeDamage: 2
-    _damage: 8
+    _damage: 0
     _damageParameters:
     - _value: 1
       _typeDamageParameter: 4
     - _value: 2
       _typeDamageParameter: 1
     _particle: {fileID: 1461602671872348846, guid: 0b5e7793d4d1e854385c5ce9b1e79f47, type: 3}
+  _upgradeType: 2
+  _type: 5
+  _typeAttack: 1
+  _spell: {fileID: 1654424239186438959, guid: 081f8bf11483ab544842add8457b3c62, type: 3}
+  _radius: 2
+  _legendaryAbilityData: {fileID: 11400000, guid: 8567e61c92159eb4fbd5aef185c27421, type: 2}

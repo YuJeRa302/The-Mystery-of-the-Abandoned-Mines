@@ -7,6 +7,8 @@ namespace Assets.Source.Game.Scripts
 {
     public class WeaponStatsView : MonoBehaviour
     {
+        private readonly string _damageParametrName = "Damage";
+
         [SerializeField] private LeanLocalizedText _valueLeanLocalizedText;
         [SerializeField] private Text _valueText;
         [SerializeField] private LeanLocalizedText _nameStats;
@@ -29,7 +31,7 @@ namespace Assets.Source.Game.Scripts
             }
             else
             {
-                if (translationName == "Damage")
+                if (translationName == _damageParametrName)
                 {
                     _imagePatametr.sprite = _damageIcon;
                 }

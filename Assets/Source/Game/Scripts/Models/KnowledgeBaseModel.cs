@@ -4,7 +4,6 @@ public class KnowledgeBaseModel : IDisposable
 {
     public KnowledgeBaseModel()
     {
-
     }
 
     public void Dispose()

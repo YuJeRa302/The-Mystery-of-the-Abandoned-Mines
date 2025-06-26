@@ -17,8 +17,8 @@ namespace Assets.Source.Game.Scripts
         private readonly float _longAttackRange = 10f;
         private readonly float _longSearchRadius = 10f;
 
-        private int _maxPlayerLevel = 100;//
-        private int _maxUpgradeLevel = 50;//
+        private int _maxPlayerLevel = 100;
+        private int _maxUpgradeLevel = 50;
 
         private DamageSource _damageSource;
         private float _moveSpeed;
@@ -149,7 +149,7 @@ namespace Assets.Source.Game.Scripts
 
         public void UpdatePlayerStats(CardView cardView)
         {
-            foreach (var parameter in cardView.CardData.AttributeData.CardParameters[cardView.CardState.CurrentLevel].CardParameters)
+            foreach (var parameter in cardView.CardData.AttributeData.Parameters[cardView.CardState.CurrentLevel].CardParameters)
             {
                 switch (parameter.TypeParameter)
                 {
@@ -174,7 +174,7 @@ namespace Assets.Source.Game.Scripts
 
         public void UpdateRerollPoints(CardView cardView)
         {
-            _rerollPoints += cardView.CardData.AttributeData.CardParameters[cardView.CardState.CurrentLevel].CardParameters[0].Value;
+            _rerollPoints += cardView.CardData.AttributeData.Parameters[cardView.CardState.CurrentLevel].CardParameters[0].Value;
         }
 
         public void UpgradePlayerStats(UpgradeState[] upgradeStates, UpgradeData[] upgradeDatas)

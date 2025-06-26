@@ -43,34 +43,24 @@ namespace Assets.Source.Game.Scripts
                     _stateMashine.SetState<EnemyMoveState>();
 
                 if (Attack())
-                {
                     AttackEvent();
-                }
 
                 if (AdditionalAttack())
                 {
                     if (_enemy.TryGetComponent(out GoldDragon goldDragon))
-                    {
                         _stateMashine.SetState<AditionalAttackGoldDragon>();
-                    }
 
                     if (_enemy.TryGetComponent(out Beholder beholder))
-                    {
                         _stateMashine.SetState<BeholderAdditionalAttackState>();
-                    }
                 }
 
                 if (SpecialAttack())
                 {
                     if (_enemy.TryGetComponent(out GoldDragon goldDragon))
-                    {
                         _stateMashine.SetState<SpecialAttackGoldDragon>();
-                    }
 
                     if (_enemy.TryGetComponent(out Beholder beholder))
-                    {
                         _stateMashine.SetState<BeholderSpecialAttackState>();
-                    }
                 }
             }
         }

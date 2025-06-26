@@ -12,12 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: beb1b69ea56807a4592769cd98d16a55, type: 3}
   m_Name: Buran
   m_EditorClassIdentifier: 
-  _name: Buran
-  _discription: BuranDescription
-  _legendarySpell: {fileID: 3443178031204434909, guid: 27bd6244777c51d4dbbe8629a6b2706a, type: 3}
-  _spellRadius: 9
-  _icon: {fileID: 626723095, guid: dc2e3af32fff16a4fa28920cc9449371, type: 3}
-  _legendaryParametersAbility:
+  _parameterView: {fileID: 1961483584371832456, guid: 6d57f6325ba58d6478a1fd35f1ba2831, type: 3}
+  _parameters:
   - CardParameters:
     - Value: 20
       TypeParameter: 4
@@ -25,17 +21,23 @@ MonoBehaviour:
       TypeParameter: 5
     - Value: 10
       TypeParameter: 6
-  _particle: {fileID: 6529638894099189279, guid: 871fcbe22c5552f438e75b49145af85c, type: 3}
-  _typeUpgradeMagic: 9
+  _name: Buran
+  _description: BuranDescription
+  _icon: {fileID: 626723095, guid: dc2e3af32fff16a4fa28920cc9449371, type: 3}
   _typeMagic: 2
-  _parameterView: {fileID: 1961483584371832456, guid: 6d57f6325ba58d6478a1fd35f1ba2831, type: 3}
-  _damageParametr:
+  _abilityView: {fileID: 7248082733305173889, guid: b41ccdfb932d3874d92c031e66d814ec, type: 3}
+  _particle: {fileID: 6529638894099189279, guid: 871fcbe22c5552f438e75b49145af85c, type: 3}
+  _audioClip: {fileID: 8300000, guid: 15620b13ddeb13a47a16f63de5212adb, type: 3}
+  _damage:
     _typeDamage: 3
-    _damage: 15
+    _damage: 50
     _damageParameters:
     - _value: 50
       _typeDamageParameter: 3
     - _value: 5
       _typeDamageParameter: 1
     _particle: {fileID: 550930723136525005, guid: 0e61f2a8c521ff844bffcc24bda7480e, type: 3}
-  _audioClip: {fileID: 8300000, guid: 15620b13ddeb13a47a16f63de5212adb, type: 3}
+  _upgradeType: 9
+  _type: 5
+  _typeAttack: 0
+  _legendarySpell: {fileID: 3443178031204434909, guid: 27bd6244777c51d4dbbe8629a6b2706a, type: 3}

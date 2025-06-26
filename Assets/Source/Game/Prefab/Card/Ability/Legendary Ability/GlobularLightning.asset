@@ -12,12 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: beb1b69ea56807a4592769cd98d16a55, type: 3}
   m_Name: GlobularLightning
   m_EditorClassIdentifier: 
-  _name: GlobularLightning
-  _discription: GlobularLightningDescription
-  _legendarySpell: {fileID: 3443178031204434909, guid: 05def5971c92e754289c752393ffa96b, type: 3}
-  _spellRadius: 2
-  _icon: {fileID: -700289141, guid: dc2e3af32fff16a4fa28920cc9449371, type: 3}
-  _legendaryParametersAbility:
+  _parameterView: {fileID: 1961483584371832456, guid: 6d57f6325ba58d6478a1fd35f1ba2831, type: 3}
+  _parameters:
   - CardParameters:
     - Value: 15
       TypeParameter: 4
@@ -25,13 +21,19 @@ MonoBehaviour:
       TypeParameter: 5
     - Value: 25
       TypeParameter: 6
-  _particle: {fileID: 0}
-  _typeUpgradeMagic: 0
+  _name: GlobularLightning
+  _description: GlobularLightningDescription
+  _icon: {fileID: -700289141, guid: dc2e3af32fff16a4fa28920cc9449371, type: 3}
   _typeMagic: 1
-  _parameterView: {fileID: 1961483584371832456, guid: 6d57f6325ba58d6478a1fd35f1ba2831, type: 3}
-  _damageParametr:
+  _abilityView: {fileID: 7248082733305173889, guid: b41ccdfb932d3874d92c031e66d814ec, type: 3}
+  _particle: {fileID: 19882774, guid: f6322404d6e3b914aa01ac044fb9415e, type: 3}
+  _audioClip: {fileID: 8300000, guid: 1c1f7fd86ebfd094abbec0cd212f291b, type: 3}
+  _damage:
     _typeDamage: 0
     _damage: 0
     _damageParameters: []
     _particle: {fileID: 0}
-  _audioClip: {fileID: 8300000, guid: 1c1f7fd86ebfd094abbec0cd212f291b, type: 3}
+  _upgradeType: 0
+  _type: 5
+  _typeAttack: 3
+  _legendarySpell: {fileID: 3443178031204434909, guid: 05def5971c92e754289c752393ffa96b, type: 3}

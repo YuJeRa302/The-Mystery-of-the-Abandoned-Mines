@@ -1,5 +1,4 @@
 using Assets.Source.Game.Scripts;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,6 +7,7 @@ public class SnowfallPresenter : AbilityPresenter
 {
     private readonly float _delayAttack = 0.3f;
     private readonly float _blastSpeed = 12f;
+    private readonly float _searcheRadius = 20f;
     private readonly int _countSpell = 3;
 
     private LegendaryAbilitySpell _spellPrefab;
@@ -118,7 +118,7 @@ public class SnowfallPresenter : AbilityPresenter
 
     public bool TryFindEnemy(out Enemy enemy)
     {
-        Collider[] coliderEnemy = Physics.OverlapSphere(_player.transform.position, 20);
+        Collider[] coliderEnemy = Physics.OverlapSphere(_player.transform.position, _searcheRadius);
 
         foreach (Collider collider in coliderEnemy)
         {

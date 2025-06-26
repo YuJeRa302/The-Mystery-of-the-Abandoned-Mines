@@ -53,11 +53,11 @@ namespace Assets.Source.Game.Scripts
         public TypeMagic TypeMagic { get; private set; }
         public TypeAbility TypeAbility { get; private set; }
         public TypeAttackAbility TypeAttackAbility { get; private set; }
-        public AbilityAttributeData AbilityAttribute { get; private set; }
+        public ActiveAbilityData AbilityAttribute { get; private set; }
         public AudioClip AudioClip { get; private set; }
 
         public Ability(
-            AbilityAttributeData abilityAttributeData,
+            ActiveAbilityData abilityAttributeData,
             int currentLevel,
             float abilityCooldownReduction,
             float abilityDuration,
@@ -72,16 +72,16 @@ namespace Assets.Source.Game.Scripts
             _isAutoCast = isAutoCast;
             TypeAbility = abilityAttributeData.TypeAbility;
             TypeAttackAbility = (abilityAttributeData as AttackAbilityData) != null ? (abilityAttributeData as AttackAbilityData).TypeAttackAbility : 0;
-            TypeUpgradeMagic = abilityAttributeData.TypeUpgradeMagic;
-            TypeMagic = abilityAttributeData.TypeMagic;
-            MaxLevel = abilityAttributeData.CardParameters.Count;
-            _spellRadius = (abilityAttributeData as AttackAbilityData).SpellRadius;
+            TypeUpgradeMagic = abilityAttributeData.UpgradeType;
+            TypeMagic = abilityAttributeData.MagicType;
+            MaxLevel = abilityAttributeData.Parameters.Count;
+            _spellRadius = (abilityAttributeData as AttackAbilityData).Radius;
             UpdateAbilityParamters(abilityDuration, abilityValue, abilityCooldownReduction);
         }
 
         public Ability(
             LegendaryAbilityData legendaryAbilityData,
-            AbilityAttributeData abilityAttributeData,
+            ActiveAbilityData abilityAttributeData,
             float abilityCooldownReduction,
             float abilityDuration,
             int abilityValue,
@@ -94,9 +94,9 @@ namespace Assets.Source.Game.Scripts
             _isAutoCast = isAutoCast;
             TypeAbility = abilityAttributeData.TypeAbility;
             TypeAttackAbility = (abilityAttributeData as AttackAbilityData) != null ? (abilityAttributeData as AttackAbilityData).TypeAttackAbility : 0;
-            TypeUpgradeMagic = abilityAttributeData.TypeUpgradeMagic;
-            TypeMagic = abilityAttributeData.TypeMagic;
-            MaxLevel = abilityAttributeData.CardParameters.Count;
+            TypeUpgradeMagic = abilityAttributeData.UpgradeType;
+            TypeMagic = abilityAttributeData.MagicType;
+            MaxLevel = abilityAttributeData.Parameters.Count;
             UpdateAbilityParamters(abilityDuration, abilityValue, abilityCooldownReduction);
         }
 
@@ -133,7 +133,7 @@ namespace Assets.Source.Game.Scripts
                 _coroutineRunner.StopCoroutine(_coolDown);
         }
 
-        public void Upgrade(AbilityAttributeData abilityAttributeData, int currentLevel, int abilityDuration, int abilityDamage, int abilityCooldownReduction)
+        public void Upgrade(ActiveAbilityData abilityAttributeData, int currentLevel, int abilityDuration, int abilityDamage, int abilityCooldownReduction)
         {
             FillAbilityParameters(abilityAttributeData, currentLevel);
             UpdateAbilityParamters(abilityDuration, abilityDamage, abilityCooldownReduction);
@@ -149,9 +149,9 @@ namespace Assets.Source.Game.Scripts
             ApplyDamageSource();
         }
 
-        private void FillAbilityParameters(AbilityAttributeData abilityAttributeData, int currentLevel)
+        private void FillAbilityParameters(ActiveAbilityData abilityAttributeData, int currentLevel)
         {
-            foreach (CardParameter parameter in abilityAttributeData.CardParameters[currentLevel].CardParameters)
+            foreach (CardParameter parameter in abilityAttributeData.Parameters[currentLevel].CardParameters)
             {
                 if (parameter.TypeParameter == TypeParameter.AbilityCooldown)
                     _defaultCooldown = parameter.Value;
@@ -162,15 +162,12 @@ namespace Assets.Source.Game.Scripts
             }
 
             if (abilityAttributeData as AttackAbilityData)
-                _damageSource = (abilityAttributeData as AttackAbilityData).DamageSource;
-
-            //if (_damageSource != null)
-            //    ApplyDamageSource();
+                _damageSource = (abilityAttributeData as AttackAbilityData).Damage;
         }
 
         private void FillLegendaryAbilityParameters(LegendaryAbilityData legendaryAbilityData)
         {
-            foreach (CardParameter parameter in legendaryAbilityData.LegendaryAbilityParameters[_minValue].CardParameters)
+            foreach (CardParameter parameter in legendaryAbilityData.Parameters[_minValue].CardParameters)
             {
                 if (parameter.TypeParameter == TypeParameter.AbilityCooldown)
                     _defaultCooldown = parameter.Value;
@@ -180,10 +177,7 @@ namespace Assets.Source.Game.Scripts
                     _defaultDuration = parameter.Value;
             }
 
-            _damageSource = legendaryAbilityData.DamageParametr;
-
-            //if (_damageSource != null)
-            //    ApplyDamageSource();
+            _damageSource = legendaryAbilityData.Damage;
         }
 
         private void FillClassSkillParametr(ClassAbilityData abilityAttributeData, int currentLevel)

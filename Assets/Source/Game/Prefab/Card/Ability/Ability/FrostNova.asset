@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02f9d96df1d2c444dbca494c7fd95bbc, type: 3}
   m_Name: FrostNova
   m_EditorClassIdentifier: 
-  _cardParameterView: {fileID: 1961483584371832456, guid: 6d57f6325ba58d6478a1fd35f1ba2831, type: 3}
+  _parameterView: {fileID: 1961483584371832456, guid: 6d57f6325ba58d6478a1fd35f1ba2831, type: 3}
   _parameters:
   - CardParameters:
     - Value: 15
@@ -38,17 +38,11 @@ MonoBehaviour:
   _name: FrostNova
   _description: FrostNovaDescription
   _icon: {fileID: 1231504098, guid: dc2e3af32fff16a4fa28920cc9449371, type: 3}
-  _abilityType: 5
-  _abilityView: {fileID: 7248082733305173889, guid: b41ccdfb932d3874d92c031e66d814ec, type: 3}
-  _particleSystem: {fileID: 7202312944973012136, guid: 21b7059370cea7d41b8ed3cedb4c9c0d, type: 3}
-  _audioClip: {fileID: 8300000, guid: df0ec39bb7429284fb2f1c3413e68098, type: 3}
-  _typeUpgradeMagic: 9
   _typeMagic: 2
-  _legendaryAbilityData: {fileID: 11400000, guid: 124a7573d9cefc546982380bd10d7dc9, type: 2}
-  _spell: {fileID: 1654424239186438959, guid: 081f8bf11483ab544842add8457b3c62, type: 3}
-  _spellRadius: 7
-  _typeAttackAbility: 0
-  _damageParametr:
+  _abilityView: {fileID: 7248082733305173889, guid: b41ccdfb932d3874d92c031e66d814ec, type: 3}
+  _particle: {fileID: 7202312944973012136, guid: 21b7059370cea7d41b8ed3cedb4c9c0d, type: 3}
+  _audioClip: {fileID: 8300000, guid: df0ec39bb7429284fb2f1c3413e68098, type: 3}
+  _damage:
     _typeDamage: 3
     _damage: 15
     _damageParameters:
@@ -57,3 +51,9 @@ MonoBehaviour:
     - _value: 2
       _typeDamageParameter: 1
     _particle: {fileID: 550930723136525005, guid: 0e61f2a8c521ff844bffcc24bda7480e, type: 3}
+  _upgradeType: 9
+  _type: 5
+  _typeAttack: 0
+  _spell: {fileID: 1654424239186438959, guid: 081f8bf11483ab544842add8457b3c62, type: 3}
+  _radius: 7
+  _legendaryAbilityData: {fileID: 11400000, guid: 124a7573d9cefc546982380bd10d7dc9, type: 2}

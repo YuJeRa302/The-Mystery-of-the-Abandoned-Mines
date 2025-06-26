@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ef18764ea9f9ee4b8834b70a8bb544c, type: 3}
   m_Name: Ice Passive
   m_EditorClassIdentifier: 
-  _cardParameterView: {fileID: 1961483584371832456, guid: 6d57f6325ba58d6478a1fd35f1ba2831, type: 3}
+  _parameterView: {fileID: 1961483584371832456, guid: 6d57f6325ba58d6478a1fd35f1ba2831, type: 3}
   _parameters:
   - CardParameters:
     - Value: 3
@@ -21,5 +21,4 @@ MonoBehaviour:
   _description: IcePassiveDescription
   _icon: {fileID: -1634183232, guid: dc2e3af32fff16a4fa28920cc9449371, type: 3}
   _typeMagic: 2
-  _typeAbility: 6
-  _passiveAbilityView: {fileID: 2680077035284226637, guid: 02e65a2996165c24281b87db23b3fabc, type: 3}
+  _abilityView: {fileID: 2680077035284226637, guid: 02e65a2996165c24281b87db23b3fabc, type: 3}

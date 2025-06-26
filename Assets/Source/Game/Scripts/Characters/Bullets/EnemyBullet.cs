@@ -14,9 +14,7 @@ namespace Assets.Source.Game.Scripts
             }
 
             if (collision.collider.TryGetComponent(out Wall wall))
-            {
                 ReturObjectPool();
-            }
         }
 
         private void OnTriggerEnter(Collider other)

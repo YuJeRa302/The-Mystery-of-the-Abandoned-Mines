@@ -18299,8 +18299,6 @@ MonoBehaviour:
   _abilityObjectContainer: {fileID: 1663293697}
   _classAbilityContainer: {fileID: 617510448}
   _passiveAbilityContainer: {fileID: 633783666}
-  _playerEffectsContainer: {fileID: 0}
-  _weaponEffectsContainer: {fileID: 0}
   _playerMapIcon: {fileID: 1452310743}
   _closeAbilityIcon: {fileID: -1115916707, guid: 1cbdf543752020f45b7cedcd93cd1a97, type: 3}
 --- !u!224 &1346848992

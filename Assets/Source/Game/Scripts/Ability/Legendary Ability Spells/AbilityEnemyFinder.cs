@@ -19,9 +19,7 @@ namespace Assets.Source.Game.Scripts
             foreach (Collider collider in coliderEnemy)
             {
                 if (collider.TryGetComponent(out enemy))
-                {
                     return true;
-                }
 
             }
 
@@ -37,9 +35,7 @@ namespace Assets.Source.Game.Scripts
             foreach (Collider collider in coliderEnemy)
             {
                 if (collider.TryGetComponent(out Enemy enemy))
-                {
                     enemys.Add(enemy);
-                }
             }
 
             return enemys.Count > 0;

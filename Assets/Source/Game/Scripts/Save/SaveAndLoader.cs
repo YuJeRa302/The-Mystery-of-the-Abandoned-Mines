@@ -30,7 +30,6 @@ public class SaveAndLoader : ISaveAndLoadProgress
             AmbientVolume = _temporaryData.AmbientVolume,
             SfxVolumeVolume = _temporaryData.InterfaceVolume,
             IsMuted = _temporaryData.MuteStateSound,
-            //DefaultLanguage = _temporaryData.Language,
             UpgradePoints = _temporaryData.UpgradePoints,
             UpgradeStates = new System.Collections.Generic.List<UpgradeState>(_temporaryData.UpgradeStates),
             ClassAbilityStates = new System.Collections.Generic.List<ClassAbilityState>(_temporaryData.ClassAbilityStates),
@@ -50,7 +49,6 @@ public class SaveAndLoader : ISaveAndLoadProgress
         {
             YG2.saves = newSaveData;
             YG2.SaveProgress();
-            Debug.Log(YG2.saves.Score);
         }
     }
 }

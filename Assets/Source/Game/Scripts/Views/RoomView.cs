@@ -99,11 +99,6 @@ namespace Assets.Source.Game.Scripts
             RoomData = roomData;
             CurrentLevel = currentLevel;
 
-            if (RoomData.Id == 1)
-                _countEnemy = 1;
-            else
-                _countEnemy = 15; //tests
-
             CreateDoorway();
             AddListener();
             RemoveUnusedDoors();

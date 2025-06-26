@@ -27,7 +27,8 @@ namespace Assets.Source.Game.Scripts
             return attackAbilityPresenter;
         }
 
-        public AmplifierAbilityPresenter CreateAmplifierAbilityPresenter(Ability ability, AbilityView abilityView, ParticleSystem particleSystem)
+        public AmplifierAbilityPresenter CreateAmplifierAbilityPresenter(Ability ability, 
+            AbilityView abilityView, ParticleSystem particleSystem)
         {
             return CreatePresenter<AmplifierAbilityPresenter>(
                 ability,
@@ -44,7 +45,8 @@ namespace Assets.Source.Game.Scripts
             Summon summonPrefab,
             Pool pool)
         {
-            SummonAbillityPresenter summonAbillityPresenter = new SummonAbillityPresenter(ability, abilityView, player, _gameLoopService, _coroutineRunner, summonPrefab);
+            SummonAbillityPresenter summonAbillityPresenter = new SummonAbillityPresenter(ability, 
+                abilityView, player, _gameLoopService, _coroutineRunner, summonPrefab);
             return summonAbillityPresenter;
         }
 
@@ -54,35 +56,41 @@ namespace Assets.Source.Game.Scripts
             Player player,
             AxemMssile axemMssile)
         {
-            ThrowAxeAbilityPresenter throwAxeAbilityPresenter = new ThrowAxeAbilityPresenter(ability, abilityView, player, _gameLoopService, _coroutineRunner, axemMssile);
+            ThrowAxeAbilityPresenter throwAxeAbilityPresenter = new ThrowAxeAbilityPresenter(ability, 
+                abilityView, player, _gameLoopService, _coroutineRunner, axemMssile);
             return throwAxeAbilityPresenter;
         }
 
-        public JerkFrontAbillityPresenter CreateJerkFrontAbilityPresenter(Ability ability, AbilityView abilityView, Player player, PoolParticle abilityEffect)
+        public JerkFrontAbillityPresenter CreateJerkFrontAbilityPresenter(Ability ability, 
+            AbilityView abilityView, Player player, PoolParticle abilityEffect)
         {
             JerkFrontAbillityPresenter jerkFrontAbillityPresenter = new JerkFrontAbillityPresenter(ability, abilityView, player, _gameLoopService, _coroutineRunner, abilityEffect);
             return jerkFrontAbillityPresenter;
         }
 
-        public RageAbillityPresenter CreateRageAbilityPresenter(Ability ability, AbilityView abilityView, Player player, PoolParticle abilityEffect)
+        public RageAbillityPresenter CreateRageAbilityPresenter(Ability ability, 
+            AbilityView abilityView, Player player, PoolParticle abilityEffect)
         {
             RageAbillityPresenter rageAbillityPresenter = new RageAbillityPresenter(ability, abilityView, player, _gameLoopService, _coroutineRunner, abilityEffect);
             return rageAbillityPresenter;
         }
 
-        public EpiphanyAbilityPresenter CreateEpiphanyAbilityPresenter(Ability ability, AbilityView abilityView, Player player, ParticleSystem abilityEffect, Spell spell)
+        public EpiphanyAbilityPresenter CreateEpiphanyAbilityPresenter(Ability ability, 
+            AbilityView abilityView, Player player, ParticleSystem abilityEffect, Spell spell)
         {
             EpiphanyAbilityPresenter epiphanyAbilityPresenter = new EpiphanyAbilityPresenter(ability, abilityView, player, _gameLoopService, _coroutineRunner, abilityEffect, spell);
             return epiphanyAbilityPresenter;
         }
 
-        public ShildUpAbilityPresenter CreateShieldUpAbility(Ability ability, AbilityView abilityView, Player player, PoolParticle poolParticle)
+        public ShildUpAbilityPresenter CreateShieldUpAbility(Ability ability, 
+            AbilityView abilityView, Player player, PoolParticle poolParticle)
         {
             ShildUpAbilityPresenter shildUpAbilityPresenter = new ShildUpAbilityPresenter(ability, abilityView, player, _gameLoopService, _coroutineRunner, poolParticle);
             return shildUpAbilityPresenter;
         }
 
-        public SoulExplosionAbilityPresenter CreateSoulExplosionAbilityPresenter(Ability ability, AbilityView abilityView, Player player, ParticleSystem poolParticle, Spell spell)
+        public SoulExplosionAbilityPresenter CreateSoulExplosionAbilityPresenter(Ability ability, 
+            AbilityView abilityView, Player player, ParticleSystem poolParticle, Spell spell)
         {
             SoulExplosionAbilityPresenter soulExplosionAbilityPresenter = new SoulExplosionAbilityPresenter(ability, abilityView, player, _gameLoopService, _coroutineRunner, poolParticle, spell);
             return soulExplosionAbilityPresenter;

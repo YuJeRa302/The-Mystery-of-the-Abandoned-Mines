@@ -1,5 +1,4 @@
 using Assets.Source.Game.Scripts;
-using UnityEngine;
 
 public class EnemyStunedState : State
 {

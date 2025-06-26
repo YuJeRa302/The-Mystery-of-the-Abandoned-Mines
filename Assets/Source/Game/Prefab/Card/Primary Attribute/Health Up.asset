@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a599b33e1e509f1459ed8c5811859802, type: 3}
   m_Name: Health Up
   m_EditorClassIdentifier: 
-  _cardParameterView: {fileID: 1961483584371832456, guid: 6d57f6325ba58d6478a1fd35f1ba2831, type: 3}
+  _parameterView: {fileID: 1961483584371832456, guid: 6d57f6325ba58d6478a1fd35f1ba2831, type: 3}
   _parameters:
   - CardParameters:
     - Value: 10
@@ -20,3 +20,4 @@ MonoBehaviour:
   _name: Health
   _description: HealthDescription
   _icon: {fileID: 21300000, guid: 30cc97803bf82eb45b3085da6315fb8b, type: 3}
+  _typeMagic: 3

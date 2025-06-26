@@ -55,11 +55,9 @@ namespace Assets.Source.Game.Scripts
                 if(_saveAndLoad.TryGetGameData())
                 {
                     _temporaryData = new TemporaryData(YG2.saves);
-                    Debug.Log("Second");
                 }
                 else
                 {
-                    Debug.Log("First");
                     _temporaryData = new TemporaryData(_configData);
                 }
             }

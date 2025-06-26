@@ -10,7 +10,6 @@ public class PlayerMovement : IDisposable
     private readonly ICoroutineRunner _coroutineRunner;
     private readonly IGameLoopService _gameLoopService;
     private readonly Player _player;
-    private readonly float _amplifierJoystick =1f;
 
     private Camera _camera;
     private VariableJoystick _variableJoystick;

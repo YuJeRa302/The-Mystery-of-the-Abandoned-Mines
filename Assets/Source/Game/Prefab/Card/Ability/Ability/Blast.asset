@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02f9d96df1d2c444dbca494c7fd95bbc, type: 3}
   m_Name: Blast
   m_EditorClassIdentifier: 
-  _cardParameterView: {fileID: 1961483584371832456, guid: 6d57f6325ba58d6478a1fd35f1ba2831, type: 3}
+  _parameterView: {fileID: 1961483584371832456, guid: 6d57f6325ba58d6478a1fd35f1ba2831, type: 3}
   _parameters:
   - CardParameters:
     - Value: 10
@@ -38,18 +38,18 @@ MonoBehaviour:
   _name: ElectricSphere
   _description: ElectricSphereDescription
   _icon: {fileID: 21300000, guid: a1abefe37b92e5c4681ef6ea75669835, type: 3}
-  _abilityType: 5
-  _abilityView: {fileID: 7248082733305173889, guid: b41ccdfb932d3874d92c031e66d814ec, type: 3}
-  _particleSystem: {fileID: 19882774, guid: f6322404d6e3b914aa01ac044fb9415e, type: 3}
-  _audioClip: {fileID: 8300000, guid: dbc17452b5c57c74381e22f45a9e5b2e, type: 3}
-  _typeUpgradeMagic: 0
   _typeMagic: 1
-  _legendaryAbilityData: {fileID: 11400000, guid: 737729b914d34c0458efc8a078a215ff, type: 2}
-  _spell: {fileID: 1654424239186438959, guid: 081f8bf11483ab544842add8457b3c62, type: 3}
-  _spellRadius: 2
-  _typeAttackAbility: 3
-  _damageParametr:
+  _abilityView: {fileID: 7248082733305173889, guid: b41ccdfb932d3874d92c031e66d814ec, type: 3}
+  _particle: {fileID: 19882774, guid: f6322404d6e3b914aa01ac044fb9415e, type: 3}
+  _audioClip: {fileID: 8300000, guid: dbc17452b5c57c74381e22f45a9e5b2e, type: 3}
+  _damage:
     _typeDamage: 0
     _damage: 10
     _damageParameters: []
     _particle: {fileID: 0}
+  _upgradeType: 0
+  _type: 5
+  _typeAttack: 3
+  _spell: {fileID: 1654424239186438959, guid: 081f8bf11483ab544842add8457b3c62, type: 3}
+  _radius: 2
+  _legendaryAbilityData: {fileID: 11400000, guid: 737729b914d34c0458efc8a078a215ff, type: 2}

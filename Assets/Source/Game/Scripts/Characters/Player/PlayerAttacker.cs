@@ -13,6 +13,8 @@ namespace Assets.Source.Game.Scripts
         private readonly ICoroutineRunner _coroutineRunner;
         private readonly int _divider = 100;
         private readonly int _defaultCriticalDamageMultiplier = 1;
+        private readonly int _minValueChance = 1;
+        private readonly int _maxValueChance = 1;
 
         private Transform _shotPoint;
         private ProjectileSpawner _bulletSpawner;
@@ -23,7 +25,6 @@ namespace Assets.Source.Game.Scripts
         private Coroutine _findTarget;
         private Coroutine _coolDownAttack;
         private Enemy _currentTarget;
-        private bool _isRangeAttack = false;
         private Dictionary<float, Enemy> _enemies = new Dictionary<float, Enemy>();
         private TypeAttackRange _typeAttackRange;
 
@@ -51,8 +52,6 @@ namespace Assets.Source.Game.Scripts
             AddListeners();
             _coolDownAttack = _coroutineRunner.StartCoroutine(CoolDownAttack());
         }
-
-        public Enemy CurrentTarget => _currentTarget;
 
         public void Dispose()
         {
@@ -228,7 +227,7 @@ namespace Assets.Source.Game.Scripts
 
         private bool CalculateChance(float chance)
         {
-            if (_rnd.Next(1, 100) <= chance)
+            if (_rnd.Next(_minValueChance, _maxValueChance) <= chance)
                 return true;
             else
                 return false;

@@ -112,13 +112,8 @@ public class FirestormPresenter : AbilityPresenter
             yield return new WaitForSeconds(_delayAttack);
 
             if (_spell != null)
-            {
                 if (_spell.TryFindEnemy(out Enemy enemy))
-                {
                     enemy.TakeDamage(_ability.DamageSource);
-                    //enemy.TakeDamageTest(_ability.DamageParametr);
-                }
-            }
         }
     }
 

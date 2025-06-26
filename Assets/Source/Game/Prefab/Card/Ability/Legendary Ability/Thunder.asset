@@ -12,12 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: beb1b69ea56807a4592769cd98d16a55, type: 3}
   m_Name: Thunder
   m_EditorClassIdentifier: 
-  _name: Thunder
-  _discription: ThunderDescription
-  _legendarySpell: {fileID: -5401896953832697201, guid: 9b9e8820c5928684da3b9d1c2cb4f945, type: 3}
-  _spellRadius: 15
-  _icon: {fileID: 1190033990, guid: dc2e3af32fff16a4fa28920cc9449371, type: 3}
-  _legendaryParametersAbility:
+  _parameterView: {fileID: 1961483584371832456, guid: 6d57f6325ba58d6478a1fd35f1ba2831, type: 3}
+  _parameters:
   - CardParameters:
     - Value: 12
       TypeParameter: 4
@@ -25,13 +21,19 @@ MonoBehaviour:
       TypeParameter: 5
     - Value: 5
       TypeParameter: 6
-  _particle: {fileID: 0}
-  _typeUpgradeMagic: 5
+  _name: Thunder
+  _description: ThunderDescription
+  _icon: {fileID: 1190033990, guid: dc2e3af32fff16a4fa28920cc9449371, type: 3}
   _typeMagic: 1
-  _parameterView: {fileID: 1961483584371832456, guid: 6d57f6325ba58d6478a1fd35f1ba2831, type: 3}
-  _damageParametr:
+  _abilityView: {fileID: 7248082733305173889, guid: b41ccdfb932d3874d92c031e66d814ec, type: 3}
+  _particle: {fileID: 2061987872771563782, guid: ee9410dd14509c84498340b23bc57eae, type: 3}
+  _audioClip: {fileID: 8300000, guid: 70f0536454179dd419ecf9a0c14f7984, type: 3}
+  _damage:
     _typeDamage: 0
     _damage: 0
     _damageParameters: []
     _particle: {fileID: 0}
-  _audioClip: {fileID: 8300000, guid: 70f0536454179dd419ecf9a0c14f7984, type: 3}
+  _upgradeType: 5
+  _type: 5
+  _typeAttack: 0
+  _legendarySpell: {fileID: -5401896953832697201, guid: 9b9e8820c5928684da3b9d1c2cb4f945, type: 3}

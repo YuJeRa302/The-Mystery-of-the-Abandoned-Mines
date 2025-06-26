@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a599b33e1e509f1459ed8c5811859802, type: 3}
   m_Name: DamageUp
   m_EditorClassIdentifier: 
-  _cardParameterView: {fileID: 1961483584371832456, guid: 6d57f6325ba58d6478a1fd35f1ba2831, type: 3}
+  _parameterView: {fileID: 1961483584371832456, guid: 6d57f6325ba58d6478a1fd35f1ba2831, type: 3}
   _parameters:
   - CardParameters:
     - Value: 1
@@ -20,3 +20,4 @@ MonoBehaviour:
   _name: Damage
   _description: DamageDescription
   _icon: {fileID: 21300000, guid: dd9d1d850d4de49458514e1a9501fd0f, type: 3}
+  _typeMagic: 3

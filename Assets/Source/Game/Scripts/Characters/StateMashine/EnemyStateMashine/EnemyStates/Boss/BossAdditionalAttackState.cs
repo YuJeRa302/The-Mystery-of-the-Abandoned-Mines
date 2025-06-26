@@ -24,9 +24,7 @@ public class BossAdditionalAttackState : State
     public override void UpdateState()
     {
         if (_canTransit)
-        {
             _stateMashine.SetState<EnemyMoveState>();
-        }
     }
 
     protected virtual void AditionalAttackAppalyDamage()

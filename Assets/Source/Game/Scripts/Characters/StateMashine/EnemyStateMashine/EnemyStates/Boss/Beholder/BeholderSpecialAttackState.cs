@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class BeholderSpecialAttackState : BossSpecialAttackState
 {
+    private readonly float _rotationY = -90f;
+    private readonly float _duration = 1.5f;
+
     private float _maxTimeCastSpel = 6f;
     private float _currentTimeCastSpel = 0;
     private Transform _transformEnemy;
@@ -26,10 +29,10 @@ public class BeholderSpecialAttackState : BossSpecialAttackState
         beholder.DragonFlame.gameObject.SetActive(true);
         
         _sequence = DOTween.Sequence();
-        _sequence.Append(_transformEnemy.DORotate(new Vector3(0, 90f, 0), 1.5f).SetRelative());
-        _sequence.Append(_transformEnemy.DORotate(new Vector3(0, -90f, 0), 1.5f).SetRelative());
-        _sequence.Append(_transformEnemy.DORotate(new Vector3(0, -90f, 0), 1.5f).SetRelative());
-        _sequence.Append(_transformEnemy.DORotate(new Vector3(0, 90f, 0), 1.5f).SetRelative());
+        _sequence.Append(_transformEnemy.DORotate(new Vector3(0, _rotationY, 0), _duration).SetRelative());
+        _sequence.Append(_transformEnemy.DORotate(new Vector3(0, -_rotationY, 0), _duration).SetRelative());
+        _sequence.Append(_transformEnemy.DORotate(new Vector3(0, -_rotationY, 0), _duration).SetRelative());
+        _sequence.Append(_transformEnemy.DORotate(new Vector3(0, _rotationY, 0), _duration).SetRelative());
 
         SpetiallAttackEvent();
     }

@@ -8,6 +8,7 @@ namespace Assets.Source.Game.Scripts
     public class WeaponsView : MonoBehaviour
     {
         private readonly string _typeDamageTranslationName = "TypeDamage";
+        private readonly string _damageParametrName = "Damage";
 
         [SerializeField] private Image _weaponImage;
         [SerializeField] private Sprite _defaultSprite;
@@ -156,7 +157,7 @@ namespace Assets.Source.Game.Scripts
             view.Initialize(_typeDamageTranslationName, weaponDataView.WeaponData.DamageSource.TypeDamage.ToString(), true);
             _weaponStatsViews.Add(view);
             WeaponStatsView damageView = Instantiate(_weaponStatsView, _weaponStatsContainer);
-            damageView.Initialize("Damage", weaponDataView.WeaponData.DamageSource.Damage.ToString(), false);
+            damageView.Initialize(_damageParametrName, weaponDataView.WeaponData.DamageSource.Damage.ToString(), false);
             _weaponStatsViews.Add(damageView);
 
             foreach (var parametr in weaponDataView.WeaponData.DamageSource.DamageParameters)

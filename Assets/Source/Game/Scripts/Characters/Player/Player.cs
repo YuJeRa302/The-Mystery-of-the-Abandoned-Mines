@@ -120,7 +120,7 @@ namespace Assets.Source.Game.Scripts
             _wallet = new PlayerWallet();
             _cardDeck = new CardDeck(temporaryData.LevelData.IsContractLevel);
             _playerAbilityCaster = new PlayerAbilityCaster(abilityFactory, abilityPresenter, this, temporaryData, _audioPlayer);
-            _playerView.Initialize(temporaryData.PlayerClassData.Icon, _throwAbilityPoint, _playerAbilityContainer, _weaponAbilityContainer);
+            _playerView.Initialize(temporaryData.PlayerClassData.Icon, _throwAbilityPoint);
             SetPlayerStats();
             AddListeners();
             _playerStats.UpgradePlayerStats(temporaryData.UpgradeStates, temporaryData.UpgradeDatas);
@@ -305,7 +305,7 @@ namespace Assets.Source.Game.Scripts
             _playerAbilityCaster.CreateClassAbilityView(classAbilityData, classSkillButtonView, currentLevel);
         }
 
-        private void OnLegendaryAbilityViewCreated(AbilityView abilityView, ParticleSystem particleSystem, Transform throwPoint, AbilityAttributeData abilityAttributeData)
+        private void OnLegendaryAbilityViewCreated(AbilityView abilityView, ParticleSystem particleSystem, Transform throwPoint, ActiveAbilityData abilityAttributeData)
         {
             _playerAbilityCaster.CreateLegendaryAbilityView(abilityView, particleSystem, throwPoint, abilityAttributeData);
         }
@@ -325,7 +325,7 @@ namespace Assets.Source.Game.Scripts
             _playerView.TakeClassAbility(abilityData, currentLevel);
         }
 
-        private void OnLegendaryAbilityTaked(AbilityAttributeData abilityAttributeData)
+        private void OnLegendaryAbilityTaked(ActiveAbilityData abilityAttributeData)
         {
             _playerView.TakeLegendaryAbility(abilityAttributeData);
         }
@@ -335,7 +335,7 @@ namespace Assets.Source.Game.Scripts
             _playerView.TakePassiveAbility(passiveAttributeData);
         }
 
-        private void OnAbilityTaked(AbilityAttributeData abilityAttributeData, int currentLevel)
+        private void OnAbilityTaked(ActiveAbilityData abilityAttributeData, int currentLevel)
         {
             _playerView.TakeAbility(abilityAttributeData, currentLevel);
         }

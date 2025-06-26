@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 public class ThunderPresenter : AbilityPresenter
 {
     private readonly float _delayAttack = 0.3f;

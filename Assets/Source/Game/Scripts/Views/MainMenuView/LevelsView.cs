@@ -15,8 +15,8 @@ namespace Assets.Source.Game.Scripts
         private readonly string _choosePlayerClass = "ChoosePlayerClass";
         private readonly string _chooseWeapon = "ChooseWeapon";
         private readonly float _durationAnimation = 1f;
-        private readonly Color _startColorAnimation = Color.red;
-        private readonly Color _endColorAnimation = new Color(118f, 73f, 0);
+        //private readonly Color _startColorAnimation = Color.red;
+        //private readonly Color _endColorAnimation = new Color(118f, 73f, 0);
 
         [SerializeField] private Image _levelImage;
         [SerializeField] private LeanLocalizedText _levelName;
@@ -83,7 +83,6 @@ namespace Assets.Source.Game.Scripts
         {
             _levelsViewModel = levelsViewModel;
             _audioPlayerService = audioPlayerService;
-            // _contractButton.interactable = _levelsViewModel.TryUnlockContractButton(_indexUnlockContractButton);
             SetInteractableContract();
             AddListener();
             SortWeaponsByTier();

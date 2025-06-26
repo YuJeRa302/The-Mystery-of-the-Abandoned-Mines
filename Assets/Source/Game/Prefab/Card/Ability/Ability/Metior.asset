@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02f9d96df1d2c444dbca494c7fd95bbc, type: 3}
   m_Name: Metior
   m_EditorClassIdentifier: 
-  _cardParameterView: {fileID: 1961483584371832456, guid: 6d57f6325ba58d6478a1fd35f1ba2831, type: 3}
+  _parameterView: {fileID: 1961483584371832456, guid: 6d57f6325ba58d6478a1fd35f1ba2831, type: 3}
   _parameters:
   - CardParameters:
     - Value: 30
@@ -38,20 +38,20 @@ MonoBehaviour:
   _name: Metior
   _description: MetiorDescription
   _icon: {fileID: -1657215781, guid: dc2e3af32fff16a4fa28920cc9449371, type: 3}
-  _abilityType: 5
-  _abilityView: {fileID: 7248082733305173889, guid: b41ccdfb932d3874d92c031e66d814ec, type: 3}
-  _particleSystem: {fileID: 4918590649640318993, guid: e94b52a6fd549384987ca598b0596267, type: 3}
-  _audioClip: {fileID: 8300000, guid: 73a1b905ea436c64d932eab0e1c0ea93, type: 3}
-  _typeUpgradeMagic: 1
   _typeMagic: 0
-  _legendaryAbilityData: {fileID: 11400000, guid: c04bdbf921a76864e9adbd787aaf1878, type: 2}
-  _spell: {fileID: 1654424239186438959, guid: 081f8bf11483ab544842add8457b3c62, type: 3}
-  _spellRadius: 9
-  _typeAttackAbility: 2
-  _damageParametr:
+  _abilityView: {fileID: 7248082733305173889, guid: b41ccdfb932d3874d92c031e66d814ec, type: 3}
+  _particle: {fileID: 4918590649640318993, guid: e94b52a6fd549384987ca598b0596267, type: 3}
+  _audioClip: {fileID: 8300000, guid: 73a1b905ea436c64d932eab0e1c0ea93, type: 3}
+  _damage:
     _typeDamage: 4
-    _damage: 20
+    _damage: 0
     _damageParameters:
     - _value: 3
       _typeDamageParameter: 2
     _particle: {fileID: 0}
+  _upgradeType: 1
+  _type: 5
+  _typeAttack: 2
+  _spell: {fileID: 1654424239186438959, guid: 081f8bf11483ab544842add8457b3c62, type: 3}
+  _radius: 9
+  _legendaryAbilityData: {fileID: 11400000, guid: c04bdbf921a76864e9adbd787aaf1878, type: 2}

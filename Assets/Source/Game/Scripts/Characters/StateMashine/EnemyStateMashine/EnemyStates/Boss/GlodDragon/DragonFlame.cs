@@ -4,6 +4,7 @@ using UnityEngine;
 public class DragonFlame : MonoBehaviour
 {
     [SerializeField] private int _damage;
+    
     private float _damageInterval = 0.5f;
     private float _lastDamageTime;
 

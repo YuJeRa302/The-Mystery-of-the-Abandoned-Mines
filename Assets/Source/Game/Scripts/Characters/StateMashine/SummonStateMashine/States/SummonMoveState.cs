@@ -1,5 +1,4 @@
 using Assets.Source.Game.Scripts;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -10,7 +9,6 @@ public class SummonMoveState : State
     private Player _player;
     private Summon _summon;
     private Transform _direction;
-    private Enemy _target;
     private NavMeshAgent _navMeshAgent;
     private Dictionary<float, Enemy> _enemies = new Dictionary<float, Enemy>();
 

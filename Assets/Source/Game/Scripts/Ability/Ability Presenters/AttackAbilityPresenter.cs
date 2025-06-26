@@ -11,11 +11,14 @@ namespace Assets.Source.Game.Scripts
         private readonly float _delayAOE = 1f;
         private readonly float _delayTargetSpell = 1f;
         private readonly float _blastSpeed = 10f;
+        private readonly float _searcheRadius = 20f;
+        private const float SpellOffsetX = 3f;
+        private const float SpellOffsetY = 2f;
+        private const float SpellOffsetZ = 0.57f;
 
         private Spell _spellPrefab;
         private Spell _spell;
         private Vector3 _direction;
-        private Vector3 _rotationVector = new Vector3(0, 1, 0);
         private Coroutine _blastThrowingCoroutine;
         private Coroutine _blastRotateCoroutine;
         private Coroutine _damageDealCoroutine;
@@ -119,19 +122,18 @@ namespace Assets.Source.Game.Scripts
 
         private void CreateRotateSpell()
         {
+            float transformStartAmplifierY = 0.57f;
+
             _spell = GameObject.Instantiate(
                _spellPrefab,
                new Vector3(
                    _player.ShotPoint.position.x,
-                   _player.ShotPoint.position.y + 0.57f,
+                   _player.ShotPoint.position.y + transformStartAmplifierY,
                    _player.ShotPoint.position.z),
                Quaternion.identity);
 
             _spell.Initialize(_particleSystem, _ability.CurrentDuration, _ability.SpellRadius);
-
-            float distance = 3f;
-
-            _spell.transform.position = _player.transform.position + new Vector3(distance, 2f, 0.57f);
+            _spell.transform.position = _player.transform.position + new Vector3(SpellOffsetX, SpellOffsetY, SpellOffsetZ);
 
             _blastRotateCoroutine = _coroutineRunner.StartCoroutine(RotateSpell());
         }
@@ -172,13 +174,9 @@ namespace Assets.Source.Game.Scripts
             Vector3 targetPosition;
 
             if (TryFindEnemy(out Enemy enemy))
-            {
                 targetPosition = enemy.transform.position;
-            }
             else
-            {
                 targetPosition = _player.transform.position;
-            }
 
             _spell = GameObject.Instantiate(
                 _spellPrefab,
@@ -190,7 +188,7 @@ namespace Assets.Source.Game.Scripts
 
         public bool TryFindEnemy(out Enemy enemy)
         {
-            Collider[] coliderEnemy = Physics.OverlapSphere(_player.transform.position, 20);
+            Collider[] coliderEnemy = Physics.OverlapSphere(_player.transform.position, _searcheRadius);
 
             foreach (Collider collider in coliderEnemy)
             {
@@ -237,8 +235,6 @@ namespace Assets.Source.Game.Scripts
             {
                 if (_spell != null)
                     _spell.transform.Translate(_direction * _blastSpeed * Time.deltaTime);
-                else
-                    yield return null;
 
                 yield return null;
             }
@@ -256,10 +252,6 @@ namespace Assets.Source.Game.Scripts
                     _spell.transform.RotateAround(_player.transform.position + Vector3.up * verticalOffset, Vector3.up, _rotationSpeed * Time.deltaTime);
                     Vector3 direction = (_spell.transform.position - _player.transform.position).normalized;
                     _spell.transform.position = _player.transform.position + direction * distance + Vector3.up * verticalOffset;
-                }
-                else
-                {
-                    yield return null;
                 }
 
                 yield return null;

@@ -1,5 +1,4 @@
 using Lean.Localization;
-using System;
 
 public class SettingsModel
 {

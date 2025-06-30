@@ -3,9 +3,9 @@ using UnityEngine;
 
 public class PlayerFactory
 {
-    private Transform _spawnPoint;
-    private PlayerClassData _classData;
-    private Player _playerPrefab;
+    private readonly Transform _spawnPoint;
+    private readonly PlayerClassData _playerClassData;
+    private readonly Player _playerPrefab;
 
     public PlayerFactory(
         
@@ -20,9 +20,40 @@ public class PlayerFactory
         out Player spawnedPlayer)
     {
         _spawnPoint = spawnPoint;
-        _classData = temporaryData.PlayerClassData;
+        _playerClassData = temporaryData.PlayerClassData;
         _playerPrefab = playerPrefab;
         spawnedPlayer = GameObject.Instantiate(_playerPrefab, _spawnPoint.position, Quaternion.identity);
-        spawnedPlayer.CreateStats(observer, _classData, playerView, temporaryData.WeaponData, abilityFactory, abilityPresenterFactory, temporaryData, audioPlayer);
+        spawnedPlayer.CreateStats(observer, _playerClassData, playerView, temporaryData.WeaponData, abilityFactory, abilityPresenterFactory, temporaryData, audioPlayer);
+    }
+
+    public PlayerFactory(
+        AbilityFactory abilityFactory,
+        AbilityPresenterFactory abilityPresenterFactory,
+        PersistentDataService persistentDataService,
+        GamePauseService gamePauseService,
+        GameConfig gameConfig,
+        CameraControiler cameraControiler,
+        Player playerPrefab,
+        PlayerView playerView,
+        Transform spawnPoint,
+        AudioPlayer audioPlayer,
+        out Player spawnedPlayer)
+    {
+        _spawnPoint = spawnPoint;
+        _playerClassData = gameConfig.GetPlayerClassDataById(persistentDataService.PlayerProgress.CurrentPlayerClassId);
+        _playerPrefab = playerPrefab;
+        spawnedPlayer = GameObject.Instantiate(_playerPrefab, _spawnPoint.position, Quaternion.identity);
+
+        spawnedPlayer.CreatePlayerEntities(
+            abilityFactory,
+            abilityPresenterFactory,
+            persistentDataService,
+            gamePauseService,
+            gameConfig,
+            cameraControiler,
+            playerView,
+            _playerClassData,
+            spawnPoint,
+            audioPlayer);
     }
 }

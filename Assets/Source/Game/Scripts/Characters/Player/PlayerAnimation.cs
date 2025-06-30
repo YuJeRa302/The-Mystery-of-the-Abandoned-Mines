@@ -7,6 +7,7 @@ namespace Assets.Source.Game.Scripts
     public class PlayerAnimation : IDisposable
     {
         private readonly IGameLoopService _gameLoopService;
+        private readonly GamePauseService _gamePauseService;
         private readonly ICoroutineRunner _coroutineRunner;
 
         private Animator _animator;
@@ -26,6 +27,26 @@ namespace Assets.Source.Game.Scripts
             IGameLoopService gameLoopService)
         {
             _gameLoopService = gameLoopService;
+            _coroutineRunner = coroutineRunner;
+            _animator = animator;
+            _rigidbody = rigidbody;
+            _maxSpeed = maxSpeed;
+            _animator.runtimeAnimatorController = classData.AnimatorController;
+            _player = player;
+            _moveCorontine = _coroutineRunner.StartCoroutine(PlayingAnimationMove());
+            AddListeners();
+        }
+
+        public PlayerAnimation(
+            Animator animator,
+            Rigidbody rigidbody,
+            float maxSpeed,
+            PlayerClassData classData,
+            Player player,
+            ICoroutineRunner coroutineRunner,
+            GamePauseService gamePauseService)
+        {
+            _gamePauseService = gamePauseService;
             _coroutineRunner = coroutineRunner;
             _animator = animator;
             _rigidbody = rigidbody;
@@ -64,10 +85,16 @@ namespace Assets.Source.Game.Scripts
         {
             _gameLoopService.GamePaused += OnGamePaused;
             _gameLoopService.GameResumed += OnGameResumed;
+
+            _gamePauseService.GamePaused += OnGamePaused;
+            _gamePauseService.GameResumed += OnGameResumed;
         }
 
         private void RemoveListeners() 
         {
+            _gamePauseService.GamePaused -= OnGamePaused;
+            _gamePauseService.GameResumed -= OnGameResumed;
+
             if (_gameLoopService != null)
             {
                 _gameLoopService.GamePaused -= OnGamePaused;

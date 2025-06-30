@@ -8,8 +8,9 @@ namespace Assets.Source.Game.Scripts
 {
     public class PlayerAttacker : IDisposable
     {
-        private readonly System.Random _rnd = new();
+        private readonly System.Random _rnd = new ();
         private readonly IGameLoopService _gameLoopService;
+        private readonly GamePauseService _gamePauseService;
         private readonly ICoroutineRunner _coroutineRunner;
         private readonly int _divider = 100;
         private readonly int _defaultCriticalDamageMultiplier = 1;
@@ -52,6 +53,26 @@ namespace Assets.Source.Game.Scripts
             _coolDownAttack = _coroutineRunner.StartCoroutine(CoolDownAttack());
         }
 
+        public PlayerAttacker(
+            Transform shoPoint,
+            Player player,
+            TypeAttackRange typeAttackRange,
+            WeaponData weaponData,
+            ICoroutineRunner coroutineRunner,
+            GamePauseService gamePauseService,
+            Pool pool)
+        {
+            _gamePauseService = gamePauseService;
+            _coroutineRunner = coroutineRunner;
+            _shotPoint = shoPoint;
+            _player = player;
+            _typeAttackRange = typeAttackRange;
+            _poolBullet = pool;
+            CreateBulletSpawner(weaponData);
+            AddListeners();
+            _coolDownAttack = _coroutineRunner.StartCoroutine(CoolDownAttack());
+        }
+
         public Enemy CurrentTarget => _currentTarget;
 
         public void Dispose()
@@ -84,12 +105,18 @@ namespace Assets.Source.Game.Scripts
         {
             _gameLoopService.GamePaused += OnGamePaused;
             _gameLoopService.GameResumed += OnGameResumed;
+
+            _gamePauseService.GamePaused += OnGamePaused;
+            _gamePauseService.GameResumed += OnGameResumed;
         }
 
         private void RemoveListeners()
         {
             _gameLoopService.GamePaused -= OnGamePaused;
             _gameLoopService.GameResumed -= OnGameResumed;
+
+            _gamePauseService.GamePaused -= OnGamePaused;
+            _gamePauseService.GameResumed -= OnGameResumed;
         }
 
         private void OnGamePaused(bool state)

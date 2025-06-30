@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67ee0f534edf970488583a206c3f53b0, type: 3}
+  m_Name: GameData
+  m_EditorClassIdentifier: 
+  _levelDatas:
+  - {fileID: 11400000, guid: 48b8e5cdd6972e64489212571ae89184, type: 2}
+  - {fileID: 11400000, guid: fd3ec1e6be9e5f64483698728ebe1629, type: 2}
+  - {fileID: 11400000, guid: ac267d050c8272345a470cb6bf8e2c7b, type: 2}
+  - {fileID: 11400000, guid: 2474b1931ed291f41b0c064446897d05, type: 2}
+  - {fileID: 11400000, guid: 5e3ba5d2dbdc5154197ea167d37ad6da, type: 2}
+  _contractLevelDatas:
+  - {fileID: 11400000, guid: 1942f4b3bff5e2241b9e6134a8bb399e, type: 2}
+  - {fileID: 11400000, guid: 76e9d87342265ce4d9a226c43c97b948, type: 2}
+  - {fileID: 11400000, guid: 0c82cbdf8badd2b4c835f196b06dad5e, type: 2}
+  _weaponDatas:
+  - {fileID: 11400000, guid: 4d660e7d556c44343a5bc39f3b932733, type: 2}
+  - {fileID: 11400000, guid: 999da9319256207419c5d37e91896a01, type: 2}
+  - {fileID: 11400000, guid: 63d4eea141e6306448339549d40910cf, type: 2}
+  - {fileID: 11400000, guid: 99d9d6275d4c5fe4c8b96443bf10203c, type: 2}
+  - {fileID: 11400000, guid: 63e2a65505f8ce544a0b8b2c71298602, type: 2}
+  - {fileID: 11400000, guid: 02de99d65aa7c2645866e47576648d34, type: 2}
+  - {fileID: 11400000, guid: 8da96441fcc95f54aad7120b51280608, type: 2}
+  - {fileID: 11400000, guid: a9914ec9439ad274084c0b5619a32c49, type: 2}
+  - {fileID: 11400000, guid: 5bbd08f488a8ca548bfe9a91d77ca97b, type: 2}
+  - {fileID: 11400000, guid: b1647f4bdb02c6641bd8e6467a8d15ce, type: 2}
+  - {fileID: 11400000, guid: 20106646bd78bbc40978f5eb1f317423, type: 2}
+  - {fileID: 11400000, guid: 8d00eb8a94cc76f43b2e776fe62013d7, type: 2}
+  - {fileID: 11400000, guid: 064b50bc516d0d140a45c008d5a588b7, type: 2}
+  - {fileID: 11400000, guid: 48f332a793d8f5d43b07c8c22fd2094e, type: 2}
+  - {fileID: 11400000, guid: 5d53dc4dce8fa2b459fd473012659e4c, type: 2}
+  _playerClassDatas:
+  - {fileID: 11400000, guid: 58bf0b437f5b06247864638406b4198e, type: 2}
+  - {fileID: 11400000, guid: bbace51df70a5204eb024cb99fb0f11e, type: 2}
+  - {fileID: 11400000, guid: 443a12eb8334cd24380eafbd7710991d, type: 2}
+  _upgradeDatas:
+  - {fileID: 11400000, guid: f43426caaab786c46811cba6838a534e, type: 2}
+  - {fileID: 11400000, guid: 9fedcf323e39c844599abbf1f49595b1, type: 2}
+  - {fileID: 11400000, guid: ae68d566a865c9240b8ba9f33195cc87, type: 2}
+  - {fileID: 11400000, guid: 81d90ee34664ac24eae378c2390b1f61, type: 2}
+  - {fileID: 11400000, guid: cb2743858293f0d4cb2a7bf0d4d83353, type: 2}
+  - {fileID: 11400000, guid: d67aa8da981339148badc7949b1a9f38, type: 2}
+  - {fileID: 11400000, guid: 092d04f1f0b280a4bb63ad004109dd33, type: 2}
+  - {fileID: 11400000, guid: bd88d3b8f3d50ea44bc6af6d5eefd141, type: 2}

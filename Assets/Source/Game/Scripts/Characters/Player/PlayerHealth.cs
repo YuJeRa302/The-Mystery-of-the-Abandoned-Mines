@@ -7,6 +7,7 @@ namespace Assets.Source.Game.Scripts
     public class PlayerHealth : IDisposable
     {
         private readonly Player _player;
+        private readonly GamePauseService _gamePauseService;
         private readonly ICoroutineRunner _coroutineRunner;
         private readonly IGameLoopService _gameLoopService;
         private readonly int _minHealth = 0;
@@ -28,6 +29,17 @@ namespace Assets.Source.Game.Scripts
             _player = player;
             _coroutineRunner = coroutineRunner;
             _gameLoopService = gameLoopService;
+            _currentHealth = _maxHealth;
+            AddListeners();
+            _regeneration = _coroutineRunner.StartCoroutine(RegenerationHealth());
+        }
+
+        public PlayerHealth(Player player, ICoroutineRunner coroutineRunner, GamePauseService gamePauseService, int currentHealth)
+        {
+            _player = player;
+            _coroutineRunner = coroutineRunner;
+            _gamePauseService = gamePauseService;
+            _currentHealth = currentHealth;
             _currentHealth = _maxHealth;
             AddListeners();
             _regeneration = _coroutineRunner.StartCoroutine(RegenerationHealth());
@@ -105,6 +117,9 @@ namespace Assets.Source.Game.Scripts
         {
             _gameLoopService.GamePaused += OnPauseGame;
             _gameLoopService.GameResumed += OnResumeGame;
+
+            _gamePauseService.GamePaused += OnPauseGame;
+            _gamePauseService.GameResumed += OnResumeGame;
             HealthChanged += OnHealthChanged;
         }
 
@@ -112,6 +127,9 @@ namespace Assets.Source.Game.Scripts
         {
             _gameLoopService.GamePaused -= OnPauseGame;
             _gameLoopService.GameResumed -= OnResumeGame;
+
+            _gamePauseService.GamePaused -= OnPauseGame;
+            _gamePauseService.GameResumed -= OnResumeGame;
             HealthChanged -= OnHealthChanged;
         }
 

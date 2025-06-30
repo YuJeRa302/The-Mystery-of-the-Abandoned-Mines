@@ -1,50 +1,33 @@
 using Assets.Source.Game.Scripts;
 using System;
-using System.Collections.Generic;
 
 public class UpgradeModel : IDisposable
 {
-    private readonly TemporaryData _temporaryData;
-    private readonly int _minValue = 0;
+    private readonly PersistentDataService _persistentDataService;
     private readonly int _maxStatsLevel = 3;
 
     private UpgradeState _currentStats;
     private UpgradeData _currentUpgradeData;
-    private List<UpgradeState> _upgradeStates = new ();
 
-    public UpgradeModel(TemporaryData temporaryData) 
+    public UpgradeModel(PersistentDataService persistentDataService) 
     {
-        _temporaryData = temporaryData;
-        SetUpgradePoints(_temporaryData.UpgradePoints);
-
-        if (_temporaryData.UpgradeStates != null)
-            SetUpgradeState(_temporaryData.UpgradeStates);
+        _persistentDataService = persistentDataService;
     }
 
     public event Action<UpgradeState> InvokedStatsUpgrade;
     public event Action InvokedStatsReset;
 
-    public int UpgradePoints => _temporaryData.UpgradePoints;
-
-    public void SetUpgradePoints(int value) 
-    {
-        _temporaryData.SetUpgradePoints(value);
-    }
+    public int UpgradePoints => _persistentDataService.PlayerProgress.UpgradePoints;
 
     public void ResetUpgrade(int value) 
     {
-        _temporaryData.AddUpgradePoints(value);
+        _persistentDataService.PlayerProgress.UpgradePoints += value;
         InvokedStatsReset?.Invoke();
     }
 
     public UpgradeState GetUpgradeState(UpgradeData upgradeData) 
     {
-        UpgradeState upgradeState = _temporaryData.GetUpgradeState(upgradeData.Id);
-
-        if (upgradeState == null)
-            upgradeState = InitState(upgradeData);
-
-        return upgradeState;
+        return _persistentDataService.PlayerProgress.UpgradeService.GetUpgradeState(upgradeData);
     }
 
     public void SelectStats(UpgradeDataView upgradeDataView)
@@ -63,39 +46,18 @@ public class UpgradeModel : IDisposable
 
         if (UpgradePoints >= _currentUpgradeData.UpgradeParameters[_currentStats.CurrentLevel].Cost)
         {
-            int cost = _currentUpgradeData.UpgradeParameters[_currentStats.CurrentLevel].Cost;
-            _temporaryData.TrySpendUpgradePoints(cost);
+            _persistentDataService.TrySpendUpgradePoints(_currentUpgradeData.UpgradeParameters[_currentStats.CurrentLevel].Cost);
 
             if (_currentStats.CurrentLevel < _maxStatsLevel)
                 _currentStats.CurrentLevel++;
 
             InvokedStatsUpgrade?.Invoke(_currentStats);
-            _temporaryData.SetUpgradeState(_upgradeStates);
+            _persistentDataService.PlayerProgress.UpgradeService.SetUpgradeState(_currentStats);
         }
         else
         {
             return;
         }
-    }
-
-    public void UpdateTemporaryData() 
-    {
-        _temporaryData.SetUpgradeState(_upgradeStates);
-    }
-
-    private void SetUpgradeState(UpgradeState[] upgradeStates) 
-    {
-        foreach (UpgradeState state in upgradeStates)
-        {
-            _upgradeStates.Add(state);
-        }
-    }
-
-    private UpgradeState InitState(UpgradeData upgradeData)
-    {
-        UpgradeState upgradeState = new(upgradeData.Id, _minValue);
-        _upgradeStates.Add(upgradeState);
-        return upgradeState;
     }
 
     public void Dispose()

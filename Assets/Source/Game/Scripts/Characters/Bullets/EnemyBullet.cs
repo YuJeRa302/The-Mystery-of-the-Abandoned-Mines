@@ -10,12 +10,12 @@ namespace Assets.Source.Game.Scripts
             if (collision.collider.TryGetComponent(out Player player))
             {
                 player.TakeDamage(Convert.ToInt32(_damage));
-                ReturObjectPool();
+                ReturnObjectPool();
             }
 
             if (collision.collider.TryGetComponent(out Wall wall))
             {
-                ReturObjectPool();
+                ReturnObjectPool();
             }
         }
 
@@ -24,7 +24,7 @@ namespace Assets.Source.Game.Scripts
             if (other.TryGetComponent(out Player player))
             {
                 player.TakeDamage(Convert.ToInt32(_damage));
-                ReturObjectPool();
+                ReturnObjectPool();
             }
         }
     }

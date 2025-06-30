@@ -11,6 +11,9 @@ namespace Assets.Source.Game.Scripts
         private readonly int _countRerollPointsReward = 2;
         private readonly int _minWeaponCount = 1;
         private readonly System.Random _rnd = new ();
+        private readonly PersistentDataService _persistentDataService;
+        private readonly RoomService _roomService;
+        private readonly GamePauseService _gamePauseService;
         private readonly TemporaryData _temporaryData;
         private readonly Player _player;
         private readonly LevelObserver _levelObserver;
@@ -44,6 +47,26 @@ namespace Assets.Source.Game.Scripts
             _audioPlayer.PlayAmbient();
             _audioPlayer.MuteSound(IsMuted);
             SetLanguage(_temporaryData.Language);
+            AddListeners();
+        }
+
+        public GamePanelsModel(
+            RoomService roomService,
+            GamePauseService gamePauseService,
+            PersistentDataService persistentDataService,
+            CardLoader cardLoader,
+            Player player,
+            AudioPlayer audioPlayer,
+            LeanLocalization leanLocalization) 
+        {
+            _roomService = roomService;
+            _gamePauseService = gamePauseService;
+            _persistentDataService = persistentDataService;
+            _cardLoader = cardLoader;
+            _player = player;
+            _audioPlayer = audioPlayer;
+            _leanLocalization = leanLocalization;
+            SetApplicationParameters();
             AddListeners();
         }
 
@@ -181,7 +204,20 @@ namespace Assets.Source.Game.Scripts
             _levelObserver.LootRoomComplited += OnLootRoomComplited;
             _levelObserver.GamePaused += OnGamePause;
             _levelObserver.GameResumed += OnGameResume;
+
+
+            _roomService.StageCompleted += OnStageComplete;
+            _roomService.LootRoomCompleted += OnLootRoomComplited;
+            _roomService.GameEnded += OnNEwGameEnded;
+            _gamePauseService.GamePaused += OnGamePause;
+            _gamePauseService.GameResumed += OnGameResume;
             _cardLoader.CardPoolCreated += OnCardPoolCreate;
+        }
+
+        private void OnNEwGameEnded(bool state)
+        {
+            _audioPlayer.StopAmbient();
+            GameEnded?.Invoke(state);
         }
 
         private void OnLootRoomComplited(int reward)
@@ -221,6 +257,18 @@ namespace Assets.Source.Game.Scripts
             _temporaryData.SetMuteStateSound(IsMuted);
         }
 
+        private void SetApplicationParameters() 
+        {
+            IsMuted = _persistentDataService.PlayerProgress.IsMuted;
+            AmbientVolumeValue = _persistentDataService.PlayerProgress.AmbientVolume;
+            SfxVolumeValue = _persistentDataService.PlayerProgress.SfxVolume;
+            _audioPlayer.AmbientValueChanged(AmbientVolumeValue);
+            _audioPlayer.SfxValueChanged(SfxVolumeValue);
+            _audioPlayer.PlayAmbient();
+            _audioPlayer.MuteSound(IsMuted);
+            SetLanguage(_persistentDataService.PlayerProgress.Language);
+        }
+
         private void CreateWeaponDatasForReward()
         {
             for (int index = 0; index < (_temporaryData.LevelData as ContractLevelData).WeaponDatas.Length; index++)
@@ -248,10 +296,7 @@ namespace Assets.Source.Game.Scripts
             if (weaponData == null)
                 return null;
 
-            WeaponState weaponState = new();
-            weaponState.Id = weaponData.Id;
-            weaponState.IsEquip = false;
-            weaponState.IsUnlock = true;
+            WeaponState weaponState = new(weaponData.Id, false, true);
             return weaponState;
         }
     }

@@ -6,6 +6,7 @@ namespace Assets.Source.Game.Scripts
     [CreateAssetMenu(fileName = "New Class", menuName = "Create Player Class", order = 51)]
     public class PlayerClassData : ScriptableObject
     {
+        [SerializeField] private int _id;
         [SerializeField] private Sprite _icon;
         [SerializeField] private string _translationName;
         [SerializeField] private string _translationDescription;
@@ -19,6 +20,7 @@ namespace Assets.Source.Game.Scripts
         [Space(10)]
         [SerializeField] private AudioClip _attackEffect;
 
+        public int Id => _id;
         public List<ClassAbilityData> ClassAbilityDatas => _classAbilityDatas;
         public string TranslationDescription => _translationDescription;
         public string TranslationName => _translationName;

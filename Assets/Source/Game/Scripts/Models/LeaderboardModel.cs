@@ -1,11 +1,11 @@
 public class LeaderboardModel
 {
-    private readonly TemporaryData _temporaryData;
+    private readonly PersistentDataService _persistentDataService;
 
-    public LeaderboardModel(TemporaryData temporaryData)
+    public LeaderboardModel(PersistentDataService persistentDataService)
     {
-        _temporaryData = temporaryData;
+        _persistentDataService = persistentDataService;
     }
 
-    public int GetScore() => _temporaryData.PlayerScore;
+    public int GetScore() => _persistentDataService.PlayerProgress.Score;
 }

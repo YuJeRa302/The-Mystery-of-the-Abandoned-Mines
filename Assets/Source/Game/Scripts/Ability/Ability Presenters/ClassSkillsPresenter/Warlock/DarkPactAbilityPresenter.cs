@@ -83,7 +83,7 @@ public class DarkPactAbilityPresenter : AbilityPresenter
             foreach (var patricle in _spawnedEffects)
             {
                 if (patricle.isActiveAndEnabled)
-                    patricle.ReturObjectPool();
+                    patricle.ReturnObjectPool();
             }
         }
     }

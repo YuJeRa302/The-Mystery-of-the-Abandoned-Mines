@@ -6,6 +6,8 @@ namespace Assets.Source.Game.Scripts
 {
     public class PlayerAbilityCaster : IDisposable
     {
+        private readonly PlayerClassData _playerClassData;
+        private readonly PersistentDataService _persistentDataService;
         private readonly int _shiftIndex = 1;
 
         private Player _player;
@@ -13,7 +15,6 @@ namespace Assets.Source.Game.Scripts
         private List<Ability> _abilities = new ();
         private List<Ability> _classAbilities = new ();
         private List<Ability> _legendaryAbilities = new ();
-        private List<ClassAbilityData> _classAbilityDatas = new ();
         private List<PassiveAbilityView> _passiveAbilityViews = new ();
         private AbilityAttributeData _abilityAttributeData;
         private AbilityPresenterFactory _abilityPresenterFactory;
@@ -42,9 +43,25 @@ namespace Assets.Source.Game.Scripts
             _audioPlayer = audioPlayer;
         }
 
+        public PlayerAbilityCaster(
+            AbilityFactory abilityFactory,
+            AbilityPresenterFactory abilityPresenterFactory,
+            Player player,
+            PersistentDataService persistentDataService,
+            PlayerClassData playerClassData,
+            AudioPlayer audioPlayer)
+        {
+            _abilityFactory = abilityFactory;
+            _abilityPresenterFactory = abilityPresenterFactory;
+            _player = player;
+            _persistentDataService = persistentDataService;
+            _playerClassData = playerClassData;
+            _audioPlayer = audioPlayer;
+        }
+
         public void Initialize()
         {
-            foreach (ClassAbilityData ability in _temporaryData.PlayerClassData.ClassAbilityDatas)
+            foreach (ClassAbilityData ability in _playerClassData.ClassAbilityDatas)
             {
                 CreateClassAbility(ability);
             }
@@ -53,7 +70,6 @@ namespace Assets.Source.Game.Scripts
         public void TakeAbility(CardView cardView)
         {
             _abilityAttributeData = null;
-            //LegendaryAbilityData legendaryAbilityData = (cardView.CardData.AttributeData as AbilityAttributeData).LegendaryAbilityData;
 
             if (cardView.CardData.LegendaryAbilityData != null)
             {
@@ -310,7 +326,7 @@ namespace Assets.Source.Game.Scripts
 
         private void CreateClassAbility(ClassAbilityData abilityData)
         {
-            ClassAbilityState classAbilityState = _temporaryData.GetClassAbilityState(abilityData.Id);
+            ClassAbilityState classAbilityState = _persistentDataService.PlayerProgress.ClassAbilityService.GetClassAbilityStateById(abilityData.Id);
             ClassAbilityTaked?.Invoke(abilityData, classAbilityState.CurrentLevel);
         }
 

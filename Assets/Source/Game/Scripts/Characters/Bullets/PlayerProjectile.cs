@@ -40,11 +40,11 @@ public class PlayerProjectile : PoolObject
         if (collision.collider.TryGetComponent(out Enemy enemy))
         {
             enemy.TakeDamage(_damageSource);
-            ReturObjectPool();
+            ReturnObjectPool();
         }
 
         if (collision.collider.TryGetComponent(out Wall wall))
-            ReturObjectPool();
+            ReturnObjectPool();
     }
 
     public void Initialaze(Enemy target, DamageSource damageSource)
@@ -60,6 +60,6 @@ public class PlayerProjectile : PoolObject
     private IEnumerator LifeTimeCounter()
     {
         yield return new WaitForSeconds(_lifeTimeBullet);
-        ReturObjectPool();
+        ReturnObjectPool();
     }
 }

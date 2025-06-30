@@ -28,5 +28,4 @@ public class ClassAbilityViewModel
     public void SelectClassAbility(ClassAbilityDataView classAbilityDataView) => _classAbilityModel.SelectClassAbility(classAbilityDataView);
     public void SelectPlayerClass(PlayerClassData playerClassData) => _classAbilityModel.SelectPlayerClass(playerClassData);
     public void UpgradeAbility() => _classAbilityModel.UpgradeAbility();
-    public void UpdateTemporaryData() => _classAbilityModel.UpdateTemporaryData();
 }

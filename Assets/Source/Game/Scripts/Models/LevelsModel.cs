@@ -1,34 +1,35 @@
 using Assets.Source.Game.Scripts;
-using IJunior.TypedScenes;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LevelsModel
 {
-    private readonly TemporaryData _temporaryData;
-    private readonly ICoroutineRunner _coroutineRunner;
+    private readonly PersistentDataService _persistentDataService;
     private readonly GameObject _canvasLoader;
+    private readonly ICoroutineRunner _coroutineRunner;
+    private readonly ISaveAndLoadProgress _saveAndLoadProgress;
     private readonly float _loadControlValue = 0.9f;
+    private readonly string _gameSceneName = "GameScene";
 
     private AsyncOperation _load;
-    private LevelData _currentLevelData;
-    private PlayerClassData _currentPlayerClassData;
-    private WeaponData _currentWeaponData;
 
-    public LevelsModel(TemporaryData temporaryData, ICoroutineRunner coroutineRunner, GameObject canvasLoader)
+    public LevelsModel(
+        PersistentDataService persistentDataService,
+        ICoroutineRunner coroutineRunner,
+        ISaveAndLoadProgress saveAndLoadProgress,
+        GameObject canvasLoader)
     {
-        _temporaryData = temporaryData;
         _coroutineRunner = coroutineRunner;
+        _saveAndLoadProgress = saveAndLoadProgress;
+        _persistentDataService = persistentDataService;
         _canvasLoader = canvasLoader;
         _canvasLoader.gameObject.SetActive(false);
-        LevelStates = _temporaryData.GetLevelStates();
     }
-
-    public LevelState[] LevelStates { get; private set; }
 
     public bool TryUnlockContractButton(int index) 
     {
-        LevelState levelState = _temporaryData.GetLevelState(index);
+        LevelState levelState = _persistentDataService.PlayerProgress.LevelService.GetLevelStateById(index);
 
         if (levelState != null)
             return levelState.IsComplete;
@@ -38,48 +39,46 @@ public class LevelsModel
 
     public bool TryBuyContract(int cost)
     {
-        return _temporaryData.TrySpendCoins(cost);
+        return _persistentDataService.TrySpendCoins(cost);
+    }
+
+    public bool TryUnlockLevel(int levelId) 
+    {
+        return _persistentDataService.PlayerProgress.LevelService.GetLevelStateById(levelId).IsComplete;
     }
 
     public LevelState GetLevelState(LevelData levelData) 
     {
-        LevelState levelState = _temporaryData.GetLevelState(levelData.Id);
-
-        if (levelState == null)
-            levelState = InitLevelState(levelData);
-
-        return levelState;
+        return _persistentDataService.PlayerProgress.LevelService.GetLevelStateByLevelData(levelData);
     }
 
     public WeaponState GetWeaponState(WeaponData weaponData)
     {
-        return _temporaryData.GetWeaponState(weaponData.Id);
+        return _persistentDataService.PlayerProgress.WeaponService.GetWeaponStateByData(weaponData);
     }
+
+    public int GetPlayerCoinCount() => _persistentDataService.PlayerProgress.Coins;
 
     public void SelectLevel(LevelDataView levelDataView)
     {
-        _currentLevelData = levelDataView.LevelData;
-        _temporaryData.SetLevelData(_currentLevelData);
+        _persistentDataService.PlayerProgress.LevelService.CurrentLevelId = levelDataView.LevelData.Id;
     }
 
     public void SelectClass(PlayerClassDataView playerClassDataView) 
     {
-        _currentPlayerClassData = playerClassDataView.PlayerClassData;
-        _temporaryData.SetPlayerClassData(_currentPlayerClassData);
+        _persistentDataService.PlayerProgress.CurrentPlayerClassId = playerClassDataView.PlayerClassData.Id;
     }
 
     public void SelectWeapon(WeaponDataView weaponDataView) 
     {
-        _currentWeaponData = weaponDataView.WeaponData;
-        _temporaryData.SetWeaponData(_currentWeaponData);
+        _persistentDataService.PlayerProgress.WeaponService.CurrentWeaponId = weaponDataView.WeaponData.Id;
     }
 
     public void LoadScene() 
     {
-        _coroutineRunner.StartCoroutine(LoadScreenLevel(GameScene.LoadAsync(_temporaryData)));
+        _saveAndLoadProgress.SaveDataToPrefs();
+        _coroutineRunner.StartCoroutine(LoadScreenLevel(SceneManager.LoadSceneAsync(_gameSceneName)));
     }
-
-    public int GetPlayerCoinCount() => _temporaryData.Coins;
 
     private IEnumerator LoadScreenLevel(AsyncOperation asyncOperation)
     {
@@ -97,18 +96,5 @@ public class LevelsModel
 
         _load.allowSceneActivation = true;
         _load = null;
-    }
-
-    private LevelState InitLevelState(LevelData levelData)
-    {
-        LevelState levelState = new()
-        {
-            Id = levelData.Id,
-            IsComplete = false,
-            CurrentCompleteStages = 0,
-            Tier = levelData.Tier
-        };
-
-        return levelState;
     }
 }

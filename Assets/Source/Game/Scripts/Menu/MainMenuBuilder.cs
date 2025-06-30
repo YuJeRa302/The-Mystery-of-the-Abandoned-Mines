@@ -26,6 +26,7 @@ namespace Assets.Source.Game.Scripts
 
         private SaveAndLoader _saveAndLoad;
         private TemporaryData _temporaryData;
+        private PersistentDataService _persistentDataService;
 
         public Action EnebleSave;
 
@@ -47,19 +48,20 @@ namespace Assets.Source.Game.Scripts
 
         private void Build()
         {
-            _saveAndLoad = new();
+            _persistentDataService = new PersistentDataService();
+            _saveAndLoad = new(_persistentDataService, _configData);
             EnebleSave?.Invoke();
 
             if (_temporaryData == null)
             {
                 if(_saveAndLoad.TryGetGameData())
                 {
+                    _saveAndLoad.LoadDataFromCloud();
                     _temporaryData = new TemporaryData(YG2.saves);
-                    Debug.Log("Second");
                 }
                 else
                 {
-                    Debug.Log("First");
+                    _saveAndLoad.LoadDataFromConfig();
                     _temporaryData = new TemporaryData(_configData);
                 }
             }
@@ -75,16 +77,16 @@ namespace Assets.Source.Game.Scripts
             YG2.GameplayStart();
         }
 
-        private void CreateMenuEntities() 
+        private void CreateMenuEntities()
         {
-            SettingsModel settingsModel = new SettingsModel(_temporaryData, _leanLocalization, _audioPlayer);
-            LevelsModel levelsModel = new LevelsModel(_temporaryData, this, _canvasLoader);
-            UpgradeModel upgradeModel = new UpgradeModel(_temporaryData);
+            SettingsModel settingsModel = new SettingsModel(_persistentDataService, _leanLocalization, _audioPlayer);
+            LevelsModel levelsModel = new LevelsModel(_persistentDataService, this, _saveAndLoad, _canvasLoader);
+            UpgradeModel upgradeModel = new UpgradeModel(_persistentDataService);
             MenuModel menuModel = new MenuModel();
-            WeaponsModel weaponsModel = new WeaponsModel(_temporaryData);
-            ClassAbilityModel classAbilityModel = new ClassAbilityModel(_temporaryData);
+            WeaponsModel weaponsModel = new WeaponsModel(_persistentDataService);
+            ClassAbilityModel classAbilityModel = new ClassAbilityModel(_persistentDataService);
             KnowledgeBaseModel knowledgeBaseModel = new KnowledgeBaseModel();
-            LeaderboardModel leaderboardModel = new LeaderboardModel(_temporaryData);
+            LeaderboardModel leaderboardModel = new LeaderboardModel(_persistentDataService);
 
             MainMenuViewModel mainMenuViewModel = new MainMenuViewModel(menuModel);
             SettingsViewModel settingsViewModel = new SettingsViewModel(settingsModel, menuModel);

@@ -5,6 +5,8 @@ public abstract class AbilityPresenter : IDisposable
 {
     protected readonly ICoroutineRunner _coroutineRunner;
     protected readonly IGameLoopService _gameLoopService;
+    protected readonly GamePauseService _gamePauseService;
+    protected readonly GameLoopService _gameLoopService1;
 
     protected Ability _ability;
     protected AbilityView _abilityView;
@@ -17,6 +19,22 @@ public abstract class AbilityPresenter : IDisposable
         _player = player;
         _coroutineRunner = coroutineRunner;
         _gameLoopService = gameLoopService;
+    }
+
+    public AbilityPresenter(
+        Ability ability,
+        AbilityView abilityView,
+        Player player,
+        GamePauseService gamePauseService,
+        GameLoopService gameLoopService,
+        ICoroutineRunner coroutineRunner)
+    {
+        _ability = ability;
+        _abilityView = abilityView;
+        _player = player;
+        _coroutineRunner = coroutineRunner;
+        _gamePauseService = gamePauseService;
+        _gameLoopService1 = gameLoopService;
     }
 
     public void Dispose()

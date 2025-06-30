@@ -21,6 +21,6 @@ public class Bullet : PoolObject
     private IEnumerator LifeTimeCounter()
     {
         yield return new WaitForSeconds(_lifeTimeBullet);
-        ReturObjectPool();
+        ReturnObjectPool();
     }
 }

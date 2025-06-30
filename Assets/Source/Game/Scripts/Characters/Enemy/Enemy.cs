@@ -66,7 +66,7 @@ namespace Assets.Source.Game.Scripts
         {
             foreach (var spawnedParticle in _spawnedEffects)
             {
-                spawnedParticle.ReturObjectPool();
+                spawnedParticle.ReturnObjectPool();
             }
 
             CorountineStop(_slowDamage);
@@ -270,7 +270,7 @@ namespace Assets.Source.Game.Scripts
             {
                 if (particle.name == spawnedParticle.NameObject)
                     if (spawnedParticle.isActiveAndEnabled)
-                        spawnedParticle.ReturObjectPool();
+                        spawnedParticle.ReturnObjectPool();
             }
         }
 

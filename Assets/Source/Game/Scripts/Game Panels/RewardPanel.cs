@@ -60,7 +60,7 @@ namespace Assets.Source.Game.Scripts
             base.Open();
         }
 
-        private void ShowReward(int reward)
+        private void ShowLootRoomReward(int reward)
         {
             CreateLootRoomRevard(reward);
             base.Open();
@@ -68,7 +68,7 @@ namespace Assets.Source.Game.Scripts
 
         private void OnRewardCallback(string index)
         {
-            if (index == _gamePanelsViewModel.GetDefalutRewardIndex()) 
+            if (index == _gamePanelsViewModel.GetDefalutRewardIndex())
             {
                 GamePanelsViewModel.GetEndGameReward();
                 _isRewardReceived = true;
@@ -108,7 +108,7 @@ namespace Assets.Source.Game.Scripts
                     _collectButton.gameObject.SetActive(false);
                     _closeGameButton.gameObject.SetActive(true);
 
-                    foreach (Text text in _mainRewardMultiplierTexts) 
+                    foreach (Text text in _mainRewardMultiplierTexts)
                     {
                         text.gameObject.SetActive(true);
                     }
@@ -131,7 +131,7 @@ namespace Assets.Source.Game.Scripts
         private void AddListeners()
         {
             GamePanelsViewModel.GameEnded += OpenRewardPanel;
-            GamePanelsViewModel.LootRoomComplitetd += ShowReward;
+            GamePanelsViewModel.LootRoomComplitetd += ShowLootRoomReward;
             YG2.onRewardAdv += OnRewardCallback;
             YG2.onCloseRewardedAdv += OnCloseAdCallback;
             YG2.onErrorRewardedAdv += OnErrorRewardAdCallback;
@@ -215,7 +215,7 @@ namespace Assets.Source.Game.Scripts
         {
             _levelCompleteReward.SetActive(true);
             _imageGameState.sprite = gameState == true ? _winGameSprite : _loseGameSprite;
-            _gameStateText.TranslationName = gameState == true ? "Win" : "Lose";
+            _gameStateText.TranslationName = gameState == true ? GameConstants.WinGameTranslationKey : GameConstants.LoseGameTranslationKey;
         }
 
         private void CreateCoinsRewards()

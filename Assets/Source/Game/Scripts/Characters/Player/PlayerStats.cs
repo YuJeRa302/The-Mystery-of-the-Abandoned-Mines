@@ -17,8 +17,8 @@ namespace Assets.Source.Game.Scripts
         private readonly float _longAttackRange = 10f;
         private readonly float _longSearchRadius = 10f;
 
-        private int _maxPlayerLevel = 100;//
-        private int _maxUpgradeLevel = 50;//
+        private int _maxPlayerLevel = 100;
+        private int _maxUpgradeLevel = 50;
 
         private DamageSource _damageSource;
         private float _moveSpeed;
@@ -80,7 +80,6 @@ namespace Assets.Source.Game.Scripts
 
         public DamageSource DamageSource => _damageSource;
         public int Armor => _armor;
-        public float Damage => _damageSource.Damage;
         public float MoveSpeed => _moveSpeed;
         public float MaxMoveSpeed => _maxMoveSpeed;
         public int RerollPoints => _rerollPoints;
@@ -175,6 +174,53 @@ namespace Assets.Source.Game.Scripts
         public void UpdateRerollPoints(CardView cardView)
         {
             _rerollPoints += cardView.CardData.AttributeData.CardParameters[cardView.CardState.CurrentLevel].CardParameters[0].Value;
+        }
+
+        public void SetPlayerUpgrades(GameConfig gameConfig, PersistentDataService persistentDataService) 
+        {
+            UpgradeData upgradeData;
+
+            if (persistentDataService.PlayerProgress.UpgradeService.UpgradeStates == null)
+                return;
+
+            if (persistentDataService.PlayerProgress.UpgradeService.UpgradeStates.Count < _minValue)
+                return;
+
+            foreach (UpgradeState upgradeState in persistentDataService.PlayerProgress.UpgradeService.UpgradeStates)
+            {
+                if (upgradeState.CurrentLevel > _minValue)
+                {
+                    upgradeData = gameConfig.GetUpgradeDataById(upgradeState.Id);
+
+                    switch (upgradeData.TypeParameter)
+                    {
+                        case TypeParameter.Armor:
+                            _armor += upgradeData.GetUpgradeParameterByCurrentLevel(upgradeState.CurrentLevel).Value;
+                            break;
+                        case TypeParameter.Damage:
+                            _damageSource.ChangeDamage(_damageSource.Damage + upgradeData.GetUpgradeParameterByCurrentLevel(upgradeState.CurrentLevel).Value);
+                            break;
+                        case TypeParameter.Regeneration:
+                            _regeneration += upgradeData.GetUpgradeParameterByCurrentLevel(upgradeState.CurrentLevel).Value;
+                            break;
+                        case TypeParameter.Reroll:
+                            _rerollPoints += upgradeData.GetUpgradeParameterByCurrentLevel(upgradeState.CurrentLevel).Value;
+                            break;
+                        case TypeParameter.Health:
+                            MaxHealthChanged?.Invoke(upgradeData.GetUpgradeParameterByCurrentLevel(upgradeState.CurrentLevel).Value);
+                            break;
+                        case TypeParameter.AbilityCooldown:
+                            AbilityCooldownReductionChanged?.Invoke(upgradeData.GetUpgradeParameterByCurrentLevel(upgradeState.CurrentLevel).Value);
+                            break;
+                        case TypeParameter.AbilityDuration:
+                            AbilityDurationChanged?.Invoke(upgradeData.GetUpgradeParameterByCurrentLevel(upgradeState.CurrentLevel).Value);
+                            break;
+                        case TypeParameter.AbilityValue:
+                            AbilityDamageChanged?.Invoke(upgradeData.GetUpgradeParameterByCurrentLevel(upgradeState.CurrentLevel).Value);
+                            break;
+                    }
+                }
+            }
         }
 
         public void UpgradePlayerStats(UpgradeState[] upgradeStates, UpgradeData[] upgradeDatas)

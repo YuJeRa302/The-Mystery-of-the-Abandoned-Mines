@@ -43,6 +43,7 @@ namespace Assets.Source.Game.Scripts
         private PlayerWallet _wallet;
         private PlayerMovement _playerMovement;
         private AudioPlayer _audioPlayer;
+        private Transform _spawnPoint;
 
         public event Action PlayerLevelChanged;
         public event Action PlayerDied;
@@ -127,6 +128,70 @@ namespace Assets.Source.Game.Scripts
             _playerAbilityCaster.Initialize();
         }
 
+        public void CreatePlayerEntities(
+            AbilityFactory abilityFactory,
+            AbilityPresenterFactory abilityPresenterFactory,
+            PersistentDataService persistentDataService,
+            GamePauseService gamePauseService,
+            GameConfig gameConfig,
+            CameraControiler cameraControiler,
+            PlayerView playerView,
+            PlayerClassData playerClassData,
+            Transform spawnPoint,
+            AudioPlayer audioPlayer) 
+        {
+            _spawnPoint = spawnPoint;
+            _playerView = playerView;
+            _audioPlayer = audioPlayer;
+            _miniMapIcon.sprite = playerClassData.Icon;
+            _playerHealth = new PlayerHealth(this, this, gamePauseService, _currentHealth);
+            _playerAnimation = new PlayerAnimation(_animator, _rigidbody, _moveSpeed, playerClassData, this, this, gamePauseService);
+
+            _playerWeapons = new PlayerWeapons(
+                this,
+                gameConfig.GetWeaponDataById(persistentDataService.PlayerProgress.WeaponService.CurrentWeaponId),
+                _poolBullet,
+                _critDamageParticle,
+                _vampirismParticle);
+
+            _playerStats = new PlayerStats(
+                gameConfig.GetWeaponDataById(persistentDataService.PlayerProgress.WeaponService.CurrentWeaponId),
+                playerClassData,
+                _currentLevel,
+                _rerollPoints,
+                _armor,
+                _moveSpeed,
+                _regeneration,
+                _countKillEnemy);
+
+            _playerMovement = new PlayerMovement(
+                cameraControiler.Camera,
+                cameraControiler.VariableJoystick,
+                _rigidbody,
+                this,
+                this,
+                gamePauseService);
+
+            _playerAttacker = new PlayerAttacker(
+                _shotPoint,
+                this,
+                playerClassData.TypeAttackRange,
+                gameConfig.GetWeaponDataById(persistentDataService.PlayerProgress.WeaponService.CurrentWeaponId),
+                this,
+                gamePauseService,
+                _poolBullet);
+
+            _wallet = new PlayerWallet();
+            _cardDeck = new CardDeck(gameConfig.GetLevelData(persistentDataService.PlayerProgress.LevelService.CurrentLevelId).IsContractLevel);
+            _playerAbilityCaster = new PlayerAbilityCaster(abilityFactory, abilityPresenterFactory, this, persistentDataService, playerClassData, _audioPlayer);
+            _playerView.Initialize(playerClassData.Icon, _throwAbilityPoint, _playerAbilityContainer, _weaponAbilityContainer);
+            SetPlayerStats();
+            AddListeners();
+            //_playerStats.UpgradePlayerStats(temporaryData.UpgradeStates, temporaryData.UpgradeDatas);
+            _playerStats.SetPlayerUpgrades(gameConfig, persistentDataService);
+            _playerAbilityCaster.Initialize();
+        }
+
         public void Remove()
         {
             RemoveListeners();
@@ -150,6 +215,11 @@ namespace Assets.Source.Game.Scripts
         public void TakeCard(CardView cardView)
         {
             _cardDeck.TakeCard(cardView);
+        }
+
+        public void ResetPosition() 
+        {
+            transform.position = _spawnPoint.transform.position;
         }
 
         public void ResetCardState()

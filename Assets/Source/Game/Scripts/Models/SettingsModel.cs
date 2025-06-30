@@ -1,25 +1,24 @@
 using Lean.Localization;
-using System;
 
 public class SettingsModel
 {
-    private readonly TemporaryData _temporaryData;
     private readonly LeanLocalization _leanLocalization;
     private readonly AudioPlayer _audioPlayer;
+    private readonly PersistentDataService _persistentDataService;
 
-    public SettingsModel(TemporaryData temporaryData, LeanLocalization leanLocalization, AudioPlayer audioPlayer)
+    public SettingsModel(PersistentDataService persistentDataService, LeanLocalization leanLocalization, AudioPlayer audioPlayer)
     {
-        _temporaryData = temporaryData;
         _leanLocalization = leanLocalization;
+        _persistentDataService = persistentDataService;
         _audioPlayer = audioPlayer;
-        AmbientVolumeValue = _temporaryData.AmbientVolume;
-        SfxVolumeValue = _temporaryData.InterfaceVolume;
-        IsMuted = _temporaryData.MuteStateSound;
+        AmbientVolumeValue = _persistentDataService.PlayerProgress.AmbientVolume;
+        SfxVolumeValue = _persistentDataService.PlayerProgress.SfxVolume;
+        IsMuted = _persistentDataService.PlayerProgress.IsMuted;
         _audioPlayer.AmbientValueChanged(AmbientVolumeValue);
         _audioPlayer.SfxValueChanged(SfxVolumeValue);
         _audioPlayer.PlayAmbient();
         _audioPlayer.MuteSound(IsMuted);
-        SetLanguage(_temporaryData.Language);
+        SetLanguage(_persistentDataService.PlayerProgress.Language);
     }
 
     public float AmbientVolumeValue { get; private set; }
@@ -29,19 +28,19 @@ public class SettingsModel
     public void SetAmbientVolume(float volume)
     {
         AmbientVolumeValue = volume;
-        _temporaryData.SetAmbientVolume(volume);
+        _persistentDataService.PlayerProgress.AmbientVolume = volume;
     }
 
     public void SetLanguage(string value)
     {
-        _temporaryData.SetCurrentLanguage(value);
+        _persistentDataService.PlayerProgress.Language = value;
         _leanLocalization.SetCurrentLanguage(value);
     }
 
     public void SetSfxVolume(float volume)
     {
         SfxVolumeValue = volume;
-        _temporaryData.SetInterfaceVolume(volume);
+        _persistentDataService.PlayerProgress.SfxVolume = volume;
     }
 
     public void OnGamePause(bool state)
@@ -53,13 +52,13 @@ public class SettingsModel
     public void OnGameResume(bool state)
     {
         if (_audioPlayer != null)
-            _audioPlayer.MuteSound(_temporaryData.MuteStateSound);
+            _audioPlayer.MuteSound(_persistentDataService.PlayerProgress.IsMuted);
     }
 
     public void Mute()
     {
         IsMuted = true;
-        _temporaryData.SetMuteStateSound(IsMuted);
+        _persistentDataService.PlayerProgress.IsMuted = IsMuted;
 
         if (_audioPlayer != null)
             _audioPlayer.MuteSound(IsMuted);
@@ -68,7 +67,7 @@ public class SettingsModel
     public void UnMute()
     {
         IsMuted = false;
-        _temporaryData.SetMuteStateSound(IsMuted);
+        _persistentDataService.PlayerProgress.IsMuted = IsMuted;
         _audioPlayer.MuteSound(IsMuted);
     }
 

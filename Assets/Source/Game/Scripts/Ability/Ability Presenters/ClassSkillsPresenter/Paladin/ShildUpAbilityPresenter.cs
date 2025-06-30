@@ -85,7 +85,7 @@ public class ShildUpAbilityPresenter : AbilityPresenter
             foreach (var patricle in _spawnedEffects)
             {
                 if (patricle.isActiveAndEnabled)
-                    patricle.ReturObjectPool();
+                    patricle.ReturnObjectPool();
             }
         }
     }

@@ -20,7 +20,7 @@ public class CameraControiler : MonoBehaviour
         _virtualCamera.Follow = _target;
     }
 
-    public void ChengeConfiner(RoomView room)
+    public void ChangeConfiner(RoomView room)
     {
         _cameraConfiner.m_BoundingVolume = room.Confiner;
     }

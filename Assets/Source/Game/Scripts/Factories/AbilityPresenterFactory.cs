@@ -6,13 +6,27 @@ namespace Assets.Source.Game.Scripts
 {
     public class AbilityPresenterFactory
     {
+
         private readonly IGameLoopService _gameLoopService;
         private readonly ICoroutineRunner _coroutineRunner;
+
+        private GameLoopService _gameLoopService1;
+        private GamePauseService _gamePauseService;
 
         public AbilityPresenterFactory(IGameLoopService gameLoopService, ICoroutineRunner coroutineRunner)
         {
             _gameLoopService = gameLoopService ?? throw new ArgumentNullException(nameof(gameLoopService));
             _coroutineRunner = coroutineRunner ?? throw new ArgumentNullException(nameof(coroutineRunner));
+        }
+
+        public AbilityPresenterFactory()
+        {
+        }
+
+        public void InitService(GameLoopService gameLoopService, GamePauseService gamePauseService) 
+        {
+            _gameLoopService1 = gameLoopService;
+            _gamePauseService = gamePauseService;
         }
 
         public AttackAbilityPresenter CreateAttackAbilityPresenter(

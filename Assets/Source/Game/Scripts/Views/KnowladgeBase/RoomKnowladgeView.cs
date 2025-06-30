@@ -36,7 +36,6 @@ public class RoomKnowladgeView : KnowladgeView
             {
                 SpawnedEnemyView spawnedEnemyView = Instantiate(_spawnedEnemyView, _spawnedEnemyConteiner);
                 spawnedEnemyView.Initialize(trap.gameObject.name);
-                Debug.Log(nameof(trap));
             }
         }
     }

@@ -71,7 +71,6 @@ namespace Assets.Source.Game.Scripts
             _ambientSlider.onValueChanged.RemoveListener(OnAmbientValueChanged);
             _sfxSlider.onValueChanged.RemoveListener(OnSfxValueChanged);
             _muteToggle.onValueChanged.RemoveListener(OnMuteValueChanged);
-            Debug.Log($"Pause Panel: removelissener");
         }
 
         private void FillGameParameters() 

@@ -9,7 +9,7 @@ namespace Assets.Source.Game.Scripts
             _coroutineRunner = coroutineRunner;
         }
 
-        public Ability CreateAbility(AbilityAttributeData abilityAttributeData, int currentLevel, float abilityCooldownReduction, float abilityDuration, int abilityValue, bool isAutoCast)
+        public Ability CreateAbility(ActiveAbilityData abilityAttributeData, int currentLevel, float abilityCooldownReduction, float abilityDuration, int abilityValue, bool isAutoCast)
         {
             Ability ability = new(abilityAttributeData, currentLevel, abilityCooldownReduction, abilityDuration, abilityValue, isAutoCast, _coroutineRunner);
             return ability;
@@ -23,13 +23,13 @@ namespace Assets.Source.Game.Scripts
 
         public Ability CreateLegendaryAbility(
             LegendaryAbilityData legendaryAbilityData,
-            AbilityAttributeData abilityAttributeData,
+            ActiveAbilityData abilityAttributeData,
             float abilityCooldownReduction,
             float abilityDuration,
             int abilityValue,
             bool isAutoCast)
         {
-            Ability ability = new(legendaryAbilityData, abilityAttributeData, abilityCooldownReduction, abilityDuration, abilityValue, isAutoCast, _coroutineRunner);
+            Ability ability = new (legendaryAbilityData, abilityAttributeData, abilityCooldownReduction, abilityDuration, abilityValue, isAutoCast, _coroutineRunner);
             return ability;
         }
     }

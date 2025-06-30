@@ -32,9 +32,7 @@ public class EnemyRangeAttackState : EnemyAttackState
                 _stateMashine.SetState<EnemyMoveState>();
 
             if (Attack())
-            {
                 AttackEvent();
-            }
         }
     }
 

@@ -74,11 +74,6 @@ namespace Assets.Source.Game.Scripts
             if (ClassAbilityState == null)
                 return;
 
-            if (ClassAbilityState.CurrentLevel == 0)
-            {
-
-            }
-
             for (int index = 0; index < ClassAbilityState.CurrentLevel; index++)
             {
                 _upgradeImages[index].sprite = _upgradeSprite;

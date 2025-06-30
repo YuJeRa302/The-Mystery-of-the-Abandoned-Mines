@@ -16,7 +16,6 @@ public class Beholder : Boss
 
     public override void Initialize(Player player, int lvlRoom, EnemyData data, int tire)
     {
-        //_bulletSpawner = new BulletSpawner(_bullet, _pool, _shootPoint, this);
         base.Initialize(player, lvlRoom, data, tire);
     }
 }

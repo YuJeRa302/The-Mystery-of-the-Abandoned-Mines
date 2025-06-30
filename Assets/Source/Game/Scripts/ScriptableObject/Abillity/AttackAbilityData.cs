@@ -3,17 +3,14 @@ using UnityEngine;
 namespace Assets.Source.Game.Scripts
 {
     [CreateAssetMenu(fileName = "New Attack Ability", menuName = "Create Attribute/Attack Ability Attribute", order = 51)]
-    public class AttackAbilityData : AbilityAttributeData
+    public class AttackAbilityData : ActiveAbilityData
     {
-        [Space(20)]
         [SerializeField] private Spell _spell;
-        [SerializeField] private float _spellRadius;
-        [SerializeField] private TypeAttackAbility _typeAttackAbility;
-        [SerializeField] private DamageSource _damageParametr;
+        [SerializeField] private float _radius;
+        [SerializeField] private LegendaryAbilityData _legendaryAbilityData;
 
         public Spell Spell => _spell;
-        public float SpellRadius => _spellRadius;
-        public TypeAttackAbility TypeAttackAbility => _typeAttackAbility;
-        public DamageSource DamageSource => _damageParametr;
+        public float Radius => _radius;
+        public LegendaryAbilityData LegendaryAbilityData => _legendaryAbilityData;
     }
 }

@@ -37,19 +37,9 @@ namespace Assets.Source.Game.Scripts
             _cardData = cardData;
             _cardState = cardState;
 
-            if (cardData.AttributeData != null)
-            {
-                _cardIcon.sprite = cardData.AttributeData.Icon;
-                _cardName.TranslationName = cardData.AttributeData.NameCard;
-                _description.TranslationName = cardData.AttributeData.Description;
-            }
-            else
-            {
-                //LegendaryAbilityData legendaryAbilityData = (cardData.AttributeData as AbilityAttributeData).LegendaryAbilityData;
-                _cardIcon.sprite = cardData.LegendaryAbilityData.Icon;
-                _cardName.TranslationName = cardData.LegendaryAbilityData.Name;
-                _description.TranslationName = cardData.LegendaryAbilityData.Description;
-            }
+            _cardIcon.sprite = cardData.AttributeData.Icon;
+            _cardName.TranslationName = cardData.AttributeData.Name;
+            _description.TranslationName = cardData.AttributeData.Description;
 
             _cardImage.color = new Color(
                 cardData.TypeCardColor[(int)cardData.TypeCardParameter].r,
@@ -70,31 +60,14 @@ namespace Assets.Source.Game.Scripts
 
         private void CreateParameterField()
         {
-            if (_cardData.AttributeData != null)
+            for (int index = 0; index < _cardData.AttributeData.Parameters[_cardState.CurrentLevel].CardParameters.Count; index++)
             {
-                for (int index = 0; index < _cardData.AttributeData.CardParameters[_cardState.CurrentLevel].CardParameters.Count; index++)
-                {
-                    CardParameterView view = Instantiate(_cardData.AttributeData.CardParameterView, _cardParameterContainer);
-                    _cardParametersViews.Add(view);
+                CardParameterView view = Instantiate(_cardData.AttributeData.ParameterView, _cardParameterContainer);
+                _cardParametersViews.Add(view);
 
-                    view.Initialize(
-                        _cardData.AttributeData.CardParameters[_cardState.CurrentLevel].CardParameters[index].Value,
-                        _cardData.AttributeData.CardParameters[_cardState.CurrentLevel].CardParameters[index].TypeParameter);
-                }
-            }
-            else
-            {
-                //LegendaryAbilityData legendaryAbilityData = (_cardData.AttributeData as AbilityAttributeData).LegendaryAbilityData;
-
-                for (int index = 0; index < _cardData.LegendaryAbilityData.LegendaryAbilityParameters[_cardState.CurrentLevel].CardParameters.Count; index++)
-                {
-                    CardParameterView view = Instantiate(_cardData.LegendaryAbilityData.CardParameterView, _cardParameterContainer);
-                    _cardParametersViews.Add(view);
-
-                    view.Initialize(
-                        _cardData.LegendaryAbilityData.LegendaryAbilityParameters[_cardState.CurrentLevel].CardParameters[index].Value,
-                        _cardData.LegendaryAbilityData.LegendaryAbilityParameters[_cardState.CurrentLevel].CardParameters[index].TypeParameter);
-                }
+                view.Initialize(
+                    _cardData.AttributeData.Parameters[_cardState.CurrentLevel].CardParameters[index].Value,
+                    _cardData.AttributeData.Parameters[_cardState.CurrentLevel].CardParameters[index].TypeParameter);
             }
         }
 

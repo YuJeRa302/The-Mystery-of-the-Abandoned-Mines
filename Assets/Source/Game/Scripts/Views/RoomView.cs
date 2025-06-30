@@ -34,6 +34,7 @@ namespace Assets.Source.Game.Scripts
         private RoomDoorView _openDoor;
         private int _countEnemy;
         private int _dividerIndexColor = 2;
+        private bool _isEntering = false;
 
         public event Action<RoomView> RoomEntering;
 
@@ -73,7 +74,9 @@ namespace Assets.Source.Game.Scripts
         private void OnTriggerEnter(Collider collider)
         {
             if (collider.TryGetComponent(out Player player))
+            {
                 RoomEntering?.Invoke(this);
+            }
         }
 
         public void SetRoomStatus()
@@ -95,11 +98,6 @@ namespace Assets.Source.Game.Scripts
 
             RoomData = roomData;
             CurrentLevel = currentLevel;
-
-            if (RoomData.Id == 1)
-                _countEnemy = 1;
-            else
-                _countEnemy = 15; //tests
 
             CreateDoorway();
             AddListener();

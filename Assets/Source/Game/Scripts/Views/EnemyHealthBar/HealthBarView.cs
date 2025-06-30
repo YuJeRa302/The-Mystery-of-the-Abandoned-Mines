@@ -43,9 +43,6 @@ public class HealthBarView : MonoBehaviour
 
     private void OnTakeDamage(float damage)
     {
-        //_damagePopupText.alpha = 255f;
-        //_damagePopupText.text = damage.ToString();
-        //_damagePopupText.DOFade(0f, 1.5f).SetEase(Ease.Linear);
         InstantiateDamagePopup(damage);
     }
 

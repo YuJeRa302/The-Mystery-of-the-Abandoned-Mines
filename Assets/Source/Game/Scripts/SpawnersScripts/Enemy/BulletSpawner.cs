@@ -5,6 +5,8 @@ namespace Assets.Source.Game.Scripts
 {
     public class BulletSpawner
     {
+        private readonly float _amplifierForce = 5f;
+
         private Bullet _bulletBrefab;
         private Pool _pool;
         private Transform _shotPoint;
@@ -36,7 +38,7 @@ namespace Assets.Source.Game.Scripts
             }
 
             bullet.Initialaze((int)Math.Round(_enemy.Damage));
-            bullet.GetComponent<Rigidbody>().AddForce(_shotPoint.forward * 5f, ForceMode.Impulse);
+            bullet.GetComponent<Rigidbody>().AddForce(_shotPoint.forward * _amplifierForce, ForceMode.Impulse);
         }
 
         public void ChengeShotPoint(Transform shotPoint)

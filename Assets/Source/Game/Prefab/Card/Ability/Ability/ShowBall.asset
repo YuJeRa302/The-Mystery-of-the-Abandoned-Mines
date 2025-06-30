@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02f9d96df1d2c444dbca494c7fd95bbc, type: 3}
   m_Name: ShowBall
   m_EditorClassIdentifier: 
-  _cardParameterView: {fileID: 1961483584371832456, guid: 6d57f6325ba58d6478a1fd35f1ba2831, type: 3}
+  _parameterView: {fileID: 1961483584371832456, guid: 6d57f6325ba58d6478a1fd35f1ba2831, type: 3}
   _parameters:
   - CardParameters:
     - Value: 5
@@ -38,20 +38,20 @@ MonoBehaviour:
   _name: SnowBall
   _description: SnowBallDescription
   _icon: {fileID: 1632057625, guid: dc2e3af32fff16a4fa28920cc9449371, type: 3}
-  _abilityType: 5
-  _abilityView: {fileID: 7248082733305173889, guid: b41ccdfb932d3874d92c031e66d814ec, type: 3}
-  _particleSystem: {fileID: 19898640, guid: 7e9a3591984cda1499dc675622a57b0b, type: 3}
-  _audioClip: {fileID: 8300000, guid: 07532e25ab2bf0e4e9520610dfe2e0ce, type: 3}
-  _typeUpgradeMagic: 7
   _typeMagic: 2
-  _legendaryAbilityData: {fileID: 11400000, guid: 32a4f5e7f6f36d14ca00346034f768ab, type: 2}
-  _spell: {fileID: 1654424239186438959, guid: 081f8bf11483ab544842add8457b3c62, type: 3}
-  _spellRadius: 2
-  _typeAttackAbility: 1
-  _damageParametr:
+  _abilityView: {fileID: 7248082733305173889, guid: b41ccdfb932d3874d92c031e66d814ec, type: 3}
+  _particle: {fileID: 19898640, guid: 7e9a3591984cda1499dc675622a57b0b, type: 3}
+  _audioClip: {fileID: 8300000, guid: 07532e25ab2bf0e4e9520610dfe2e0ce, type: 3}
+  _damage:
     _typeDamage: 4
-    _damage: 5
+    _damage: 0
     _damageParameters:
     - _value: 1
       _typeDamageParameter: 2
     _particle: {fileID: 0}
+  _upgradeType: 7
+  _type: 5
+  _typeAttack: 1
+  _spell: {fileID: 1654424239186438959, guid: 081f8bf11483ab544842add8457b3c62, type: 3}
+  _radius: 2
+  _legendaryAbilityData: {fileID: 11400000, guid: 32a4f5e7f6f36d14ca00346034f768ab, type: 2}

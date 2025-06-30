@@ -25,7 +25,6 @@ namespace Assets.Source.Game.Scripts
         public float AmbientVolume => _ambientVolume;
         public float SfxVolumeVolume => _sfxVolumeVolume;
         public bool IsMuted => _isMuted;
-        public string DefaultLanguage => _defaultLanguage;
         public List<UpgradeState> UpgradeStates => _upgradeStates;
         public List<ClassAbilityState> ClassAbilityStates => _classAbilityStates;
         public WeaponState[] DefaultWeaponState => _defaultWeaponState;

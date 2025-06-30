@@ -35,8 +35,5 @@ public class CLEARSAVE : MonoBehaviour
     {
         YG2.SetDefaultSaves();
         YG2.SaveProgress();
-
-        //YandexGame.ResetSaveProgress();
-        //YandexGame.SaveProgress();
     }
 }

@@ -29,7 +29,6 @@ namespace Assets.Source.Game.Scripts
         private int _score;
         private int _gold;
         private int _upgradeExperience;
-        private Player _player;
         private Rigidbody _rigidbody;
         private Coroutine _stunDamage;
         private Coroutine _burnDamage;
@@ -82,7 +81,6 @@ namespace Assets.Source.Game.Scripts
 
         public virtual void Initialize(Player player, int lvlRoom, EnemyData data, int tire)
         {
-            _player = player;
             _rigidbody = GetComponent<Rigidbody>();
             _currentLvlRoom = lvlRoom;
             _tire = tire;

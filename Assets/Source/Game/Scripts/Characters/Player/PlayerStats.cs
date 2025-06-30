@@ -148,7 +148,7 @@ namespace Assets.Source.Game.Scripts
 
         public void UpdatePlayerStats(CardView cardView)
         {
-            foreach (var parameter in cardView.CardData.AttributeData.CardParameters[cardView.CardState.CurrentLevel].CardParameters)
+            foreach (var parameter in cardView.CardData.AttributeData.Parameters[cardView.CardState.CurrentLevel].CardParameters)
             {
                 switch (parameter.TypeParameter)
                 {
@@ -173,7 +173,7 @@ namespace Assets.Source.Game.Scripts
 
         public void UpdateRerollPoints(CardView cardView)
         {
-            _rerollPoints += cardView.CardData.AttributeData.CardParameters[cardView.CardState.CurrentLevel].CardParameters[0].Value;
+            _rerollPoints += cardView.CardData.AttributeData.Parameters[cardView.CardState.CurrentLevel].CardParameters[0].Value;
         }
 
         public void SetPlayerUpgrades(GameConfig gameConfig, PersistentDataService persistentDataService) 

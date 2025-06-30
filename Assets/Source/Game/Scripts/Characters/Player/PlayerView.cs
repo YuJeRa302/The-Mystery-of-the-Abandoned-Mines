@@ -20,8 +20,6 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private Transform _abilityObjectContainer;
         [SerializeField] private Transform _classAbilityContainer;
         [SerializeField] private Transform _passiveAbilityContainer;
-        [SerializeField] private Transform _playerEffectsContainer;
-        [SerializeField] private Transform _weaponEffectsContainer;
         [Space(20)]
         [SerializeField] private Image _playerMapIcon;
         [SerializeField] private Sprite _closeAbilityIcon;
@@ -31,15 +29,13 @@ namespace Assets.Source.Game.Scripts
 
         public event Action<AbilityView, ParticleSystem, Transform> AbilityViewCreated;
         public event Action<ClassAbilityData, ClassSkillButtonView, int> ClassAbilityViewCreated;
-        public event Action<AbilityView, ParticleSystem, Transform, AbilityAttributeData> LegendaryAbilityViewCreated;
+        public event Action<AbilityView, ParticleSystem, Transform, ActiveAbilityData> LegendaryAbilityViewCreated;
         public event Action<PassiveAbilityView> PassiveAbilityViewCreated;
 
-        public void Initialize(Sprite iconPlayer, Transform throwPoint, Transform playerEffectsContainer, Transform weaponEffectsContainer)
+        public void Initialize(Sprite iconPlayer, Transform throwPoint)
         {
             _playerMapIcon.sprite = iconPlayer;
             _playerIcon.sprite = iconPlayer;
-            _weaponEffectsContainer = weaponEffectsContainer;
-            _playerEffectsContainer = playerEffectsContainer;
             _throwPoint = throwPoint;
         }
 
@@ -61,7 +57,7 @@ namespace Assets.Source.Game.Scripts
                 return;
             }
 
-            foreach (var parametr in abilityData.Parameters[currentLevel-1].CardParameters)
+            foreach (var parametr in abilityData.Parameters[currentLevel - 1].CardParameters)
             {
                 if (parametr.TypeParameter == TypeParameter.AbilityCooldown)
                     currentAbilityCooldown = parametr.Value;
@@ -73,57 +69,36 @@ namespace Assets.Source.Game.Scripts
 
         public void TakePassiveAbility(PassiveAttributeData passiveAttributeData)
         {
-            PassiveAbilityView view = Instantiate(passiveAttributeData.PassiveAbilityView, _passiveAbilityContainer);
+            PassiveAbilityView view = Instantiate(passiveAttributeData.AbilityView, _passiveAbilityContainer);
             view.Initialize(passiveAttributeData);
             PassiveAbilityViewCreated?.Invoke(view);
         }
 
-        public void TakeLegendaryAbility(AbilityAttributeData abilityAttributeData)
+        public void TakeLegendaryAbility(ActiveAbilityData abilityAttributeData)
         {
             float currentAbilityCooldown = 0f;
-
-            if (abilityAttributeData.TypeAbility != TypeAbility.AttackAbility)
-            {
-                if ((abilityAttributeData as DefaultAbilityData).TypeEffect == TypeEffect.Weapon)
-                    _abilityEffect = Instantiate(abilityAttributeData.ParticleSystem, _weaponEffectsContainer);
-                else
-                    _abilityEffect = Instantiate(abilityAttributeData.ParticleSystem, _playerEffectsContainer);
-            }
-            else
-            {
-                _abilityEffect = abilityAttributeData.ParticleSystem;
-            }
+            _abilityEffect = abilityAttributeData.Particle;
 
             AbilityView abilityView = Instantiate(abilityAttributeData.AbilityView, _abilityObjectContainer);
 
-            foreach (var parametr in abilityAttributeData.LegendaryAbilityData.LegendaryAbilityParameters[0].CardParameters)
+            foreach (var parametr in abilityAttributeData.Parameters[0].CardParameters)
             {
                 if (parametr.TypeParameter == TypeParameter.AbilityCooldown)
                     currentAbilityCooldown = parametr.Value;
             }
 
-            abilityView.Initialize(abilityAttributeData.LegendaryAbilityData.Icon, currentAbilityCooldown);
-            LegendaryAbilityViewCreated?.Invoke(abilityView, _abilityEffect, _throwPoint, abilityAttributeData);
+            abilityView.Initialize(abilityAttributeData.Icon, currentAbilityCooldown);
+            LegendaryAbilityViewCreated?.Invoke(abilityView, abilityAttributeData.Particle, _throwPoint, abilityAttributeData);
         }
 
-        public void TakeAbility(AbilityAttributeData abilityAttributeData, int currentLevel)
+        public void TakeAbility(ActiveAbilityData abilityAttributeData, int currentLevel)
         {
             AbilityView abilityView;
             float currentAbilityCooldown = 0f;
 
-            if (abilityAttributeData.TypeAbility != TypeAbility.AttackAbility)
-            {
-                if ((abilityAttributeData as DefaultAbilityData).TypeEffect == TypeEffect.Weapon)
-                    _abilityEffect = Instantiate(abilityAttributeData.ParticleSystem, _weaponEffectsContainer);
-                else
-                    _abilityEffect = Instantiate(abilityAttributeData.ParticleSystem, _playerEffectsContainer);
-            }
-            else
-            {
-                _abilityEffect = abilityAttributeData.ParticleSystem;
-            }
+            _abilityEffect = abilityAttributeData.Particle;
 
-            foreach (var parametr in abilityAttributeData.CardParameters[currentLevel].CardParameters)
+            foreach (var parametr in abilityAttributeData.Parameters[currentLevel].CardParameters)
             {
                 if (parametr.TypeParameter == TypeParameter.AbilityCooldown)
                     currentAbilityCooldown = parametr.Value;
@@ -148,7 +123,7 @@ namespace Assets.Source.Game.Scripts
             _sliderUpgradePoints.value = currentExperience;
         }
 
-        public void ChangeMaxHealthValue(int maxHealthValue, int currentHealthValue) 
+        public void ChangeMaxHealthValue(int maxHealthValue, int currentHealthValue)
         {
             _sliderHP.maxValue = maxHealthValue;
             _sliderHP.value = currentHealthValue;

@@ -49,7 +49,7 @@ namespace Assets.Source.Game.Scripts
                     TakeAbility(cardView);
                     break;
             }
-            //cardView.CardState.Weight++;
+
             _cardState.Add(cardView.CardState);
         }
 

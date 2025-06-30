@@ -24,12 +24,10 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private string _name;
 
         public int Id => _id;
-        public int Level => _level;
         public PoolParticle EnemyDieParticleSystem => _enemyDieParticleSystem;
         public AudioClip AudioClipDie => _audioClipDie;
         public AudioClip Hit => _hit;
         public Enemy PrefabEnemy => _prefabEnemy;
-        public TypeEnemy TypeEnemy => _type;
         public Sprite Icon => _enemyIcon;
         public string Descroption => _descripton;
         public string Name => _name;

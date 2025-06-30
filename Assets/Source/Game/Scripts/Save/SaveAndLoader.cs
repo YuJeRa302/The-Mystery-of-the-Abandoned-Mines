@@ -100,7 +100,6 @@ public class SaveAndLoader : ISaveAndLoadProgress
             AmbientVolume = _temporaryData.AmbientVolume,
             SfxVolumeVolume = _temporaryData.InterfaceVolume,
             IsMuted = _temporaryData.MuteStateSound,
-            DefaultLanguage = _temporaryData.Language,
             UpgradePoints = _temporaryData.UpgradePoints,
             UpgradeStates = new List<UpgradeState>(_temporaryData.UpgradeStates),
             ClassAbilityStates = new List<ClassAbilityState>(_temporaryData.ClassAbilityStates),

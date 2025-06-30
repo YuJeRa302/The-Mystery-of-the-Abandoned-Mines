@@ -153,26 +153,28 @@ namespace Assets.Source.Game.Scripts
 
         private void CreateWeaponStats(WeaponDataView weaponDataView) 
         {
+            var damageSource = weaponDataView.WeaponData.DamageSource;
+            var weaponParameters = weaponDataView.WeaponData.WeaponParameters;
+
+            InstantiateStatView(_typeDamageTranslationName, damageSource.TypeDamage.ToString(), true);
+            InstantiateStatView(_damageParametrName, damageSource.Damage.ToString(), false);
+
+            foreach (var param in damageSource.DamageParameters)
+            {
+                InstantiateStatView(param.TypeDamageParameter.ToString(), param.Value.ToString(), false);
+            }
+
+            foreach (var param in weaponParameters)
+            {
+                InstantiateStatView(param.SupportivePatametr.ToString(), param.Value.ToString(), false);
+            }
+        }
+
+        private void InstantiateStatView(string name, string value, bool isHeader)
+        {
             WeaponStatsView view = Instantiate(_weaponStatsView, _weaponStatsContainer);
-            view.Initialize(_typeDamageTranslationName, weaponDataView.WeaponData.DamageSource.TypeDamage.ToString(), true);
+            view.Initialize(name, value, isHeader);
             _weaponStatsViews.Add(view);
-            WeaponStatsView damageView = Instantiate(_weaponStatsView, _weaponStatsContainer);
-            damageView.Initialize(_damageParametrName, weaponDataView.WeaponData.DamageSource.Damage.ToString(), false);
-            _weaponStatsViews.Add(damageView);
-
-            foreach (var parametr in weaponDataView.WeaponData.DamageSource.DamageParameters)
-            {
-                view = Instantiate(_weaponStatsView, _weaponStatsContainer);
-                view.Initialize(parametr.TypeDamageParameter.ToString(), parametr.Value.ToString(), false);
-                _weaponStatsViews.Add(view);
-            }
-
-            foreach (var parametr in weaponDataView.WeaponData.WeaponParameters)
-            {
-                view = Instantiate(_weaponStatsView, _weaponStatsContainer);
-                view.Initialize(parametr.SupportivePatametr.ToString(), parametr.Value.ToString(), false);
-                _weaponStatsViews.Add(view);
-            }
         }
 
         private void Show()

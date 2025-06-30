@@ -29,7 +29,10 @@ namespace Assets.Source.Game.Scripts
             _classAbilityViewModel.InvokedAbilityReset -= OnResetState;
         }
 
-        public void Initialize(ClassAbilityData classAbilityData, ClassAbilityState classAbilityState, ClassAbilityViewModel classAbilityViewModel, IAudioPlayerService audioPlayerService)
+        public void Initialize(ClassAbilityData classAbilityData, 
+            ClassAbilityState classAbilityState, 
+            ClassAbilityViewModel classAbilityViewModel, 
+            IAudioPlayerService audioPlayerService)
         {
             _audioPlayerService = audioPlayerService;
             _classAbilityViewModel = classAbilityViewModel;

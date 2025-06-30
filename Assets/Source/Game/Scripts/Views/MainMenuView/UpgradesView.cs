@@ -29,7 +29,7 @@ public class UpgradesView : MonoBehaviour
     [SerializeField] private Transform _upgradesContainer;
     [SerializeField] private Transform _statsConteiner;
     [SerializeField] private ClassAbilityStatsView _statsViewPrafab;
-    [SerializeField] private Text _curretnPrice;
+    [SerializeField] private Text _currentPrice;
     [Space(20)]
     [SerializeField] private List<UpgradeData> _defaultUpgradeData;
     [Space(20)]
@@ -149,45 +149,60 @@ public class UpgradesView : MonoBehaviour
         _audioPlayerService?.PlayOneShotButtonClickSound();
     }
 
-    private void OnStatsSelected(UpgradeDataView upgradeDataView)
+    private void RenderCurrentUpgrade(UpgradeDataView upgradeDataView)
     {
-        _parametrPanel.SetActive(true);
         _statsImage.sprite = upgradeDataView.UpgradeData.Icon;
         _nameStats.TranslationName = upgradeDataView.UpgradeData.Name;
         _description.TranslationName = upgradeDataView.UpgradeData.Description;
-        _upgradeViewModel.SelectStats(upgradeDataView);
+    }
 
+    private void ClearStats()
+    {
         foreach (var view in _classAbilityStatsViews)
         {
             Destroy(view.gameObject);
         }
 
         _classAbilityStatsViews.Clear();
+    }
 
-        string nameParametr = string.Empty;
-        string valueCurrentLvl = string.Empty;
+    private void OnStatsSelected(UpgradeDataView upgradeDataView)
+    {
+        _parametrPanel.SetActive(true);
+        RenderCurrentUpgrade(upgradeDataView);
+        _upgradeViewModel.SelectStats(upgradeDataView);
+        ClearStats();
+
+        int currentLevel = upgradeDataView.UpgradeState.CurrentLevel;
+        int parametersCount = upgradeDataView.UpgradeData.UpgradeParameters.Count;
+        string nameParametr = upgradeDataView.UpgradeData.TypeParameter.ToString();
+
+        string valueCurrentLvl;
         string valueNextLvl = string.Empty;
+        int priceLevel;
 
-        ClassAbilityStatsView statsView = Instantiate(_statsViewPrafab, _statsConteiner);
-
-        nameParametr = upgradeDataView.UpgradeData.TypeParameter.ToString();
-
-        if (upgradeDataView.UpgradeState.CurrentLevel > 0)
+        if (currentLevel > 0)
         {
-            valueCurrentLvl = "+" + upgradeDataView.UpgradeData.UpgradeParameters[upgradeDataView.UpgradeState.CurrentLevel - 1].Value.ToString();
+            valueCurrentLvl = "+" + upgradeDataView.UpgradeData.UpgradeParameters[currentLevel - 1].Value.ToString();
 
-            if (upgradeDataView.UpgradeState.CurrentLevel < upgradeDataView.UpgradeData.UpgradeParameters.Count)
+            if (currentLevel < parametersCount)
             {
-                valueNextLvl = "+" + upgradeDataView.UpgradeData.UpgradeParameters[upgradeDataView.UpgradeState.CurrentLevel].Value.ToString();
-                _curretnPrice.text = upgradeDataView.UpgradeData.UpgradeParameters[upgradeDataView.UpgradeState.CurrentLevel].Cost.ToString();
+                valueNextLvl = "+" + upgradeDataView.UpgradeData.UpgradeParameters[currentLevel].Value.ToString();
+                priceLevel = currentLevel;
+            }
+            else
+            {
+                priceLevel = currentLevel - 1;
             }
         }
         else
         {
-            valueCurrentLvl = "+" + upgradeDataView.UpgradeData.UpgradeParameters[upgradeDataView.UpgradeState.CurrentLevel].Value.ToString();
-            _curretnPrice.text = upgradeDataView.UpgradeData.UpgradeParameters[upgradeDataView.UpgradeState.CurrentLevel].Cost.ToString();
+            valueCurrentLvl = "+" + upgradeDataView.UpgradeData.UpgradeParameters[0].Value.ToString();
+            priceLevel = 0;
         }
 
+        _currentPrice.text = upgradeDataView.UpgradeData.UpgradeParameters[priceLevel].Cost.ToString();
+        ClassAbilityStatsView statsView = Instantiate(_statsViewPrafab, _statsConteiner);
         statsView.Initialize(nameParametr, valueCurrentLvl, valueNextLvl);
         _classAbilityStatsViews.Add(statsView);
     }

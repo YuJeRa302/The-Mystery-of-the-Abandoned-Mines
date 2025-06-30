@@ -6,7 +6,6 @@ public class AudioPlayer : MonoBehaviour, IAudioPlayerService
     [SerializeField] private AudioSource _sfxAudioSource;
     [Space(20)]
     [SerializeField] private AudioClip _menuAmbientAudioClip;
-    [SerializeField] private AudioClip _sfxAudioClip;
     [SerializeField] private AudioClip _popupAudioClip;
     [SerializeField] private AudioClip _buttonHoverAudioClip;
     [SerializeField] private AudioClip _buttonClickAudioClip;

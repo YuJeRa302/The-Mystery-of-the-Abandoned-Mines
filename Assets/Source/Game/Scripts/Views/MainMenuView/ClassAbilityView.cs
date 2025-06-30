@@ -1,5 +1,6 @@
 using Lean.Localization;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -170,78 +171,105 @@ namespace Assets.Source.Game.Scripts
             CreateClassAbility(playerClassData);
         }
 
-        private void OnAbilitySelected(ClassAbilityDataView classAbilityDataView)
+        private void ClearStats()
         {
-            SetActiveSubPanel(true);
-
-            _abilityImage.sprite = classAbilityDataView.ClassAbilityData.Icon;
-            _nameAbility.TranslationName = classAbilityDataView.ClassAbilityData.Name;
-            _description.TranslationName = classAbilityDataView.ClassAbilityData.Description;
-            _classAbilityViewModel.SelectClassAbility(classAbilityDataView);
-
-
             foreach (var view in _classAbilityStatsViews)
             {
                 Destroy(view.gameObject);
             }
 
             _classAbilityStatsViews.Clear();
+        }
 
-            string nameParametr = string.Empty;
-            string valueCurrentLvl = string.Empty;
-            string valueNextLvl = string.Empty;
+        private void RenderCurrentAbility(ClassAbilityDataView view)
+        {
+            _abilityImage.sprite = view.ClassAbilityData.Icon;
+            _nameAbility.TranslationName = view.ClassAbilityData.Name;
+            _description.TranslationName = view.ClassAbilityData.Description;
+        }
 
-            if (classAbilityDataView.ClassAbilityState.CurrentLevel > 0)
-            {
-                _currentPrice.text = classAbilityDataView.ClassAbilityData.AbilityClassParameters[classAbilityDataView.ClassAbilityState.CurrentLevel - 1].Cost.ToString();
+        private void OnAbilitySelected(ClassAbilityDataView classAbilityDataView)
+        {
+            SetActiveSubPanel(true);
+            RenderCurrentAbility(classAbilityDataView);
+            _classAbilityViewModel.SelectClassAbility(classAbilityDataView);
+            ClearStats();
 
-                foreach (var stats in classAbilityDataView.ClassAbilityData.Parameters[classAbilityDataView.ClassAbilityState.CurrentLevel - 1].CardParameters)
-                {
-                    if (CantDisplayParametr(stats.TypeParameter))
-                        continue;
+            int currentLevel = classAbilityDataView.ClassAbilityState.CurrentLevel;
+            int parametersCount = classAbilityDataView.ClassAbilityData.Parameters.Count;
+            bool isMaxLevel;
 
-                    ClassAbilityStatsView statsView = Instantiate(_classAbilityStatsViewPrefab, _classAbilityStatsConteiner);
-                    nameParametr = stats.TypeParameter.ToString();
-                    valueCurrentLvl = stats.Value.ToString();
-                    bool canShowNextLvlStats = classAbilityDataView.ClassAbilityState.CurrentLevel >= classAbilityDataView.ClassAbilityData.Parameters.Count;
-                    _currentPrice.text = classAbilityDataView.ClassAbilityData.AbilityClassParameters[classAbilityDataView.ClassAbilityState.CurrentLevel - 1].Cost.ToString();
-
-                    if (!canShowNextLvlStats)
-                    {
-                        _currentPrice.text = classAbilityDataView.ClassAbilityData.AbilityClassParameters[classAbilityDataView.ClassAbilityState.CurrentLevel].Cost.ToString();
-
-                        foreach (var statsNextLvl in classAbilityDataView.ClassAbilityData.Parameters[classAbilityDataView.ClassAbilityState.CurrentLevel].CardParameters)
-                        {
-                            if (statsNextLvl.TypeParameter == stats.TypeParameter)
-                            {
-                                valueNextLvl = statsNextLvl.Value.ToString();
-                            }
-                        }
-                    }
-
-                    statsView.Initialize(nameParametr, valueCurrentLvl, valueNextLvl);
-
-                    _classAbilityStatsViews.Add(statsView);
-                }
-            }
+            if (currentLevel >= parametersCount)
+                isMaxLevel = true;
             else
+                isMaxLevel = false;
+
+            UpdatePriceDisplay(classAbilityDataView, currentLevel, isMaxLevel);
+            CreateAbilityStats(classAbilityDataView, currentLevel, isMaxLevel);
+        }
+
+        private void UpdatePriceDisplay(ClassAbilityDataView dataView, int currentLevel, bool isMaxLevel)
+        {
+            int priceLevel;
+
+            if (currentLevel > 0)
+                if (isMaxLevel)
+                    priceLevel = currentLevel - 1;
+                else
+                    priceLevel = currentLevel;
+            else
+                priceLevel = 0;
+
+            _currentPrice.text = dataView.ClassAbilityData.AbilityClassParameters[priceLevel].Cost.ToString();
+        }
+
+        private void CreateAbilityStats(ClassAbilityDataView dataView, int currentLevel, bool isMaxLevel)
+        {
+            int currentParamsIndex;
+
+            if (currentLevel > 0)
+                currentParamsIndex = currentLevel - 1;
+            else
+                currentParamsIndex = 0;
+
+            var currentParams = dataView.ClassAbilityData.Parameters[currentParamsIndex].CardParameters;
+            List<CardParameter> nextParams = null;
+
+            currentParams = dataView.ClassAbilityData.Parameters[currentParamsIndex].CardParameters.ToList();
+
+            if (!isMaxLevel)
+                nextParams = dataView.ClassAbilityData.Parameters[currentLevel].CardParameters.ToList();
+
+            for (int i = 0; i < currentParams.Count; i++)
             {
-                _currentPrice.text = classAbilityDataView.ClassAbilityData.AbilityClassParameters[classAbilityDataView.ClassAbilityState.CurrentLevel].Cost.ToString();
+                var stat = currentParams[i];
+                if (CantDisplayParametr(stat.TypeParameter)) continue;
 
-                foreach (var stats in classAbilityDataView.ClassAbilityData.Parameters[classAbilityDataView.ClassAbilityState.CurrentLevel].CardParameters)
-                {
-                    if (CantDisplayParametr(stats.TypeParameter))
-                        continue;
+                string nextValue = string.Empty;
 
-                    ClassAbilityStatsView statsView = Instantiate(_classAbilityStatsViewPrefab, _classAbilityStatsConteiner);
-                    nameParametr = stats.TypeParameter.ToString();
-                    valueCurrentLvl = stats.Value.ToString();
+                if (nextParams != null && currentLevel != 0)
+                    nextValue = FindParameterValue(nextParams, stat.TypeParameter);
 
-                    statsView.Initialize(nameParametr, valueCurrentLvl, valueNextLvl);
-
-                    _classAbilityStatsViews.Add(statsView);
-                }
+                CreateStatView(stat.TypeParameter.ToString(), stat.Value.ToString(), nextValue);
             }
+        }
+
+        private string FindParameterValue(List<CardParameter> parameters, TypeParameter type)
+        {
+            for (int i = 0; i < parameters.Count; i++)
+            {
+                if (parameters[i].TypeParameter == type)
+                    return parameters[i].Value.ToString();
+            }
+
+            return string.Empty;
+        }
+
+        private void CreateStatView(string parameterName, string currentValue, string nextValue)
+        {
+            ClassAbilityStatsView statsView = Instantiate(_classAbilityStatsViewPrefab, _classAbilityStatsConteiner);
+            statsView.Initialize(parameterName, currentValue, nextValue);
+            _classAbilityStatsViews.Add(statsView);
         }
 
         private bool CantDisplayParametr(TypeParameter typeParameter)

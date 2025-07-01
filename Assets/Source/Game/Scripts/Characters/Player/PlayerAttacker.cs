@@ -14,7 +14,7 @@ namespace Assets.Source.Game.Scripts
         private readonly int _divider = 100;
         private readonly int _defaultCriticalDamageMultiplier = 1;
         private readonly int _minValueChance = 1;
-        private readonly int _maxValueChance = 1;
+        private readonly int _maxValueChance = 100;
 
         private Transform _shotPoint;
         private ProjectileSpawner _bulletSpawner;

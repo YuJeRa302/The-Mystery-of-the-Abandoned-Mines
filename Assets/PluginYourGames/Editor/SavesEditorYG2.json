@@ -8,10 +8,11 @@
         false
     ],
     "idSave": 1,
-    "Coins": 3100,
+    "Coins": 3000,
     "AmbientVolume": 40.0,
     "SfxVolumeVolume": 40.0,
     "IsMuted": false,
+    "DefaultLanguage": "ru",
     "UpgradeStates": [
         {
             "Id": 1,
@@ -76,77 +77,17 @@
         {
             "Id": 0,
             "IsEquip": false,
-            "IsUnlock": false
+            "IsUnlock": true
         },
         {
-            "Id": 0,
+            "Id": 1,
             "IsEquip": false,
-            "IsUnlock": false
+            "IsUnlock": true
         },
         {
-            "Id": 0,
+            "Id": 2,
             "IsEquip": false,
-            "IsUnlock": false
-        },
-        {
-            "Id": 0,
-            "IsEquip": false,
-            "IsUnlock": false
-        },
-        {
-            "Id": 0,
-            "IsEquip": false,
-            "IsUnlock": false
-        },
-        {
-            "Id": 0,
-            "IsEquip": false,
-            "IsUnlock": false
-        },
-        {
-            "Id": 0,
-            "IsEquip": false,
-            "IsUnlock": false
-        },
-        {
-            "Id": 0,
-            "IsEquip": false,
-            "IsUnlock": false
-        },
-        {
-            "Id": 0,
-            "IsEquip": false,
-            "IsUnlock": false
-        },
-        {
-            "Id": 0,
-            "IsEquip": false,
-            "IsUnlock": false
-        },
-        {
-            "Id": 0,
-            "IsEquip": false,
-            "IsUnlock": false
-        },
-        {
-            "Id": 0,
-            "IsEquip": false,
-            "IsUnlock": false
-        },
-        {
-            "Id": 0,
-            "IsEquip": false,
-            "IsUnlock": false
-        },
-        {
-            "Id": 0,
-            "IsEquip": false,
-            "IsUnlock": false
-        },
-        {
-            "Id": 0,
-            "IsEquip": false,
-            "IsUnlock": false
+            "IsUnlock": true
         }
     ],
     "DefaultLevelState": [
@@ -154,34 +95,32 @@
             "Id": 0,
             "IsComplete": false,
             "CurrentCompleteStages": 0,
-            "Tier": 0
+            "Tire": 0
         },
         {
-            "Id": 0,
+            "Id": 1,
             "IsComplete": false,
             "CurrentCompleteStages": 0,
-            "Tier": 0
+            "Tire": 0
         },
         {
-            "Id": 0,
+            "Id": 2,
             "IsComplete": false,
             "CurrentCompleteStages": 0,
-            "Tier": 0
+            "Tire": 0
         },
         {
-            "Id": 0,
+            "Id": 3,
             "IsComplete": false,
             "CurrentCompleteStages": 0,
-            "Tier": 0
+            "Tire": 0
         },
         {
-            "Id": 0,
+            "Id": 4,
             "IsComplete": false,
             "CurrentCompleteStages": 0,
-            "Tier": 0
+            "Tire": 0
         }
     ],
-    "UpgradePoints": 3,
-    "Score": 40,
-    "HasSave": true
+    "UpgradePoints": 3
 }

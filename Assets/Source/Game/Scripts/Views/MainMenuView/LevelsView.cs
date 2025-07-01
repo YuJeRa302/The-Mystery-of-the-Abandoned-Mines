@@ -15,8 +15,6 @@ namespace Assets.Source.Game.Scripts
         private readonly string _choosePlayerClass = "ChoosePlayerClass";
         private readonly string _chooseWeapon = "ChooseWeapon";
         private readonly float _durationAnimation = 1f;
-        //private readonly Color _startColorAnimation = Color.red;
-        //private readonly Color _endColorAnimation = new Color(118f, 73f, 0);
 
         [SerializeField] private Image _levelImage;
         [SerializeField] private LeanLocalizedText _levelName;
@@ -97,8 +95,8 @@ namespace Assets.Source.Game.Scripts
             _backButton.onClick.AddListener(OnBackButtonClicked);
             _buyButton.onClick.AddListener(OnBuyButtonClick);
             _cancelButton.onClick.AddListener(OnCancelButtonClick);
-            _contractButton.onClick.AddListener(ShowContractLevels);
-            _defaultLevelButton.onClick.AddListener(ShowDefaultLevels);
+            _contractButton.onClick.AddListener(() => ShowLevels(_contractLevelDatas));
+            _defaultLevelButton.onClick.AddListener(() => ShowLevels(_levelDatas));
             _nextButton.onClick.AddListener(OnNextButtonClicked);
         }
 
@@ -109,8 +107,8 @@ namespace Assets.Source.Game.Scripts
             _backButton.onClick.RemoveListener(OnBackButtonClicked);
             _buyButton.onClick.RemoveListener(OnBuyButtonClick);
             _cancelButton.onClick.RemoveListener(OnCancelButtonClick);
-            _contractButton.onClick.RemoveListener(ShowContractLevels);
-            _defaultLevelButton.onClick.RemoveListener(ShowDefaultLevels);
+            _contractButton.onClick.RemoveListener(() => ShowLevels(_contractLevelDatas));
+            _defaultLevelButton.onClick.RemoveListener(() => ShowLevels(_levelDatas));
             _nextButton.onClick.RemoveListener(OnNextButtonClicked);
         }
 
@@ -125,21 +123,9 @@ namespace Assets.Source.Game.Scripts
 
         }
 
-        private void CreateContractLevels()
+        private void CreateLevels(List<LevelData> levelDatas)
         {
-            foreach (LevelData levelData in _contractLevelDatas)
-            {
-                LevelDataView view = Instantiate(_levelDataView, _levelsContainer);
-                _levelDataViews.Add(view);
-                LevelState levelState = _levelsViewModel.GetLevelState(levelData);
-                view.Initialize(levelData, levelState, _levelsViewModel, _audioPlayerService);
-                view.LevelSelected += OnLevelSelected;
-            }
-        }
-
-        private void CreateDefaultLevels()
-        {
-            foreach (LevelData levelData in _levelDatas)
+            foreach (LevelData levelData in levelDatas)
             {
                 LevelDataView view = Instantiate(_levelDataView, _levelsContainer);
                 _levelDataViews.Add(view);
@@ -202,24 +188,7 @@ namespace Assets.Source.Game.Scripts
             _weaponDatas.Sort(delegate (WeaponData x, WeaponData y) { return x.Tier.CompareTo(y.Tier); });
         }
 
-        private void ShowDefaultLevels()
-        {
-            _textHint.TranslationName = _chooseLevel;
-            _isContractLevel = false;
-            _isLevelsShow = true;
-            _nextButton.interactable = false;
-            _levelInfo.SetActive(true);
-            _nextButton.gameObject.SetActive(true);
-            _levelsScrollRect.gameObject.SetActive(true);
-            _modsScrollRect.gameObject.SetActive(false);
-            _weaponsScrollRect.gameObject.SetActive(false);
-            _playerClassScrollRect.gameObject.SetActive(false);
-            _audioPlayerService.PlayOneShotButtonClickSound();
-            ClearLevels();
-            CreateDefaultLevels();
-        }
-
-        private void ShowContractLevels()
+        private void ShowLevels(List<LevelData> levelDatas)
         {
             _textHint.TranslationName = _chooseLevel;
             _isContractLevel = true;
@@ -233,7 +202,7 @@ namespace Assets.Source.Game.Scripts
             _playerClassScrollRect.gameObject.SetActive(false);
             _audioPlayerService.PlayOneShotButtonClickSound();
             ClearLevels();
-            CreateContractLevels();
+            CreateLevels(levelDatas);
         }
 
         private void ShowPlayerClass()

@@ -9,7 +9,7 @@ public class PlayerWeapons : IDisposable
     private WeponPrefab _weponPrefab;
     private Pool _pool;
     private PoolParticle _critParticle;
-    private PoolParticle _vampiticmParticle;
+    private PoolParticle _vampirismParticle;
 
     public PlayerWeapons(Player player, WeaponData weaponData, Pool pool, PoolParticle critParticle, PoolParticle vampiticmParticle)
     {
@@ -18,7 +18,7 @@ public class PlayerWeapons : IDisposable
         _weponPrefab = _weapon.WeaponPrefab;
         _pool = pool;
         _critParticle = critParticle;
-        _vampiticmParticle = vampiticmParticle;
+        _vampirismParticle = vampiticmParticle;
 
         CreateWeaponView();
     }
@@ -66,7 +66,7 @@ public class PlayerWeapons : IDisposable
         else
         {
             particle = GameObject.Instantiate(_critParticle, _player.transform.position, _player.transform.rotation);
-            _pool.InstantiatePoolObject(particle, _vampiticmParticle.name);
+            _pool.InstantiatePoolObject(particle, _vampirismParticle.name);
         }
     }
 
@@ -74,7 +74,7 @@ public class PlayerWeapons : IDisposable
     {
         PoolParticle particle;
 
-        if (_pool.TryPoolObject(_vampiticmParticle.gameObject, out PoolObject pollParticle))
+        if (_pool.TryPoolObject(_vampirismParticle.gameObject, out PoolObject pollParticle))
         {
             particle = pollParticle as PoolParticle;
             particle.transform.position = _player.transform.position;
@@ -82,7 +82,7 @@ public class PlayerWeapons : IDisposable
         }
         else
         {
-            particle = GameObject.Instantiate(_vampiticmParticle, _player.transform);
+            particle = GameObject.Instantiate(_vampirismParticle, _player.transform);
             _pool.InstantiatePoolObject(particle, _critParticle.name);
         }
     }

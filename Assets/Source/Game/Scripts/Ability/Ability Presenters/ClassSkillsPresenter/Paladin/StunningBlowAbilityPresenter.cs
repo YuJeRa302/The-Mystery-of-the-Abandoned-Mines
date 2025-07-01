@@ -10,12 +10,14 @@ public class StunningBlowAbilityPresenter : AbilityPresenter
     private PoolParticle _poolParticle;
     private bool _isAbilityUse;
 
-    public StunningBlowAbilityPresenter(Ability ability,
+    public StunningBlowAbilityPresenter(
+        Ability ability,
         AbilityView abilityView,
         Player player,
-        IGameLoopService gameLoopService,
+        GamePauseService gamePauseService,
+        GameLoopService gameLoopService,
         ICoroutineRunner coroutineRunner,
-        PoolParticle abilityEffect) : base(ability, abilityView, player, gameLoopService, coroutineRunner)
+        PoolParticle abilityEffect) : base(ability, abilityView, player, gamePauseService, gameLoopService, coroutineRunner)
     {
         _pool = _player.Pool;
         _poolParticle = abilityEffect;

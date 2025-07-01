@@ -13,7 +13,6 @@ public class RoomService : IDisposable
     private Player _player;
     private CameraControiler _cameraControiler;
     private RoomView _currentRoom;
-    private int _currentRoomLevel = 0;
     private int _countRooms;
     private bool _canSeeDoor;
     private int _countStages = 0;
@@ -25,6 +24,7 @@ public class RoomService : IDisposable
 
     public bool IsWinGame { get; private set; } = false;
     public bool IsGameInterrupted { get; private set; } = true;
+    public int CurrentRoomLevel { get; private set; } = 0;
 
     public RoomService(
         GamePanelsService gamePanelsService,
@@ -43,6 +43,7 @@ public class RoomService : IDisposable
         _enemySpawner = enemySpawner;
         _trapsSpawner = trapsSpawner;
         _canSeeDoor = _cameraControiler.TrySeeDoor(_roomPlacer.StartRoom.WallLeft.gameObject);
+        _roomPlacer.Initialize(CurrentRoomLevel, _canSeeDoor, _countRooms);
         AddRoomListener();
         LockBossRoom();
     }
@@ -70,8 +71,8 @@ public class RoomService : IDisposable
     {
         RemoveRoomListener();
         _roomPlacer.Clear();
-        _currentRoomLevel++;
-        _roomPlacer.Initialize(_currentRoomLevel, _canSeeDoor, _countRooms);
+        CurrentRoomLevel++;
+        _roomPlacer.Initialize(CurrentRoomLevel, _canSeeDoor, _countRooms);
         _player.ResetPosition();
         StageCompleted?.Invoke();
         AddRoomListener();

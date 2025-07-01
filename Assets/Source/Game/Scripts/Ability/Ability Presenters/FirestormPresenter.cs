@@ -15,13 +15,15 @@ public class FirestormPresenter : AbilityPresenter
     private Transform _throwPoint;
     private ParticleSystem _particleSystem;
 
-    public FirestormPresenter(Ability ability,
+    public FirestormPresenter(
+        Ability ability,
         AbilityView abilityView,
         Player player,
-        IGameLoopService gameLoopService,
+        GamePauseService gamePauseService,
+        GameLoopService gameLoopService,
         ICoroutineRunner coroutineRunner,
         ParticleSystem particleSystem,
-        LegendaryAbilitySpell spellPrefab) : base(ability, abilityView, player, gameLoopService, coroutineRunner)
+        LegendaryAbilitySpell spellPrefab) : base(ability, abilityView, player, gamePauseService, gameLoopService, coroutineRunner)
     {
         _particleSystem = particleSystem;
         _throwPoint = _player.ThrowAbilityPoint;

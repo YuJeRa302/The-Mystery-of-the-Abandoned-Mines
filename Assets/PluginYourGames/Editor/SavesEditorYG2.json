@@ -8,7 +8,7 @@
         false
     ],
     "idSave": 1,
-    "Coins": 279000,
+    "Coins": 3100,
     "AmbientVolume": 40.0,
     "SfxVolumeVolume": 40.0,
     "IsMuted": false,
@@ -57,15 +57,15 @@
         },
         {
             "Id": 9,
-            "CurrentLevel": 3
+            "CurrentLevel": 0
         },
         {
             "Id": 15,
-            "CurrentLevel": 3
+            "CurrentLevel": 0
         },
         {
             "Id": 16,
-            "CurrentLevel": 1
+            "CurrentLevel": 0
         },
         {
             "Id": 17,
@@ -76,52 +76,112 @@
         {
             "Id": 0,
             "IsEquip": false,
-            "IsUnlock": true
+            "IsUnlock": false
         },
         {
-            "Id": 1,
+            "Id": 0,
             "IsEquip": false,
-            "IsUnlock": true
+            "IsUnlock": false
         },
         {
-            "Id": 2,
+            "Id": 0,
             "IsEquip": false,
-            "IsUnlock": true
+            "IsUnlock": false
+        },
+        {
+            "Id": 0,
+            "IsEquip": false,
+            "IsUnlock": false
+        },
+        {
+            "Id": 0,
+            "IsEquip": false,
+            "IsUnlock": false
+        },
+        {
+            "Id": 0,
+            "IsEquip": false,
+            "IsUnlock": false
+        },
+        {
+            "Id": 0,
+            "IsEquip": false,
+            "IsUnlock": false
+        },
+        {
+            "Id": 0,
+            "IsEquip": false,
+            "IsUnlock": false
+        },
+        {
+            "Id": 0,
+            "IsEquip": false,
+            "IsUnlock": false
+        },
+        {
+            "Id": 0,
+            "IsEquip": false,
+            "IsUnlock": false
+        },
+        {
+            "Id": 0,
+            "IsEquip": false,
+            "IsUnlock": false
+        },
+        {
+            "Id": 0,
+            "IsEquip": false,
+            "IsUnlock": false
+        },
+        {
+            "Id": 0,
+            "IsEquip": false,
+            "IsUnlock": false
+        },
+        {
+            "Id": 0,
+            "IsEquip": false,
+            "IsUnlock": false
+        },
+        {
+            "Id": 0,
+            "IsEquip": false,
+            "IsUnlock": false
         }
     ],
     "DefaultLevelState": [
         {
             "Id": 0,
-            "IsComplete": true,
+            "IsComplete": false,
             "CurrentCompleteStages": 0,
             "Tier": 0
         },
         {
-            "Id": 1,
-            "IsComplete": true,
+            "Id": 0,
+            "IsComplete": false,
             "CurrentCompleteStages": 0,
-            "Tier": 1
+            "Tier": 0
         },
         {
-            "Id": 2,
-            "IsComplete": true,
+            "Id": 0,
+            "IsComplete": false,
             "CurrentCompleteStages": 0,
-            "Tier": 2
+            "Tier": 0
         },
         {
-            "Id": 3,
-            "IsComplete": true,
+            "Id": 0,
+            "IsComplete": false,
             "CurrentCompleteStages": 0,
-            "Tier": 3
+            "Tier": 0
         },
         {
-            "Id": 4,
-            "IsComplete": true,
+            "Id": 0,
+            "IsComplete": false,
             "CurrentCompleteStages": 0,
-            "Tier": 4
+            "Tier": 0
         }
     ],
     "UpgradePoints": 3,
-    "Score": 0,
+    "Score": 40,
     "HasSave": true
 }

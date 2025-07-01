@@ -11,12 +11,11 @@ namespace Assets.Source.Game.Scripts
         private readonly int _shiftIndex = 1;
 
         private Player _player;
-        private TemporaryData _temporaryData;
         private List<Ability> _abilities = new ();
         private List<Ability> _classAbilities = new ();
         private List<Ability> _legendaryAbilities = new ();
         private List<PassiveAbilityView> _passiveAbilityViews = new ();
-        private AbilityAttributeData _abilityAttributeData;
+        private ActiveAbilityData _activeAbilityData;
         private AbilityPresenterFactory _abilityPresenterFactory;
         private AudioPlayer _audioPlayer;
         private AbilityFactory _abilityFactory;
@@ -33,15 +32,6 @@ namespace Assets.Source.Game.Scripts
         public event Action<Ability> AbilityRemoved;
         public event Action<Ability> AbilityUsed;
         public event Action<Ability> AbilityEnded;
-
-        public PlayerAbilityCaster(AbilityFactory abilityFactory, AbilityPresenterFactory abilityPresenterFactory, Player player, TemporaryData temporaryData, AudioPlayer audioPlayer)
-        {
-            _abilityFactory = abilityFactory;
-            _abilityPresenterFactory = abilityPresenterFactory;
-            _player = player;
-            _temporaryData = temporaryData;
-            _audioPlayer = audioPlayer;
-        }
 
         public PlayerAbilityCaster(
             AbilityFactory abilityFactory,
@@ -69,7 +59,7 @@ namespace Assets.Source.Game.Scripts
 
         public void TakeAbility(CardView cardView)
         {
-            _abilityAttributeData = null;
+            _activeAbilityData = null;
 
             if ((cardView.CardData.AttributeData as LegendaryAbilityData) != null)
             {
@@ -86,13 +76,13 @@ namespace Assets.Source.Game.Scripts
             }
             else
             {
-                _abilityAttributeData = cardView.CardData.AttributeData as ActiveAbilityData;
+                _activeAbilityData = cardView.CardData.AttributeData as ActiveAbilityData;
                 _currentAbilityLevel = cardView.CardState.CurrentLevel;
 
-                if (TryGetAbility(_abilityAttributeData as ActiveAbilityData, out Ability ability))
+                if (TryGetAbility(_activeAbilityData as ActiveAbilityData, out Ability ability))
                     ability.Upgrade(ability.AbilityAttribute, _currentAbilityLevel, _abilityDuration, _abilityDamage, _abilityCooldownReduction);
                 else
-                    AbilityTaked?.Invoke(_abilityAttributeData as ActiveAbilityData, cardView.CardState.CurrentLevel);
+                    AbilityTaked?.Invoke(_activeAbilityData as ActiveAbilityData, cardView.CardState.CurrentLevel);
             }
         }
 
@@ -199,14 +189,14 @@ namespace Assets.Source.Game.Scripts
 
         public void CreateAbilityView(AbilityView abilityView, ParticleSystem particleSystem, Transform throwPoint)
         {
-            Ability newAbility = _abilityFactory.CreateAbility(_abilityAttributeData as ActiveAbilityData,
+            Ability newAbility = _abilityFactory.CreateAbility(_activeAbilityData as ActiveAbilityData,
                 _currentAbilityLevel,
                 _abilityCooldownReduction,
                 _abilityDuration,
                 _abilityDamage,
                 true);
 
-            if ((_abilityAttributeData as ActiveAbilityData).TypeAbility != TypeAbility.AttackAbility)
+            if ((_activeAbilityData as ActiveAbilityData).TypeAbility != TypeAbility.AttackAbility)
             {
                 _abilityPresenterFactory.CreateAmplifierAbilityPresenter(newAbility, abilityView, particleSystem);
             }
@@ -217,7 +207,7 @@ namespace Assets.Source.Game.Scripts
                     _player,
                     throwPoint,
                     particleSystem,
-                    (_abilityAttributeData as AttackAbilityData).Spell);
+                    (_activeAbilityData as AttackAbilityData).Spell);
 
 
             newAbility.AbilityUsed += OnAbilityUsed;

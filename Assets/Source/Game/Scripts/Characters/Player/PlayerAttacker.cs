@@ -9,7 +9,6 @@ namespace Assets.Source.Game.Scripts
     public class PlayerAttacker : IDisposable
     {
         private readonly System.Random _rnd = new ();
-        private readonly IGameLoopService _gameLoopService;
         private readonly GamePauseService _gamePauseService;
         private readonly ICoroutineRunner _coroutineRunner;
         private readonly int _divider = 100;
@@ -33,26 +32,6 @@ namespace Assets.Source.Game.Scripts
         public event Action CritAttacked;
         public event Action<Transform> EnemyFinded;
         public event Action<float> HealedVampirism;
-
-        public PlayerAttacker(
-            Transform shoPoint,
-            Player player,
-            TypeAttackRange typeAttackRange,
-            WeaponData weaponData,
-            ICoroutineRunner coroutineRunner,
-            IGameLoopService gameLoopService,
-            Pool pool)
-        {
-            _gameLoopService = gameLoopService;
-            _coroutineRunner = coroutineRunner;
-            _shotPoint = shoPoint;
-            _player = player;
-            _typeAttackRange = typeAttackRange;
-            _poolBullet = pool;
-            CreateBulletSpawner(weaponData);
-            AddListeners();
-            _coolDownAttack = _coroutineRunner.StartCoroutine(CoolDownAttack());
-        }
 
         public PlayerAttacker(
             Transform shoPoint,
@@ -104,18 +83,12 @@ namespace Assets.Source.Game.Scripts
 
         private void AddListeners()
         {
-            _gameLoopService.GamePaused += OnGamePaused;
-            _gameLoopService.GameResumed += OnGameResumed;
-
             _gamePauseService.GamePaused += OnGamePaused;
             _gamePauseService.GameResumed += OnGameResumed;
         }
 
         private void RemoveListeners()
         {
-            _gameLoopService.GamePaused -= OnGamePaused;
-            _gameLoopService.GameResumed -= OnGameResumed;
-
             _gamePauseService.GamePaused -= OnGamePaused;
             _gamePauseService.GameResumed -= OnGameResumed;
         }

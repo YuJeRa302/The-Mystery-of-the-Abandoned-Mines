@@ -6,36 +6,15 @@ namespace Assets.Source.Game.Scripts
 {
     public class PlayerAnimation : IDisposable
     {
-        private readonly IGameLoopService _gameLoopService;
         private readonly GamePauseService _gamePauseService;
         private readonly ICoroutineRunner _coroutineRunner;
 
         private Animator _animator;
         private Rigidbody _rigidbody;
-        private float _maxSpeed;
         private Coroutine _moveCorontine;
         private Player _player;
-        private HashAnimationPlayer _animationPlayer = new HashAnimationPlayer();
-
-        public PlayerAnimation(
-            Animator animator,
-            Rigidbody rigidbody,
-            float maxSpeed,
-            PlayerClassData classData,
-            Player player,
-            ICoroutineRunner coroutineRunner,
-            IGameLoopService gameLoopService)
-        {
-            _gameLoopService = gameLoopService;
-            _coroutineRunner = coroutineRunner;
-            _animator = animator;
-            _rigidbody = rigidbody;
-            _maxSpeed = maxSpeed;
-            _animator.runtimeAnimatorController = classData.AnimatorController;
-            _player = player;
-            _moveCorontine = _coroutineRunner.StartCoroutine(PlayingAnimationMove());
-            AddListeners();
-        }
+        private HashAnimationPlayer _animationPlayer = new ();
+        private float _maxSpeed;
 
         public PlayerAnimation(
             Animator animator,
@@ -83,9 +62,6 @@ namespace Assets.Source.Game.Scripts
 
         private void AddListeners()
         {
-            _gameLoopService.GamePaused += OnGamePaused;
-            _gameLoopService.GameResumed += OnGameResumed;
-
             _gamePauseService.GamePaused += OnGamePaused;
             _gamePauseService.GameResumed += OnGameResumed;
         }
@@ -94,12 +70,6 @@ namespace Assets.Source.Game.Scripts
         {
             _gamePauseService.GamePaused -= OnGamePaused;
             _gamePauseService.GameResumed -= OnGameResumed;
-
-            if (_gameLoopService != null)
-            {
-                _gameLoopService.GamePaused -= OnGamePaused;
-                _gameLoopService.GameResumed -= OnGameResumed;
-            }
         }
 
         private void OnGamePaused(bool state)

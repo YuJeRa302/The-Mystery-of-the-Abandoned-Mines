@@ -5,7 +5,7 @@ using System.Collections.Generic;
 [Serializable]
 public class ClassAbilityService
 {
-    public List<ClassAbilityState> ClassAbilityStates { get; private set; } = new ();
+    public List<ClassAbilityState> ClassAbilityStates = new ();
 
     public void SetClassAbilityStates(List<ClassAbilityState> classAbilityStates)
     {
@@ -16,10 +16,10 @@ public class ClassAbilityService
     {
         if (ClassAbilityStates != null)
         {
-            foreach (ClassAbilityState classAbilityState in ClassAbilityStates)
+            for (int index = 0; index < ClassAbilityStates.Count; index++)
             {
-                if (classAbilityState.Id == newClassAbilityState.Id)
-                    classAbilityState.CurrentLevel = newClassAbilityState.CurrentLevel;
+                if (ClassAbilityStates[index].Id == newClassAbilityState.Id)
+                    ClassAbilityStates[index].CurrentLevel = newClassAbilityState.CurrentLevel;
                 else
                     ClassAbilityStates.Add(new(newClassAbilityState.Id, newClassAbilityState.CurrentLevel));
             }

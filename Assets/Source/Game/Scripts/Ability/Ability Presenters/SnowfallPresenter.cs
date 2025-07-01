@@ -20,12 +20,15 @@ public class SnowfallPresenter : AbilityPresenter
     private Transform _throwPoint;
     private ParticleSystem _particleSystem;
 
-    public SnowfallPresenter(Ability ability,
+    public SnowfallPresenter(
+        Ability ability,
         AbilityView abilityView,
         Player player,
-        IGameLoopService gameLoopService,
-        ICoroutineRunner coroutineRunner, ParticleSystem particleSystem,
-        LegendaryAbilitySpell spellPrefab) : base(ability, abilityView, player, gameLoopService, coroutineRunner)
+        GamePauseService gamePauseService,
+        GameLoopService gameLoopService,
+        ICoroutineRunner coroutineRunner,
+        ParticleSystem particleSystem,
+        LegendaryAbilitySpell spellPrefab) : base(ability, abilityView, player, gamePauseService, gameLoopService, coroutineRunner)
     {
         _throwPoint = player.ThrowAbilityPoint;
         _spellPrefab = spellPrefab;
@@ -113,7 +116,6 @@ public class SnowfallPresenter : AbilityPresenter
 
             yield return new WaitForSeconds(0.5f);
         }
-        
     }
 
     public bool TryFindEnemy(out Enemy enemy)

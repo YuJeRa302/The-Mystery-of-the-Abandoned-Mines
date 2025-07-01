@@ -9,13 +9,13 @@ public class GameLoopService : IDisposable
     private readonly ICoroutineRunner _coroutineRunner;
     private readonly ISaveAndLoadProgress _saveAndLoadProgress;
     private readonly GamePanelsService _gamePanelsService;
-    private readonly RoomService _roomService;
     private readonly PersistentDataService _persistentDataService;
-    private readonly Player _player;
     private readonly GameObject _canvasLoader;
     private readonly float _loadControlValue = 0.9f;
     private readonly string _menuSceneName = "Menu";
 
+    private RoomService _roomService;
+    private Player _player;
     private AsyncOperation _load;
 
     public event Action GameClosed;
@@ -24,17 +24,13 @@ public class GameLoopService : IDisposable
         ICoroutineRunner coroutineRunner,
         ISaveAndLoadProgress saveAndLoadProgress,
         GamePanelsService gamePanelsService,
-        RoomService roomService,
         PersistentDataService persistentDataService,
-        Player player,
         GameObject canvasLoader) 
     {
         _coroutineRunner = coroutineRunner;
         _saveAndLoadProgress = saveAndLoadProgress;
         _gamePanelsService = gamePanelsService;
-        _roomService = roomService;
         _persistentDataService = persistentDataService;
-        _player = player;
         _canvasLoader = canvasLoader;
         _gamePanelsService.GameClosed += OnGameClosed;
     }
@@ -43,6 +39,12 @@ public class GameLoopService : IDisposable
     {
         _gamePanelsService.GameClosed -= OnGameClosed;
         GC.SuppressFinalize(this);
+    }
+
+    public void InitGameEntities(Player player, RoomService roomService) 
+    {
+        _player = player;
+        _roomService = roomService;
     }
 
     private void OnGameClosed()

@@ -8,7 +8,6 @@ using YG;
 public class PlayerMovement : IDisposable
 {
     private readonly ICoroutineRunner _coroutineRunner;
-    private readonly IGameLoopService _gameLoopService;
     private readonly GamePauseService _gamePauseService;
     private readonly Player _player;
 
@@ -21,39 +20,6 @@ public class PlayerMovement : IDisposable
     private Coroutine _movement;
     private bool _canRotate = true;
     private bool _canMove = true;
-
-    public PlayerMovement(
-        Camera camera,
-        VariableJoystick variableJoystick,
-        Rigidbody rigidbody,
-        Player player,
-        ICoroutineRunner coroutineRunner,
-        IGameLoopService gameLoopService)
-    {
-        _player = player;
-        _gameLoopService = gameLoopService;
-        _coroutineRunner = coroutineRunner;
-        _rigidbody = rigidbody;
-        _camera = camera;
-
-        if (YG2.envir.isDesktop)
-        {
-            CreateInputSystem();
-            variableJoystick.gameObject.SetActive(false);
-            _move = _playerInputSystem.Player.Move;
-            _movement = _coroutineRunner.StartCoroutine(DesktopMove());
-        }
-        else
-        {
-            _variableJoystick = variableJoystick;
-            _movement = _coroutineRunner.StartCoroutine(MobileMove());
-        }
-
-        _variableJoystick = variableJoystick;
-        _movement = _coroutineRunner.StartCoroutine(MobileMove());
-
-        AddListeners();
-    }
 
     public PlayerMovement(
         Camera camera,
@@ -132,18 +98,12 @@ public class PlayerMovement : IDisposable
 
     private void AddListeners()
     {
-        _gameLoopService.GamePaused += OnPauseGame;
-        _gameLoopService.GameResumed += OnResumeGame;
-
         _gamePauseService.GamePaused += OnPauseGame;
         _gamePauseService.GameResumed += OnResumeGame;
     }
 
     private void RemoveListeners()
     {
-        _gameLoopService.GamePaused -= OnPauseGame;
-        _gameLoopService.GameResumed -= OnResumeGame;
-
         _gamePauseService.GamePaused -= OnPauseGame;
         _gamePauseService.GameResumed -= OnResumeGame;
     }
@@ -159,11 +119,13 @@ public class PlayerMovement : IDisposable
         if (_movement != null)
             _coroutineRunner.StopCoroutine(_movement);
 
-        if (_canMove)
+        if (_canMove) 
+        {
             if (YG2.envir.isDesktop)
                 _movement = _coroutineRunner.StartCoroutine(DesktopMove());
             else
                 _movement = _coroutineRunner.StartCoroutine(MobileMove());
+        }
     }
 
     private void MobileLookAt()

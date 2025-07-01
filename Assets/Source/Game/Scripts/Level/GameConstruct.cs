@@ -39,21 +39,31 @@ public class GameConstruct : MonoBehaviour, ICoroutineRunner
 
     private void Awake()
     {
+        _canvasLoader.gameObject.SetActive(false);
         ConstructGameEntities();
+    }
+
+    private void OnDestroy()
+    {
+        _player.Remove();
+        _enemySpawner.Dispose();
+        _trapsSpawner.Dispose();
     }
 
     private void ConstructGameEntities() 
     {
         _gameConfig = Resources.Load<GameConfig>(DataPath.GameConfigDataPath);
         _persistentDataService = new PersistentDataService();
-        _abilityPresenterFactory = new AbilityPresenterFactory();
+        _saveAndLoader = new SaveAndLoader(_persistentDataService);
+        _saveAndLoader.LoadDataFromPrefs();
         _trapsSpawner = new TrapsSpawner();
         var levelData = _gameConfig.GetLevelData(_persistentDataService.PlayerProgress.LevelService.CurrentLevelId);
-        _saveAndLoader = new SaveAndLoader(_persistentDataService);
         _enemySpawner = new EnemySpawner(_enemuPool, this, _audioPlayerService, levelData.Tier);
         _gamePanelsService = new GamePanelsService(_gamePanelsViews);
         _gamePauseService = new GamePauseService(_gamePanelsService, _persistentDataService);
         _abilityFactory = new AbilityFactory(this);
+        _gameLoopService = new GameLoopService(this, _saveAndLoader, _gamePanelsService, _persistentDataService, _canvasLoader);
+        _abilityPresenterFactory = new AbilityPresenterFactory(_gameLoopService, _gamePauseService, this);
 
         _roomService = new RoomService(
             _gamePanelsService,
@@ -63,7 +73,6 @@ public class GameConstruct : MonoBehaviour, ICoroutineRunner
             _trapsSpawner,
             levelData.CountRooms,
             levelData.CountStages);
-
 
         _playerFactory = new PlayerFactory(
             _abilityFactory,
@@ -79,20 +88,22 @@ public class GameConstruct : MonoBehaviour, ICoroutineRunner
             out Player player);
 
         _player = player;
+        _cardLoader.Initialize(_player);
 
         _gamePanelsModel = new GamePanelsModel(
             _roomService,
             _gamePauseService,
             _persistentDataService,
-            _cardLoader, _player,
+            _cardLoader,
+            _player,
+            levelData,
             _audioPlayerService,
             _leanLocalization);
 
         _gamePanelsViewModel = new GamePanelsViewModel(_gamePanelsModel);
-        _gameLoopService = new GameLoopService(this, _saveAndLoader, _gamePanelsService, _roomService, _persistentDataService, _player, _canvasLoader);
-        _abilityPresenterFactory.InitService(_gameLoopService, _gamePauseService);
         _enemySpawner.InitPlayerInstance(_player);
         _roomService.InitPlayerInstance(_player);
+        _gameLoopService.InitGameEntities(_player, _roomService);
         _gamePanelsService.InitGamePanels(_gamePanelsViewModel);
     }
 }

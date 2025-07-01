@@ -15,11 +15,15 @@ public class SoulExplosionAbilityPresenter : AbilityPresenter
     private Coroutine _damageDealCoroutine;
     private float _delayDamage = 1f;
 
-    public SoulExplosionAbilityPresenter(Ability ability,
+    public SoulExplosionAbilityPresenter(
+        Ability ability,
         AbilityView abilityView,
         Player player,
-        IGameLoopService gameLoopService,
-        ICoroutineRunner coroutineRunner, ParticleSystem abilityEffect, Spell spell) : base(ability, abilityView, player, gameLoopService, coroutineRunner)
+        GamePauseService gamePauseService,
+        GameLoopService gameLoopService,
+        ICoroutineRunner coroutineRunner,
+        ParticleSystem abilityEffect,
+        Spell spell) : base(ability, abilityView, player, gamePauseService, gameLoopService, coroutineRunner)
     {
         _pool = _player.Pool;
         _poolParticle = abilityEffect;

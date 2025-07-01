@@ -12,11 +12,14 @@ public class ThrowAxeAbilityPresenter : AbilityPresenter
     private bool _isAbilityUse;
     private Coroutine _damageDealCoroutine;
 
-    public ThrowAxeAbilityPresenter(Ability ability,
+    public ThrowAxeAbilityPresenter(
+        Ability ability,
         AbilityView abilityView,
         Player player,
-        IGameLoopService gameLoopService,
-        ICoroutineRunner coroutineRunner, AxemMssile axemMssile) : base(ability, abilityView, player, gameLoopService, coroutineRunner)
+        GamePauseService gamePauseService,
+        GameLoopService gameLoopService,
+        ICoroutineRunner coroutineRunner,
+        AxemMssile axemMssile) : base(ability, abilityView, player, gamePauseService, gameLoopService, coroutineRunner)
     {
         _throwPoint = _player.ThrowAbilityPoint;
         _pool = _player.Pool;

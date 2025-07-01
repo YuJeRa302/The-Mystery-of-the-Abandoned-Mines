@@ -35,7 +35,6 @@ namespace Assets.Source.Game.Scripts
         public bool GetMuteStatus() => _gamePanelsModel.IsMuted;
         public void GetRerollPointsReward() => _gamePanelsModel.GetRerollPointsReward();
         public void GetEndGameReward() => _gamePanelsModel.GetEndGameReward();
-        public void GetLootRoomRewaed(int reward) => _gamePanelsModel.GetLootRoomReward(reward);
         public Player GetPlayer() => _gamePanelsModel.GetPlayer();
         public string GetRerollPointsRewardIndex() => _gamePanelsModel.GetRerollPointsRewardIndex();
         public string GetDefalutRewardIndex() => _gamePanelsModel.GetDefalutRewardIndex();

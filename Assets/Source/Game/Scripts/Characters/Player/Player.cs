@@ -30,7 +30,7 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private int _regeneration = 1;
         [SerializeField] private int _countKillEnemy = 0;
         [SerializeField] private float _moveSpeed = 1.5f;
-        [SerializeField] private int _currentHealth = 50;
+        [SerializeField] private int _currentHealth = 100;
 
         private PlayerView _playerView;
         private PlayerAbilityCaster _playerAbilityCaster;
@@ -73,60 +73,6 @@ namespace Assets.Source.Game.Scripts
         public float VampirismValue => _playerStats.VampirismValue;
         public float SearchRadius => _playerStats.SearchRadius;
         public float AttackRange => _playerStats.AttackRange;
-
-        public void CreateStats(
-            LevelObserver levelObserver,
-            PlayerClassData playerClassData,
-            PlayerView playerView,
-            WeaponData weaponData,
-            AbilityFactory abilityFactory,
-            AbilityPresenterFactory abilityPresenter,
-            TemporaryData temporaryData, 
-            AudioPlayer audioPlayer)
-        {
-            _playerView = playerView;
-            _audioPlayer = audioPlayer;
-            _miniMapIcon.sprite = playerClassData.Icon;
-            _playerHealth = new PlayerHealth(this, levelObserver, levelObserver, _currentHealth);
-            _playerAnimation = new PlayerAnimation(_animator, _rigidbody, _moveSpeed, playerClassData, this, levelObserver, levelObserver);
-            _playerWeapons = new PlayerWeapons(this, weaponData, _poolBullet, _critDamageParticle, _vampirismParticle);
-
-            _playerStats = new PlayerStats(
-                weaponData, 
-                temporaryData.PlayerClassData,
-                _currentLevel, 
-                _rerollPoints, 
-                _armor, 
-                _moveSpeed, 
-                _regeneration, 
-                _countKillEnemy);
-
-            _playerMovement = new PlayerMovement(
-                levelObserver.CameraControiler.Camera,
-                levelObserver.CameraControiler.VariableJoystick,
-                _rigidbody,
-                this,
-                levelObserver,
-                levelObserver);
-
-            _playerAttacker = new PlayerAttacker(
-                _shotPoint,
-                this,
-                temporaryData.PlayerClassData.TypeAttackRange,
-                weaponData,
-                levelObserver,
-                levelObserver,
-                _poolBullet);
-
-            _wallet = new PlayerWallet();
-            _cardDeck = new CardDeck(temporaryData.LevelData.IsContractLevel);
-            _playerAbilityCaster = new PlayerAbilityCaster(abilityFactory, abilityPresenter, this, temporaryData, _audioPlayer);
-            _playerView.Initialize(temporaryData.PlayerClassData.Icon, _throwAbilityPoint);
-            SetPlayerStats();
-            AddListeners();
-            _playerStats.UpgradePlayerStats(temporaryData.UpgradeStates, temporaryData.UpgradeDatas);
-            _playerAbilityCaster.Initialize();
-        }
 
         public void CreatePlayerEntities(
             AbilityFactory abilityFactory,
@@ -184,10 +130,9 @@ namespace Assets.Source.Game.Scripts
             _wallet = new PlayerWallet();
             _cardDeck = new CardDeck(gameConfig.GetLevelData(persistentDataService.PlayerProgress.LevelService.CurrentLevelId).IsContractLevel);
             _playerAbilityCaster = new PlayerAbilityCaster(abilityFactory, abilityPresenterFactory, this, persistentDataService, playerClassData, _audioPlayer);
-            _playerView.Initialize(playerClassData.Icon, _throwAbilityPoint, _playerAbilityContainer, _weaponAbilityContainer);
+            _playerView.Initialize(playerClassData.Icon, _throwAbilityPoint);
             SetPlayerStats();
             AddListeners();
-            //_playerStats.UpgradePlayerStats(temporaryData.UpgradeStates, temporaryData.UpgradeDatas);
             _playerStats.SetPlayerUpgrades(gameConfig, persistentDataService);
             _playerAbilityCaster.Initialize();
         }
@@ -296,6 +241,7 @@ namespace Assets.Source.Game.Scripts
             _playerStats.ExperienceValueChanged += OnExperienceValueChanged;
             _playerStats.UpgradeExperienceValueChanged += OnUpgradeExperienceValueChanged;
             _playerStats.MaxHealthChanged += OnMaxHealthChanged;
+            _playerStats.HealthUpgradeApplied += OnHealthUpgradeApplied;
             _playerStats.Healed += OnHealing;
             _playerStats.HealthReduced += OnReduceHealth;
             _playerStats.AbilityDurationChanged += OnAbilityDurationChange;
@@ -332,6 +278,7 @@ namespace Assets.Source.Game.Scripts
             _playerStats.ExperienceValueChanged -= OnExperienceValueChanged;
             _playerStats.UpgradeExperienceValueChanged -= OnUpgradeExperienceValueChanged;
             _playerStats.MaxHealthChanged -= OnMaxHealthChanged;
+            _playerStats.HealthUpgradeApplied -= OnHealthUpgradeApplied;
             _playerStats.Healed -= OnHealing;
             _playerStats.HealthReduced -= OnReduceHealth;
             _playerStats.AddingConins -= OnAddCoins;
@@ -501,6 +448,12 @@ namespace Assets.Source.Game.Scripts
         private void OnMaxHealthChanged(int healthValue)
         {
             _playerHealth.ChangeMaxHealth(healthValue, out int currentHealthValue, out int maxHealth);
+            _playerView.ChangeMaxHealthValue(maxHealth, currentHealthValue);
+        }
+
+        private void OnHealthUpgradeApplied(int healthValue)
+        {
+            _playerHealth.ApplyHealthUpgrade(healthValue, out int currentHealthValue, out int maxHealth);
             _playerView.ChangeMaxHealthValue(maxHealth, currentHealthValue);
         }
 

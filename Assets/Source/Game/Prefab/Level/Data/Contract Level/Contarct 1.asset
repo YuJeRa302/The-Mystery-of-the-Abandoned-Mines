@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4402b0d5cfaf9fe44b82f98caf5baf77, type: 3}
   m_Name: Contarct 1
   m_EditorClassIdentifier: 
-  _id: 0
+  _id: 5
   _tier: 2
   _tierColor:
   - {r: 1, g: 1, b: 1, a: 0}

@@ -25,25 +25,17 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private GameObject _canvasLoader;
 
         private SaveAndLoader _saveAndLoad;
-        private TemporaryData _temporaryData;
         private PersistentDataService _persistentDataService;
 
         public Action EnebleSave;
 
         private void Awake()
         {
-            if (_temporaryData == null)
-            {
-                InitYandexGameEntities();
-                Build();
-            }
-        }
-        
-        public void Initialize(TemporaryData temporaryData)
-        {
             Time.timeScale = _resumeValue;
-            _temporaryData = temporaryData;
             Build();
+
+            if(YG2.isGameplaying != true)
+                InitYandexGameEntities();
         }
 
         private void Build()
@@ -52,23 +44,14 @@ namespace Assets.Source.Game.Scripts
             _saveAndLoad = new(_persistentDataService, _configData);
             EnebleSave?.Invoke();
 
-            if (_temporaryData == null)
-            {
-                if(_saveAndLoad.TryGetGameData())
-                {
-                    _saveAndLoad.LoadDataFromCloud();
-                    _temporaryData = new TemporaryData(YG2.saves);
-                }
-                else
-                {
-                    _saveAndLoad.LoadDataFromConfig();
-                    _temporaryData = new TemporaryData(_configData);
-                }
-            }
+            _saveAndLoad.LoadDataFromConfig();
+
+            //if (_saveAndLoad.TryGetGameData())
+            //    _saveAndLoad.LoadDataFromCloud();
+            //else
+            //    _saveAndLoad.LoadDataFromConfig();
 
             CreateMenuEntities();
-            _saveAndLoad.Initialize(_temporaryData);
-            _temporaryData.SetUpgradesData(_upgradesView.UpgradeDatas);
         }
 
         private void InitYandexGameEntities()

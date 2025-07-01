@@ -6,8 +6,7 @@ using System.Collections.Generic;
 public class LevelService
 {
     public int CurrentLevelId;
-
-    public List<LevelState> LevelStates { get; private set; } = new ();
+    public List<LevelState> LevelStates = new ();
 
     public void SetLevelStates(LevelState[] levelStates) 
     {
@@ -15,6 +14,16 @@ public class LevelService
         {
             LevelStates.Add(levelStates[index]);
         }
+    }
+
+    public void AddLevelState(int id, bool isComplete) 
+    {
+        LevelState levelState = GetLevelStateById(id);
+
+        if (levelState.IsComplete == true)
+            return;
+        else
+            levelState.IsComplete = isComplete;
     }
 
     public LevelState GetLevelStateByLevelData(LevelData levelData)
@@ -25,12 +34,6 @@ public class LevelService
             levelState = InitLevelState(levelData);
 
         return levelState;
-    }
-
-    public void UpdateLevelStates(int levelId, bool isComplete)
-    {
-        LevelState levelState = GetLevelStateById(levelId);
-        levelState.IsComplete = isComplete;
     }
 
     public LevelState GetLevelStateById(int id)

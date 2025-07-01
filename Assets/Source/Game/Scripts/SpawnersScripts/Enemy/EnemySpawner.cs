@@ -155,7 +155,7 @@ namespace Assets.Source.Game.Scripts
                     while (currentEnemyCount < enemyData.EnemyStats[_currentLevelTier].EnemyCount)
                     {
                         yield return new WaitForSeconds(enemyData.EnemyStats[_currentLevelTier].DelaySpawn);
-                        EnemyCreate(enemyData, _rnd.Next(_spawnPoints.Length));
+                        CreateEnemy(enemyData, _rnd.Next(_spawnPoints.Length));
                         currentEnemyCount++;
                         _currentEnemyCount++;
                     }
@@ -171,7 +171,7 @@ namespace Assets.Source.Game.Scripts
             }
         }
 
-        private void EnemyCreate(EnemyData enemyData, int value)
+        private void CreateEnemy(EnemyData enemyData, int value)
         {
             Enemy enemy = null;
 

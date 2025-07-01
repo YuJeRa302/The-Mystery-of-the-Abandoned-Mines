@@ -65,13 +65,13 @@ namespace Assets.Source.Game.Scripts
 
         private void Awake()
         {
-            _canvasLoader.gameObject.SetActive(false);
-            _cameraControiler.ChangeConfiner(_roomPlacer.StartRoom);
-            _persistentDataService = new();
-            _saveAndLoad = new SaveAndLoader(_persistentDataService);
-            _saveAndLoad.LoadDataFromPrefs();
-            Debug.Log("AmbientVolumeDataKey - " + _persistentDataService.PlayerProgress.AmbientVolume);
-            Debug.Log("UpgradeStates.Count - " + _persistentDataService.PlayerProgress.UpgradeService.UpgradeStates.Count);
+            //_canvasLoader.gameObject.SetActive(false);
+            //_cameraControiler.ChangeConfiner(_roomPlacer.StartRoom);
+            //_persistentDataService = new();
+            //_saveAndLoad = new SaveAndLoader(_persistentDataService);
+            //_saveAndLoad.LoadDataFromPrefs();
+            //Debug.Log("AmbientVolumeDataKey - " + _persistentDataService.PlayerProgress.AmbientVolume);
+            //Debug.Log("UpgradeStates.Count - " + _persistentDataService.PlayerProgress.UpgradeService.UpgradeStates.Count);
         }
 
         private void OnDestroy()
@@ -159,18 +159,18 @@ namespace Assets.Source.Game.Scripts
 
         private void CreatePlayer(TemporaryData temporaryData)
         {
-            _playerFactory = new PlayerFactory(
-                this,
-                _abilityFactory,
-                _abilityPresenterFactory,
-                _playerPrefab,
-                _spawnPlayerPoint,
-                _playerView,
-                temporaryData,
-                _audioPlayerService,
-                out Player player);
+            //_playerFactory = new PlayerFactory(
+            //    this,
+            //    _abilityFactory,
+            //    _abilityPresenterFactory,
+            //    _playerPrefab,
+            //    _spawnPlayerPoint,
+            //    _playerView,
+            //    temporaryData,
+            //    _audioPlayerService,
+            //    out Player player);
 
-            _player = player;
+            //_player = player;
         }
 
         private void InitializeLevelEntities(TemporaryData temporaryData)
@@ -192,10 +192,8 @@ namespace Assets.Source.Game.Scripts
             _enemySpawner = new EnemySpawner(_enemuPool, this, _player, _currentRoomLevel, _audioPlayerService, temporaryData.CurrentLevelState.Tier);
             _cameraControiler.SetLookTarget(_player.transform);
             _saveAndLoad = new SaveAndLoader(_persistentDataService);
-            _saveAndLoad.Initialize(temporaryData);
+            //saveAndLoad.Initialize(temporaryData);
             _saveAndLoad.LoadDataFromPrefs();
-            Debug.Log("AmbientVolumeDataKey - " + _persistentDataService.PlayerProgress.AmbientVolume);
-            Debug.Log("UpgradeStates.Count - " + _persistentDataService.PlayerProgress.UpgradeService.UpgradeStates.Count);
             ContractWeaponDatas = temporaryData.LevelData.IsContractLevel == true ? (temporaryData.LevelData as ContractLevelData).WeaponDatas : null;
         }
 

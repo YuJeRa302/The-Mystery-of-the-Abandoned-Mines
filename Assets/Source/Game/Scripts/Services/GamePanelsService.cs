@@ -17,7 +17,6 @@ public class GamePanelsService : IDisposable
     public GamePanelsService(List<GamePanelsView> gamePanelsViews)
     {
         _gamePanelsViews = gamePanelsViews;
-        AddListener();
     }
 
     public void Dispose()
@@ -38,6 +37,8 @@ public class GamePanelsService : IDisposable
         {
             panel.Initialize(gamePanelsViewModel);
         }
+
+        AddListener();
     }
 
     private void AddListener()

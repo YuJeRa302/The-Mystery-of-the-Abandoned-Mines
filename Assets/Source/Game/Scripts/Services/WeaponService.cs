@@ -6,8 +6,7 @@ using System.Collections.Generic;
 public class WeaponService
 {
     public int CurrentWeaponId;
-
-    public List<WeaponState> WeaponStates { get; private set; } = new ();
+    public List<WeaponState> WeaponStates = new ();
 
     public void SetWeaponStates(WeaponState[] weaponStates)
     {
@@ -17,20 +16,20 @@ public class WeaponService
         }
     }
 
-    public void AddWeaponState(WeaponState newWeaponState)
+    public void UnlockWeaponByData(WeaponData weaponData)
     {
         if (WeaponStates != null)
         {
             foreach (WeaponState weaponState in WeaponStates)
             {
-                if (weaponState.Id == newWeaponState.Id)
+                if (weaponState.Id == weaponData.Id)
                 {
-                    weaponState.IsEquip = newWeaponState.IsEquip;
-                    weaponState.IsUnlock = newWeaponState.IsUnlock;
+                    weaponState.IsUnlock = true;
                 }
                 else 
                 {
-                    WeaponStates.Add(new(newWeaponState.Id, newWeaponState.IsEquip, newWeaponState.IsUnlock));
+                    WeaponState newWeaponState = InitWeaponState(weaponData);
+                    WeaponStates.Add(new(newWeaponState.Id, newWeaponState.IsEquip, newWeaponState.IsUnlock == true));
                 }
             }
         }

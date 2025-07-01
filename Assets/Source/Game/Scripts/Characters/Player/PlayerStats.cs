@@ -43,6 +43,7 @@ namespace Assets.Source.Game.Scripts
         private PlayerClassData _classData;
 
         public event Action<int> MaxHealthChanged;
+        public event Action<int> HealthUpgradeApplied;
         public event Action<float> HealthReduced;
         public event Action<int> Healed;
         public event Action<int> ExperienceValueChanged;
@@ -207,7 +208,7 @@ namespace Assets.Source.Game.Scripts
                             _rerollPoints += upgradeData.GetUpgradeParameterByCurrentLevel(upgradeState.CurrentLevel).Value;
                             break;
                         case TypeParameter.Health:
-                            MaxHealthChanged?.Invoke(upgradeData.GetUpgradeParameterByCurrentLevel(upgradeState.CurrentLevel).Value);
+                            HealthUpgradeApplied?.Invoke(upgradeData.GetUpgradeParameterByCurrentLevel(upgradeState.CurrentLevel).Value);
                             break;
                         case TypeParameter.AbilityCooldown:
                             AbilityCooldownReductionChanged?.Invoke(upgradeData.GetUpgradeParameterByCurrentLevel(upgradeState.CurrentLevel).Value);
@@ -218,55 +219,6 @@ namespace Assets.Source.Game.Scripts
                         case TypeParameter.AbilityValue:
                             AbilityDamageChanged?.Invoke(upgradeData.GetUpgradeParameterByCurrentLevel(upgradeState.CurrentLevel).Value);
                             break;
-                    }
-                }
-            }
-        }
-
-        public void UpgradePlayerStats(UpgradeState[] upgradeStates, UpgradeData[] upgradeDatas)
-        {
-            if (upgradeStates == null)
-                return;
-
-            if (upgradeStates.Length < _minValue)
-                return;
-
-            foreach (UpgradeState upgradeState in upgradeStates)
-            {
-                foreach (UpgradeData upgradeData in upgradeDatas)
-                {
-                    if (upgradeState.CurrentLevel > _minValue)
-                    {
-                        if (upgradeState.Id == upgradeData.Id)
-                        {
-                            switch (upgradeData.TypeParameter)
-                            {
-                                case TypeParameter.Armor:
-                                    _armor += upgradeData.GetUpgradeParameterByCurrentLevel(upgradeState.CurrentLevel).Value;
-                                    break;
-                                case TypeParameter.Damage:
-                                    _damageSource.ChangeDamage(_damageSource.Damage + upgradeData.GetUpgradeParameterByCurrentLevel(upgradeState.CurrentLevel).Value);
-                                    break;
-                                case TypeParameter.Regeneration:
-                                    _regeneration += upgradeData.GetUpgradeParameterByCurrentLevel(upgradeState.CurrentLevel).Value;
-                                    break;
-                                case TypeParameter.Reroll:
-                                    _rerollPoints += upgradeData.GetUpgradeParameterByCurrentLevel(upgradeState.CurrentLevel).Value;
-                                    break;
-                                case TypeParameter.Health:
-                                    MaxHealthChanged?.Invoke(upgradeData.GetUpgradeParameterByCurrentLevel(upgradeState.CurrentLevel).Value);
-                                    break;
-                                case TypeParameter.AbilityCooldown:
-                                    AbilityCooldownReductionChanged?.Invoke(upgradeData.GetUpgradeParameterByCurrentLevel(upgradeState.CurrentLevel).Value);
-                                    break;
-                                case TypeParameter.AbilityDuration:
-                                    AbilityDurationChanged?.Invoke(upgradeData.GetUpgradeParameterByCurrentLevel(upgradeState.CurrentLevel).Value);
-                                    break;
-                                case TypeParameter.AbilityValue:
-                                    AbilityDamageChanged?.Invoke(upgradeData.GetUpgradeParameterByCurrentLevel(upgradeState.CurrentLevel).Value);
-                                    break;
-                            }
-                        }
                     }
                 }
             }

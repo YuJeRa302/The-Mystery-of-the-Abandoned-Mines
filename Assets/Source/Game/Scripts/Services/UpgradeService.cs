@@ -5,7 +5,7 @@ using System.Collections.Generic;
 [Serializable]
 public class UpgradeService
 {
-    public List<UpgradeState> UpgradeStates { get; private set; } = new ();
+    public List<UpgradeState> UpgradeStates = new ();
 
     public void SetUpgradeStates(List<UpgradeState> upgradeStates)
     {
@@ -16,13 +16,12 @@ public class UpgradeService
     {
         if (UpgradeStates != null)
         {
-            for (int index = 0; index < UpgradeStates.Count; index++) 
-            {
-                if (UpgradeStates[index].Id == newUpgradeState.Id)
-                    UpgradeStates[index].CurrentLevel = newUpgradeState.CurrentLevel;
-                else
-                    UpgradeStates.Add(new(newUpgradeState.Id, newUpgradeState.CurrentLevel));
-            }
+            UpgradeState upgradeState = UpgradeStates.Find(state => state.Id == newUpgradeState.Id);
+
+            if (upgradeState != null)
+                upgradeState.CurrentLevel = newUpgradeState.CurrentLevel;
+            else
+                UpgradeStates.Add(new(newUpgradeState.Id, newUpgradeState.CurrentLevel));
         }
     }
 

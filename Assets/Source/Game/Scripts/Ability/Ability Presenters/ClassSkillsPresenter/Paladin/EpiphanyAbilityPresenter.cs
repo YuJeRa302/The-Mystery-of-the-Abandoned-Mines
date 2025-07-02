@@ -14,11 +14,15 @@ public class EpiphanyAbilityPresenter : AbilityPresenter
     private float _spellRadius = 8f;
     private float _delayDamage = 1f;
 
-    public EpiphanyAbilityPresenter(Ability ability,
+    public EpiphanyAbilityPresenter(
+        Ability ability,
         AbilityView abilityView,
         Player player,
-        IGameLoopService gameLoopService,
-        ICoroutineRunner coroutineRunner, ParticleSystem abilityEffect, Spell spell) : base(ability, abilityView, player, gameLoopService, coroutineRunner)
+        GamePauseService gamePauseService,
+        GameLoopService gameLoopService,
+        ICoroutineRunner coroutineRunner,
+        ParticleSystem abilityEffect,
+        Spell spell) : base(ability, abilityView, player, gamePauseService, gameLoopService, coroutineRunner)
     {
         _poolParticle = abilityEffect;
         _spellPrefab = spell;

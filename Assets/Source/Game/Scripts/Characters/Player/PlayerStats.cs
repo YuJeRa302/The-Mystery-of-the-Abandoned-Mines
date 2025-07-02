@@ -43,6 +43,7 @@ namespace Assets.Source.Game.Scripts
         private PlayerClassData _classData;
 
         public event Action<int> MaxHealthChanged;
+        public event Action<int> HealthUpgradeApplied;
         public event Action<float> HealthReduced;
         public event Action<int> Healed;
         public event Action<int> ExperienceValueChanged;
@@ -80,7 +81,6 @@ namespace Assets.Source.Game.Scripts
 
         public DamageSource DamageSource => _damageSource;
         public int Armor => _armor;
-        public float Damage => _damageSource.Damage;
         public float MoveSpeed => _moveSpeed;
         public float MaxMoveSpeed => _maxMoveSpeed;
         public int RerollPoints => _rerollPoints;
@@ -177,50 +177,48 @@ namespace Assets.Source.Game.Scripts
             _rerollPoints += cardView.CardData.AttributeData.Parameters[cardView.CardState.CurrentLevel].CardParameters[0].Value;
         }
 
-        public void UpgradePlayerStats(UpgradeState[] upgradeStates, UpgradeData[] upgradeDatas)
+        public void SetPlayerUpgrades(GameConfig gameConfig, PersistentDataService persistentDataService) 
         {
-            if (upgradeStates == null)
+            UpgradeData upgradeData;
+
+            if (persistentDataService.PlayerProgress.UpgradeService.UpgradeStates == null)
                 return;
 
-            if (upgradeStates.Length < _minValue)
+            if (persistentDataService.PlayerProgress.UpgradeService.UpgradeStates.Count < _minValue)
                 return;
 
-            foreach (UpgradeState upgradeState in upgradeStates)
+            foreach (UpgradeState upgradeState in persistentDataService.PlayerProgress.UpgradeService.UpgradeStates)
             {
-                foreach (UpgradeData upgradeData in upgradeDatas)
+                if (upgradeState.CurrentLevel > _minValue)
                 {
-                    if (upgradeState.CurrentLevel > _minValue)
+                    upgradeData = gameConfig.GetUpgradeDataById(upgradeState.Id);
+
+                    switch (upgradeData.TypeParameter)
                     {
-                        if (upgradeState.Id == upgradeData.Id)
-                        {
-                            switch (upgradeData.TypeParameter)
-                            {
-                                case TypeParameter.Armor:
-                                    _armor += upgradeData.GetUpgradeParameterByCurrentLevel(upgradeState.CurrentLevel).Value;
-                                    break;
-                                case TypeParameter.Damage:
-                                    _damageSource.ChangeDamage(_damageSource.Damage + upgradeData.GetUpgradeParameterByCurrentLevel(upgradeState.CurrentLevel).Value);
-                                    break;
-                                case TypeParameter.Regeneration:
-                                    _regeneration += upgradeData.GetUpgradeParameterByCurrentLevel(upgradeState.CurrentLevel).Value;
-                                    break;
-                                case TypeParameter.Reroll:
-                                    _rerollPoints += upgradeData.GetUpgradeParameterByCurrentLevel(upgradeState.CurrentLevel).Value;
-                                    break;
-                                case TypeParameter.Health:
-                                    MaxHealthChanged?.Invoke(upgradeData.GetUpgradeParameterByCurrentLevel(upgradeState.CurrentLevel).Value);
-                                    break;
-                                case TypeParameter.AbilityCooldown:
-                                    AbilityCooldownReductionChanged?.Invoke(upgradeData.GetUpgradeParameterByCurrentLevel(upgradeState.CurrentLevel).Value);
-                                    break;
-                                case TypeParameter.AbilityDuration:
-                                    AbilityDurationChanged?.Invoke(upgradeData.GetUpgradeParameterByCurrentLevel(upgradeState.CurrentLevel).Value);
-                                    break;
-                                case TypeParameter.AbilityValue:
-                                    AbilityDamageChanged?.Invoke(upgradeData.GetUpgradeParameterByCurrentLevel(upgradeState.CurrentLevel).Value);
-                                    break;
-                            }
-                        }
+                        case TypeParameter.Armor:
+                            _armor += upgradeData.GetUpgradeParameterByCurrentLevel(upgradeState.CurrentLevel).Value;
+                            break;
+                        case TypeParameter.Damage:
+                            _damageSource.ChangeDamage(_damageSource.Damage + upgradeData.GetUpgradeParameterByCurrentLevel(upgradeState.CurrentLevel).Value);
+                            break;
+                        case TypeParameter.Regeneration:
+                            _regeneration += upgradeData.GetUpgradeParameterByCurrentLevel(upgradeState.CurrentLevel).Value;
+                            break;
+                        case TypeParameter.Reroll:
+                            _rerollPoints += upgradeData.GetUpgradeParameterByCurrentLevel(upgradeState.CurrentLevel).Value;
+                            break;
+                        case TypeParameter.Health:
+                            HealthUpgradeApplied?.Invoke(upgradeData.GetUpgradeParameterByCurrentLevel(upgradeState.CurrentLevel).Value);
+                            break;
+                        case TypeParameter.AbilityCooldown:
+                            AbilityCooldownReductionChanged?.Invoke(upgradeData.GetUpgradeParameterByCurrentLevel(upgradeState.CurrentLevel).Value);
+                            break;
+                        case TypeParameter.AbilityDuration:
+                            AbilityDurationChanged?.Invoke(upgradeData.GetUpgradeParameterByCurrentLevel(upgradeState.CurrentLevel).Value);
+                            break;
+                        case TypeParameter.AbilityValue:
+                            AbilityDamageChanged?.Invoke(upgradeData.GetUpgradeParameterByCurrentLevel(upgradeState.CurrentLevel).Value);
+                            break;
                     }
                 }
             }

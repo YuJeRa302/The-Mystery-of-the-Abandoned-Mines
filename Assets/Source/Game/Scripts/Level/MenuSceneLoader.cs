@@ -7,6 +7,6 @@ public class MenuSceneLoader : SceneLoader
 
     public override void OnSceneLoaded(TemporaryData temporaryData)
     {
-        _mainMenuBuilder.Initialize(temporaryData);
+        //_mainMenuBuilder.Initialize(temporaryData);
     }
 }

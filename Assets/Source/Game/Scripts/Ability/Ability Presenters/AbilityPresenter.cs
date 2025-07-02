@@ -4,18 +4,26 @@ using System;
 public abstract class AbilityPresenter : IDisposable
 {
     protected readonly ICoroutineRunner _coroutineRunner;
-    protected readonly IGameLoopService _gameLoopService;
+    protected readonly GamePauseService _gamePauseService;
+    protected readonly GameLoopService _gameLoopService;
 
     protected Ability _ability;
     protected AbilityView _abilityView;
     protected Player _player;
 
-    public AbilityPresenter(Ability ability, AbilityView abilityView, Player player, IGameLoopService gameLoopService, ICoroutineRunner coroutineRunner)
+    public AbilityPresenter(
+        Ability ability,
+        AbilityView abilityView,
+        Player player,
+        GamePauseService gamePauseService,
+        GameLoopService gameLoopService,
+        ICoroutineRunner coroutineRunner)
     {
         _ability = ability;
         _abilityView = abilityView;
         _player = player;
         _coroutineRunner = coroutineRunner;
+        _gamePauseService = gamePauseService;
         _gameLoopService = gameLoopService;
     }
 
@@ -36,9 +44,9 @@ public abstract class AbilityPresenter : IDisposable
         _ability.CooldownValueChanged += OnCooldownValueChanged;
         _ability.CooldownValueReseted += OnCooldownValueReseted;
         _ability.AbilityRemoved += Dispose;
-        _gameLoopService.GamePaused += OnGamePaused;
-        _gameLoopService.GameResumed += OnGameResumed;
-        _gameLoopService.GameEnded += OnGameClosed;
+        _gamePauseService.GamePaused += OnGamePaused;
+        _gamePauseService.GameResumed += OnGameResumed;
+        _gameLoopService.GameClosed += OnGameClosed;
     }
 
     protected virtual void RemoveListener()
@@ -49,9 +57,9 @@ public abstract class AbilityPresenter : IDisposable
         _ability.CooldownValueChanged -= OnCooldownValueChanged;
         _ability.CooldownValueReseted -= OnCooldownValueReseted;
         _ability.AbilityRemoved -= Dispose;
-        _gameLoopService.GamePaused -= OnGamePaused;
-        _gameLoopService.GameResumed -= OnGameResumed;
-        _gameLoopService.GameEnded -= OnGameClosed;
+        _gamePauseService.GamePaused -= OnGamePaused;
+        _gamePauseService.GameResumed -= OnGameResumed;
+        _gameLoopService.GameClosed -= OnGameClosed;
     }
 
     protected abstract void OnAbilityUsed(Ability ability);
@@ -78,7 +86,7 @@ public abstract class AbilityPresenter : IDisposable
         _ability.ResumeCoroutine();
     }
 
-    protected virtual void OnGameClosed(bool state)
+    protected virtual void OnGameClosed()
     {
         Dispose();
     }

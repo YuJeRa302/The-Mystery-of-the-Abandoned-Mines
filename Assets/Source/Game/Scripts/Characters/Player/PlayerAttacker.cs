@@ -8,8 +8,8 @@ namespace Assets.Source.Game.Scripts
 {
     public class PlayerAttacker : IDisposable
     {
-        private readonly System.Random _rnd = new();
-        private readonly IGameLoopService _gameLoopService;
+        private readonly System.Random _rnd = new ();
+        private readonly GamePauseService _gamePauseService;
         private readonly ICoroutineRunner _coroutineRunner;
         private readonly int _divider = 100;
         private readonly int _defaultCriticalDamageMultiplier = 1;
@@ -39,10 +39,10 @@ namespace Assets.Source.Game.Scripts
             TypeAttackRange typeAttackRange,
             WeaponData weaponData,
             ICoroutineRunner coroutineRunner,
-            IGameLoopService gameLoopService,
+            GamePauseService gamePauseService,
             Pool pool)
         {
-            _gameLoopService = gameLoopService;
+            _gamePauseService = gamePauseService;
             _coroutineRunner = coroutineRunner;
             _shotPoint = shoPoint;
             _player = player;
@@ -52,6 +52,8 @@ namespace Assets.Source.Game.Scripts
             AddListeners();
             _coolDownAttack = _coroutineRunner.StartCoroutine(CoolDownAttack());
         }
+
+        public Enemy CurrentTarget => _currentTarget;
 
         public void Dispose()
         {
@@ -81,14 +83,14 @@ namespace Assets.Source.Game.Scripts
 
         private void AddListeners()
         {
-            _gameLoopService.GamePaused += OnGamePaused;
-            _gameLoopService.GameResumed += OnGameResumed;
+            _gamePauseService.GamePaused += OnGamePaused;
+            _gamePauseService.GameResumed += OnGameResumed;
         }
 
         private void RemoveListeners()
         {
-            _gameLoopService.GamePaused -= OnGamePaused;
-            _gameLoopService.GameResumed -= OnGameResumed;
+            _gamePauseService.GamePaused -= OnGamePaused;
+            _gamePauseService.GameResumed -= OnGameResumed;
         }
 
         private void OnGamePaused(bool state)

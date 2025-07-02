@@ -31,6 +31,7 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private GameObject _canvasLoader;
         [SerializeField] private LeanLocalization _leanLocalization;
 
+        private PersistentDataService _persistentDataService;
         private bool _canSeeDoor;
         private EnemySpawner _enemySpawner;
         private TrapsSpawner _trapsSpawner;
@@ -64,8 +65,13 @@ namespace Assets.Source.Game.Scripts
 
         private void Awake()
         {
-            _canvasLoader.gameObject.SetActive(false);
-            _cameraControiler.ChengeConfiner(_roomPlacer.StartRoom);
+            //_canvasLoader.gameObject.SetActive(false);
+            //_cameraControiler.ChangeConfiner(_roomPlacer.StartRoom);
+            //_persistentDataService = new();
+            //_saveAndLoad = new SaveAndLoader(_persistentDataService);
+            //_saveAndLoad.LoadDataFromPrefs();
+            //Debug.Log("AmbientVolumeDataKey - " + _persistentDataService.PlayerProgress.AmbientVolume);
+            //Debug.Log("UpgradeStates.Count - " + _persistentDataService.PlayerProgress.UpgradeService.UpgradeStates.Count);
         }
 
         private void OnDestroy()
@@ -153,23 +159,24 @@ namespace Assets.Source.Game.Scripts
 
         private void CreatePlayer(TemporaryData temporaryData)
         {
-            _playerFactory = new PlayerFactory(
-                this,
-                _abilityFactory,
-                _abilityPresenterFactory,
-                _playerPrefab,
-                _spawnPlayerPoint,
-                _playerView,
-                temporaryData,
-                _audioPlayerService,
-                out Player player);
+            //_playerFactory = new PlayerFactory(
+            //    this,
+            //    _abilityFactory,
+            //    _abilityPresenterFactory,
+            //    _playerPrefab,
+            //    _spawnPlayerPoint,
+            //    _playerView,
+            //    temporaryData,
+            //    _audioPlayerService,
+            //    out Player player);
 
-            _player = player;
+            //_player = player;
         }
 
         private void InitializeLevelEntities(TemporaryData temporaryData)
         {
             _canSeeDoor = _cameraControiler.TrySeeDoor(_roomPlacer.StartRoom.WallLeft.gameObject);
+            _persistentDataService = new ();
             _countStages = temporaryData.LevelData.CountStages;
             CountRooms = temporaryData.LevelData.CountRooms;
 
@@ -184,8 +191,9 @@ namespace Assets.Source.Game.Scripts
             _cardLoader.Initialize(_player);
             _enemySpawner = new EnemySpawner(_enemuPool, this, _player, _currentRoomLevel, _audioPlayerService, temporaryData.CurrentLevelState.Tier);
             _cameraControiler.SetLookTarget(_player.transform);
-            _saveAndLoad = new SaveAndLoader();
-            _saveAndLoad.Initialize(temporaryData);
+            _saveAndLoad = new SaveAndLoader(_persistentDataService);
+            //saveAndLoad.Initialize(temporaryData);
+            _saveAndLoad.LoadDataFromPrefs();
             ContractWeaponDatas = temporaryData.LevelData.IsContractLevel == true ? (temporaryData.LevelData as ContractLevelData).WeaponDatas : null;
         }
 
@@ -424,14 +432,14 @@ namespace Assets.Source.Game.Scripts
         private void OnRoomEntering(RoomView room)
         {
             _currentRoom = room;
-            _cameraControiler.ChengeConfiner(room);
+            _cameraControiler.ChangeConfiner(room);
 
             if (room.IsComplete == false)
             {
                 if (room.EnemySpawnPoints.Length == 0)
                     _trapsSpawner.Initialize(room);
                 else
-                    _enemySpawner.Initialize(room);
+                    _enemySpawner.EnterRoom(room);
 
                 LockAllDoors();
             }

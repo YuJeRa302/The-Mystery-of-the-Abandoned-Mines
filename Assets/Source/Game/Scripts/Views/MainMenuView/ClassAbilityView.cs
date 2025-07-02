@@ -301,7 +301,6 @@ namespace Assets.Source.Game.Scripts
         private void Upgrade()
         {
             _classAbilityViewModel.UpgradeAbility();
-            _classAbilityViewModel.UpdateTemporaryData();
             _audioPlayerService.PlayOneShotButtonClickSound();
         }
 
@@ -316,7 +315,6 @@ namespace Assets.Source.Game.Scripts
         {
             _audioPlayerService.PlayOneShotButtonClickSound();
             gameObject.SetActive(false);
-            _classAbilityViewModel.UpdateTemporaryData();
             ClearClassAbility();
             ClearClass();
             _abilityImage.sprite = _defaultSprite;

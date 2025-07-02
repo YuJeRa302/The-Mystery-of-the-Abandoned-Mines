@@ -14,17 +14,17 @@ public class DragonTracePresenter : AbilityPresenter
     private Coroutine _damageDealCoroutine;
     private Coroutine _spawnedSpellCorountine;
     private ParticleSystem _particleSystem;
-
-    private List<LegendaryAbilitySpell> _spells = new List<LegendaryAbilitySpell>();
+    private List<LegendaryAbilitySpell> _spells = new ();
 
     public DragonTracePresenter(
         Ability ability,
         AbilityView abilityView,
         Player player,
-        IGameLoopService gameLoopService,
+        GamePauseService gamePauseService,
+        GameLoopService gameLoopService,
         ICoroutineRunner coroutineRunner,
         ParticleSystem particleSystem,
-        LegendaryAbilitySpell spellPrefab) : base(ability, abilityView, player, gameLoopService, coroutineRunner)
+        LegendaryAbilitySpell spellPrefab) : base(ability, abilityView, player, gamePauseService, gameLoopService, coroutineRunner)
     {
         _particleSystem = particleSystem;
         _spellPrefab = spellPrefab;

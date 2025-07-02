@@ -154,7 +154,7 @@ namespace Assets.Source.Game.Scripts
                 {
                     WeaponState weaponState = _levelsViewModel.GetWeaponState(weaponData);
 
-                    if (weaponState == null)
+                    if (weaponState.IsUnlock == false)
                     {
                         continue;
                     }
@@ -185,7 +185,7 @@ namespace Assets.Source.Game.Scripts
 
         private void SortWeaponsByTier()
         {
-            _weaponDatas.Sort(delegate (WeaponData x, WeaponData y) { return y.Tier.CompareTo(x.Tier); });
+            _weaponDatas.Sort(delegate (WeaponData x, WeaponData y) { return x.Tier.CompareTo(y.Tier); });
         }
 
         private void ShowLevels(List<LevelData> levelDatas)

@@ -78,8 +78,7 @@ namespace Assets.Source.Game.Scripts
                 return;
             }
 
-            if (_levelsViewModel.GetLevels().Length > _firstLevelIndex)
-                SetImageLevelState(_levelsViewModel.GetLevels()[levelState.Id - _levelIndexShift].IsComplete);
+            SetImageLevelState(_levelsViewModel.TryUnlockLevel(levelState.Id - _levelIndexShift));
         }
 
         private void UpdateContractLevelState(LevelData levelData)

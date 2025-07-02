@@ -8,14 +8,17 @@ public class ShildUpAbilityPresenter : AbilityPresenter
     private Transform _effectConteiner;
     private Pool _pool;
     private PoolParticle _poolParticle;
-    private List<PoolObject> _spawnedEffects = new();
+    private List<PoolObject> _spawnedEffects = new ();
     private bool _isAbilityUse;
 
-    public ShildUpAbilityPresenter(Ability ability,
+    public ShildUpAbilityPresenter(
+        Ability ability,
         AbilityView abilityView,
         Player player,
-        IGameLoopService gameLoopService,
-        ICoroutineRunner coroutineRunner, PoolParticle abilityEffect) : base(ability, abilityView, player, gameLoopService, coroutineRunner)
+        GamePauseService gamePauseService,
+        GameLoopService gameLoopService,
+        ICoroutineRunner coroutineRunner, 
+        PoolParticle abilityEffect) : base(ability, abilityView, player, gamePauseService, gameLoopService, coroutineRunner)
     {
         _pool = _player.Pool;
         _poolParticle = abilityEffect;
@@ -85,7 +88,7 @@ public class ShildUpAbilityPresenter : AbilityPresenter
             foreach (var patricle in _spawnedEffects)
             {
                 if (patricle.isActiveAndEnabled)
-                    patricle.ReturObjectPool();
+                    patricle.ReturnObjectPool();
             }
         }
     }

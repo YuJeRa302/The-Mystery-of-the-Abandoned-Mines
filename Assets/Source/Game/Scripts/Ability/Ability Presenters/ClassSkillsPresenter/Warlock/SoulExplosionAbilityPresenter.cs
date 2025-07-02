@@ -14,11 +14,15 @@ public class SoulExplosionAbilityPresenter : AbilityPresenter
     private float _delayDamage = 1f;
     private float _spellRadius = 5f;
 
-    public SoulExplosionAbilityPresenter(Ability ability,
+    public SoulExplosionAbilityPresenter(
+        Ability ability,
         AbilityView abilityView,
         Player player,
-        IGameLoopService gameLoopService,
-        ICoroutineRunner coroutineRunner, ParticleSystem abilityEffect, Spell spell) : base(ability, abilityView, player, gameLoopService, coroutineRunner)
+        GamePauseService gamePauseService,
+        GameLoopService gameLoopService,
+        ICoroutineRunner coroutineRunner,
+        ParticleSystem abilityEffect,
+        Spell spell) : base(ability, abilityView, player, gamePauseService, gameLoopService, coroutineRunner)
     {
         _poolParticle = abilityEffect;
         _spellPrefab = spell;

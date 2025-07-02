@@ -7,12 +7,12 @@ namespace Assets.Source.Game.Scripts
     public class PlayerHealth : IDisposable
     {
         private readonly Player _player;
+        private readonly GamePauseService _gamePauseService;
         private readonly ICoroutineRunner _coroutineRunner;
-        private readonly IGameLoopService _gameLoopService;
         private readonly int _minHealth = 0;
         private readonly int _minDamage = 2;
 
-        private int _maxHealth = 100;
+        private int _maxHealth;
         private int _currentHealth;
         private int _delayHealing = 1;
         private Coroutine _regeneration;
@@ -23,12 +23,13 @@ namespace Assets.Source.Game.Scripts
         public event Action<int> HealthChanged;
         public event Action PlayerDied;
 
-        public PlayerHealth(Player player, ICoroutineRunner coroutineRunner, IGameLoopService gameLoopService, int currentHealth)
+        public PlayerHealth(Player player, ICoroutineRunner coroutineRunner, GamePauseService gamePauseService, int currentHealth)
         {
             _player = player;
             _coroutineRunner = coroutineRunner;
-            _gameLoopService = gameLoopService;
-            _currentHealth = _maxHealth;
+            _gamePauseService = gamePauseService;
+            _currentHealth = currentHealth;
+            _maxHealth = currentHealth;
             AddListeners();
             _regeneration = _coroutineRunner.StartCoroutine(RegenerationHealth());
         }
@@ -91,6 +92,14 @@ namespace Assets.Source.Game.Scripts
             maxHealth = _maxHealth;
         }
 
+        public void ApplyHealthUpgrade(int value, out int currentHealth, out int maxHealth)
+        {
+            _maxHealth += value;
+            _currentHealth = _maxHealth;
+            currentHealth = _currentHealth;
+            maxHealth = _maxHealth;
+        }
+
         public int GetMaxHealth()
         {
             return _maxHealth;
@@ -103,15 +112,15 @@ namespace Assets.Source.Game.Scripts
 
         private void AddListeners()
         {
-            _gameLoopService.GamePaused += OnPauseGame;
-            _gameLoopService.GameResumed += OnResumeGame;
+            _gamePauseService.GamePaused += OnPauseGame;
+            _gamePauseService.GameResumed += OnResumeGame;
             HealthChanged += OnHealthChanged;
         }
 
         private void RemoveListeners()
         {
-            _gameLoopService.GamePaused -= OnPauseGame;
-            _gameLoopService.GameResumed -= OnResumeGame;
+            _gamePauseService.GamePaused -= OnPauseGame;
+            _gamePauseService.GameResumed -= OnResumeGame;
             HealthChanged -= OnHealthChanged;
         }
 

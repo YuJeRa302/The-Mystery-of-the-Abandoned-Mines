@@ -14,12 +14,15 @@ public class ElectricGuardPresenter : AbilityPresenter
     private Coroutine _damageDealCoroutine;
     private ParticleSystem _particleSystem;
 
-    public ElectricGuardPresenter(Ability ability,
+    public ElectricGuardPresenter(
+        Ability ability,
         AbilityView abilityView,
         Player player,
-        IGameLoopService gameLoopService,
+        GamePauseService gamePauseService,
+        GameLoopService gameLoopService,
         ICoroutineRunner coroutineRunner,
-        ParticleSystem particleSystem, LegendaryAbilitySpell spellPrefab) : base(ability, abilityView, player, gameLoopService, coroutineRunner)
+        ParticleSystem particleSystem,
+        LegendaryAbilitySpell spellPrefab) : base(ability, abilityView, player, gamePauseService, gameLoopService, coroutineRunner)
     {
         _particleSystem = particleSystem;
         _spellPrefab = spellPrefab;

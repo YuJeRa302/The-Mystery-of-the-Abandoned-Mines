@@ -17,17 +17,15 @@ public class LevelsViewModel
     public event Action InvokedShow;
     public event Action InvokedHide;
 
-    public void Show() => _menuModel.InvokeLevelsShow();
     public void Hide() => _menuModel.InvokeLevelsHide();
-
     public bool TryUnlockContractButton(int index) => _levelsModel.TryUnlockContractButton(index);
     public bool TryBuyContract(int cost) => _levelsModel.TryBuyContract(cost);
-    public LevelState[] GetLevels() => _levelsModel.LevelStates;
+    public bool TryUnlockLevel(int levelId) => _levelsModel.TryUnlockLevel(levelId);
     public LevelState GetLevelState(LevelData levelData) => _levelsModel.GetLevelState(levelData);
     public WeaponState GetWeaponState(WeaponData weaponData) => _levelsModel.GetWeaponState(weaponData);
+    public int GetPlayerConins() => _levelsModel.GetPlayerCoinCount();
     public void SelectLevel(LevelDataView levelDataView) => _levelsModel.SelectLevel(levelDataView);
     public void SelectClass(PlayerClassDataView playerClassDataView) => _levelsModel.SelectClass(playerClassDataView);
     public void SelectWeapon(WeaponDataView weaponDataView) => _levelsModel.SelectWeapon(weaponDataView);
     public void LoadLevel() => _levelsModel.LoadScene();
-    public int GetPlayerConins() => _levelsModel.GetPlayerCoinCount();
 }

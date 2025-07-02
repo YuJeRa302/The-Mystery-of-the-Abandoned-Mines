@@ -6,10 +6,10 @@ namespace Assets.Source.Game.Scripts
         public int Id;
         public int CurrentLevel;
 
-        public UpgradeState(int id, int currentLvl)
+        public UpgradeState(int id, int currentLevel)
         {
             Id = id;
-            CurrentLevel = currentLvl;
+            CurrentLevel = currentLevel;
         }
     }
 }

@@ -8,12 +8,14 @@ public class SummonAbillityPresenter : AbilityPresenter
     private Pool _pool;
     private bool _isAbilityUse;
 
-    public SummonAbillityPresenter(Ability ability,
+    public SummonAbillityPresenter(
+        Ability ability,
         AbilityView abilityView,
         Player player,
-        IGameLoopService gameLoopService,
+        GamePauseService gamePauseService,
+        GameLoopService gameLoopService,
         ICoroutineRunner coroutineRunner,
-        Summon summonPrefab) : base(ability, abilityView, player, gameLoopService, coroutineRunner)
+        Summon summonPrefab) : base(ability, abilityView, player, gamePauseService, gameLoopService, coroutineRunner)
     {
         _pool = _player.Pool;
         _summonPrefab = summonPrefab;
@@ -58,7 +60,7 @@ public class SummonAbillityPresenter : AbilityPresenter
 
     private void Spawn()
     {
-        Summon summon= null;
+        Summon summon = null;
 
         if (TryFindSummon(_summonPrefab.gameObject, out Summon poolSummon))
         {

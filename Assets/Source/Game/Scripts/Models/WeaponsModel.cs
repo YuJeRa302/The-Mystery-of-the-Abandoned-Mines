@@ -2,29 +2,15 @@ using Assets.Source.Game.Scripts;
 
 public class WeaponsModel
 {
-    private readonly TemporaryData _temporaryData;
+    private readonly PersistentDataService _persistentDataService;
 
-    public WeaponsModel(TemporaryData temporaryData) 
+    public WeaponsModel(PersistentDataService persistentDataService) 
     {
-        _temporaryData = temporaryData;
+        _persistentDataService = persistentDataService;
     }
 
     public WeaponState GetWeaponState(WeaponData weaponData)
     {
-        WeaponState weaponState = _temporaryData.GetWeaponState(weaponData.Id);
-
-        if (weaponState == null)
-            weaponState = InitWeaponState(weaponData);
-
-        return weaponState;
-    }
-
-    private WeaponState InitWeaponState(WeaponData weaponData)
-    {
-        WeaponState weaponState = new ();
-        weaponState.Id = weaponData.Id;
-        weaponState.IsEquip = false;
-        weaponState.IsUnlock = false;
-        return weaponState;
+        return _persistentDataService.PlayerProgress.WeaponService.GetWeaponStateByData(weaponData);
     }
 }

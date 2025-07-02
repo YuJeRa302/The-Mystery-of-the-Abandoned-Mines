@@ -4,17 +4,20 @@ using UnityEngine;
 
 public class RageAbillityPresenter : AbilityPresenter
 {
-    private List<Transform> _effectConteiner = new List<Transform>();
+    private List<Transform> _effectConteiner = new List<Transform> ();
     private List<PoolObject> _spawnedEffects = new ();
     private Pool _pool;
     private PoolParticle _particleEffectPrefab;
     private bool _isAbilityUse;
 
-    public RageAbillityPresenter(Ability ability,
+    public RageAbillityPresenter(
+        Ability ability,
         AbilityView abilityView,
         Player player,
-        IGameLoopService gameLoopService,
-        ICoroutineRunner coroutineRunner, PoolParticle abilityEffect) : base(ability, abilityView, player, gameLoopService, coroutineRunner)
+        GamePauseService gamePauseService,
+        GameLoopService gameLoopService,
+        ICoroutineRunner coroutineRunner,
+        PoolParticle abilityEffect) : base(ability, abilityView, player, gamePauseService, gameLoopService, coroutineRunner)
     {
         _pool = _player.Pool;
         _particleEffectPrefab = abilityEffect;
@@ -89,7 +92,7 @@ public class RageAbillityPresenter : AbilityPresenter
             foreach (var patricle in _spawnedEffects)
             {
                 if (patricle.isActiveAndEnabled)
-                    patricle.ReturObjectPool();
+                    patricle.ReturnObjectPool();
             }
         }
     }

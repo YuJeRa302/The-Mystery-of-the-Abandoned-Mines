@@ -24,14 +24,17 @@ namespace Assets.Source.Game.Scripts
         private Coroutine _damageDealCoroutine;
         private Transform _throwPoint;
         private ParticleSystem _particleSystem;
-        float _currentDelayAttack = 0.3f;
+        private float _currentDelayAttack = 0.3f;
 
-        public AttackAbilityPresenter(Ability ability, 
-            AbilityView abilityView, 
-            Player player, 
-            IGameLoopService gameLoopService, 
+        public AttackAbilityPresenter(
+            Ability ability,
+            AbilityView abilityView,
+            Player player,
+            GamePauseService gamePauseService,
+            GameLoopService gameLoopService,
             ICoroutineRunner coroutineRunner,
-            Spell spellPrefab, ParticleSystem particleSystem) : base(ability, abilityView, player, gameLoopService, coroutineRunner)
+            Spell spellPrefab,
+            ParticleSystem particleSystem) : base(ability, abilityView, player, gamePauseService, gameLoopService, coroutineRunner)
         {
             _throwPoint = _player.ThrowAbilityPoint;
             _particleSystem = particleSystem;
@@ -88,7 +91,7 @@ namespace Assets.Source.Game.Scripts
             }
         }
 
-        protected override void OnAbilityUsed(Ability ability) 
+        protected override void OnAbilityUsed(Ability ability)
         {
             if (_ability.TypeAttackAbility == TypeAttackAbility.AoEAbility)
                 CreateAoESpell();
@@ -108,7 +111,7 @@ namespace Assets.Source.Game.Scripts
             _damageDealCoroutine = _coroutineRunner.StartCoroutine(DealDamage());
         }
 
-        protected override void OnAbilityEnded(Ability ability) 
+        protected override void OnAbilityEnded(Ability ability)
         {
             if (_blastThrowingCoroutine != null)
                 _coroutineRunner.StopCoroutine(_blastThrowingCoroutine);

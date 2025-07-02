@@ -14,7 +14,7 @@ public class PoolObject : MonoBehaviour
         _nameObject = name;
     }
 
-    public virtual void ReturObjectPool()
+    public virtual void ReturnObjectPool()
     {
         ReturnToPool();
     }

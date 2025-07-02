@@ -26,7 +26,7 @@ namespace Assets.Source.Game.Scripts
         private int _currentEnemyCount;
         private bool _isEnemySpawned = false;
         private AudioPlayer _audioPlayer;
-        private int _currentTier;
+        private int _currentLevelTier;
 
         public event Action<Enemy> EnemyDied;
         public event Action AllEnemyRoomDied;
@@ -39,7 +39,15 @@ namespace Assets.Source.Game.Scripts
             _player = player;
             _audioPlayer = audioPlayer;
             _player.PlayerDied += OnPlayerDead;
-            _currentTier = tier;
+            _currentLevelTier = tier;
+        }
+
+        public EnemySpawner(Pool enemyPool, ICoroutineRunner coroutineRunner, AudioPlayer audioPlayer, int currentLevelTier)
+        {
+            _enemuPool = enemyPool;
+            _coroutineRunner = coroutineRunner;
+            _audioPlayer = audioPlayer;
+            _currentLevelTier = currentLevelTier;
         }
 
         public void Dispose()
@@ -49,6 +57,7 @@ namespace Assets.Source.Game.Scripts
 
             if (_spawnEnemy != null)
                 _coroutineRunner.StopCoroutine(_spawnEnemy);
+
             if (_player != null)
                 _player.PlayerDied -= OnPlayerDead;
 
@@ -61,7 +70,12 @@ namespace Assets.Source.Game.Scripts
             GC.SuppressFinalize(this);
         }
 
-        public void Initialize(RoomView currentRoom)
+        public void InitPlayerInstance(Player player)
+        {
+            _player = player;
+        }
+
+        public void EnterRoom(RoomView currentRoom)
         {
             if (currentRoom.EnemySpawnPoints.Length == 0)
                 return;
@@ -80,13 +94,28 @@ namespace Assets.Source.Game.Scripts
             _spawn = _coroutineRunner.StartCoroutine(Spawn(currentRoom.RoomData.EnemyDatas));
         }
 
+        public void ClearEnemyInRoom()
+        {
+            if (_spawn != null)
+                _coroutineRunner.StopCoroutine(_spawn);
+
+            if (_spawnEnemy != null)
+                _coroutineRunner.StopCoroutine(_spawnEnemy);
+
+            foreach (Enemy enemy in _enemies)
+            {
+                if (enemy.gameObject.activeSelf)
+                    enemy.ReturnObjectPool();
+            }
+        }
+
         private int GetTotalEnemyCount(EnemyData[] enemyDatas)
         {
             int countEnemy = 0;
 
             foreach (EnemyData enemyData in enemyDatas)
             {
-                countEnemy += enemyData.EnemyStats[_currentTier].EnemyCount;
+                countEnemy += enemyData.EnemyStats[_currentLevelTier].EnemyCount;
             }
 
             return countEnemy;
@@ -107,7 +136,7 @@ namespace Assets.Source.Game.Scripts
 
         private IEnumerator SpawnEnemy(EnemyData enemyData)
         {
-            if (CalculateChance(enemyData.EnemyStats[_currentTier].ChanceSpawn))
+            if (CalculateChance(enemyData.EnemyStats[_currentLevelTier].ChanceSpawn))
             {
                 int currentEnemyCount = 0;
 
@@ -123,10 +152,10 @@ namespace Assets.Source.Game.Scripts
 
                 if(_currentEnemyCount < _totalEnemyCount)
                 {
-                    while (currentEnemyCount < enemyData.EnemyStats[_currentTier].EnemyCount)
+                    while (currentEnemyCount < enemyData.EnemyStats[_currentLevelTier].EnemyCount)
                     {
-                        yield return new WaitForSeconds(enemyData.EnemyStats[_currentTier].DelaySpawn);
-                        EnemyCreate(enemyData, _rnd.Next(_spawnPoints.Length));
+                        yield return new WaitForSeconds(enemyData.EnemyStats[_currentLevelTier].DelaySpawn);
+                        CreateEnemy(enemyData, _rnd.Next(_spawnPoints.Length));
                         currentEnemyCount++;
                         _currentEnemyCount++;
                     }
@@ -137,12 +166,12 @@ namespace Assets.Source.Game.Scripts
             else 
             {
                 yield return null;
-                _totalEnemyCount -= enemyData.EnemyStats[_currentTier].EnemyCount;
+                _totalEnemyCount -= enemyData.EnemyStats[_currentLevelTier].EnemyCount;
                 _isEnemySpawned = true;
             }
         }
 
-        private void EnemyCreate(EnemyData enemyData, int value)
+        private void CreateEnemy(EnemyData enemyData, int value)
         {
             Enemy enemy = null;
 
@@ -157,7 +186,7 @@ namespace Assets.Source.Game.Scripts
             {
                 enemy = GameObject.Instantiate(enemyData.PrefabEnemy, _spawnPoints[value].position, _spawnPoints[value].rotation);
                 _enemuPool.InstantiatePoolObject(enemy, enemyData.PrefabEnemy.name);
-                enemy.Initialize(_player, _currentRoomLevel, enemyData, _currentTier);
+                enemy.Initialize(_player, _currentRoomLevel, enemyData, _currentLevelTier);
                 enemy.Died += OnEnemyDead;
                 enemy.AttackPlayer += OnEnemyAttack;
                 _enemies.Add(enemy);
@@ -234,7 +263,7 @@ namespace Assets.Source.Game.Scripts
             foreach (Enemy enemy in _enemies)
             {
                 if (enemy.gameObject.activeSelf)
-                    enemy.ReturObjectPool();
+                    enemy.ReturnObjectPool();
             }
         }
     }

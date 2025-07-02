@@ -8,18 +8,19 @@
         false
     ],
     "idSave": 1,
-    "Coins": 1000,
+    "Coins": 3000,
     "AmbientVolume": 40.0,
     "SfxVolumeVolume": 40.0,
     "IsMuted": false,
+    "DefaultLanguage": "ru",
     "UpgradeStates": [
         {
             "Id": 1,
-            "CurrentLevel": 1
+            "CurrentLevel": 0
         },
         {
             "Id": 0,
-            "CurrentLevel": 1
+            "CurrentLevel": 0
         },
         {
             "Id": 3,
@@ -31,18 +32,6 @@
         },
         {
             "Id": 7,
-            "CurrentLevel": 0
-        },
-        {
-            "Id": 6,
-            "CurrentLevel": 0
-        },
-        {
-            "Id": 5,
-            "CurrentLevel": 0
-        },
-        {
-            "Id": 4,
             "CurrentLevel": 0
         }
     ],
@@ -57,11 +46,11 @@
         },
         {
             "Id": 10,
-            "CurrentLevel": 1
+            "CurrentLevel": 0
         },
         {
             "Id": 13,
-            "CurrentLevel": 1
+            "CurrentLevel": 0
         },
         {
             "Id": 14,
@@ -106,34 +95,32 @@
             "Id": 0,
             "IsComplete": false,
             "CurrentCompleteStages": 0,
-            "Tier": 0
+            "Tire": 0
         },
         {
             "Id": 1,
             "IsComplete": false,
             "CurrentCompleteStages": 0,
-            "Tier": 1
+            "Tire": 0
         },
         {
             "Id": 2,
             "IsComplete": false,
             "CurrentCompleteStages": 0,
-            "Tier": 2
+            "Tire": 0
         },
         {
             "Id": 3,
             "IsComplete": false,
             "CurrentCompleteStages": 0,
-            "Tier": 3
+            "Tire": 0
         },
         {
             "Id": 4,
             "IsComplete": false,
             "CurrentCompleteStages": 0,
-            "Tier": 4
+            "Tire": 0
         }
     ],
-    "UpgradePoints": 1,
-    "Score": 0,
-    "HasSave": true
+    "UpgradePoints": 3
 }

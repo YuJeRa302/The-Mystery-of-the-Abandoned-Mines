@@ -6,14 +6,13 @@ using UnityEngine;
 public class SoulExplosionAbilityPresenter : AbilityPresenter
 {
     private Coroutine _coroutine;
-    private Transform _effectConteiner;
-    private Pool _pool;
     private ParticleSystem _poolParticle;
     private Spell _spell;
     private Spell _spellPrefab;
     private bool _isAbilityUse;
     private Coroutine _damageDealCoroutine;
     private float _delayDamage = 1f;
+    private float _spellRadius = 5f;
 
     public SoulExplosionAbilityPresenter(Ability ability,
         AbilityView abilityView,
@@ -21,9 +20,7 @@ public class SoulExplosionAbilityPresenter : AbilityPresenter
         IGameLoopService gameLoopService,
         ICoroutineRunner coroutineRunner, ParticleSystem abilityEffect, Spell spell) : base(ability, abilityView, player, gameLoopService, coroutineRunner)
     {
-        _pool = _player.Pool;
         _poolParticle = abilityEffect;
-        _effectConteiner = _player.PlayerAbilityContainer;
         _spellPrefab = spell;
         AddListener();
     }
@@ -79,7 +76,7 @@ public class SoulExplosionAbilityPresenter : AbilityPresenter
                 new Vector3(_player.transform.position.x, _player.transform.position.y, _player.transform.position.z),
                 Quaternion.identity);
 
-        _spell.Initialize(_poolParticle, _ability.CurrentDuration, 5f);
+        _spell.Initialize(_poolParticle, _ability.CurrentDuration, _spellRadius);
     }
 
     protected override void OnGameResumed(bool state)

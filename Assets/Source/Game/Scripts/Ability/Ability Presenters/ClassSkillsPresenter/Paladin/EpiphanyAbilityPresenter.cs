@@ -7,8 +7,6 @@ public class EpiphanyAbilityPresenter : AbilityPresenter
 {
     private Coroutine _coroutine;
     private Coroutine _damageDealCoroutine;
-    private Transform _effectConteiner;
-    private Pool _pool;
     private ParticleSystem _poolParticle;
     private Spell _spell;
     private Spell _spellPrefab;
@@ -22,9 +20,7 @@ public class EpiphanyAbilityPresenter : AbilityPresenter
         IGameLoopService gameLoopService,
         ICoroutineRunner coroutineRunner, ParticleSystem abilityEffect, Spell spell) : base(ability, abilityView, player, gameLoopService, coroutineRunner)
     {
-        _pool = _player.Pool;
         _poolParticle = abilityEffect;
-        _effectConteiner = _player.PlayerAbilityContainer;
         _spellPrefab = spell;
         AddListener();
     }

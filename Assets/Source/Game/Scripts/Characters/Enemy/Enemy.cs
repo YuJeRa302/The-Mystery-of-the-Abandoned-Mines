@@ -282,6 +282,7 @@ namespace Assets.Source.Game.Scripts
         {
             float currentTime = 0;
             float pastSeconds = 0;
+            float delayDamage = 1f;
 
             CreateDamageParticle(particle);
 
@@ -289,7 +290,7 @@ namespace Assets.Source.Game.Scripts
             {
                 pastSeconds += Time.deltaTime;
 
-                if (pastSeconds >= 1)
+                if (pastSeconds >= delayDamage)
                 {
                     ApplyDamage(damage);
                     pastSeconds = 0;

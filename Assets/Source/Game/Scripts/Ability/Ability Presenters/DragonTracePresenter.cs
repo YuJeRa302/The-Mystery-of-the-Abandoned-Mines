@@ -6,6 +6,7 @@ using UnityEngine;
 public class DragonTracePresenter : AbilityPresenter
 {
     private readonly float _delayAttack = 0.3f;
+    private readonly float _delaySpawnSpell = 0.5f;
 
     private LegendaryAbilitySpell _spellPrefab;
     private LegendaryAbilitySpell _spell;
@@ -94,7 +95,7 @@ public class DragonTracePresenter : AbilityPresenter
             _spell.Initialize(_particleSystem, _ability.CurrentDuration);
             _spells.Add(_spell);
 
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(_delaySpawnSpell);
             lastTime++;
         }
     }

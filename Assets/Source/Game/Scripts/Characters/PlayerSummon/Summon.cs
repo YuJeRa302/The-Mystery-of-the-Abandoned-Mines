@@ -25,7 +25,6 @@ public class Summon : PoolObject
     public float SearchRadius => _searchRadius;
     public float AttackDelay => _attackDelay;
     public DamageSource DamageSource => _damageSource;
-    public float LifeTime => _lifeTime;
     public float MoveSpeed => _moveSpeed;
 
     public void Initialize(Player player, DamageSource damageSource, float lifeTime)

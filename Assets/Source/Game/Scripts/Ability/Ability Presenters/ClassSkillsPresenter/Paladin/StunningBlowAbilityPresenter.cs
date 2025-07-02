@@ -9,6 +9,7 @@ public class StunningBlowAbilityPresenter : AbilityPresenter
     private Pool _pool;
     private PoolParticle _poolParticle;
     private bool _isAbilityUse;
+    private float _searchRadius = 4f;
 
     public StunningBlowAbilityPresenter(Ability ability,
         AbilityView abilityView,
@@ -100,7 +101,7 @@ public class StunningBlowAbilityPresenter : AbilityPresenter
 
     private bool TryFindEnemy(out List<Enemy> findedEnemies)
     {
-        Collider[] coliderEnemy = Physics.OverlapSphere(_player.transform.position, 4f);
+        Collider[] coliderEnemy = Physics.OverlapSphere(_player.transform.position, _searchRadius);
         List<Enemy> enemies = new ();
 
         foreach (Collider collider in coliderEnemy)

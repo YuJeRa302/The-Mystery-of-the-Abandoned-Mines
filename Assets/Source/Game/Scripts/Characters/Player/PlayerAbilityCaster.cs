@@ -13,7 +13,6 @@ namespace Assets.Source.Game.Scripts
         private List<Ability> _abilities = new();
         private List<Ability> _classAbilities = new();
         private List<Ability> _legendaryAbilities = new();
-        private List<ClassAbilityData> _classAbilityDatas = new();
         private List<PassiveAbilityView> _passiveAbilityViews = new();
         private AttributeData _abilityAttributeData;
         private AbilityPresenterFactory _abilityPresenterFactory;

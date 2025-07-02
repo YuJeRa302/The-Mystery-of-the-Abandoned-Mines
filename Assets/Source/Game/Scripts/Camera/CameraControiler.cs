@@ -10,6 +10,7 @@ public class CameraControiler : MonoBehaviour
     [SerializeField] private VariableJoystick _variableJoystick;
 
     private Transform _target;
+    private float _viewportLeftThreshold = 0.15f;
 
     public Camera Camera => _camera;
     public VariableJoystick VariableJoystick => _variableJoystick;
@@ -29,7 +30,7 @@ public class CameraControiler : MonoBehaviour
     {
         Vector3 point = _camera.WorldToViewportPoint(leftWall.transform.position);
 
-        if (point.x < 0.15f)
+        if (point.x < _viewportLeftThreshold)
             return false;
         else
             return true;

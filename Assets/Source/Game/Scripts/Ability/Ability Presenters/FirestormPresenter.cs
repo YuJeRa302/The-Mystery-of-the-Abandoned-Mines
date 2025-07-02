@@ -6,6 +6,7 @@ public class FirestormPresenter : AbilityPresenter
 {
     private readonly float _delayAttack = 0.3f;
     private readonly float _blastSpeed = 12f;
+    private readonly float _searchRadius = 20f;
 
     private LegendaryAbilitySpell _spellPrefab;
     private LegendaryAbilitySpell _spell;
@@ -93,7 +94,7 @@ public class FirestormPresenter : AbilityPresenter
 
     public bool TryFindEnemy(out Enemy enemy)
     {
-        Collider[] coliderEnemy = Physics.OverlapSphere(_player.transform.position, 20);
+        Collider[] coliderEnemy = Physics.OverlapSphere(_player.transform.position, _searchRadius);
 
         foreach (Collider collider in coliderEnemy)
         {

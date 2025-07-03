@@ -13,14 +13,8 @@ namespace Assets.Source.Game.Scripts
         private float _currentDuration;
         private float _defaultDuration;
         private int _currentAbilityValue;
-        private float _moveSpeed;
-        private float _reduceHealth;
         private float _chance;
-        private int _regeneration;
-        private int _defailtDamage;
         private int _abilityDamage;
-        private int _defailtArmor;
-        private int _defailyHealing;
         private float _defaultCooldown;
         private float _currentCooldown;
         private float _spellRadius;
@@ -190,20 +184,8 @@ namespace Assets.Source.Game.Scripts
                     _currentAbilityValue = parameter.Value;
                 else if (parameter.TypeParameter == TypeParameter.AbilityDuration)
                     _defaultDuration = parameter.Value;
-                else if (parameter.TypeParameter == TypeParameter.Damage)
-                    _defailtDamage = parameter.Value;
-                else if (parameter.TypeParameter == TypeParameter.Armor)
-                    _defailtArmor = parameter.Value;
-                else if (parameter.TypeParameter == TypeParameter.MoveSpeed)
-                    _moveSpeed = parameter.Value;
-                else if (parameter.TypeParameter == TypeParameter.Healing)
-                    _defailyHealing = parameter.Value;
                 else if (parameter.TypeParameter == TypeParameter.AbilityDamage)
                     _abilityDamage = parameter.Value;
-                else if (parameter.TypeParameter == TypeParameter.HealtReduce)
-                    _reduceHealth = parameter.Value;
-                else if (parameter.TypeParameter == TypeParameter.Regeneration)
-                    _regeneration = parameter.Value;
                 else if (parameter.TypeParameter == TypeParameter.Chance)
                     _chance = parameter.Value;
                 else if (parameter.TypeParameter == TypeParameter.Quantity)

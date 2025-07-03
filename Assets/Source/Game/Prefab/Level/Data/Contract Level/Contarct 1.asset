@@ -22,7 +22,7 @@ MonoBehaviour:
   - {r: 1, g: 0.22745098, b: 0.14509805, a: 0}
   _countStages: 5
   _countRooms: 3
-  _cost: 2000
+  _cost: 2500
   _isContractLevel: 1
   _translationName: ElvenRuins
   _translationDescription: ElvenRuinsDescription

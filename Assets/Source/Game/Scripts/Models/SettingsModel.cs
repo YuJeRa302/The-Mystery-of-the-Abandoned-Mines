@@ -1,4 +1,5 @@
 using Lean.Localization;
+using UnityEngine;
 
 public class SettingsModel
 {

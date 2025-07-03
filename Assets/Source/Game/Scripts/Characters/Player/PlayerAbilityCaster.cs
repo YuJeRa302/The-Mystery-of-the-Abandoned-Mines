@@ -60,7 +60,7 @@ namespace Assets.Source.Game.Scripts
 
         public void TakeAbility(CardView cardView)
         {
-            _activeAbilityData = null;
+            _abilityAttributeData = null;
 
             if ((cardView.CardData.AttributeData as LegendaryAbilityData) != null)
             {
@@ -77,13 +77,13 @@ namespace Assets.Source.Game.Scripts
             }
             else
             {
-                _activeAbilityData = cardView.CardData.AttributeData as ActiveAbilityData;
+                _abilityAttributeData = cardView.CardData.AttributeData as ActiveAbilityData;
                 _currentAbilityLevel = cardView.CardState.CurrentLevel;
 
-                if (TryGetAbility(_activeAbilityData as ActiveAbilityData, out Ability ability))
+                if (TryGetAbility(_abilityAttributeData as ActiveAbilityData, out Ability ability))
                     ability.Upgrade(ability.AbilityAttribute, _currentAbilityLevel, _abilityDuration, _abilityDamage, _abilityCooldownReduction);
                 else
-                    AbilityTaked?.Invoke(_activeAbilityData as ActiveAbilityData, cardView.CardState.CurrentLevel);
+                    AbilityTaked?.Invoke(_abilityAttributeData as ActiveAbilityData, cardView.CardState.CurrentLevel);
             }
         }
 
@@ -190,14 +190,14 @@ namespace Assets.Source.Game.Scripts
 
         public void CreateAbilityView(AbilityView abilityView, ParticleSystem particleSystem, Transform throwPoint)
         {
-            Ability newAbility = _abilityFactory.CreateAbility(_activeAbilityData as ActiveAbilityData,
+            Ability newAbility = _abilityFactory.CreateAbility(_abilityAttributeData as ActiveAbilityData,
                 _currentAbilityLevel,
                 _abilityCooldownReduction,
                 _abilityDuration,
                 _abilityDamage,
                 true);
 
-            if ((_activeAbilityData as ActiveAbilityData).TypeAbility != TypeAbility.AttackAbility)
+            if ((_abilityAttributeData as ActiveAbilityData).TypeAbility != TypeAbility.AttackAbility)
             {
                 _abilityPresenterFactory.CreateAmplifierAbilityPresenter(newAbility, abilityView, particleSystem);
             }
@@ -208,7 +208,7 @@ namespace Assets.Source.Game.Scripts
                     _player,
                     throwPoint,
                     particleSystem,
-                    (_activeAbilityData as AttackAbilityData).Spell);
+                    (_abilityAttributeData as AttackAbilityData).Spell);
 
 
             newAbility.AbilityUsed += OnAbilityUsed;

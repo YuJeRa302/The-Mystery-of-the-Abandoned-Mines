@@ -8,11 +8,10 @@
         false
     ],
     "idSave": 1,
-    "Coins": 3000,
+    "Coins": 5320,
     "AmbientVolume": 40.0,
     "SfxVolumeVolume": 40.0,
     "IsMuted": false,
-    "DefaultLanguage": "ru",
     "UpgradeStates": [
         {
             "Id": 1,
@@ -88,39 +87,81 @@
             "Id": 2,
             "IsEquip": false,
             "IsUnlock": true
+        },
+        {
+            "Id": 6,
+            "IsEquip": false,
+            "IsUnlock": false
+        },
+        {
+            "Id": 4,
+            "IsEquip": false,
+            "IsUnlock": false
+        },
+        {
+            "Id": 3,
+            "IsEquip": false,
+            "IsUnlock": false
+        },
+        {
+            "Id": 5,
+            "IsEquip": false,
+            "IsUnlock": false
+        },
+        {
+            "Id": 12,
+            "IsEquip": false,
+            "IsUnlock": false
+        },
+        {
+            "Id": 13,
+            "IsEquip": false,
+            "IsUnlock": false
+        },
+        {
+            "Id": 11,
+            "IsEquip": false,
+            "IsUnlock": false
+        },
+        {
+            "Id": 14,
+            "IsEquip": false,
+            "IsUnlock": false
         }
     ],
     "DefaultLevelState": [
         {
             "Id": 0,
-            "IsComplete": false,
+            "IsComplete": true,
             "CurrentCompleteStages": 0,
-            "Tire": 0
+            "Tier": 0
         },
         {
             "Id": 1,
             "IsComplete": false,
             "CurrentCompleteStages": 0,
-            "Tire": 0
+            "Tier": 1
         },
         {
             "Id": 2,
             "IsComplete": false,
             "CurrentCompleteStages": 0,
-            "Tire": 0
+            "Tier": 2
         },
         {
             "Id": 3,
             "IsComplete": false,
             "CurrentCompleteStages": 0,
-            "Tire": 0
+            "Tier": 3
         },
         {
             "Id": 4,
             "IsComplete": false,
             "CurrentCompleteStages": 0,
-            "Tire": 0
+            "Tier": 4
         }
     ],
-    "UpgradePoints": 3
+    "UpgradePoints": 4,
+    "Score": 845,
+    "HasSave": true
 }

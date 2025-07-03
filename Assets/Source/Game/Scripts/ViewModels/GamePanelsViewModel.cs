@@ -23,6 +23,7 @@ namespace Assets.Source.Game.Scripts
         public event Action CardPanelOpened;
         public event Action<bool> GameEnded;
 
+        public void OpenCardPanel() => CardPanelOpened?.Invoke();
         public bool IsContractLevel => _gamePanelsModel.GetLevelType();
         public WeaponData CreateRewardWeapon() => _gamePanelsModel.CreateRewardWeapon();
         public List<CardData> GetMainCardPool => _gamePanelsModel.GetMainCardPool();

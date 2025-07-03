@@ -14,9 +14,7 @@ namespace Assets.Source.Game.Scripts
         private readonly PersistentDataService _persistentDataService;
         private readonly RoomService _roomService;
         private readonly GamePauseService _gamePauseService;
-        private readonly TemporaryData _temporaryData;
         private readonly Player _player;
-        private readonly LevelObserver _levelObserver;
         private readonly CardLoader _cardLoader;
         private readonly AudioPlayer _audioPlayer;
         private readonly LeanLocalization _leanLocalization;
@@ -24,31 +22,6 @@ namespace Assets.Source.Game.Scripts
 
         private List<WeaponData> _weaponDatasForReward = new ();
         private WeaponData _rewardWeaponData;
-
-        public GamePanelsModel(
-            TemporaryData temporaryData,
-            Player player,
-            LevelObserver levelObserver,
-            CardLoader cardLoader,
-            AudioPlayer audioPlayer,
-            LeanLocalization leanLocalization)
-        {
-            _audioPlayer = audioPlayer;
-            _temporaryData = temporaryData;
-            _player = player;
-            _levelObserver = levelObserver;
-            _cardLoader = cardLoader;
-            _leanLocalization = leanLocalization;
-            IsMuted = _temporaryData.MuteStateSound;
-            AmbientVolumeValue = _temporaryData.AmbientVolume;
-            SfxVolumeValue = _temporaryData.InterfaceVolume;
-            _audioPlayer.AmbientValueChanged(AmbientVolumeValue);
-            _audioPlayer.SfxValueChanged(SfxVolumeValue);
-            _audioPlayer.PlayAmbient();
-            _audioPlayer.MuteSound(IsMuted);
-            SetLanguage(_temporaryData.Language);
-            AddListeners();
-        }
 
         public GamePanelsModel(
             RoomService roomService,
@@ -82,11 +55,6 @@ namespace Assets.Source.Game.Scripts
         public float SfxVolumeValue { get; private set; }
         public bool IsMuted { get; private set; } = false;
         public AudioPlayer AudioPlayer => _audioPlayer;
-
-        public void OpenCardPanel()
-        {
-            CardPanelOpened?.Invoke();
-        }
 
         public string GetRerollPointsRewardIndex() 
         {
@@ -177,11 +145,6 @@ namespace Assets.Source.Game.Scripts
         public void GetEndGameReward()
         {
             _player.GetEndGameReward();
-        }
-
-        public void GetLootRoomReward(int reward)
-        {
-            _player.GetLootRoomReward(reward);
         }
 
         public void Mute()

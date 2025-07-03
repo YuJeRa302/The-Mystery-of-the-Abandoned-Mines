@@ -45,9 +45,11 @@ public class GameConstruct : MonoBehaviour, ICoroutineRunner
 
     private void OnDestroy()
     {
-        _player.Remove();
         _enemySpawner.Dispose();
         _trapsSpawner.Dispose();
+        _roomService.Dispose();
+        _gameLoopService.Dispose();
+        _player.Remove();
     }
 
     private void ConstructGameEntities() 

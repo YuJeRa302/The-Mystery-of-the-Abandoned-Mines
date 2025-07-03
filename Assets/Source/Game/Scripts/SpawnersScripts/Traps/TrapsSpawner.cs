@@ -23,10 +23,14 @@ public class TrapsSpawner : IDisposable
 
         _spawnedTraps.Clear();
         _currentRoom = room as LootRoomView;
-        _currentRoom.RoomCompleted += OnDisableTraps;
-        _spawnPoints = _currentRoom.TrapSpawnPoints;
-        _traps = _currentRoom.RoomData.Traps;
-        SpawnTraps();
+        
+        if (_currentRoom != null)
+        {
+            _currentRoom.RoomCompleted += OnDisableTraps;
+            _spawnPoints = _currentRoom.TrapSpawnPoints;
+            _traps = _currentRoom.RoomData.Traps;
+            SpawnTraps();
+        }
     }
 
     public void Dispose()

@@ -65,10 +65,10 @@ namespace Assets.Source.Game.Scripts
         {
             _canHealind = false;
 
-            if (_regeneration != null)
+            if (_regeneration != null && _coroutineRunner != null)
                 _coroutineRunner.StopCoroutine(_regeneration);
 
-            if (_timeReduce != null)
+            if (_timeReduce != null && _coroutineRunner != null)
                 _coroutineRunner.StopCoroutine(_timeReduce);
         }
 

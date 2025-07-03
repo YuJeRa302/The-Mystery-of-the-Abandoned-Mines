@@ -52,7 +52,7 @@ public class ClassAbilityModel
 
         if (Coins >= _currentClassAbilityData.AbilityClassParameters[_currentClassAbilityState.CurrentLevel].Cost)
         {
-            _persistentDataService.TrySpendUpgradePoints(_currentClassAbilityData.AbilityClassParameters[_currentClassAbilityState.CurrentLevel].Cost);
+            _persistentDataService.TrySpendCoins(_currentClassAbilityData.AbilityClassParameters[_currentClassAbilityState.CurrentLevel].Cost);
 
             if (_currentClassAbilityState.CurrentLevel < _maxAbilityLevel)
                 _currentClassAbilityState.CurrentLevel++;

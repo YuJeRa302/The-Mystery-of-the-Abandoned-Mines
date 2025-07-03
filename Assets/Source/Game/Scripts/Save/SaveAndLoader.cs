@@ -53,7 +53,11 @@ public class SaveAndLoader : ISaveAndLoadProgress
         _persistentDataService.PlayerProgress.Score = _defaultIntValue;
         _persistentDataService.PlayerProgress.Coins = _configData.Coins;
         _persistentDataService.PlayerProgress.IsMuted = _configData.IsMuted;
+#if UNITY_EDITOR
         _persistentDataService.PlayerProgress.Language = GameConstants.DefaultLanguageTag;
+#else
+        _persistentDataService.PlayerProgress.Language = YG2.envir.browserLang;
+#endif
         _persistentDataService.PlayerProgress.UpgradePoints = _configData.UpgradePoints;
         _persistentDataService.PlayerProgress.LevelService.SetLevelStates(_configData.DefaultLevelState);
         _persistentDataService.PlayerProgress.WeaponService.SetWeaponStates(_configData.DefaultWeaponState);

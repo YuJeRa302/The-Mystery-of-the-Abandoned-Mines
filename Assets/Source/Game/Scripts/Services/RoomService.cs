@@ -1,6 +1,7 @@
 using Assets.Source.Game.Scripts;
 using System;
 using System.Linq;
+using UnityEngine;
 
 public class RoomService : IDisposable
 {
@@ -43,7 +44,7 @@ public class RoomService : IDisposable
         _enemySpawner = enemySpawner;
         _trapsSpawner = trapsSpawner;
         _canSeeDoor = _cameraControiler.TrySeeDoor(_roomPlacer.StartRoom.WallLeft.gameObject);
-        _roomPlacer.Initialize(CurrentRoomLevel, _canSeeDoor, _countRooms);
+        _roomPlacer.Initialize(CurrentRoomLevel, _canSeeDoor, _countRooms, _cameraControiler);
         AddRoomListener();
         LockBossRoom();
     }
@@ -58,6 +59,7 @@ public class RoomService : IDisposable
     public void InitPlayerInstance(Player player)
     {
         _player = player;
+        _cameraControiler.SetLookTarget(_player.transform);
         AddListener();
     }
 
@@ -72,7 +74,7 @@ public class RoomService : IDisposable
         RemoveRoomListener();
         _roomPlacer.Clear();
         CurrentRoomLevel++;
-        _roomPlacer.Initialize(CurrentRoomLevel, _canSeeDoor, _countRooms);
+        _roomPlacer.Initialize(CurrentRoomLevel, _canSeeDoor, _countRooms, _cameraControiler);
         _player.ResetPosition();
         StageCompleted?.Invoke();
         AddRoomListener();
@@ -112,9 +114,12 @@ public class RoomService : IDisposable
             if (room == room as LootRoomView)
             {
                 (room as LootRoomView).RoomCompleted += OnRoomCompleted;
-                (room as LootRoomView).RewardSeted += OnLootRoomCompleted;//почему два события от одной комнаты?//заменить на один вызов
+                (room as LootRoomView).RewardSeted += OnLootRoomCompleted;
             }
         }
+
+        _roomPlacer.StartRoom.SetRoomStatus();
+        _roomPlacer.StartRoom.RoomEntering += OnRoomEntering;
     }
 
     private void RemoveRoomListener()

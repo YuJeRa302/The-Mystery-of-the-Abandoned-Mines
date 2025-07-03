@@ -27,14 +27,15 @@ namespace Assets.Source.Game.Scripts
         public List<RoomView> CreatedRooms => _createdRooms;
         public RoomView StartRoom => _startRoom;
 
-        public void Initialize(int currentRoomLevel, bool canSeeDoor, int countRooms)
+        public void Initialize(int currentRoomLevel, bool canSeeDoor, int countRooms, CameraControiler cameraControiler)
         {
+            _startRoom.SetCameraArial(canSeeDoor);
             _maxRoomSize = (countRooms * _multiplierRoomSize) + _shiftIndex;
             _spawnCenterCoordinate = countRooms;
             _maxRoomCount = countRooms;
             _spawnedRooms = new RoomView[_maxRoomSize, _maxRoomSize];
             _spawnedRooms[_spawnCenterCoordinate, _spawnCenterCoordinate] = _startRoom;
-            _startRoom.SetCameraArial(canSeeDoor);
+            cameraControiler.ChangeConfiner(_startRoom);
 
             for (int index = 0; index < _maxRoomCount; index++)
             {

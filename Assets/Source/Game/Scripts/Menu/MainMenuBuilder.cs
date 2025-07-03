@@ -44,12 +44,10 @@ namespace Assets.Source.Game.Scripts
             _saveAndLoad = new(_persistentDataService, _configData);
             EnebleSave?.Invoke();
 
-            _saveAndLoad.LoadDataFromConfig();
-
-            //if (_saveAndLoad.TryGetGameData())
-            //    _saveAndLoad.LoadDataFromCloud();
-            //else
-            //    _saveAndLoad.LoadDataFromConfig();
+            if (_saveAndLoad.TryGetGameData())
+                _saveAndLoad.LoadDataFromCloud();
+            else
+                _saveAndLoad.LoadDataFromConfig();
 
             CreateMenuEntities();
         }

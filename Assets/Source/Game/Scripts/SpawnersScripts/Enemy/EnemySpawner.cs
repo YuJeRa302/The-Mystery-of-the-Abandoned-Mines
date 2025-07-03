@@ -241,7 +241,9 @@ namespace Assets.Source.Game.Scripts
             _deadEnemy++;
 
             if (_deadEnemy == _totalEnemyCount)
+            {
                 AllEnemyRoomDied?.Invoke();
+            }
         }
 
         private bool CalculateChance(float chance)

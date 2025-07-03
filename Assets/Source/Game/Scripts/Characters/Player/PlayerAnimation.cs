@@ -38,7 +38,7 @@ namespace Assets.Source.Game.Scripts
 
         public void Dispose()
         {
-            if (_moveCorontine != null)
+            if (_moveCorontine != null && _coroutineRunner != null)
                 _coroutineRunner.StopCoroutine(_moveCorontine);
 
             RemoveListeners();
@@ -68,13 +68,16 @@ namespace Assets.Source.Game.Scripts
 
         private void RemoveListeners() 
         {
-            _gamePauseService.GamePaused -= OnGamePaused;
-            _gamePauseService.GameResumed -= OnGameResumed;
+            if (_gamePauseService != null)
+            {
+                _gamePauseService.GamePaused -= OnGamePaused;
+                _gamePauseService.GameResumed -= OnGameResumed;
+            }
         }
 
         private void OnGamePaused(bool state)
         {
-            if (_moveCorontine != null)
+            if (_moveCorontine != null && _coroutineRunner != null)
                 _coroutineRunner.StopCoroutine(_moveCorontine);
         }
 

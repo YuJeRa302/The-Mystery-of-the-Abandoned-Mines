@@ -9,7 +9,7 @@ namespace Assets.Source.Game.Scripts
 {
     public class LevelsView : MonoBehaviour
     {
-        private readonly int _indexUnlockContractButton = 1;
+        private readonly int _indexUnlockContractButton = 0;
         private readonly string _chooseLevelType = "LevelType";
         private readonly string _chooseLevel = "ChooseLevel";
         private readonly string _choosePlayerClass = "ChoosePlayerClass";
@@ -95,8 +95,8 @@ namespace Assets.Source.Game.Scripts
             _backButton.onClick.AddListener(OnBackButtonClicked);
             _buyButton.onClick.AddListener(OnBuyButtonClick);
             _cancelButton.onClick.AddListener(OnCancelButtonClick);
-            _contractButton.onClick.AddListener(() => ShowLevels(_contractLevelDatas));
-            _defaultLevelButton.onClick.AddListener(() => ShowLevels(_levelDatas));
+            _contractButton.onClick.AddListener(() => ShowLevels(_contractLevelDatas, true));
+            _defaultLevelButton.onClick.AddListener(() => ShowLevels(_levelDatas, false));
             _nextButton.onClick.AddListener(OnNextButtonClicked);
         }
 
@@ -107,8 +107,8 @@ namespace Assets.Source.Game.Scripts
             _backButton.onClick.RemoveListener(OnBackButtonClicked);
             _buyButton.onClick.RemoveListener(OnBuyButtonClick);
             _cancelButton.onClick.RemoveListener(OnCancelButtonClick);
-            _contractButton.onClick.RemoveListener(() => ShowLevels(_contractLevelDatas));
-            _defaultLevelButton.onClick.RemoveListener(() => ShowLevels(_levelDatas));
+            _contractButton.onClick.RemoveListener(() => ShowLevels(_contractLevelDatas, true));
+            _defaultLevelButton.onClick.RemoveListener(() => ShowLevels(_levelDatas, false));
             _nextButton.onClick.RemoveListener(OnNextButtonClicked);
         }
 
@@ -188,10 +188,10 @@ namespace Assets.Source.Game.Scripts
             _weaponDatas.Sort(delegate (WeaponData x, WeaponData y) { return x.Tier.CompareTo(y.Tier); });
         }
 
-        private void ShowLevels(List<LevelData> levelDatas)
+        private void ShowLevels(List<LevelData> levelDatas, bool isContract)
         {
             _textHint.TranslationName = _chooseLevel;
-            _isContractLevel = true;
+            _isContractLevel = isContract;
             _isLevelsShow = true;
             _nextButton.interactable = false;
             _levelInfo.SetActive(true);

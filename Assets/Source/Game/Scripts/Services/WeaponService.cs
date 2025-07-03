@@ -18,20 +18,27 @@ public class WeaponService
 
     public void UnlockWeaponByData(WeaponData weaponData)
     {
-        if (WeaponStates != null)
+        if (WeaponStates == null)
+            return;
+
+        bool found = false;
+
+        for (int i = 0; i < WeaponStates.Count; i++)
         {
-            foreach (WeaponState weaponState in WeaponStates)
+            WeaponState weaponState = WeaponStates[i];
+
+            if (weaponState.Id == weaponData.Id)
             {
-                if (weaponState.Id == weaponData.Id)
-                {
-                    weaponState.IsUnlock = true;
-                }
-                else 
-                {
-                    WeaponState newWeaponState = InitWeaponState(weaponData);
-                    WeaponStates.Add(new(newWeaponState.Id, newWeaponState.IsEquip, newWeaponState.IsUnlock == true));
-                }
+                weaponState.IsUnlock = true;
+                found = true;
+                break;
             }
+        }
+
+        if (!found)
+        {
+            WeaponState newWeaponState = InitWeaponState(weaponData);
+            WeaponStates.Add(new (newWeaponState.Id, newWeaponState.IsEquip, newWeaponState.IsUnlock == true));
         }
     }
 

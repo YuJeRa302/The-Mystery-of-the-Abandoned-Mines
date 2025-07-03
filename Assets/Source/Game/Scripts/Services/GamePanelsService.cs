@@ -39,6 +39,7 @@ public class GamePanelsService : IDisposable
         }
 
         AddListener();
+        gamePanelsViewModel.OpenCardPanel();
     }
 
     private void AddListener()

@@ -4,41 +4,41 @@ using UnityEngine;
 
 public class LegendadatyTunderAbilitySpell : LegendaryAbilitySpell
 {
-    protected ParticleSystem _effect;
+    protected ParticleSystem Effect;
 
     public override void Initialize(ParticleSystem particleSystem, float currentDuration)
     {
-        if (_abilityEffects.Count > 0)
+        if (AbilityEffects.Count > 0)
         {
-            foreach (var abilityEffect in _abilityEffects)
+            foreach (var abilityEffect in AbilityEffects)
             {
                 if (abilityEffect.gameObject != null)
                     Destroy(abilityEffect);
             }
         }
 
-        _effect = particleSystem;
-        _spellLifeTime = currentDuration;
-        Destroy(gameObject, _spellLifeTime);
+        Effect = particleSystem;
+        SpellLifeTime = currentDuration;
+        Destroy(gameObject, SpellLifeTime);
     }
 
     public override bool TryFindEnemys(out List<Enemy> enemies)
     {
-        _enemies.Clear();
+        Enemies.Clear();
         enemies = new List<Enemy>();
 
-        foreach (AbilityEnemyFinder abilityEnemyFinder in _abilityEnemyFinders)
+        foreach (AbilityEnemyFinder abilityEnemyFinder in AbilityEnemyFinders)
         {
             if (abilityEnemyFinder != null)
             {
                 if (abilityEnemyFinder.TryFindEnemys(out List<Enemy> findEnemyse))
                 {
-                    _enemies.AddRange(findEnemyse);
+                    Enemies.AddRange(findEnemyse);
                 }
             }
         }
 
-        enemies.AddRange(_enemies);
+        enemies.AddRange(Enemies);
         
         if (enemies.Count > 0)
         {
@@ -53,13 +53,13 @@ public class LegendadatyTunderAbilitySpell : LegendaryAbilitySpell
 
     private void CreateEffect()
     {
-        foreach (Enemy enemy in _enemies)
+        foreach (Enemy enemy in Enemies)
         {
-            ParticleSystem abilityEffect = Instantiate(_effect, enemy.transform.position, Quaternion.identity);
+            ParticleSystem abilityEffect = Instantiate(Effect, enemy.transform.position, Quaternion.identity);
             abilityEffect.Play();
-            _abilityEffects.Add(abilityEffect);
+            AbilityEffects.Add(abilityEffect);
         }
         
-        DestroyEffectsByLifeTime(_spellLifeTime);
+        DestroyEffectsByLifeTime(SpellLifeTime);
     }
 }

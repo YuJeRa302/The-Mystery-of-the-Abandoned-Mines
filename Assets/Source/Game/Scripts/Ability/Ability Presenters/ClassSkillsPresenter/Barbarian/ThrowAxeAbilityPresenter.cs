@@ -21,8 +21,8 @@ public class ThrowAxeAbilityPresenter : AbilityPresenter
         ICoroutineRunner coroutineRunner,
         AxemMssile axemMssile) : base(ability, abilityView, player, gamePauseService, gameLoopService, coroutineRunner)
     {
-        _throwPoint = _player.ThrowAbilityPoint;
-        _pool = _player.Pool;
+        _throwPoint = Player.ThrowAbilityPoint;
+        _pool = Player.Pool;
         _axemMssilePredab = axemMssile;
         AddListener();
     }
@@ -30,13 +30,13 @@ public class ThrowAxeAbilityPresenter : AbilityPresenter
     protected override void AddListener()
     {
         base.AddListener();
-        (_abilityView as ClassSkillButtonView).AbilityUsed += OnButtonSkillClick;
+        (AbilityView as ClassSkillButtonView).AbilityUsed += OnButtonSkillClick;
     }
 
     protected override void RemoveListener()
     {
         base.RemoveListener();
-        (_abilityView as ClassSkillButtonView).AbilityUsed -= OnButtonSkillClick;
+        (AbilityView as ClassSkillButtonView).AbilityUsed -= OnButtonSkillClick;
     }
 
     protected override void OnAbilityEnded(Ability ability)
@@ -44,7 +44,7 @@ public class ThrowAxeAbilityPresenter : AbilityPresenter
         _isAbilityUse = false;
 
         if (_damageDealCoroutine != null)
-            _coroutineRunner.StopCoroutine(_damageDealCoroutine);
+            CoroutineRunner.StopCoroutine(_damageDealCoroutine);
     }
 
     private void OnButtonSkillClick()
@@ -53,8 +53,8 @@ public class ThrowAxeAbilityPresenter : AbilityPresenter
             return;
 
         _isAbilityUse = true;
-        _ability.Use();
-        (_abilityView as ClassSkillButtonView).SetInerectableButton(false);
+        Ability.Use();
+        (AbilityView as ClassSkillButtonView).SetInerectableButton(false);
     }
 
     protected override void OnAbilityUsed(Ability ability)
@@ -63,9 +63,9 @@ public class ThrowAxeAbilityPresenter : AbilityPresenter
         Spawn();
 
         if (_damageDealCoroutine != null)
-            _coroutineRunner.StopCoroutine(_damageDealCoroutine);
+            CoroutineRunner.StopCoroutine(_damageDealCoroutine);
 
-        _damageDealCoroutine = _coroutineRunner.StartCoroutine(DealDamage());
+        _damageDealCoroutine = CoroutineRunner.StartCoroutine(DealDamage());
     }
 
     protected override void OnGameResumed(bool state)
@@ -73,7 +73,7 @@ public class ThrowAxeAbilityPresenter : AbilityPresenter
         base.OnGameResumed(state);
 
         if (_damageDealCoroutine != null)
-            _damageDealCoroutine = _coroutineRunner.StartCoroutine(DealDamage());
+            _damageDealCoroutine = CoroutineRunner.StartCoroutine(DealDamage());
     }
 
     private void Spawn()
@@ -90,10 +90,10 @@ public class ThrowAxeAbilityPresenter : AbilityPresenter
             _axemMssile = GameObject.Instantiate(_axemMssilePredab, _throwPoint.position, UnityEngine.Quaternion.identity);
 
             _pool.InstantiatePoolObject(_axemMssile, _axemMssilePredab.name);
-            _axemMssile.Initialaze(_player, _player.DamageSource, _player.MoveSpeed, _ability.CurrentDuration);
+            _axemMssile.Initialaze(Player, Player.DamageSource, Player.MoveSpeed, Ability.CurrentDuration);
         }
 
-        _axemMssile.GetComponent<Rigidbody>().AddForce(_throwPoint.forward * _ability.CurrentDuration, ForceMode.Impulse);
+        _axemMssile.GetComponent<Rigidbody>().AddForce(_throwPoint.forward * Ability.CurrentDuration, ForceMode.Impulse);
     }
 
     private bool TryFindSummon(GameObject type, out AxemMssile poolObj)
@@ -111,12 +111,12 @@ public class ThrowAxeAbilityPresenter : AbilityPresenter
     protected override void OnCooldownValueReseted(float value)
     {
         base.OnCooldownValueReseted(value);
-        (_abilityView as ClassSkillButtonView).SetInerectableButton(true);
+        (AbilityView as ClassSkillButtonView).SetInerectableButton(true);
     }
 
     private IEnumerator DealDamage()
     {
-        while (_ability.IsAbilityEnded == false)
+        while (Ability.IsAbilityEnded == false)
         {
             if (_axemMssile != null)
             {
@@ -124,7 +124,7 @@ public class ThrowAxeAbilityPresenter : AbilityPresenter
                 {
                     foreach (var enemy in enemies)
                     {
-                        enemy.TakeDamage(_player.DamageSource);
+                        enemy.TakeDamage(Player.DamageSource);
                     }
                 }
             }

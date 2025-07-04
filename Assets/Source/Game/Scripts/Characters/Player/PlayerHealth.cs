@@ -19,10 +19,6 @@ namespace Assets.Source.Game.Scripts
         private Coroutine _timeReduce;
         private bool _canHealind = true;
 
-        public event Action DamageTaked;
-        public event Action<int> HealthChanged;
-        public event Action PlayerDied;
-
         public PlayerHealth(Player player, ICoroutineRunner coroutineRunner, GamePauseService gamePauseService, int currentHealth)
         {
             _player = player;
@@ -33,6 +29,10 @@ namespace Assets.Source.Game.Scripts
             AddListeners();
             _regeneration = _coroutineRunner.StartCoroutine(RegenerationHealth());
         }
+
+        public event Action DamageTaked;
+        public event Action<int> HealthChanged;
+        public event Action PlayerDied;
 
         public void ReduceHealth(float reduce)
         {

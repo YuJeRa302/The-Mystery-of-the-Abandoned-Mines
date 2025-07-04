@@ -36,13 +36,13 @@ public class DragonTracePresenter : AbilityPresenter
         base.OnGamePaused(state);
 
         if (_spawnedSpellCorountine != null)
-            _coroutineRunner.StopCoroutine(_spawnedSpellCorountine);
+            CoroutineRunner.StopCoroutine(_spawnedSpellCorountine);
 
         if (_blastThrowingCoroutine != null)
-            _coroutineRunner.StopCoroutine(_blastThrowingCoroutine);
+            CoroutineRunner.StopCoroutine(_blastThrowingCoroutine);
 
         if (_damageDealCoroutine != null)
-            _coroutineRunner.StopCoroutine(_damageDealCoroutine);
+            CoroutineRunner.StopCoroutine(_damageDealCoroutine);
     }
 
     protected override void OnGameResumed(bool state)
@@ -50,49 +50,49 @@ public class DragonTracePresenter : AbilityPresenter
         base.OnGameResumed(state);
 
         if (_spawnedSpellCorountine != null)
-            _spawnedSpellCorountine = _coroutineRunner.StartCoroutine(SpawnSpell());
+            _spawnedSpellCorountine = CoroutineRunner.StartCoroutine(SpawnSpell());
 
         if (_damageDealCoroutine != null)
-            _damageDealCoroutine = _coroutineRunner.StartCoroutine(DealDamage());
+            _damageDealCoroutine = CoroutineRunner.StartCoroutine(DealDamage());
     }
 
     protected override void OnAbilityUsed(Ability ability)
     {
         if (_spawnedSpellCorountine != null)
-            _coroutineRunner.StopCoroutine(_spawnedSpellCorountine);
+            CoroutineRunner.StopCoroutine(_spawnedSpellCorountine);
 
-        _spawnedSpellCorountine = _coroutineRunner.StartCoroutine(SpawnSpell());
+        _spawnedSpellCorountine = CoroutineRunner.StartCoroutine(SpawnSpell());
 
         if (_damageDealCoroutine != null)
-            _coroutineRunner.StopCoroutine(_damageDealCoroutine);
+            CoroutineRunner.StopCoroutine(_damageDealCoroutine);
 
-        _damageDealCoroutine = _coroutineRunner.StartCoroutine(DealDamage());
+        _damageDealCoroutine = CoroutineRunner.StartCoroutine(DealDamage());
     }
 
     protected override void OnAbilityEnded(Ability ability)
     {
         if (_spawnedSpellCorountine != null)
-            _coroutineRunner.StopCoroutine(_spawnedSpellCorountine);
+            CoroutineRunner.StopCoroutine(_spawnedSpellCorountine);
 
         if (_blastThrowingCoroutine != null)
-            _coroutineRunner.StopCoroutine(_blastThrowingCoroutine);
+            CoroutineRunner.StopCoroutine(_blastThrowingCoroutine);
 
         if (_damageDealCoroutine != null)
-            _coroutineRunner.StopCoroutine(_damageDealCoroutine);
+            CoroutineRunner.StopCoroutine(_damageDealCoroutine);
     }
 
     private IEnumerator SpawnSpell()
     {
         float lastTime = 0;
 
-        while (lastTime < _ability.CurrentDuration)
+        while (lastTime < Ability.CurrentDuration)
         {
             _spell = GameObject.Instantiate(
                 _spellPrefab,
-                new Vector3(_player.transform.position.x, _player.transform.position.y, _player.transform.position.z),
+                new Vector3(Player.transform.position.x, Player.transform.position.y, Player.transform.position.z),
                 Quaternion.identity);
 
-            _spell.Initialize(_particleSystem, _ability.CurrentDuration);
+            _spell.Initialize(_particleSystem, Ability.CurrentDuration);
             _spells.Add(_spell);
 
             yield return new WaitForSeconds(_delaySpawnSpell);
@@ -102,7 +102,7 @@ public class DragonTracePresenter : AbilityPresenter
 
     private IEnumerator DealDamage()
     {
-        while (_ability.IsAbilityEnded == false)
+        while (Ability.IsAbilityEnded == false)
         {
             yield return new WaitForSeconds(_delayAttack);
 
@@ -116,7 +116,7 @@ public class DragonTracePresenter : AbilityPresenter
                         {
                             foreach (var enemy in enemies)
                             {
-                                enemy.TakeDamage(_ability.DamageSource);
+                                enemy.TakeDamage(Ability.DamageSource);
                             }
                         }
                     }

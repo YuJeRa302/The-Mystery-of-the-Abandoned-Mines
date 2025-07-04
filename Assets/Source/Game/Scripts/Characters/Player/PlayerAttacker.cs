@@ -28,11 +28,6 @@ namespace Assets.Source.Game.Scripts
         private Dictionary<float, Enemy> _enemies = new Dictionary<float, Enemy>();
         private TypeAttackRange _typeAttackRange;
 
-        public event Action Attacked;
-        public event Action CritAttacked;
-        public event Action<Transform> EnemyFinded;
-        public event Action<float> HealedVampirism;
-
         public PlayerAttacker(
             Transform shoPoint,
             Player player,
@@ -52,6 +47,11 @@ namespace Assets.Source.Game.Scripts
             AddListeners();
             _coolDownAttack = _coroutineRunner.StartCoroutine(CoolDownAttack());
         }
+
+        public event Action Attacked;
+        public event Action CritAttacked;
+        public event Action<Transform> EnemyFinded;
+        public event Action<float> HealedVampirism;
 
         public Enemy CurrentTarget => _currentTarget;
 

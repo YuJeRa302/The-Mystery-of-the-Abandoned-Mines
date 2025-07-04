@@ -4,11 +4,12 @@ namespace Assets.Source.Game.Scripts
 {
     public class BossAttackState : EnemyAttackState
     {
+        protected float LastAdditionalAttackTime = 8;
+        protected float LastSpecialAttackTime = 0;
+
         private BulletSpawner _bulletSpawner;
         private float _additionalAttackDelay = 7f;
         private float _specialAttackDelay = 7f;
-        protected float _lastAdditionalAttackTime = 8;
-        protected float _lastSpecialAttackTime = 0;
 
         public BossAttackState(StateMashine stateMashine, Player target, Enemy enemy) : base(stateMashine, target, enemy)
         {
@@ -19,86 +20,86 @@ namespace Assets.Source.Game.Scripts
 
         public override void SubscrabeIvent()
         {
-            if (_enemy.TryGetComponent(out Beholder beholder))
+            if (Enemy.TryGetComponent(out Beholder beholder))
             {
-                _bulletSpawner = new BulletSpawner(beholder.Bullet, beholder.Pool, beholder.BaseShotPoint, _enemy);
-                _animationController.Attacked += LaunchBullet;
+                _bulletSpawner = new BulletSpawner(beholder.Bullet, beholder.Pool, beholder.BaseShotPoint, Enemy);
+                AnimationController.Attacked += LaunchBullet;
             }
             else
             {
-                _animationController.Attacked += ApplyDamage;
+                AnimationController.Attacked += ApplyDamage;
             }
 
-            _animationController.AnimationCompleted += OnAllowTransition;
+            AnimationController.AnimationCompleted += OnAllowTransition;
         }
 
         public override void UpdateState()
         {
-            if (_canTransit)
+            if (CanTransit)
             {
-                _directionToTarget = _enemy.transform.position - _target.transform.position;
-                _distanceToTarget = _directionToTarget.magnitude;
+                DirectionToTarget = Enemy.transform.position - Target.transform.position;
+                DistanceToTarget = DirectionToTarget.magnitude;
 
-                if (_distanceToTarget > _attackRange)
-                    _stateMashine.SetState<EnemyMoveState>();
+                if (DistanceToTarget > AttackRange)
+                    StateMashine.SetState<EnemyMoveState>();
 
                 if (Attack())
                     AttackEvent();
 
                 if (AdditionalAttack())
                 {
-                    if (_enemy.TryGetComponent(out GoldDragon goldDragon))
-                        _stateMashine.SetState<AditionalAttackGoldDragon>();
+                    if (Enemy.TryGetComponent(out GoldDragon goldDragon))
+                        StateMashine.SetState<AditionalAttackGoldDragon>();
 
-                    if (_enemy.TryGetComponent(out Beholder beholder))
-                        _stateMashine.SetState<BeholderAdditionalAttackState>();
+                    if (Enemy.TryGetComponent(out Beholder beholder))
+                        StateMashine.SetState<BeholderAdditionalAttackState>();
                 }
 
                 if (SpecialAttack())
                 {
-                    if (_enemy.TryGetComponent(out GoldDragon goldDragon))
-                        _stateMashine.SetState<SpecialAttackGoldDragon>();
+                    if (Enemy.TryGetComponent(out GoldDragon goldDragon))
+                        StateMashine.SetState<SpecialAttackGoldDragon>();
 
-                    if (_enemy.TryGetComponent(out Beholder beholder))
-                        _stateMashine.SetState<BeholderSpecialAttackState>();
+                    if (Enemy.TryGetComponent(out Beholder beholder))
+                        StateMashine.SetState<BeholderSpecialAttackState>();
                 }
             }
         }
 
         private bool SpecialAttack()
         {
-            if (_lastSpecialAttackTime <= 0)
+            if (LastSpecialAttackTime <= 0)
             {
-                _lastSpecialAttackTime = _specialAttackDelay;
-                _canTransit = false;
+                LastSpecialAttackTime = _specialAttackDelay;
+                CanTransit = false;
                 return true;
             }
 
-            _lastSpecialAttackTime -= Time.deltaTime;
+            LastSpecialAttackTime -= Time.deltaTime;
             return false;
         }
 
         private bool AdditionalAttack()
         {
-            if (_distanceToTarget <= _attackRange)
+            if (DistanceToTarget <= AttackRange)
             {
-                if (_lastAdditionalAttackTime <= 0)
+                if (LastAdditionalAttackTime <= 0)
                 {
-                    _lastAdditionalAttackTime = _additionalAttackDelay;
-                    _canTransit = false;
+                    LastAdditionalAttackTime = _additionalAttackDelay;
+                    CanTransit = false;
                     return true;
                 }
             }
 
-            _lastAdditionalAttackTime -= Time.deltaTime;
+            LastAdditionalAttackTime -= Time.deltaTime;
             return false;
         }
 
         private void LaunchBullet()
         {
-            _enemy.transform.LookAt(_target.transform.position);
+            Enemy.transform.LookAt(Target.transform.position);
             _bulletSpawner.SpawnBullet();
-            _canTransit = true;
+            CanTransit = true;
         }
     }
 }

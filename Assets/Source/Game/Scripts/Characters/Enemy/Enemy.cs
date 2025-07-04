@@ -7,21 +7,21 @@ namespace Assets.Source.Game.Scripts
 {
     public class Enemy : PoolObject
     {
-        private readonly System.Random _rnd = new();
+        private readonly System.Random _rnd = new ();
+
+        [SerializeField] protected Pool Pool;
 
         [SerializeField] private EnemyStateMashineExample _stateMashine;
         [SerializeField] private EnemyAnimation _animationController;
         [SerializeField] private Transform _damageEffectConteiner;
-        [SerializeField] protected Pool _pool;
         [SerializeField] private HealthBarView _healthView;
 
+        private int _damage;
         private float _attackDistance;
         private float _attackDelay;
         private int _health = 20;
-        protected int _damage;
         private float _speed;
         private float _baseMoveSpeed;
-        private int _id;
         private int _currentLvlRoom;
         private bool _isDead;
         private float _currentHealth;
@@ -34,12 +34,11 @@ namespace Assets.Source.Game.Scripts
         private Coroutine _burnDamage;
         private Coroutine _slowDamage;
         private Coroutine _repulsiveDamage;
-        private List<PoolObject> _spawnedEffects = new();
+        private List<PoolObject> _spawnedEffects = new ();
         private AudioClip _deathAudio;
         private AudioClip _hitAudio;
         private int _tire;
 
-        public int Id => _id;
         public float AttackDelay => _attackDelay;
         public float Damage => _damage;
         public float Speed => _speed;
@@ -52,7 +51,6 @@ namespace Assets.Source.Game.Scripts
         public float CurrentHealth => _currentHealth;
         public EnemyAnimation AnimationStateController => _animationController;
         public AudioClip DeathAudio => _deathAudio;
-        public AudioClip HitAudio => _hitAudio;
 
         public event Action<Enemy> Died;
         public event Action Stuned;
@@ -99,8 +97,8 @@ namespace Assets.Source.Game.Scripts
 
             if(_currentLvlRoom < lvlRoom)
             {
-                _health = _health * (1 + lvlRoom / 10);
-                _damage = _damage * (1 + lvlRoom / 10);
+                _health = _health * (1 + lvlRoom / GameConstants.EnemyBoostDivider);
+                _damage = _damage * (1 + lvlRoom / GameConstants.EnemyBoostDivider);
             }
 
             _stateMashine.ResetState();
@@ -229,7 +227,6 @@ namespace Assets.Source.Game.Scripts
             _speed = data.EnemyStats[_tire].MoveSpeed;
             _attackDelay = data.EnemyStats[_tire].AttackDelay;
             _attackDistance = data.EnemyStats[_tire].AttackDistance;
-            _id = data.Id;
             _gold = data.EnemyStats[_tire].GoldReward;
             _score = data.EnemyStats[_tire].Score;
             _experience = data.EnemyStats[_tire].ExperienceReward;
@@ -248,7 +245,7 @@ namespace Assets.Source.Game.Scripts
         {
             PoolParticle particle;
 
-            if (_pool.TryPoolObject(poolParticle.gameObject, out PoolObject pollParticle))
+            if (Pool.TryPoolObject(poolParticle.gameObject, out PoolObject pollParticle))
             {
                 particle = pollParticle as PoolParticle;
                 particle.transform.position = _damageEffectConteiner.position;
@@ -257,7 +254,7 @@ namespace Assets.Source.Game.Scripts
             else
             {
                 particle = Instantiate(poolParticle, _damageEffectConteiner);
-                _pool.InstantiatePoolObject(particle, poolParticle.name);
+                Pool.InstantiatePoolObject(particle, poolParticle.name);
                 _spawnedEffects.Add(particle);
             }
         }

@@ -52,12 +52,12 @@ public class SummonMoveState : State
             {
                 if (_summon.Target.isActiveAndEnabled != false)
                 {
-                    _stateMashine.SetState<SummonAttackState>();
+                    StateMashine.SetState<SummonAttackState>();
                 }            
             }
             else
             {
-                _stateMashine.SetState<SummonIdleState>();
+                StateMashine.SetState<SummonIdleState>();
             }
         }
 

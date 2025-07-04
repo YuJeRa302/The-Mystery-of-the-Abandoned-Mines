@@ -27,7 +27,7 @@ public class FirestormPresenter : AbilityPresenter
         LegendaryAbilitySpell spellPrefab) : base(ability, abilityView, player, gamePauseService, gameLoopService, coroutineRunner)
     {
         _particleSystem = particleSystem;
-        _throwPoint = _player.ThrowAbilityPoint;
+        _throwPoint = Player.ThrowAbilityPoint;
         _spellPrefab = spellPrefab;
         AddListener();
     }
@@ -37,10 +37,10 @@ public class FirestormPresenter : AbilityPresenter
         base.OnGamePaused(state);
 
         if (_blastThrowingCoroutine != null)
-            _coroutineRunner.StopCoroutine(_blastThrowingCoroutine);
+            CoroutineRunner.StopCoroutine(_blastThrowingCoroutine);
 
         if (_damageDealCoroutine != null)
-            _coroutineRunner.StopCoroutine(_damageDealCoroutine);
+            CoroutineRunner.StopCoroutine(_damageDealCoroutine);
     }
 
     protected override void OnGameResumed(bool state)
@@ -48,10 +48,10 @@ public class FirestormPresenter : AbilityPresenter
         base.OnGameResumed(state);
 
         if (_blastThrowingCoroutine != null)
-            _blastThrowingCoroutine = _coroutineRunner.StartCoroutine(ThrowingBlast());
+            _blastThrowingCoroutine = CoroutineRunner.StartCoroutine(ThrowingBlast());
 
         if (_damageDealCoroutine != null)
-            _damageDealCoroutine = _coroutineRunner.StartCoroutine(DealDamage());
+            _damageDealCoroutine = CoroutineRunner.StartCoroutine(DealDamage());
     }
 
     protected override void OnAbilityUsed(Ability ability)
@@ -59,18 +59,18 @@ public class FirestormPresenter : AbilityPresenter
         ThrowBlast();
 
         if (_damageDealCoroutine != null)
-            _coroutineRunner.StopCoroutine(_damageDealCoroutine);
+            CoroutineRunner.StopCoroutine(_damageDealCoroutine);
 
-        _damageDealCoroutine = _coroutineRunner.StartCoroutine(DealDamage());
+        _damageDealCoroutine = CoroutineRunner.StartCoroutine(DealDamage());
     }
 
     protected override void OnAbilityEnded(Ability ability)
     {
         if (_blastThrowingCoroutine != null)
-            _coroutineRunner.StopCoroutine(_blastThrowingCoroutine);
+            CoroutineRunner.StopCoroutine(_blastThrowingCoroutine);
 
         if (_damageDealCoroutine != null)
-            _coroutineRunner.StopCoroutine(_damageDealCoroutine);
+            CoroutineRunner.StopCoroutine(_damageDealCoroutine);
     }
 
     private void ThrowBlast()
@@ -83,20 +83,20 @@ public class FirestormPresenter : AbilityPresenter
         if (TryFindEnemy(out Enemy enemy))
         {
             Transform curretnTarget = enemy.transform;
-            _direction = (curretnTarget.position - _player.transform.position).normalized;
+            _direction = (curretnTarget.position - Player.transform.position).normalized;
         }
         else
         {
             _direction = _throwPoint.forward;
         }
 
-        _spell.Initialize(_particleSystem, _ability.CurrentDuration);
-        _blastThrowingCoroutine = _coroutineRunner.StartCoroutine(ThrowingBlast());
+        _spell.Initialize(_particleSystem, Ability.CurrentDuration);
+        _blastThrowingCoroutine = CoroutineRunner.StartCoroutine(ThrowingBlast());
     }
 
     public bool TryFindEnemy(out Enemy enemy)
     {
-        Collider[] coliderEnemy = Physics.OverlapSphere(_player.transform.position, _searchRadius);
+        Collider[] coliderEnemy = Physics.OverlapSphere(Player.transform.position, _searchRadius);
 
         foreach (Collider collider in coliderEnemy)
         {
@@ -110,19 +110,19 @@ public class FirestormPresenter : AbilityPresenter
 
     private IEnumerator DealDamage()
     {
-        while (_ability.IsAbilityEnded == false)
+        while (Ability.IsAbilityEnded == false)
         {
             yield return new WaitForSeconds(_delayAttack);
 
             if (_spell != null)
                 if (_spell.TryFindEnemy(out Enemy enemy))
-                    enemy.TakeDamage(_ability.DamageSource);
+                    enemy.TakeDamage(Ability.DamageSource);
         }
     }
 
     private IEnumerator ThrowingBlast()
     {
-        while (_ability.IsAbilityEnded == false)
+        while (Ability.IsAbilityEnded == false)
         {
             if (_spell != null)
                 _spell.transform.Translate(_direction * _blastSpeed * Time.deltaTime);

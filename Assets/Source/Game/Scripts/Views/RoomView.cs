@@ -32,9 +32,7 @@ namespace Assets.Source.Game.Scripts
 
         private List<RoomDoorView> _roomDoorViews =  new ();
         private RoomDoorView _openDoor;
-        private int _countEnemy;
         private int _dividerIndexColor = 2;
-        private bool _isEntering = false;
 
         public event Action<RoomView> RoomEntering;
 
@@ -48,7 +46,6 @@ namespace Assets.Source.Game.Scripts
         public RoomData RoomData { get; private set; }
         public int CurrentLevel { get; private set; }
         public bool IsComplete { get; private set; } = false;
-        public int CountEnemy => _countEnemy;
         public Sprite IconRoom => _renderer.sprite;
 
         private void OnDestroy()

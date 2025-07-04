@@ -16,7 +16,7 @@ public class CardKnowledgebaseView : KnowladgeView
     [SerializeField] private BonusCardView _bonusCardView;
     [Space(20)]
     [SerializeField] private KnowleadgeCardParameterView _parameterView;
-    [SerializeField] private Transform _parametrConteiner;
+    [SerializeField] private Transform _parametrContainer;
 
     public void Initialize(CardData cardData)
     {
@@ -77,7 +77,7 @@ public class CardKnowledgebaseView : KnowladgeView
 
         for (int i = 0; i < parameters.Count; i++)
         {
-            KnowleadgeCardParameterView view = Instantiate(_parameterView, _parametrConteiner);
+            KnowleadgeCardParameterView view = Instantiate(_parameterView, _parametrContainer);
             view.Initialize(cardData, i);
         }
     }

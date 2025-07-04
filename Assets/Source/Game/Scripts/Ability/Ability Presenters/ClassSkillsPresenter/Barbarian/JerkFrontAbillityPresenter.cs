@@ -22,23 +22,23 @@ public class JerkFrontAbillityPresenter : AbilityPresenter
         ICoroutineRunner coroutineRunner,
         PoolParticle abilityEffect) : base(ability, abilityView, player, gamePauseService, gameLoopService, coroutineRunner)
     {
-        _pool = _player.Pool;
+        _pool = Player.Pool;
         _poolParticle = abilityEffect;
-        _effectConteiner = _player.PlayerAbilityContainer;
-        _rigidbodyPlayer = _player.GetComponent<Rigidbody>();
+        _effectConteiner = Player.PlayerAbilityContainer;
+        _rigidbodyPlayer = Player.GetComponent<Rigidbody>();
         AddListener();
     }
 
     protected override void AddListener()
     {
         base.AddListener();
-        (_abilityView as ClassSkillButtonView).AbilityUsed += OnButtonSkillClick;
+        (AbilityView as ClassSkillButtonView).AbilityUsed += OnButtonSkillClick;
     }
 
     protected override void RemoveListener()
     {
         base.RemoveListener();
-        (_abilityView as ClassSkillButtonView).AbilityUsed -= OnButtonSkillClick;
+        (AbilityView as ClassSkillButtonView).AbilityUsed -= OnButtonSkillClick;
     }
 
     private void OnButtonSkillClick()
@@ -47,16 +47,16 @@ public class JerkFrontAbillityPresenter : AbilityPresenter
             return;
 
         _isAbilityUse = true;
-        _ability.Use();
-        (_abilityView as ClassSkillButtonView).SetInerectableButton(false);
+        Ability.Use();
+        (AbilityView as ClassSkillButtonView).SetInerectableButton(false);
     }
 
     private void Jerk()
     {
         if (_coroutine != null)
-            _coroutineRunner.StopCoroutine(_coroutine);
+            CoroutineRunner.StopCoroutine(_coroutine);
 
-        _coroutine = _coroutineRunner.StartCoroutine(JerkForward());
+        _coroutine = CoroutineRunner.StartCoroutine(JerkForward());
 
     }
 
@@ -76,7 +76,7 @@ public class JerkFrontAbillityPresenter : AbilityPresenter
                 particle = GameObject.Instantiate(_poolParticle, _effectConteiner);
                 _pool.InstantiatePoolObject(particle, _poolParticle.name);
                 _spawnedEffects.Add(particle);
-                (particle as DamageParticle).Initialaze(_ability.DamageSource);
+                (particle as DamageParticle).Initialaze(Ability.DamageSource);
             }
         }
         else
@@ -93,9 +93,9 @@ public class JerkFrontAbillityPresenter : AbilityPresenter
     {
         float currentTime = 0;
 
-        while (currentTime <= _ability.CurrentDuration)
+        while (currentTime <= Ability.CurrentDuration)
         {
-            _rigidbodyPlayer.AddForce(_player.transform.forward * _ability.CurrentAbilityValue, ForceMode.Impulse);
+            _rigidbodyPlayer.AddForce(Player.transform.forward * Ability.CurrentAbilityValue, ForceMode.Impulse);
             currentTime += Time.deltaTime;
             yield return null;
         }
@@ -110,7 +110,7 @@ public class JerkFrontAbillityPresenter : AbilityPresenter
     protected override void OnAbilityEnded(Ability ability)
     {
         if (_coroutine != null)
-            _coroutineRunner.StopCoroutine(_coroutine);
+            CoroutineRunner.StopCoroutine(_coroutine);
 
         _isAbilityUse = false;
         ChandeAbilityEffect(_isAbilityUse);
@@ -119,6 +119,6 @@ public class JerkFrontAbillityPresenter : AbilityPresenter
     protected override void OnCooldownValueReseted(float value)
     {
         base.OnCooldownValueReseted(value);
-        (_abilityView as ClassSkillButtonView).SetInerectableButton(true);
+        (AbilityView as ClassSkillButtonView).SetInerectableButton(true);
     }
 }

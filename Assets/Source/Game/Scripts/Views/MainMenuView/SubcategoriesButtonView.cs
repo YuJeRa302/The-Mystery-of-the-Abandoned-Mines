@@ -12,9 +12,7 @@ public class SubcategoriesButtonView : MonoBehaviour
     private Button _button;
     private KnowledgeData _knowledgeData;
 
-    public event Action<KnowledgeData> ChengetCategoru;
-
-    public KnowledgeData KnowledgeData => _knowledgeData;
+    public event Action<KnowledgeData> CategoryChanged;
 
     public void Initialize(string nameCategori, Sprite icon, KnowledgeData knowledgeData)
     {
@@ -22,6 +20,6 @@ public class SubcategoriesButtonView : MonoBehaviour
         _icon.sprite = icon;
         _knowledgeData = knowledgeData;
         _button = GetComponent<Button>();
-        _button.onClick.AddListener(() => ChengetCategoru?.Invoke(_knowledgeData));
+        _button.onClick.AddListener(() => CategoryChanged?.Invoke(_knowledgeData));
     }
 }

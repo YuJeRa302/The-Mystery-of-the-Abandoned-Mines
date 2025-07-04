@@ -18,8 +18,6 @@ public class GameLoopService : IDisposable
     private Player _player;
     private AsyncOperation _load;
 
-    public event Action GameClosed;
-
     public GameLoopService(
         ICoroutineRunner coroutineRunner,
         ISaveAndLoadProgress saveAndLoadProgress,
@@ -34,6 +32,8 @@ public class GameLoopService : IDisposable
         _canvasLoader = canvasLoader;
         _gamePanelsService.GameClosed += OnGameClosed;
     }
+
+    public event Action GameClosed;
 
     public void Dispose()
     {

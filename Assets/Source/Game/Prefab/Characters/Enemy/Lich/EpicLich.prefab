@@ -167,10 +167,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d3533017139f804e97df07fbacce9be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Pool: {fileID: 6197596675293197854}
   _stateMashine: {fileID: 8339472459805626566}
   _animationController: {fileID: 7001231755956893765}
   _damageEffectConteiner: {fileID: 9136562769685009521}
-  _pool: {fileID: 6197596675293197854}
   _healthView: {fileID: 4277241638378792634}
   _bullet: {fileID: -1335520857732936479, guid: ce26ea78e5b8f6447aaef0c3a6a745b9, type: 3}
   _shootPoint: {fileID: 183278518815668641}

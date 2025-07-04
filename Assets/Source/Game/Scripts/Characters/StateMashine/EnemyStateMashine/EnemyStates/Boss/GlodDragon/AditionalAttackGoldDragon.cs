@@ -8,16 +8,16 @@ public class AditionalAttackGoldDragon : BossAdditionalAttackState
 
     public AditionalAttackGoldDragon(StateMashine stateMashine, Player target, Enemy enemy) : base(stateMashine, target, enemy)
     {
-        _target = target;
-        _enemy = enemy;
-        _animationController = _enemy.AnimationStateController;
-        Boss boss = _enemy as Boss;
+        Target = target;
+        Enemy = enemy;
+        AnimationController = Enemy.AnimationStateController;
+        Boss boss = Enemy as Boss;
         GoldDragon goldDragon = boss as GoldDragon;
         _spell = goldDragon.DragonSpell;
         _damage = goldDragon.DamageSpell;
 
-        _animationController.AdditionalAttacked += AditionalAttackAppalyDamage;
-        _animationController.AnimationCompleted += OnAllowTransition;
+        AnimationController.AdditionalAttacked += AditionalAttackAppalyDamage;
+        AnimationController.AnimationCompleted += OnAllowTransition;
     }
 
     public override void EnterState()

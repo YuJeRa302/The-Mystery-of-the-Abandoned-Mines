@@ -21084,10 +21084,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96cd25cfd10f24b48a36cc8fc5082e4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Pool: {fileID: 3430351458931147928}
   _stateMashine: {fileID: 1575400876511822539}
   _animationController: {fileID: 5814614914403375071}
   _damageEffectConteiner: {fileID: 5032762998871669740}
-  _pool: {fileID: 3430351458931147928}
   _healthView: {fileID: 7734587123630068405}
   _additionalAttackDelay: 7
   _additionalAttackRange: 7

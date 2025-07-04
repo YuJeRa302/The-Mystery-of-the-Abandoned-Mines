@@ -11,28 +11,18 @@ namespace Assets.Source.Game.Scripts
         private readonly int _shiftIndex = 1;
 
         private Player _player;
-        private List<Ability> _abilities = new();
-        private List<Ability> _classAbilities = new();
-        private List<Ability> _legendaryAbilities = new();
-        private List<PassiveAbilityView> _passiveAbilityViews = new();
+        private List<Ability> _abilities = new ();
+        private List<Ability> _classAbilities = new ();
+        private List<Ability> _legendaryAbilities = new ();
+        private List<PassiveAbilityView> _passiveAbilityViews = new ();
         private AttributeData _abilityAttributeData;
-
         private AbilityPresenterFactory _abilityPresenterFactory;
         private AudioPlayer _audioPlayer;
         private AbilityFactory _abilityFactory;
-
         private int _abilityDuration = 0;
         private int _abilityDamage = 0;
         private int _abilityCooldownReduction = 0;
         private int _currentAbilityLevel;
-
-        public event Action<ClassAbilityData, int> ClassAbilityTaked;
-        public event Action<PassiveAttributeData> PassiveAbilityTaked;
-        public event Action<ActiveAbilityData, int> AbilityTaked;
-        public event Action<ActiveAbilityData> LegendaryAbilityTaked;
-        public event Action<Ability> AbilityRemoved;
-        public event Action<Ability> AbilityUsed;
-        public event Action<Ability> AbilityEnded;
 
         public PlayerAbilityCaster(
             AbilityFactory abilityFactory,
@@ -49,6 +39,14 @@ namespace Assets.Source.Game.Scripts
             _playerClassData = playerClassData;
             _audioPlayer = audioPlayer;
         }
+
+        public event Action<ClassAbilityData, int> ClassAbilityTaked;
+        public event Action<PassiveAttributeData> PassiveAbilityTaked;
+        public event Action<ActiveAbilityData, int> AbilityTaked;
+        public event Action<ActiveAbilityData> LegendaryAbilityTaked;
+        public event Action<Ability> AbilityRemoved;
+        public event Action<Ability> AbilityUsed;
+        public event Action<Ability> AbilityEnded;
 
         public void Initialize()
         {
@@ -425,7 +423,6 @@ namespace Assets.Source.Game.Scripts
             }
 
             ability.Dispose();
-
             LegendaryAbilityTaked?.Invoke((abilityAttributeData as AttackAbilityData).LegendaryAbilityData);
         }
     }

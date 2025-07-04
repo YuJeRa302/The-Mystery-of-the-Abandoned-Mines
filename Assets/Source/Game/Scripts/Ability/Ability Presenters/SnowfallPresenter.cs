@@ -41,13 +41,13 @@ public class SnowfallPresenter : AbilityPresenter
         base.OnGamePaused(state);
 
         if (_blastThrowingCoroutine != null)
-            _coroutineRunner.StopCoroutine(_blastThrowingCoroutine);
+            CoroutineRunner.StopCoroutine(_blastThrowingCoroutine);
 
         if (_damageDealCoroutine != null)
-            _coroutineRunner.StopCoroutine(_damageDealCoroutine);
+            CoroutineRunner.StopCoroutine(_damageDealCoroutine);
 
         if (_throwSpellCorountine != null)
-            _coroutineRunner.StopCoroutine(_throwSpellCorountine);
+            CoroutineRunner.StopCoroutine(_throwSpellCorountine);
     }
 
     protected override void OnGameResumed(bool state)
@@ -55,38 +55,38 @@ public class SnowfallPresenter : AbilityPresenter
         base.OnGameResumed(state);
 
         if (_blastThrowingCoroutine != null)
-            _blastThrowingCoroutine = _coroutineRunner.StartCoroutine(ThrowingBlast());
+            _blastThrowingCoroutine = CoroutineRunner.StartCoroutine(ThrowingBlast());
 
         if (_damageDealCoroutine != null)
-            _damageDealCoroutine = _coroutineRunner.StartCoroutine(DealDamage());
+            _damageDealCoroutine = CoroutineRunner.StartCoroutine(DealDamage());
 
         if (_throwSpellCorountine != null)
-            _throwSpellCorountine = _coroutineRunner.StartCoroutine(ThrowBlast());
+            _throwSpellCorountine = CoroutineRunner.StartCoroutine(ThrowBlast());
     }
 
     protected override void OnAbilityUsed(Ability ability)
     {
         if (_throwSpellCorountine != null)
-            _coroutineRunner.StopCoroutine(_throwSpellCorountine);
+            CoroutineRunner.StopCoroutine(_throwSpellCorountine);
 
-        _throwSpellCorountine = _coroutineRunner.StartCoroutine(ThrowBlast());
+        _throwSpellCorountine = CoroutineRunner.StartCoroutine(ThrowBlast());
 
         if (_damageDealCoroutine != null)
-            _coroutineRunner.StopCoroutine(_damageDealCoroutine);
+            CoroutineRunner.StopCoroutine(_damageDealCoroutine);
 
-        _damageDealCoroutine = _coroutineRunner.StartCoroutine(DealDamage());
+        _damageDealCoroutine = CoroutineRunner.StartCoroutine(DealDamage());
     }
 
     protected override void OnAbilityEnded(Ability ability)
     {
         if (_throwSpellCorountine != null)
-            _coroutineRunner.StopCoroutine(_throwSpellCorountine);
+            CoroutineRunner.StopCoroutine(_throwSpellCorountine);
 
         if (_blastThrowingCoroutine != null)
-            _coroutineRunner.StopCoroutine(_blastThrowingCoroutine);
+            CoroutineRunner.StopCoroutine(_blastThrowingCoroutine);
 
         if (_damageDealCoroutine != null)
-            _coroutineRunner.StopCoroutine(_damageDealCoroutine);
+            CoroutineRunner.StopCoroutine(_damageDealCoroutine);
 
         _spawnedSpell.Clear();
     }
@@ -103,16 +103,16 @@ public class SnowfallPresenter : AbilityPresenter
             if (TryFindEnemy(out Enemy enemy))
             {
                 Transform curretnTarget = enemy.transform;
-                _direction = (curretnTarget.position - _player.transform.position).normalized;
+                _direction = (curretnTarget.position - Player.transform.position).normalized;
             }
             else
             {
                 _direction = _throwPoint.forward;
             }
 
-            _spell.Initialize(_particleSystem, _ability.CurrentDuration);
+            _spell.Initialize(_particleSystem, Ability.CurrentDuration);
             _spawnedSpell.Add(_spell);
-            _blastThrowingCoroutine = _coroutineRunner.StartCoroutine(ThrowingBlast());
+            _blastThrowingCoroutine = CoroutineRunner.StartCoroutine(ThrowingBlast());
 
             yield return new WaitForSeconds(0.5f);
         }
@@ -120,7 +120,7 @@ public class SnowfallPresenter : AbilityPresenter
 
     public bool TryFindEnemy(out Enemy enemy)
     {
-        Collider[] coliderEnemy = Physics.OverlapSphere(_player.transform.position, _searcheRadius);
+        Collider[] coliderEnemy = Physics.OverlapSphere(Player.transform.position, _searcheRadius);
 
         foreach (Collider collider in coliderEnemy)
         {
@@ -134,7 +134,7 @@ public class SnowfallPresenter : AbilityPresenter
 
     private IEnumerator DealDamage()
     {
-        while (_ability.IsAbilityEnded == false)
+        while (Ability.IsAbilityEnded == false)
         {
             yield return new WaitForSeconds(_delayAttack);
 
@@ -144,7 +144,7 @@ public class SnowfallPresenter : AbilityPresenter
                 {
                     if (_spawnedSpell[i].TryFindEnemy(out Enemy enemy))
                     {
-                        enemy.TakeDamage(_ability.DamageSource);
+                        enemy.TakeDamage(Ability.DamageSource);
                     }
                 }
             }
@@ -153,7 +153,7 @@ public class SnowfallPresenter : AbilityPresenter
 
     private IEnumerator ThrowingBlast()
     {
-        while (_ability.IsAbilityEnded == false)
+        while (Ability.IsAbilityEnded == false)
         {
             for (int i = 0; i < _spawnedSpell.Count; i++)
             {

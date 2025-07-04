@@ -9,15 +9,15 @@ public class GamePauseService : IDisposable
     private readonly float _pauseValue = 0;
     private readonly float _resumeValue = 1;
 
-    public event Action<bool> GamePaused;
-    public event Action<bool> GameResumed;
-
     public GamePauseService(GamePanelsService gamePanelsService, PersistentDataService persistentDataService)
     {
         _persistentDataService = persistentDataService;
         _gamePanelsService = gamePanelsService;
         AddListener();
     }
+
+    public event Action<bool> GamePaused;
+    public event Action<bool> GameResumed;
 
     public void Dispose()
     {

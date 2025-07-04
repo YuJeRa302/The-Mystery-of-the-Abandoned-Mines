@@ -5,9 +5,8 @@ using UnityEngine;
 public class SummonAnimation : MonoBehaviour
 {
     private SummonStateMashineExample _summonStateMashine;
-
     private Animator _animator;
-    private HashAnimation _animationEnemy = new HashAnimation();
+    private HashAnimation _animationEnemy = new HashAnimation ();
 
     public event Action Attacked;
     public event Action AdditionalAttacked;
@@ -78,8 +77,5 @@ public class SummonAnimation : MonoBehaviour
 
     private void OnIdle() => _animator.SetTrigger(_animationEnemy.IdleAnimation);
 
-    private void EndAnimation()
-    {
-        AnimationCompleted?.Invoke();
-    }
+    private void EndAnimation() => AnimationCompleted?.Invoke();
 }

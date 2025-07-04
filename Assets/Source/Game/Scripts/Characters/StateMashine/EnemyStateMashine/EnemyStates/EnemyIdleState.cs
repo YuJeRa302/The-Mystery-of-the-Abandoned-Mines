@@ -17,7 +17,7 @@ namespace Assets.Source.Game.Scripts
         {
             if (_target != null)
             {
-                _stateMashine.SetState<EnemyMoveState>();
+                StateMashine.SetState<EnemyMoveState>();
             }
         }
 

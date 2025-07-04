@@ -6,6 +6,11 @@ public class GamePanelsService : IDisposable
 {
     private readonly List<GamePanelsView> _gamePanelsViews = new ();
 
+    public GamePanelsService(List<GamePanelsView> gamePanelsViews)
+    {
+        _gamePanelsViews = gamePanelsViews;
+    }
+
     public event Action ByMenuPaused;
     public event Action ByMenuResumed;
     public event Action PauseByRewarded;
@@ -13,11 +18,6 @@ public class GamePanelsService : IDisposable
     public event Action ByFullscreenAdPaused;
     public event Action ByFullscreenAdResumed;
     public event Action GameClosed;
-
-    public GamePanelsService(List<GamePanelsView> gamePanelsViews)
-    {
-        _gamePanelsViews = gamePanelsViews;
-    }
 
     public void Dispose()
     {

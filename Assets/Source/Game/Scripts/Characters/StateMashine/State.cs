@@ -4,9 +4,14 @@ namespace Assets.Source.Game.Scripts
 {
     public abstract class State
     {
-        protected readonly StateMashine _stateMashine;
+        protected readonly StateMashine StateMashine;
 
-        protected bool _canTransit = true;
+        protected bool CanTransit = true;
+
+        public State(StateMashine stateMashine)
+        {
+            StateMashine = stateMashine;
+        }
 
         public event Action Attacking;
         public event Action AdditionalAttacking;
@@ -15,11 +20,6 @@ namespace Assets.Source.Game.Scripts
         public event Action TakedDamage;
         public event Action PlayerLose;
         public event Action SetedIdle;
-
-        public State(StateMashine stateMashine)
-        {
-            _stateMashine = stateMashine;
-        }
 
         public virtual void EnterState() { }
 
@@ -41,6 +41,6 @@ namespace Assets.Source.Game.Scripts
 
         protected void SetIdleState() => SetedIdle?.Invoke();
 
-        protected void OnAllowTransition() => _canTransit = true;
+        protected void OnAllowTransition() => CanTransit = true;
     }
 }

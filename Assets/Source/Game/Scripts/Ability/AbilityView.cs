@@ -5,20 +5,20 @@ namespace Assets.Source.Game.Scripts
 {
     public class AbilityView : MonoBehaviour
     {
-        [SerializeField] protected Image _reloadingImage;
-        [SerializeField] protected Image _abilityIcon;
+        [SerializeField] protected Image ReloadingImage;
+        [SerializeField] protected Image AbilityIcon;
 
         protected float AbilityCooldown;
 
         public void Initialize(Sprite sprite, float currentAbilityCooldown)
         {
-            _abilityIcon.sprite = sprite;
+            AbilityIcon.sprite = sprite;
             AbilityCooldown = currentAbilityCooldown;
         }
 
         public void Initialize(Sprite sprite)
         {
-            _abilityIcon.sprite = sprite;
+            AbilityIcon.sprite = sprite;
         }
 
         public virtual void Upgrade(float currentAbilityCooldown)
@@ -28,12 +28,12 @@ namespace Assets.Source.Game.Scripts
 
         public virtual void ResetCooldownValue(float currentAbilityCooldown)
         {
-            _reloadingImage.fillAmount = currentAbilityCooldown;
+            ReloadingImage.fillAmount = currentAbilityCooldown;
         }
 
         public virtual void ChangeCooldownValue(float currentAbilityCooldown)
         {
-            _reloadingImage.fillAmount = currentAbilityCooldown / AbilityCooldown;
+            ReloadingImage.fillAmount = currentAbilityCooldown / AbilityCooldown;
         }
 
         public virtual void ViewDestroy()

@@ -36,91 +36,91 @@ namespace Assets.Source.Game.Scripts
             Spell spellPrefab,
             ParticleSystem particleSystem) : base(ability, abilityView, player, gamePauseService, gameLoopService, coroutineRunner)
         {
-            _throwPoint = _player.ThrowAbilityPoint;
+            _throwPoint = Player.ThrowAbilityPoint;
             _particleSystem = particleSystem;
             _spellPrefab = spellPrefab;
             AddListener();
 
-            if (_ability.TypeAttackAbility == TypeAttackAbility.AoEAbility)
+            if (Ability.TypeAttackAbility == TypeAttackAbility.AoEAbility)
                 _currentDelayAttack = _delayAOE;
 
-            if (_ability.TypeAttackAbility == TypeAttackAbility.ProjectileAbility)
+            if (Ability.TypeAttackAbility == TypeAttackAbility.ProjectileAbility)
                 _currentDelayAttack = _delayAttackBlast;
 
-            if (_ability.TypeAttackAbility == TypeAttackAbility.TargetSpell)
+            if (Ability.TypeAttackAbility == TypeAttackAbility.TargetSpell)
                 _currentDelayAttack = _delayTargetSpell;
 
-            if (_ability.TypeAttackAbility == TypeAttackAbility.RotationAbility)
+            if (Ability.TypeAttackAbility == TypeAttackAbility.RotationAbility)
                 _currentDelayAttack = _delayAttackBlast;
         }
 
         protected override void OnGamePaused(bool state)
         {
-            _ability.StopCoroutine();
+            Ability.StopCoroutine();
 
             if (_blastThrowingCoroutine != null)
-                _coroutineRunner.StopCoroutine(_blastThrowingCoroutine);
+                CoroutineRunner.StopCoroutine(_blastThrowingCoroutine);
 
             if (_damageDealCoroutine != null)
-                _coroutineRunner.StopCoroutine(_damageDealCoroutine);
+                CoroutineRunner.StopCoroutine(_damageDealCoroutine);
 
             if (_blastRotateCoroutine != null)
-                _coroutineRunner.StopCoroutine(_blastRotateCoroutine);
+                CoroutineRunner.StopCoroutine(_blastRotateCoroutine);
         }
 
         protected override void OnGameResumed(bool state)
         {
-            _ability.Use();
+            Ability.Use();
 
             if (_blastThrowingCoroutine != null)
             {
-                _coroutineRunner.StopCoroutine(_blastThrowingCoroutine);
-                _blastThrowingCoroutine = _coroutineRunner.StartCoroutine(ThrowingBlast());
+                CoroutineRunner.StopCoroutine(_blastThrowingCoroutine);
+                _blastThrowingCoroutine = CoroutineRunner.StartCoroutine(ThrowingBlast());
             }
 
             if (_damageDealCoroutine != null)
             {
-                _coroutineRunner.StopCoroutine(_damageDealCoroutine);
-                _damageDealCoroutine = _coroutineRunner.StartCoroutine(DealDamage());
+                CoroutineRunner.StopCoroutine(_damageDealCoroutine);
+                _damageDealCoroutine = CoroutineRunner.StartCoroutine(DealDamage());
             }
 
             if (_blastRotateCoroutine != null)
             {
-                _coroutineRunner.StopCoroutine(_blastRotateCoroutine);
-                _blastRotateCoroutine = _coroutineRunner.StartCoroutine(RotateSpell());
+                CoroutineRunner.StopCoroutine(_blastRotateCoroutine);
+                _blastRotateCoroutine = CoroutineRunner.StartCoroutine(RotateSpell());
             }
         }
 
         protected override void OnAbilityUsed(Ability ability)
         {
-            if (_ability.TypeAttackAbility == TypeAttackAbility.AoEAbility)
+            if (Ability.TypeAttackAbility == TypeAttackAbility.AoEAbility)
                 CreateAoESpell();
 
-            if (_ability.TypeAttackAbility == TypeAttackAbility.ProjectileAbility)
+            if (Ability.TypeAttackAbility == TypeAttackAbility.ProjectileAbility)
                 ThrowBlast();
 
-            if (_ability.TypeAttackAbility == TypeAttackAbility.TargetSpell)
+            if (Ability.TypeAttackAbility == TypeAttackAbility.TargetSpell)
                 CreateTargetSpell();
 
-            if (_ability.TypeAttackAbility == TypeAttackAbility.RotationAbility)
+            if (Ability.TypeAttackAbility == TypeAttackAbility.RotationAbility)
                 CreateRotateSpell();
 
             if (_damageDealCoroutine != null)
-                _coroutineRunner.StopCoroutine(_damageDealCoroutine);
+                CoroutineRunner.StopCoroutine(_damageDealCoroutine);
 
-            _damageDealCoroutine = _coroutineRunner.StartCoroutine(DealDamage());
+            _damageDealCoroutine = CoroutineRunner.StartCoroutine(DealDamage());
         }
 
         protected override void OnAbilityEnded(Ability ability)
         {
             if (_blastThrowingCoroutine != null)
-                _coroutineRunner.StopCoroutine(_blastThrowingCoroutine);
+                CoroutineRunner.StopCoroutine(_blastThrowingCoroutine);
 
             if (_damageDealCoroutine != null)
-                _coroutineRunner.StopCoroutine(_damageDealCoroutine);
+                CoroutineRunner.StopCoroutine(_damageDealCoroutine);
 
             if (_blastRotateCoroutine != null)
-                _coroutineRunner.StopCoroutine(_blastRotateCoroutine);
+                CoroutineRunner.StopCoroutine(_blastRotateCoroutine);
         }
 
         private void CreateRotateSpell()
@@ -130,15 +130,15 @@ namespace Assets.Source.Game.Scripts
             _spell = GameObject.Instantiate(
                _spellPrefab,
                new Vector3(
-                   _player.ShotPoint.position.x,
-                   _player.ShotPoint.position.y + transformStartAmplifierY,
-                   _player.ShotPoint.position.z),
+                   Player.ShotPoint.position.x,
+                   Player.ShotPoint.position.y + transformStartAmplifierY,
+                   Player.ShotPoint.position.z),
                Quaternion.identity);
 
-            _spell.Initialize(_particleSystem, _ability.CurrentDuration, _ability.SpellRadius);
-            _spell.transform.position = _player.transform.position + new Vector3(SpellOffsetX, SpellOffsetY, SpellOffsetZ);
+            _spell.Initialize(_particleSystem, Ability.CurrentDuration, Ability.SpellRadius);
+            _spell.transform.position = Player.transform.position + new Vector3(SpellOffsetX, SpellOffsetY, SpellOffsetZ);
 
-            _blastRotateCoroutine = _coroutineRunner.StartCoroutine(RotateSpell());
+            _blastRotateCoroutine = CoroutineRunner.StartCoroutine(RotateSpell());
         }
 
         private void ThrowBlast()
@@ -151,25 +151,25 @@ namespace Assets.Source.Game.Scripts
             if (TryFindEnemy(out Enemy enemy))
             {
                 Transform curretnTarget = enemy.transform;
-                _direction = (curretnTarget.position - _player.transform.position).normalized;
+                _direction = (curretnTarget.position - Player.transform.position).normalized;
             }
             else
             {
                 _direction = _throwPoint.forward;
             }
 
-            _spell.Initialize(_particleSystem, _ability.CurrentDuration, _ability.SpellRadius);
-            _blastThrowingCoroutine = _coroutineRunner.StartCoroutine(ThrowingBlast());
+            _spell.Initialize(_particleSystem, Ability.CurrentDuration, Ability.SpellRadius);
+            _blastThrowingCoroutine = CoroutineRunner.StartCoroutine(ThrowingBlast());
         }
 
         private void CreateAoESpell()
         {
             _spell = GameObject.Instantiate(
                 _spellPrefab,
-                new Vector3(_player.transform.position.x, _player.transform.position.y, _player.transform.position.z),
+                new Vector3(Player.transform.position.x, Player.transform.position.y, Player.transform.position.z),
                 Quaternion.identity);
 
-            _spell.Initialize(_particleSystem, _ability.CurrentDuration, _ability.SpellRadius);
+            _spell.Initialize(_particleSystem, Ability.CurrentDuration, Ability.SpellRadius);
         }
 
         private void CreateTargetSpell()
@@ -179,19 +179,19 @@ namespace Assets.Source.Game.Scripts
             if (TryFindEnemy(out Enemy enemy))
                 targetPosition = enemy.transform.position;
             else
-                targetPosition = _player.transform.position;
+                targetPosition = Player.transform.position;
 
             _spell = GameObject.Instantiate(
                 _spellPrefab,
                 targetPosition,
                 Quaternion.identity);
 
-            _spell.Initialize(_particleSystem, _ability.CurrentDuration, _ability.SpellRadius);
+            _spell.Initialize(_particleSystem, Ability.CurrentDuration, Ability.SpellRadius);
         }
 
         public bool TryFindEnemy(out Enemy enemy)
         {
-            Collider[] coliderEnemy = Physics.OverlapSphere(_player.transform.position, _searcheRadius);
+            Collider[] coliderEnemy = Physics.OverlapSphere(Player.transform.position, _searcheRadius);
 
             foreach (Collider collider in coliderEnemy)
             {
@@ -205,17 +205,17 @@ namespace Assets.Source.Game.Scripts
 
         private IEnumerator DealDamage()
         {
-            while (_ability.IsAbilityEnded == false)
+            while (Ability.IsAbilityEnded == false)
             {
                 if (_spell != null)
                 {
-                    if (_ability.TypeAttackAbility == TypeAttackAbility.AoEAbility)
+                    if (Ability.TypeAttackAbility == TypeAttackAbility.AoEAbility)
                     {
                         if (_spell.TryFindEnemys(out List<Enemy> enemies))
                         {
                             foreach (var enemy in enemies)
                             {
-                                enemy.TakeDamage(_ability.DamageSource);
+                                enemy.TakeDamage(Ability.DamageSource);
                             }
                         }
                     }
@@ -223,7 +223,7 @@ namespace Assets.Source.Game.Scripts
                     {
                         if (_spell.TryFindEnemy(out Enemy enemy))
                         {
-                            enemy.TakeDamage(_ability.DamageSource);
+                            enemy.TakeDamage(Ability.DamageSource);
                         }
                     }
                 }
@@ -234,7 +234,7 @@ namespace Assets.Source.Game.Scripts
 
         private IEnumerator ThrowingBlast()
         {
-            while (_ability.IsAbilityEnded == false)
+            while (Ability.IsAbilityEnded == false)
             {
                 if (_spell != null)
                     _spell.transform.Translate(_direction * _blastSpeed * Time.deltaTime);
@@ -248,13 +248,13 @@ namespace Assets.Source.Game.Scripts
             float verticalOffset = 0f;
             float distance = 3f;
 
-            while (_ability.IsAbilityEnded == false)
+            while (Ability.IsAbilityEnded == false)
             {
                 if (_spell != null)
                 {
-                    _spell.transform.RotateAround(_player.transform.position + Vector3.up * verticalOffset, Vector3.up, _rotationSpeed * Time.deltaTime);
-                    Vector3 direction = (_spell.transform.position - _player.transform.position).normalized;
-                    _spell.transform.position = _player.transform.position + direction * distance + Vector3.up * verticalOffset;
+                    _spell.transform.RotateAround(Player.transform.position + Vector3.up * verticalOffset, Vector3.up, _rotationSpeed * Time.deltaTime);
+                    Vector3 direction = (_spell.transform.position - Player.transform.position).normalized;
+                    _spell.transform.position = Player.transform.position + direction * distance + Vector3.up * verticalOffset;
                 }
 
                 yield return null;

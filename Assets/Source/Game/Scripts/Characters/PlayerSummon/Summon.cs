@@ -16,7 +16,6 @@ public class Summon : PoolObject
     private Enemy _target;
     private Coroutine _coroutine;
     private float _lifeTime;
-    private float _maxHealth;
     private float _attackDelay = 2f;
 
     public Enemy Target => _target;

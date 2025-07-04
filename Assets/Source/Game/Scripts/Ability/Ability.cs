@@ -25,31 +25,6 @@ namespace Assets.Source.Game.Scripts
         private bool _isAutoCast = false;
         private DamageSource _damageSource;
 
-        public event Action AbilityRemoved;
-        public event Action<Ability> AbilityUsed;
-        public event Action<Ability> AbilityEnded;
-        public event Action<float> AbilityUpgraded;
-        public event Action<float> CooldownValueChanged;
-        public event Action<float> CooldownValueReseted;
-
-        public List<CardParameter> AmplifierParametrs { get; private set; } = new List<CardParameter>();
-        public bool IsAbilityEnded { get; private set; } = false;
-        public bool IsAutoCast => _isAutoCast;
-        public float CurrentDuration => _currentDuration;
-        public int CurrentAbilityValue => _currentAbilityValue;
-        public int Quantily => _quantily;
-        public float SpellRadius => _spellRadius;
-        public bool IsAbilityUsed => _isAbilityUsed;
-        public DamageSource DamageSource => _damageSource;
-        public int CurrentLevel { get; private set; }
-        public int MaxLevel { get; private set; }
-        public TypeUpgradeAbility TypeUpgradeMagic { get; private set; }
-        public TypeMagic TypeMagic { get; private set; }
-        public TypeAbility TypeAbility { get; private set; }
-        public TypeAttackAbility TypeAttackAbility { get; private set; }
-        public ActiveAbilityData AbilityAttribute { get; private set; }
-        public AudioClip AudioClip { get; private set; }
-
         public Ability(
             ActiveAbilityData abilityAttributeData,
             int currentLevel,
@@ -102,6 +77,31 @@ namespace Assets.Source.Game.Scripts
             _coroutineRunner = coroutineRunner;
             AmplifierParametrs = classAbilityData.Parameters[currentLvl].CardParameters;
         }
+
+        public event Action AbilityRemoved;
+        public event Action<Ability> AbilityUsed;
+        public event Action<Ability> AbilityEnded;
+        public event Action<float> AbilityUpgraded;
+        public event Action<float> CooldownValueChanged;
+        public event Action<float> CooldownValueReseted;
+
+        public List<CardParameter> AmplifierParametrs { get; private set; } = new List<CardParameter>();
+        public bool IsAbilityEnded { get; private set; } = false;
+        public bool IsAutoCast => _isAutoCast;
+        public float CurrentDuration => _currentDuration;
+        public int CurrentAbilityValue => _currentAbilityValue;
+        public int Quantily => _quantily;
+        public float SpellRadius => _spellRadius;
+        public bool IsAbilityUsed => _isAbilityUsed;
+        public DamageSource DamageSource => _damageSource;
+        public int CurrentLevel { get; private set; }
+        public int MaxLevel { get; private set; }
+        public TypeUpgradeAbility TypeUpgradeMagic { get; private set; }
+        public TypeMagic TypeMagic { get; private set; }
+        public TypeAbility TypeAbility { get; private set; }
+        public TypeAttackAbility TypeAttackAbility { get; private set; }
+        public ActiveAbilityData AbilityAttribute { get; private set; }
+        public AudioClip AudioClip { get; private set; }
 
         public void Dispose()
         {

@@ -7,29 +7,29 @@ public class EnemyRangeAttackState : EnemyAttackState
 
     public EnemyRangeAttackState(StateMashine stateMashine, Player target, Enemy enemy, BulletSpawner bulletSpawner) : base(stateMashine, target, enemy)
     {
-        _enemy = enemy;
-        _target = target;
-        _attackRange = _enemy.AttackDistance;
-        _damage = _enemy.Damage;
-        _attackDelay = _enemy.AttackDelay;
-        _animationController = _enemy.AnimationStateController;
+        Enemy = enemy;
+        Target = target;
+        AttackRange = Enemy.AttackDistance;
+        Damage = Enemy.Damage;
+        AttackDelay = Enemy.AttackDelay;
+        AnimationController = Enemy.AnimationStateController;
         _bulletSpawner = bulletSpawner;
     }
 
     public override void SubscrabeIvent()
     {
-        _animationController.Attacked += LaunchBullet;
+        AnimationController.Attacked += LaunchBullet;
     }
 
     public override void UpdateState()
     {
-        if (_canTransit)
+        if (CanTransit)
         {
-            _directionToTarget = _enemy.transform.position - _target.transform.position;
-            _distanceToTarget = _directionToTarget.magnitude;
+            DirectionToTarget = Enemy.transform.position - Target.transform.position;
+            DistanceToTarget = DirectionToTarget.magnitude;
 
-            if (_distanceToTarget > _attackRange)
-                _stateMashine.SetState<EnemyMoveState>();
+            if (DistanceToTarget > AttackRange)
+                StateMashine.SetState<EnemyMoveState>();
 
             if (Attack())
                 AttackEvent();
@@ -38,25 +38,25 @@ public class EnemyRangeAttackState : EnemyAttackState
 
     protected override bool Attack()
     {
-        if (_distanceToTarget <= _attackRange)
+        if (DistanceToTarget <= AttackRange)
         {
-            _enemy.transform.LookAt(_target.transform.position);
+            Enemy.transform.LookAt(Target.transform.position);
 
-            if (_lastAttackTime <= 0)
+            if (LastAttackTime <= 0)
             {
-                _lastAttackTime = _attackDelay;
-                _canTransit = false;
+                LastAttackTime = AttackDelay;
+                CanTransit = false;
                 return true;
             }
         }
 
-        _lastAttackTime -= Time.deltaTime;
+        LastAttackTime -= Time.deltaTime;
         return false;
     }
 
     private void LaunchBullet()
     {
         _bulletSpawner.SpawnBullet();
-        _canTransit = true;
+        CanTransit = true;
     }
 }

@@ -232,10 +232,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4240152b08c246d48b5bb993ee855f76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Pool: {fileID: 2275660568867978550}
   _stateMashine: {fileID: 4262098758658608793}
   _animationController: {fileID: 9121920541247497159}
   _damageEffectConteiner: {fileID: 8669691482688073953}
-  _pool: {fileID: 2275660568867978550}
   _healthView: {fileID: 2721535277608190575}
 --- !u!195 &1329940255389073515
 NavMeshAgent:

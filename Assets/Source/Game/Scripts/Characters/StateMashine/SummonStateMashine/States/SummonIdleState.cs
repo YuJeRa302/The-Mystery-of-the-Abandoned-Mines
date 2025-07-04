@@ -27,7 +27,7 @@ public class SummonIdleState : State
         if (FindEnemy(out Enemy target))
         {
             _summon.SetTarget(target);
-            _stateMashine.SetState<SummonMoveState>();
+            StateMashine.SetState<SummonMoveState>();
         }
 
         Vector3 directionToPlayer = _summon.transform.position - _player.transform.position;
@@ -35,7 +35,7 @@ public class SummonIdleState : State
 
         if (distance > _summon.DistanceToTarget)
         {
-            _stateMashine.SetState<SummonMoveState>();
+            StateMashine.SetState<SummonMoveState>();
         }
     }
 

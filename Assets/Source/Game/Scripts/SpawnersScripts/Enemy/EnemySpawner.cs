@@ -19,7 +19,7 @@ namespace Assets.Source.Game.Scripts
         private Coroutine _spawnEnemy;
         private ICoroutineRunner _coroutineRunner;
         private int _currentRoomLevel;
-        private List<Enemy> _enemies = new List<Enemy>();
+        private List<Enemy> _enemies = new ();
         private Dictionary<string, PoolParticle> _deadParticles = new Dictionary<string, PoolParticle>();
         private int _deadEnemy = 0;
         private int _totalEnemyCount;
@@ -28,20 +28,6 @@ namespace Assets.Source.Game.Scripts
         private AudioPlayer _audioPlayer;
         private int _currentLevelTier;
 
-        public event Action<Enemy> EnemyDied;
-        public event Action AllEnemyRoomDied;
-
-        public EnemySpawner(Pool enemyPool, ICoroutineRunner coroutineRunner, Player player, int currentLevel, AudioPlayer audioPlayer, int tier)
-        {
-            _currentRoomsLevel = currentLevel;
-            _enemuPool = enemyPool;
-            _coroutineRunner = coroutineRunner;
-            _player = player;
-            _audioPlayer = audioPlayer;
-            _player.PlayerDied += OnPlayerDead;
-            _currentLevelTier = tier;
-        }
-
         public EnemySpawner(Pool enemyPool, ICoroutineRunner coroutineRunner, AudioPlayer audioPlayer, int currentLevelTier)
         {
             _enemuPool = enemyPool;
@@ -49,6 +35,9 @@ namespace Assets.Source.Game.Scripts
             _audioPlayer = audioPlayer;
             _currentLevelTier = currentLevelTier;
         }
+
+        public event Action<Enemy> EnemyDied;
+        public event Action AllEnemyRoomDied;
 
         public void Dispose()
         {
@@ -73,6 +62,7 @@ namespace Assets.Source.Game.Scripts
         public void InitPlayerInstance(Player player)
         {
             _player = player;
+            _player.PlayerDied += OnPlayerDead;
         }
 
         public void EnterRoom(RoomView currentRoom)

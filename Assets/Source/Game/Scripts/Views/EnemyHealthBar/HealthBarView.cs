@@ -1,6 +1,4 @@
 using Assets.Source.Game.Scripts;
-using DG.Tweening;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,33 +9,33 @@ public class HealthBarView : MonoBehaviour
     [SerializeField] private DamagePopup _damagePopupPrefab;
     [SerializeField] private Pool _pool;
 
-    private Enemy _helth;
+    private Enemy _enemy;
 
     private void OnEnable()
     {
-        if (_helth != null)
+        if (_enemy != null)
         {
-            _helth.DamageTaked += OnTakeDamage;
-            _helth.HealthChanged += OnChangeHealthValue;
+            _enemy.DamageTaked += OnTakeDamage;
+            _enemy.HealthChanged += OnChangeHealthValue;
         }
     }
 
     private void OnDisable()
     {
-        _helth.DamageTaked -= OnTakeDamage;
-        _helth.HealthChanged -= OnChangeHealthValue;
+        _enemy.DamageTaked -= OnTakeDamage;
+        _enemy.HealthChanged -= OnChangeHealthValue;
     }
 
     public void Initialize(Enemy enemy)
     {
-        _helth = enemy;
-        _helth.DamageTaked += OnTakeDamage;
-        _helth.HealthChanged += OnChangeHealthValue;
+        _enemy = enemy;
+        _enemy.DamageTaked += OnTakeDamage;
+        _enemy.HealthChanged += OnChangeHealthValue;
     }
 
     private void OnChangeHealthValue()
     {
-        float amount = _helth.CurrentHealth / (float)_helth.MaxHealth;
+        float amount = _enemy.CurrentHealth / (float)_enemy.MaxHealth;
         _bar.value = amount;
     }
 

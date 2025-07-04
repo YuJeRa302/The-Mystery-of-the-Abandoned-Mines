@@ -11,7 +11,7 @@ public class Beholder : Boss
     public Transform BaseShotPoint => _baseShotPoint;
     public Transform[] ShotPoints => _shotPoints;
     public Bullet Bullet => _bullet;
-    public Pool Pool => _pool;
+    public Pool Pool => base.Pool;
     public DragonFlame DragonFlame => _dragonFlame;
 
     public override void Initialize(Player player, int lvlRoom, EnemyData data, int tire)

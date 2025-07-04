@@ -19,10 +19,10 @@ public class RageAbillityPresenter : AbilityPresenter
         ICoroutineRunner coroutineRunner,
         PoolParticle abilityEffect) : base(ability, abilityView, player, gamePauseService, gameLoopService, coroutineRunner)
     {
-        _pool = _player.Pool;
+        _pool = Player.Pool;
         _particleEffectPrefab = abilityEffect;
-        _effectConteiner.Add(_player.WeaponPoint);
-        _effectConteiner.Add(_player.AdditionalWeaponPoint);
+        _effectConteiner.Add(Player.WeaponPoint);
+        _effectConteiner.Add(Player.AdditionalWeaponPoint);
 
         AddListener();
     }
@@ -30,13 +30,13 @@ public class RageAbillityPresenter : AbilityPresenter
     protected override void AddListener()
     {
         base.AddListener();
-        (_abilityView as ClassSkillButtonView).AbilityUsed += OnButtonSkillClick;
+        (AbilityView as ClassSkillButtonView).AbilityUsed += OnButtonSkillClick;
     }
 
     protected override void RemoveListener()
     {
         base.RemoveListener();
-        (_abilityView as ClassSkillButtonView).AbilityUsed -= OnButtonSkillClick;
+        (AbilityView as ClassSkillButtonView).AbilityUsed -= OnButtonSkillClick;
     }
 
     protected override void OnAbilityEnded(Ability ability)
@@ -51,8 +51,8 @@ public class RageAbillityPresenter : AbilityPresenter
             return;
 
         _isAbilityUse = true;
-        _ability.Use();
-        (_abilityView as ClassSkillButtonView).SetInerectableButton(false);
+        Ability.Use();
+        (AbilityView as ClassSkillButtonView).SetInerectableButton(false);
     }
 
     protected override void OnAbilityUsed(Ability ability)
@@ -100,12 +100,12 @@ public class RageAbillityPresenter : AbilityPresenter
     protected override void OnCooldownValueReseted(float value)
     {
         base.OnCooldownValueReseted(value);
-        (_abilityView as ClassSkillButtonView).SetInerectableButton(true);
+        (AbilityView as ClassSkillButtonView).SetInerectableButton(true);
     }
 
     protected override void OnGameResumed(bool state)
     {
-        if (_isAbilityUse || _ability.IsAbilityUsed)
+        if (_isAbilityUse || Ability.IsAbilityUsed)
             base.OnGameResumed(state);
     }
 }

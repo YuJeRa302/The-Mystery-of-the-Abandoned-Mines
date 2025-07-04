@@ -17,22 +17,22 @@ public class SummonAbillityPresenter : AbilityPresenter
         ICoroutineRunner coroutineRunner,
         Summon summonPrefab) : base(ability, abilityView, player, gamePauseService, gameLoopService, coroutineRunner)
     {
-        _pool = _player.Pool;
+        _pool = Player.Pool;
         _summonPrefab = summonPrefab;
-        _spawnPoint = _player.ShotPoint;
+        _spawnPoint = Player.ShotPoint;
         AddListener();
     }
 
     protected override void AddListener()
     {
         base.AddListener();
-        (_abilityView as ClassSkillButtonView).AbilityUsed += OnButtonSkillClick;
+        (AbilityView as ClassSkillButtonView).AbilityUsed += OnButtonSkillClick;
     }
 
     protected override void RemoveListener()
     {
         base.RemoveListener();
-        (_abilityView as ClassSkillButtonView).AbilityUsed -= OnButtonSkillClick;
+        (AbilityView as ClassSkillButtonView).AbilityUsed -= OnButtonSkillClick;
     }
 
     protected override void OnAbilityEnded(Ability ability)
@@ -46,13 +46,13 @@ public class SummonAbillityPresenter : AbilityPresenter
             return;
 
         _isAbilityUse = true;
-        _ability.Use();
-        (_abilityView as ClassSkillButtonView).SetInerectableButton(false);
+        Ability.Use();
+        (AbilityView as ClassSkillButtonView).SetInerectableButton(false);
     }
 
     protected override void OnAbilityUsed(Ability ability)
     {
-        for (int i = 0; i < _ability.Quantily; i++)
+        for (int i = 0; i < Ability.Quantily; i++)
         {
             Spawn();
         }
@@ -74,7 +74,7 @@ public class SummonAbillityPresenter : AbilityPresenter
             summon = GameObject.Instantiate(_summonPrefab, _spawnPoint.position, _spawnPoint.rotation);
 
             _pool.InstantiatePoolObject(summon, _summonPrefab.name);
-            summon.Initialize(_player, _player.DamageSource, _ability.CurrentDuration);
+            summon.Initialize(Player, Player.DamageSource, Ability.CurrentDuration);
         }
     }
 
@@ -93,6 +93,6 @@ public class SummonAbillityPresenter : AbilityPresenter
     protected override void OnCooldownValueReseted(float value)
     {
         base.OnCooldownValueReseted(value);
-        (_abilityView as ClassSkillButtonView).SetInerectableButton(true);
+        (AbilityView as ClassSkillButtonView).SetInerectableButton(true);
     }
 }

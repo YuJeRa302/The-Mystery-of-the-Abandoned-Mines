@@ -19,9 +19,8 @@ public class KnowledgeBaseView : MonoBehaviour
     [SerializeField] private GameObject _buttonSubCategories;
     [SerializeField] private GameObject _infoPanel;
 
-    private List<SubcategoriesButtonView> _subcategoriesButtonViews = new List<SubcategoriesButtonView>();
-    private List<KnowladgeView> _knowladgeViews = new List<KnowladgeView>();
-
+    private List<SubcategoriesButtonView> _subcategoriesButtonViews = new ();
+    private List<KnowladgeView> _knowladgeViews = new ();
     private KnowledgeBaseViewModel _knowledgeBaseViewModel;
     private IAudioPlayerService _audioPlayerService;
 
@@ -77,7 +76,7 @@ public class KnowledgeBaseView : MonoBehaviour
         {
             subcategoriesButtonView = Instantiate(_subcategoriesButtonViewPrefab, _subcategoriesContainer);
             subcategoriesButtonView.Initialize(subcategotiesView.Name, subcategotiesView.Icon, subcategotiesView.KnowledgeData);
-            subcategoriesButtonView.ChengetCategoru += ShowKnowledgeCategory;
+            subcategoriesButtonView.CategoryChanged += ShowKnowledgeCategory;
             _subcategoriesButtonViews.Add(subcategoriesButtonView);
         }
     }
@@ -116,7 +115,7 @@ public class KnowledgeBaseView : MonoBehaviour
     {
         foreach (SubcategoriesButtonView view in _subcategoriesButtonViews)
         {
-            view.ChengetCategoru -= ShowKnowledgeCategory;
+            view.CategoryChanged -= ShowKnowledgeCategory;
             Destroy(view.gameObject);
         }
 

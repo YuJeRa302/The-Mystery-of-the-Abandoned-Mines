@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using UnityEngine;
 
@@ -6,21 +5,13 @@ namespace Assets.Source.Game.Scripts
 {
     public class AbilityPresenterFactory
     {
-        private readonly IGameLoopService _gameLoopService;
-
-        private ICoroutineRunner _coroutineRunner;
-        private GameLoopService _gameLoopService1;
-        private GamePauseService _gamePauseService;
-
-        public AbilityPresenterFactory(IGameLoopService gameLoopService, ICoroutineRunner coroutineRunner)
-        {
-            _gameLoopService = gameLoopService ?? throw new ArgumentNullException(nameof(gameLoopService));
-            _coroutineRunner = coroutineRunner ?? throw new ArgumentNullException(nameof(coroutineRunner));
-        }
+        private readonly ICoroutineRunner _coroutineRunner;
+        private readonly GameLoopService _gameLoopService;
+        private readonly GamePauseService _gamePauseService;
 
         public AbilityPresenterFactory(GameLoopService gameLoopService, GamePauseService gamePauseService, ICoroutineRunner coroutineRunner)
         {
-            _gameLoopService1 = gameLoopService;
+            _gameLoopService = gameLoopService;
             _gamePauseService = gamePauseService;
             _coroutineRunner = coroutineRunner;
         }
@@ -38,7 +29,7 @@ namespace Assets.Source.Game.Scripts
                 abilityView,
                 player,
                 _gamePauseService,
-                _gameLoopService1,
+                _gameLoopService,
                 _coroutineRunner,
                 spell,
                 particleSystem);
@@ -69,7 +60,7 @@ namespace Assets.Source.Game.Scripts
                 abilityView,
                 player,
                 _gamePauseService,
-                _gameLoopService1,
+                _gameLoopService,
                 _coroutineRunner,
                 summonPrefab);
 
@@ -87,7 +78,7 @@ namespace Assets.Source.Game.Scripts
                 abilityView,
                 player,
                 _gamePauseService,
-                _gameLoopService1,
+                _gameLoopService,
                 _coroutineRunner,
                 axemMssile);
 
@@ -105,7 +96,7 @@ namespace Assets.Source.Game.Scripts
                 abilityView,
                 player,
                 _gamePauseService,
-                _gameLoopService1,
+                _gameLoopService,
                 _coroutineRunner,
                 abilityEffect);
 
@@ -123,7 +114,7 @@ namespace Assets.Source.Game.Scripts
                 abilityView,
                 player,
                 _gamePauseService,
-                _gameLoopService1,
+                _gameLoopService,
                 _coroutineRunner,
                 abilityEffect);
 
@@ -142,7 +133,7 @@ namespace Assets.Source.Game.Scripts
                 abilityView,
                 player,
                 _gamePauseService,
-                _gameLoopService1,
+                _gameLoopService,
                 _coroutineRunner,
                 abilityEffect,
                 spell);
@@ -161,7 +152,7 @@ namespace Assets.Source.Game.Scripts
                 abilityView,
                 player,
                 _gamePauseService,
-                _gameLoopService1,
+                _gameLoopService,
                 _coroutineRunner,
                 poolParticle);
 
@@ -180,7 +171,7 @@ namespace Assets.Source.Game.Scripts
                 abilityView,
                 player,
                 _gamePauseService,
-                _gameLoopService1,
+                _gameLoopService,
                 _coroutineRunner,
                 poolParticle,
                 spell);
@@ -195,7 +186,7 @@ namespace Assets.Source.Game.Scripts
                 abilityView,
                 player,
                 _gamePauseService,
-                _gameLoopService1,
+                _gameLoopService,
                 _coroutineRunner,
                 poolParticle);
 
@@ -213,7 +204,7 @@ namespace Assets.Source.Game.Scripts
                 abilityView,
                 player,
                 _gamePauseService,
-                _gameLoopService1,
+                _gameLoopService,
                 _coroutineRunner,
                 poolParticle);
 
@@ -232,7 +223,7 @@ namespace Assets.Source.Game.Scripts
                 abilityView,
                 player,
                 _gamePauseService,
-                _gameLoopService1,
+                _gameLoopService,
                 _coroutineRunner,
                 particleSystem,
                 spell);
@@ -252,7 +243,7 @@ namespace Assets.Source.Game.Scripts
                 abilityView,
                 player,
                 _gamePauseService,
-                _gameLoopService1,
+                _gameLoopService,
                 _coroutineRunner,
                 particleSystem,
                 spell);
@@ -272,7 +263,7 @@ namespace Assets.Source.Game.Scripts
                 abilityView,
                 player, 
                 _gamePauseService,
-                _gameLoopService1,
+                _gameLoopService,
                 _coroutineRunner,
                 particleSystem,
                 spell);
@@ -292,7 +283,7 @@ namespace Assets.Source.Game.Scripts
                 abilityView,
                 player,
                 _gamePauseService,
-                _gameLoopService1,
+                _gameLoopService,
                 _coroutineRunner,
                 particleSystem,
                 spell);
@@ -312,7 +303,7 @@ namespace Assets.Source.Game.Scripts
                 abilityView,
                 player,
                 _gamePauseService,
-                _gameLoopService1,
+                _gameLoopService,
                 _coroutineRunner,
                 particleSystem,
                 spell);
@@ -332,7 +323,7 @@ namespace Assets.Source.Game.Scripts
                 abilityView,
                 player,
                 _gamePauseService,
-                _gameLoopService1,
+                _gameLoopService,
                 _coroutineRunner,
                 particleSystem,
                 spell);
@@ -352,7 +343,7 @@ namespace Assets.Source.Game.Scripts
                 abilityView,
                 player,
                 _gamePauseService,
-                _gameLoopService1,
+                _gameLoopService,
                 _coroutineRunner,
                 particleSystem,
                 spell);
@@ -372,7 +363,7 @@ namespace Assets.Source.Game.Scripts
                 abilityView,
                 player,
                 _gamePauseService,
-                _gameLoopService1,
+                _gameLoopService,
                 _coroutineRunner,
                 particleSystem,
                 spell);
@@ -393,7 +384,7 @@ namespace Assets.Source.Game.Scripts
                 particleSystem,
                 spell,
                 _gamePauseService,
-                _gameLoopService1,
+                _gameLoopService,
                 _coroutineRunner);
 
             return buranPresenter;

@@ -6,7 +6,7 @@ public class WayScrollSlider : MonoBehaviour
     [SerializeField] private ScrollRect _scrollRect;
     [SerializeField] private Slider _slider;
     
-    private bool isSliderDragging = false;
+    private bool _isSliderDragging = false;
 
     private void Start()
     {
@@ -16,7 +16,7 @@ public class WayScrollSlider : MonoBehaviour
 
     private void OnSliderChanged(float value)
     {
-        if (!isSliderDragging)
+        if (!_isSliderDragging)
         {
             _scrollRect.verticalNormalizedPosition = value;
         }

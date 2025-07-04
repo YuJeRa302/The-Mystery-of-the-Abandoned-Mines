@@ -9,7 +9,7 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private EnemyStateMashineExample _enemyStateMashine;
 
         private Animator _animator;
-        private HashAnimation _animationEnemy = new HashAnimation();
+        private HashAnimation _animationEnemy = new HashAnimation ();
 
         public event Action Attacked;
         public event Action AdditionalAttacked;
@@ -75,9 +75,6 @@ namespace Assets.Source.Game.Scripts
 
         private void OnWinGame() => _animator.SetTrigger(_animationEnemy.WinDanceAnimation);
 
-        private void EndAnimation()
-        {
-            AnimationCompleted?.Invoke();
-        }
+        private void EndAnimation() => AnimationCompleted?.Invoke();
     }
 }

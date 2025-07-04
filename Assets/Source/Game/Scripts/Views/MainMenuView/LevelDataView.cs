@@ -15,9 +15,6 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private Image _lockImage;
         [SerializeField] private LeanLocalizedText _name;
         [SerializeField] private Button _button;
-        [SerializeField] private Sprite _star;
-        [SerializeField] private Sprite _complitStar;
-        [SerializeField] private Image _starLvlPrefab;
         [Space(10)]
         [SerializeField] private Image _bgContractInfo;
         [SerializeField] private Text _price;

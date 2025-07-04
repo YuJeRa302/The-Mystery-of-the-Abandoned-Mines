@@ -27,7 +27,7 @@ namespace Assets.Source.Game.Scripts
         private SaveAndLoader _saveAndLoad;
         private PersistentDataService _persistentDataService;
 
-        public Action EnebleSave;
+        public Action EnableSave;
 
         private void Awake()
         {
@@ -42,7 +42,7 @@ namespace Assets.Source.Game.Scripts
         {
             _persistentDataService = new PersistentDataService();
             _saveAndLoad = new(_persistentDataService, _configData);
-            EnebleSave?.Invoke();
+            EnableSave?.Invoke();
 
             if (_saveAndLoad.TryGetGameData())
                 _saveAndLoad.LoadDataFromCloud();

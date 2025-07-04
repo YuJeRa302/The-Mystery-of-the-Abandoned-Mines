@@ -9,7 +9,7 @@ public class TrapsSpawner : IDisposable
 
     private Transform[] _spawnPoints;
     private GameObject[] _traps;
-    private List<GameObject> _spawnedTraps = new List<GameObject>();
+    private List<GameObject> _spawnedTraps = new ();
     private LootRoomView _currentRoom;
 
     public TrapsSpawner ()

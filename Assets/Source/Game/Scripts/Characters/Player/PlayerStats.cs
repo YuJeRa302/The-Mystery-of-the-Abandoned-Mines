@@ -42,20 +42,6 @@ namespace Assets.Source.Game.Scripts
         private float _attackRange;
         private PlayerClassData _classData;
 
-        public event Action<int> MaxHealthChanged;
-        public event Action<int> HealthUpgradeApplied;
-        public event Action<float> HealthReduced;
-        public event Action<int> Healed;
-        public event Action<int> ExperienceValueChanged;
-        public event Action<int> UpgradeExperienceValueChanged;
-        public event Action<int> AbilityDurationChanged;
-        public event Action<int> AbilityDamageChanged;
-        public event Action<int> AbilityCooldownReductionChanged;
-        public event Action<int> KillCountChanged;
-        public event Action<int, int, int> PlayerLevelChanged;
-        public event Action<int, int, int> PlayerUpgradeLevelChanged;
-        public event Action<int> AddingConins;
-
         public PlayerStats(
             WeaponData weaponData,
             PlayerClassData calss,
@@ -78,6 +64,20 @@ namespace Assets.Source.Game.Scripts
             GenerateUpgradeLevel(_maxUpgradeLevel);
             ApplyWeaponParameters(weaponData, calss.TypeAttackRange);
         }
+
+        public event Action<int> MaxHealthChanged;
+        public event Action<int> HealthUpgradeApplied;
+        public event Action<float> HealthReduced;
+        public event Action<int> Healed;
+        public event Action<int> ExperienceValueChanged;
+        public event Action<int> UpgradeExperienceValueChanged;
+        public event Action<int> AbilityDurationChanged;
+        public event Action<int> AbilityDamageChanged;
+        public event Action<int> AbilityCooldownReductionChanged;
+        public event Action<int> KillCountChanged;
+        public event Action<int, int, int> PlayerLevelChanged;
+        public event Action<int, int, int> PlayerUpgradeLevelChanged;
+        public event Action<int> AddingConins;
 
         public DamageSource DamageSource => _damageSource;
         public int Armor => _armor;

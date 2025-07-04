@@ -5,32 +5,32 @@ namespace Assets.Source.Game.Scripts
 {
     public class LegendaryAbilitySpell : MonoBehaviour
     {
-        [SerializeField] protected AbilityEnemyFinder[] _abilityEnemyFinders;
+        [SerializeField] protected AbilityEnemyFinder[] AbilityEnemyFinders;
 
-        protected List<Enemy> _enemies = new List<Enemy>();
-        protected List<ParticleSystem> _abilityEffects = new ();
-        protected float _spellLifeTime;
+        protected List<Enemy> Enemies = new ();
+        protected List<ParticleSystem> AbilityEffects = new ();
+        protected float SpellLifeTime;
 
         public virtual void Initialize(ParticleSystem particleSystem, float currentDuration)
         {
-            if (_abilityEffects.Count > 0)
+            if (AbilityEffects.Count > 0)
             {
-                foreach (var abilityEffect in _abilityEffects) 
+                foreach (var abilityEffect in AbilityEffects) 
                 {
                     if (abilityEffect.gameObject != null)
                         Destroy(abilityEffect);
                 }
             }
 
-            _spellLifeTime = currentDuration;
+            SpellLifeTime = currentDuration;
             CreateEffect(particleSystem);
-            DestroyEffectsByLifeTime(_spellLifeTime);
-            Destroy(gameObject, _spellLifeTime);
+            DestroyEffectsByLifeTime(SpellLifeTime);
+            Destroy(gameObject, SpellLifeTime);
         }
 
         public bool TryFindEnemy(out Enemy enemyFind)
         {
-            foreach (AbilityEnemyFinder abilityEnemyFinder in _abilityEnemyFinders) 
+            foreach (AbilityEnemyFinder abilityEnemyFinder in AbilityEnemyFinders) 
             {
                 if (abilityEnemyFinder != null)
                 {
@@ -48,39 +48,39 @@ namespace Assets.Source.Game.Scripts
 
         public virtual bool TryFindEnemys(out List<Enemy> enemies)
         {
-            _enemies.Clear();
+            Enemies.Clear();
             enemies = new List<Enemy>();
 
-            foreach (AbilityEnemyFinder abilityEnemyFinder in _abilityEnemyFinders)
+            foreach (AbilityEnemyFinder abilityEnemyFinder in AbilityEnemyFinders)
             {
                 if (abilityEnemyFinder != null)
                 {
                     if (abilityEnemyFinder.TryFindEnemys(out List<Enemy> findEnemyse))
                     {
-                        _enemies.AddRange(findEnemyse);
+                        Enemies.AddRange(findEnemyse);
                     }
                 }
             }
 
-            enemies.AddRange(_enemies);
+            enemies.AddRange(Enemies);
             return enemies.Count > 0;
         }
 
         private void CreateEffect(ParticleSystem particleSystem)
         {
-            foreach (AbilityEnemyFinder abilityEnemyFinder in _abilityEnemyFinders) 
+            foreach (AbilityEnemyFinder abilityEnemyFinder in AbilityEnemyFinders) 
             {
                 ParticleSystem abilityEffect = Instantiate(particleSystem, abilityEnemyFinder.transform);
                 abilityEffect.Play();
-                _abilityEffects.Add(abilityEffect);
+                AbilityEffects.Add(abilityEffect);
             }
         }
 
         protected virtual void DestroyEffectsByLifeTime(float spellLifeTime) 
         {
-            foreach (var abilityEffect in _abilityEffects)
+            foreach (var abilityEffect in AbilityEffects)
             {
-                Destroy(abilityEffect.gameObject, _spellLifeTime);
+                Destroy(abilityEffect.gameObject, SpellLifeTime);
             }
         }
     }

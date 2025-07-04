@@ -7,18 +7,18 @@ public class SpecialAttackGoldDragon : BossSpecialAttackState
 
     public SpecialAttackGoldDragon(StateMashine stateMashine, Player player, Enemy enemy) : base(stateMashine, player, enemy)
     {
-        _target = player;
-        _enemy = enemy;
-        _animationController = _enemy.AnimationStateController;
+        Target = player;
+        Enemy = enemy;
+        AnimationController = Enemy.AnimationStateController;
 
-        _animationController.AnimationCompleted += SpetialAttackCounter;
+        AnimationController.AnimationCompleted += SpetialAttackCounter;
     }
 
     public override void EnterState()
     {
         base.EnterState();
         _countWave = 0;
-        GoldDragon dragon = _enemy as GoldDragon;
+        GoldDragon dragon = Enemy as GoldDragon;
         dragon.DragonFlame.gameObject.SetActive(true);
         SpetiallAttackEvent();
     }
@@ -26,7 +26,7 @@ public class SpecialAttackGoldDragon : BossSpecialAttackState
     public override void ExitState()
     {
         base.ExitState();
-        GoldDragon dragon = _enemy as GoldDragon;
+        GoldDragon dragon = Enemy as GoldDragon;
         dragon.DragonFlame.gameObject.SetActive(false);
     }
 
@@ -35,6 +35,6 @@ public class SpecialAttackGoldDragon : BossSpecialAttackState
         _countWave++;
 
         if (_countWave >= _maxCountWave)
-            _canTransit = true;
+            CanTransit = true;
     }
 }

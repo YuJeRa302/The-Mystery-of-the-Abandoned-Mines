@@ -5,47 +5,47 @@ namespace Assets.Source.Game.Scripts
 {
     public class EnemyAttackState : State
     {
-        protected float _lastAttackTime = 0;
-        protected float _attackDelay;
-        protected float _attackRange;
-        protected Vector3 _directionToTarget;
-        protected float _distanceToTarget;
-        protected float _damage;
-        protected Player _target;
-        protected Enemy _enemy;
-        protected EnemyAnimation _animationController;
+        protected float LastAttackTime = 0;
+        protected float AttackDelay;
+        protected float AttackRange;
+        protected Vector3 DirectionToTarget;
+        protected float DistanceToTarget;
+        protected float Damage;
+        protected Player Target;
+        protected Enemy Enemy;
+        protected EnemyAnimation AnimationController;
 
         public EnemyAttackState(StateMashine stateMashine, Player target, Enemy enemy) : base(stateMashine)
         {
-            _enemy = enemy;
-            _target = target;
-            _attackRange = _enemy.AttackDistance;
-            _damage = _enemy.Damage;
-            _attackDelay = _enemy.AttackDelay;
-            _animationController = _enemy.AnimationStateController;
+            Enemy = enemy;
+            Target = target;
+            AttackRange = Enemy.AttackDistance;
+            Damage = Enemy.Damage;
+            AttackDelay = Enemy.AttackDelay;
+            AnimationController = Enemy.AnimationStateController;
             SubscrabeIvent();
         }
 
         public override void EnterState()
         {
             base.EnterState();
-            _canTransit = true;
+            CanTransit = true;
         }
 
         public virtual void SubscrabeIvent()
         {
-            _animationController.Attacked += ApplyDamage;
+            AnimationController.Attacked += ApplyDamage;
         }
 
         public override void UpdateState()
         {
-            if (_canTransit)
+            if (CanTransit)
             {
-                _directionToTarget = _enemy.transform.position - _target.transform.position;
-                _distanceToTarget = _directionToTarget.magnitude;
+                DirectionToTarget = Enemy.transform.position - Target.transform.position;
+                DistanceToTarget = DirectionToTarget.magnitude;
 
-                if (_distanceToTarget > _attackRange)
-                    _stateMashine.SetState<EnemyMoveState>();
+                if (DistanceToTarget > AttackRange)
+                    StateMashine.SetState<EnemyMoveState>();
 
                 if (Attack())
                 {
@@ -56,31 +56,31 @@ namespace Assets.Source.Game.Scripts
 
         protected virtual bool Attack()
         {
-            if (_distanceToTarget <= _attackRange)
+            if (DistanceToTarget <= AttackRange)
             {
-                _enemy.transform.LookAt(_target.transform.position);
+                Enemy.transform.LookAt(Target.transform.position);
 
-                if (_lastAttackTime <= 0)
+                if (LastAttackTime <= 0)
                 {
-                    _lastAttackTime = _attackDelay;
-                    _canTransit = false;
+                    LastAttackTime = AttackDelay;
+                    CanTransit = false;
                     return true;
                 }
             }
 
-            _lastAttackTime -= Time.deltaTime;
+            LastAttackTime -= Time.deltaTime;
             return false;
         }
 
         protected void ApplyDamage()
         {
-            Vector3 directionToTarget = _enemy.transform.position - _target.transform.position;
+            Vector3 directionToTarget = Enemy.transform.position - Target.transform.position;
             float distance = directionToTarget.magnitude;
 
-            if (distance <= _attackRange)
-                _target.TakeDamage(Convert.ToInt32(_damage));
+            if (distance <= AttackRange)
+                Target.TakeDamage(Convert.ToInt32(Damage));
 
-            _canTransit = true;
+            CanTransit = true;
         }
     }
 }

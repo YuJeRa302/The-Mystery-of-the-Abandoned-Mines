@@ -10,8 +10,8 @@ public class PlayerClassKnowladgeView : KnowladgeView
     [SerializeField] private LeanLocalizedText _classDiscription;
     [SerializeField] private LeanLocalizedText _classStrengths;
     [SerializeField] private Image _baseWeaponIcon;
-    [SerializeField] private Transform _classAbilityIconConteiner;
-    [SerializeField] private Image _iamgePrafab;
+    [SerializeField] private Transform _classAbilityIconContainer;
+    [SerializeField] private Image _imagePrafab;
 
     public void Initialize(PlayerClassData classData)
     {
@@ -23,7 +23,7 @@ public class PlayerClassKnowladgeView : KnowladgeView
         
         foreach(var ability in classData.ClassAbilityDatas)
         {
-            Image image = Instantiate(_iamgePrafab, _classAbilityIconConteiner);
+            Image image = Instantiate(_imagePrafab, _classAbilityIconContainer);
             image.sprite = ability.Icon;
         }
     }

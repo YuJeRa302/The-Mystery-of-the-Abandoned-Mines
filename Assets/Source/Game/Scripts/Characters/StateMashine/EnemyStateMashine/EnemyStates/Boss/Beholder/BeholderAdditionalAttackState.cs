@@ -10,18 +10,18 @@ public class BeholderAdditionalAttackState : BossAdditionalAttackState
 
     public BeholderAdditionalAttackState(StateMashine stateMashine, Player target, Enemy enemy) : base(stateMashine, target, enemy)
     {
-        _target = target;
-        _enemy = enemy;
-        _animationController = _enemy.AnimationStateController;
-        Beholder boss = _enemy as Beholder;
+        Target = target;
+        Enemy = enemy;
+        AnimationController = Enemy.AnimationStateController;
+        Beholder boss = Enemy as Beholder;
 
         _shotPoints = boss.ShotPoints;
         _maxShotPointIndex = _shotPoints.Length;
         _currentShotPointIndex = 0;
-        _bulletSpawner = new BulletSpawner(boss.Bullet, boss.Pool, _shotPoints[_currentShotPointIndex], _enemy);
+        _bulletSpawner = new BulletSpawner(boss.Bullet, boss.Pool, _shotPoints[_currentShotPointIndex], Enemy);
 
-        _animationController.AdditionalAttacked += AditionalAttackAppalyDamage;
-        _animationController.AnimationCompleted += OnAllowTransition;
+        AnimationController.AdditionalAttacked += AditionalAttackAppalyDamage;
+        AnimationController.AnimationCompleted += OnAllowTransition;
     }
 
     public override void EnterState()

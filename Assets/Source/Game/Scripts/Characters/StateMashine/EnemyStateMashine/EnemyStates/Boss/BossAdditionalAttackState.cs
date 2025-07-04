@@ -3,28 +3,28 @@ using UnityEngine;
 
 public class BossAdditionalAttackState : State
 {
-    protected Player _target;
-    protected Enemy _enemy;
-    protected EnemyAnimation _animationController;
-    protected Vector3 _directionToTarget;
-    protected float _distanceToTarget;
+    protected Player Target;
+    protected Enemy Enemy;
+    protected EnemyAnimation AnimationController;
+    protected Vector3 DirectionToTarget;
+    protected float DistanceToTarget;
 
     public BossAdditionalAttackState(StateMashine stateMashine, Player target, Enemy enemy) : base(stateMashine)
     {
-        _target = target;
-        _enemy = enemy;
+        Target = target;
+        Enemy = enemy;
     }
 
     public override void EnterState()
     {
         base.EnterState();
-        _canTransit = false;
+        CanTransit = false;
     }
 
     public override void UpdateState()
     {
-        if (_canTransit)
-            _stateMashine.SetState<EnemyMoveState>();
+        if (CanTransit)
+            StateMashine.SetState<EnemyMoveState>();
     }
 
     protected virtual void AditionalAttackAppalyDamage()

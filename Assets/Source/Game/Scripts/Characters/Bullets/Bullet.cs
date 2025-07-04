@@ -5,12 +5,13 @@ public class Bullet : PoolObject
 {
     private readonly float _lifeTimeBullet = 6f;
 
+    protected float Damage;
+
     private Coroutine _coroutine;
-    protected float _damage;
 
     public void Initialaze(int damage)
     {
-        _damage = damage;
+        Damage = damage;
 
         if (_coroutine != null)
             StopCoroutine(_coroutine);

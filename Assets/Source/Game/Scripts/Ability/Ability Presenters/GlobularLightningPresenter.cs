@@ -35,10 +35,10 @@ namespace Assets.Source.Game.Scripts
             base.OnGamePaused(state);
 
             if (_blastThrowingCoroutine != null)
-                _coroutineRunner.StopCoroutine(_blastThrowingCoroutine);
+                CoroutineRunner.StopCoroutine(_blastThrowingCoroutine);
 
             if (_damageDealCoroutine != null)
-                _coroutineRunner.StopCoroutine(_damageDealCoroutine);
+                CoroutineRunner.StopCoroutine(_damageDealCoroutine);
         }
 
         protected override void OnGameResumed(bool state)
@@ -46,10 +46,10 @@ namespace Assets.Source.Game.Scripts
             base.OnGameResumed(state);
 
             if (_blastThrowingCoroutine != null)
-                _blastThrowingCoroutine = _coroutineRunner.StartCoroutine(RotateSpell());
+                _blastThrowingCoroutine = CoroutineRunner.StartCoroutine(RotateSpell());
 
             if (_damageDealCoroutine != null)
-                _damageDealCoroutine = _coroutineRunner.StartCoroutine(DealDamage());
+                _damageDealCoroutine = CoroutineRunner.StartCoroutine(DealDamage());
         }
 
         protected override void OnAbilityUsed(Ability ability)
@@ -57,18 +57,18 @@ namespace Assets.Source.Game.Scripts
             ThrowBlast();
 
             if (_damageDealCoroutine != null)
-                _coroutineRunner.StopCoroutine(_damageDealCoroutine);
+                CoroutineRunner.StopCoroutine(_damageDealCoroutine);
 
-            _damageDealCoroutine = _coroutineRunner.StartCoroutine(DealDamage());
+            _damageDealCoroutine = CoroutineRunner.StartCoroutine(DealDamage());
         }
 
         protected override void OnAbilityEnded(Ability ability)
         {
             if (_blastThrowingCoroutine != null)
-                _coroutineRunner.StopCoroutine(_blastThrowingCoroutine);
+                CoroutineRunner.StopCoroutine(_blastThrowingCoroutine);
 
             if (_damageDealCoroutine != null)
-                _coroutineRunner.StopCoroutine(_damageDealCoroutine);
+                CoroutineRunner.StopCoroutine(_damageDealCoroutine);
         }
 
         private void ThrowBlast()
@@ -76,40 +76,40 @@ namespace Assets.Source.Game.Scripts
             _spell = GameObject.Instantiate(
                 _spellPrefab,
                 new Vector3(
-                    _player.PlayerAbilityContainer.transform.position.x,
-                    _player.PlayerAbilityContainer.transform.position.y,
-                    _player.PlayerAbilityContainer.transform.position.z),
+                    Player.PlayerAbilityContainer.transform.position.x,
+                    Player.PlayerAbilityContainer.transform.position.y,
+                    Player.PlayerAbilityContainer.transform.position.z),
                 Quaternion.identity);
 
-            _spell.Initialize(_particleSystem, _ability.CurrentDuration);
-            _blastThrowingCoroutine = _coroutineRunner.StartCoroutine(RotateSpell());
+            _spell.Initialize(_particleSystem, Ability.CurrentDuration);
+            _blastThrowingCoroutine = CoroutineRunner.StartCoroutine(RotateSpell());
         }
 
         private IEnumerator DealDamage()
         {
-            while (_ability.IsAbilityEnded == false)
+            while (Ability.IsAbilityEnded == false)
             {
                 yield return new WaitForSeconds(_delayAttack);
 
                 if (_spell != null)
                 {
                     if (_spell.TryFindEnemy(out Enemy enemy))
-                        enemy.TakeDamage(_ability.DamageSource);
+                        enemy.TakeDamage(Ability.DamageSource);
                 }
             }
         }
 
         private IEnumerator RotateSpell()
         {
-            while (_ability.IsAbilityEnded == false)
+            while (Ability.IsAbilityEnded == false)
             {
                 if (_spell != null)
                 {
                     _spell.transform.Rotate(_rotationVector * _rotationSpeed * Time.deltaTime);
                     _spell.transform.position = new Vector3(
-                        _player.transform.localPosition.x,
-                        _player.PlayerAbilityContainer.localPosition.y,
-                        _player.transform.transform.localPosition.z);
+                        Player.transform.localPosition.x,
+                        Player.PlayerAbilityContainer.localPosition.y,
+                        Player.transform.transform.localPosition.z);
                 }
                 else
                 {

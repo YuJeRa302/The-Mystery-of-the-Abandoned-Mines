@@ -19,14 +19,6 @@ public class RoomService : IDisposable
     private int _countStages = 0;
     private int _currentStage = 0;
 
-    public event Action StageCompleted;
-    public event Action<int> LootRoomCompleted;
-    public event Action<bool> GameEnded;
-
-    public bool IsWinGame { get; private set; } = false;
-    public bool IsGameInterrupted { get; private set; } = true;
-    public int CurrentRoomLevel { get; private set; } = 0;
-
     public RoomService(
         GamePanelsService gamePanelsService,
         RoomPlacer roomPlacer,
@@ -48,6 +40,14 @@ public class RoomService : IDisposable
         AddRoomListener();
         LockBossRoom();
     }
+
+    public event Action StageCompleted;
+    public event Action<int> LootRoomCompleted;
+    public event Action<bool> GameEnded;
+
+    public bool IsWinGame { get; private set; } = false;
+    public bool IsGameInterrupted { get; private set; } = true;
+    public int CurrentRoomLevel { get; private set; } = 0;
 
     public void Dispose()
     {

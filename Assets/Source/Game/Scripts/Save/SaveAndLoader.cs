@@ -43,7 +43,6 @@ public class SaveAndLoader : ISaveAndLoadProgress
         _persistentDataService.PlayerProgress.WeaponService.SetWeaponStates(YG2.saves.DefaultWeaponState);
         _persistentDataService.PlayerProgress.ClassAbilityService.SetClassAbilityStates(YG2.saves.ClassAbilityStates);
         _persistentDataService.PlayerProgress.UpgradeService.SetUpgradeStates(YG2.saves.UpgradeStates);
-        Debug.Log(_persistentDataService.PlayerProgress.WeaponService.WeaponStates.Count);
     }
 
     public void LoadDataFromConfig()

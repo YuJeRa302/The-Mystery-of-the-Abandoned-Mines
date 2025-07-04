@@ -20,28 +20,28 @@ public class StunningBlowAbilityPresenter : AbilityPresenter
         ICoroutineRunner coroutineRunner,
         PoolParticle abilityEffect) : base(ability, abilityView, player, gamePauseService, gameLoopService, coroutineRunner)
     {
-        _pool = _player.Pool;
+        _pool = Player.Pool;
         _poolParticle = abilityEffect;
-        _effectConteiner = _player.PlayerAbilityContainer;
+        _effectConteiner = Player.PlayerAbilityContainer;
         AddListener();
     }
 
     protected override void AddListener()
     {
         base.AddListener();
-        (_abilityView as ClassSkillButtonView).AbilityUsed += OnButtonSkillClick;
+        (AbilityView as ClassSkillButtonView).AbilityUsed += OnButtonSkillClick;
     }
 
     protected override void RemoveListener()
     {
         base.RemoveListener();
-        (_abilityView as ClassSkillButtonView).AbilityUsed -= OnButtonSkillClick;
+        (AbilityView as ClassSkillButtonView).AbilityUsed -= OnButtonSkillClick;
     }
 
     protected override void OnAbilityEnded(Ability ability)
     {
         if (_coroutine != null)
-            _coroutineRunner.StopCoroutine(_coroutine);
+            CoroutineRunner.StopCoroutine(_coroutine);
 
         _isAbilityUse = false;
     }
@@ -52,8 +52,8 @@ public class StunningBlowAbilityPresenter : AbilityPresenter
             return;
 
         _isAbilityUse = true;
-        _ability.Use();
-        (_abilityView as ClassSkillButtonView).SetInerectableButton(false);
+        Ability.Use();
+        (AbilityView as ClassSkillButtonView).SetInerectableButton(false);
     }
 
     protected override void OnAbilityUsed(Ability ability)
@@ -96,14 +96,14 @@ public class StunningBlowAbilityPresenter : AbilityPresenter
         {
             foreach (var enemy in findedEnemies)
             {
-                enemy.TakeDamage(_ability.DamageSource);
+                enemy.TakeDamage(Ability.DamageSource);
             }
         }
     }
 
     private bool TryFindEnemy(out List<Enemy> findedEnemies)
     {
-        Collider[] coliderEnemy = Physics.OverlapSphere(_player.transform.position, _searchRadius);
+        Collider[] coliderEnemy = Physics.OverlapSphere(Player.transform.position, _searchRadius);
         List<Enemy> enemies = new ();
 
         foreach (Collider collider in coliderEnemy)
@@ -119,6 +119,6 @@ public class StunningBlowAbilityPresenter : AbilityPresenter
     protected override void OnCooldownValueReseted(float value)
     {
         base.OnCooldownValueReseted(value);
-        (_abilityView as ClassSkillButtonView).SetInerectableButton(true);
+        (AbilityView as ClassSkillButtonView).SetInerectableButton(true);
     }
 }

@@ -32,22 +32,22 @@ public class SoulExplosionAbilityPresenter : AbilityPresenter
     protected override void AddListener()
     {
         base.AddListener();
-        (_abilityView as ClassSkillButtonView).AbilityUsed += OnButtonSkillClick;
+        (AbilityView as ClassSkillButtonView).AbilityUsed += OnButtonSkillClick;
     }
 
     protected override void RemoveListener()
     {
         base.RemoveListener();
-        (_abilityView as ClassSkillButtonView).AbilityUsed -= OnButtonSkillClick;
+        (AbilityView as ClassSkillButtonView).AbilityUsed -= OnButtonSkillClick;
     }
 
     protected override void OnAbilityEnded(Ability ability)
     {
         if (_coroutine != null)
-            _coroutineRunner.StopCoroutine(_coroutine);
+            CoroutineRunner.StopCoroutine(_coroutine);
 
         if (_damageDealCoroutine != null)
-            _coroutineRunner.StopCoroutine(_damageDealCoroutine);
+            CoroutineRunner.StopCoroutine(_damageDealCoroutine);
 
         _isAbilityUse = false;
     }
@@ -58,8 +58,8 @@ public class SoulExplosionAbilityPresenter : AbilityPresenter
             return;
 
         _isAbilityUse = true;
-        _ability.Use();
-        (_abilityView as ClassSkillButtonView).SetInerectableButton(false);
+        Ability.Use();
+        (AbilityView as ClassSkillButtonView).SetInerectableButton(false);
     }
 
     protected override void OnAbilityUsed(Ability ability)
@@ -68,19 +68,19 @@ public class SoulExplosionAbilityPresenter : AbilityPresenter
         CreateParticle();
 
         if (_damageDealCoroutine != null)
-            _coroutineRunner.StopCoroutine(_damageDealCoroutine);
+            CoroutineRunner.StopCoroutine(_damageDealCoroutine);
 
-        _damageDealCoroutine = _coroutineRunner.StartCoroutine(DealDamage());
+        _damageDealCoroutine = CoroutineRunner.StartCoroutine(DealDamage());
     }
 
     private void CreateParticle()
     {
         _spell = GameObject.Instantiate(
                 _spellPrefab,
-                new Vector3(_player.transform.position.x, _player.transform.position.y, _player.transform.position.z),
+                new Vector3(Player.transform.position.x, Player.transform.position.y, Player.transform.position.z),
                 Quaternion.identity);
 
-        _spell.Initialize(_poolParticle, _ability.CurrentDuration, _spellRadius);
+        _spell.Initialize(_poolParticle, Ability.CurrentDuration, _spellRadius);
     }
 
     protected override void OnGameResumed(bool state)
@@ -88,7 +88,7 @@ public class SoulExplosionAbilityPresenter : AbilityPresenter
         base.OnGameResumed(state);
 
         if (_damageDealCoroutine != null)
-            _damageDealCoroutine = _coroutineRunner.StartCoroutine(DealDamage());
+            _damageDealCoroutine = CoroutineRunner.StartCoroutine(DealDamage());
     }
 
     protected override void OnGamePaused(bool state)
@@ -99,12 +99,12 @@ public class SoulExplosionAbilityPresenter : AbilityPresenter
     protected override void OnCooldownValueReseted(float value)
     {
         base.OnCooldownValueReseted(value);
-        (_abilityView as ClassSkillButtonView).SetInerectableButton(true);
+        (AbilityView as ClassSkillButtonView).SetInerectableButton(true);
     }
 
     private IEnumerator DealDamage()
     {
-        while (_ability.IsAbilityEnded == false)
+        while (Ability.IsAbilityEnded == false)
         {
             if (_spell != null)
             {
@@ -112,7 +112,7 @@ public class SoulExplosionAbilityPresenter : AbilityPresenter
                 {
                     foreach (var enemy in enemies)
                     {
-                        enemy.TakeDamage(_ability.DamageSource);
+                        enemy.TakeDamage(Ability.DamageSource);
                     }
                 }
             }

@@ -9,7 +9,7 @@ public class EnemyKnowladgeView : KnowladgeView
     [SerializeField] private LeanLocalizedText _name;
     [SerializeField] private LeanLocalizedText _description;
     [SerializeField] private EnemyStatsView _statsViewPrefab;
-    [SerializeField] private Transform _statsConteiner;
+    [SerializeField] private Transform _statsContainer;
 
     private int _maxTireIndex = 4;
 
@@ -28,7 +28,7 @@ public class EnemyKnowladgeView : KnowladgeView
 
     private void InstantieteEnemyStats(string nameStats, string value)
     {
-        EnemyStatsView enemyStatsView = Instantiate(_statsViewPrefab, _statsConteiner);
+        EnemyStatsView enemyStatsView = Instantiate(_statsViewPrefab, _statsContainer);
         enemyStatsView.Initialize(nameStats, value);
     }
 }

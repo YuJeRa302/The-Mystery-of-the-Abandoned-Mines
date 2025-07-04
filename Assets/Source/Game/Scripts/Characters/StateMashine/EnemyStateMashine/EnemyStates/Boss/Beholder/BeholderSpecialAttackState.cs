@@ -10,21 +10,21 @@ public class BeholderSpecialAttackState : BossSpecialAttackState
     private float _maxTimeCastSpel = 6f;
     private float _currentTimeCastSpel = 0;
     private Transform _transformEnemy;
-    DG.Tweening.Sequence _sequence;
+    private DG.Tweening.Sequence _sequence;
 
     public BeholderSpecialAttackState(StateMashine stateMashine, Player player, Enemy enemy) : base(stateMashine, player, enemy)
     {
-        _target = player;
-        _enemy = enemy;
-        _transformEnemy = _enemy.transform;
-        _animationController = _enemy.AnimationStateController;
+        Target = player;
+        Enemy = enemy;
+        _transformEnemy = Enemy.transform;
+        AnimationController = Enemy.AnimationStateController;
     }
 
     public override void EnterState()
     {
         base.EnterState();
         _currentTimeCastSpel = 0f;
-        Beholder beholder = _enemy as Beholder;
+        Beholder beholder = Enemy as Beholder;
         beholder.DragonFlame.Initialize(beholder.SpecilAttackDamage);
         beholder.DragonFlame.gameObject.SetActive(true);
         
@@ -43,7 +43,7 @@ public class BeholderSpecialAttackState : BossSpecialAttackState
         DOTween.Kill(_sequence);
         _sequence.Kill();
         
-        Beholder beholder = _enemy as Beholder;
+        Beholder beholder = Enemy as Beholder;
         beholder.DragonFlame.gameObject.SetActive(false);
     }
 
@@ -58,6 +58,6 @@ public class BeholderSpecialAttackState : BossSpecialAttackState
         _currentTimeCastSpel += Time.deltaTime;
 
         if (_currentTimeCastSpel >= _maxTimeCastSpel)
-            _canTransit = true;
+            CanTransit = true;
     }
 }

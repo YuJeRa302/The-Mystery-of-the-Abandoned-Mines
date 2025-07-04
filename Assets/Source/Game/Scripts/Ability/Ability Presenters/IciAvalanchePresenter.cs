@@ -33,10 +33,10 @@ public class IciAvalanchePresenter : AbilityPresenter
         base.OnGamePaused(state);
 
         if (_blastThrowingCoroutine != null)
-            _coroutineRunner.StopCoroutine(_blastThrowingCoroutine);
+            CoroutineRunner.StopCoroutine(_blastThrowingCoroutine);
 
         if (_damageDealCoroutine != null)
-            _coroutineRunner.StopCoroutine(_damageDealCoroutine);
+            CoroutineRunner.StopCoroutine(_damageDealCoroutine);
     }
 
     protected override void OnGameResumed(bool state)
@@ -44,7 +44,7 @@ public class IciAvalanchePresenter : AbilityPresenter
         base.OnGameResumed(state);
 
         if (_damageDealCoroutine != null)
-            _damageDealCoroutine = _coroutineRunner.StartCoroutine(DealDamage());
+            _damageDealCoroutine = CoroutineRunner.StartCoroutine(DealDamage());
     }
 
     protected override void OnAbilityUsed(Ability ability)
@@ -52,33 +52,33 @@ public class IciAvalanchePresenter : AbilityPresenter
         ThrowBlast();
 
         if (_damageDealCoroutine != null)
-            _coroutineRunner.StopCoroutine(_damageDealCoroutine);
+            CoroutineRunner.StopCoroutine(_damageDealCoroutine);
 
-        _damageDealCoroutine = _coroutineRunner.StartCoroutine(DealDamage());
+        _damageDealCoroutine = CoroutineRunner.StartCoroutine(DealDamage());
     }
 
     protected override void OnAbilityEnded(Ability ability)
     {
         if (_blastThrowingCoroutine != null)
-            _coroutineRunner.StopCoroutine(_blastThrowingCoroutine);
+            CoroutineRunner.StopCoroutine(_blastThrowingCoroutine);
 
         if (_damageDealCoroutine != null)
-            _coroutineRunner.StopCoroutine(_damageDealCoroutine);
+            CoroutineRunner.StopCoroutine(_damageDealCoroutine);
     }
 
     private void ThrowBlast()
     {
         _spell = GameObject.Instantiate(
                 _spellPrefab,
-                new Vector3(_player.transform.position.x, _spellPrefab.transform.position.y, _player.transform.position.z),
+                new Vector3(Player.transform.position.x, _spellPrefab.transform.position.y, Player.transform.position.z),
                 Quaternion.identity);
 
-        _spell.Initialize(_particleSystem, _ability.CurrentDuration);
+        _spell.Initialize(_particleSystem, Ability.CurrentDuration);
     }
 
     private IEnumerator DealDamage()
     {
-        while (_ability.IsAbilityEnded == false)
+        while (Ability.IsAbilityEnded == false)
         {
             yield return new WaitForSeconds(_delayAttack);
 
@@ -88,7 +88,7 @@ public class IciAvalanchePresenter : AbilityPresenter
                 {
                     foreach (var enemy in enemies)
                     {
-                        enemy.TakeDamage(_ability.DamageSource);
+                        enemy.TakeDamage(Ability.DamageSource);
                     }
                 }
             }

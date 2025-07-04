@@ -3,30 +3,31 @@ using UnityEngine;
 
 public class SummonAttackState : State
 {
+    protected float LastAttackTime = 0;
+    protected float AttackDelay;
+    protected float AttackRange;
+    protected Vector3 DirectionToTarget;
+    protected float DistanceToTarget;
+    protected DamageSource Damage;
+    protected SummonAnimation AnimationController;
+
     private Summon _summon;
     private Enemy _target;
-    protected float _lastAttackTime = 0;
-    protected float _attackDelay;
-    protected float _attackRange;
-    protected Vector3 _directionToTarget;
-    protected float _distanceToTarget;
-    protected DamageSource _damage;
-    protected SummonAnimation _animationController;
 
     public SummonAttackState(StateMashine stateMashine, Summon summon) : base(stateMashine)
     {
         _summon = summon;
-        _attackDelay = _summon.AttackDelay;
-        _attackRange = _summon.DistanceToTarget;
-        _damage = _summon.DamageSource;
-        _animationController = _summon.Animation;
-        _animationController.Attacked += ApplyDamage;
+        AttackDelay = _summon.AttackDelay;
+        AttackRange = _summon.DistanceToTarget;
+        Damage = _summon.DamageSource;
+        AnimationController = _summon.Animation;
+        AnimationController.Attacked += ApplyDamage;
     }
 
     public override void EnterState()
     {
         base.EnterState();
-        _canTransit = true;
+        CanTransit = true;
 
         if (_summon.Target != null)
         {
@@ -34,25 +35,25 @@ public class SummonAttackState : State
         }
         else
         {
-            _stateMashine.SetState<SummonIdleState>();
+            StateMashine.SetState<SummonIdleState>();
         }
     }
 
     public override void UpdateState()
     {
-        if (_canTransit)
+        if (CanTransit)
         {
             if (_target == null || _target.isActiveAndEnabled == false)
             {
                 _summon.DisableTarget();
-                _stateMashine.SetState<SummonIdleState>();
+                StateMashine.SetState<SummonIdleState>();
             }
 
-            _directionToTarget = _summon.transform.position - _target.transform.position;
-            _distanceToTarget = _directionToTarget.magnitude;
+            DirectionToTarget = _summon.transform.position - _target.transform.position;
+            DistanceToTarget = DirectionToTarget.magnitude;
 
-            if (_distanceToTarget > _attackRange)
-                _stateMashine.SetState<SummonIdleState>();
+            if (DistanceToTarget > AttackRange)
+                StateMashine.SetState<SummonIdleState>();
 
             if (Attack())
             {
@@ -63,19 +64,19 @@ public class SummonAttackState : State
 
     protected bool Attack()
     {
-        if (_distanceToTarget <= _attackRange)
+        if (DistanceToTarget <= AttackRange)
         {
             _summon.transform.LookAt(_target.transform.position);
 
-            if (_lastAttackTime <= 0)
+            if (LastAttackTime <= 0)
             {
-                _lastAttackTime = _attackDelay;
-                _canTransit = false;
+                LastAttackTime = AttackDelay;
+                CanTransit = false;
                 return true;
             }
         }
 
-        _lastAttackTime -= Time.deltaTime;
+        LastAttackTime -= Time.deltaTime;
         return false;
     }
 
@@ -86,10 +87,10 @@ public class SummonAttackState : State
             Vector3 directionToTarget = _summon.transform.position - _target.transform.position;
             float distance = directionToTarget.magnitude;
             
-            if (distance <= _attackRange)
-                _target.TakeDamage(_damage);
+            if (distance <= AttackRange)
+                _target.TakeDamage(Damage);
         }
 
-        _canTransit = true;
+        CanTransit = true;
     }
 }

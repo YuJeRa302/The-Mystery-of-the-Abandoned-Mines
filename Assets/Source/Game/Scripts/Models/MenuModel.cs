@@ -1,51 +1,54 @@
 using System;
 using YG;
 
-public class MenuModel : IDisposable
+namespace Assets.Source.Game.Scripts
 {
-    public MenuModel() 
+    public class MenuModel : IDisposable
     {
-        YG2.onFocusWindowGame += OnVisibilityWindowGame;
-    }
+        public MenuModel()
+        {
+            YG2.onFocusWindowGame += OnVisibilityWindowGame;
+        }
 
-    public event Action InvokedUpgradesShow;
-    public event Action InvokedLevelsShow;
-    public event Action InvokedSettingsShow;
-    public event Action InvokedWeaponsShow;
-    public event Action InvokedClassAbilityShow;
-    public event Action InvokedMainMenuShow;
-    public event Action InvokeKnowBaswShow;
-    public event Action InvokedLeaderboardShow;
-    public event Action<bool> GamePaused;
-    public event Action<bool> GameResumed;
+        public event Action InvokedUpgradesShowed;
+        public event Action InvokedLevelsShowed;
+        public event Action InvokedSettingsShowed;
+        public event Action InvokedWeaponsShowed;
+        public event Action InvokedClassAbilityShowed;
+        public event Action InvokedMainMenuShowed;
+        public event Action InvokeKnowBaswShowed;
+        public event Action InvokedLeaderboardShowed;
+        public event Action<bool> GamePaused;
+        public event Action<bool> GameResumed;
 
-    public void InvokeUpgradesShow() => InvokedUpgradesShow?.Invoke();
-    public void InvokeUpgradesHide() => InvokedMainMenuShow?.Invoke();
-    public void InvokeLevelsShow() => InvokedLevelsShow?.Invoke();
-    public void InvokeLevelsHide() => InvokedMainMenuShow?.Invoke();
-    public void InvokeSettingsShow() => InvokedSettingsShow?.Invoke();
-    public void InvokeSettingsHide() => InvokedMainMenuShow?.Invoke();
-    public void InvokeWeaponsShow() => InvokedWeaponsShow?.Invoke();
-    public void InvokeWeaponsHide() => InvokedMainMenuShow?.Invoke();
-    public void InvokeClassAbilityShow() => InvokedClassAbilityShow?.Invoke();
-    public void InvokeClassAbilityHide() => InvokedMainMenuShow?.Invoke();
-    public void InvokeMainMenuShow() => InvokedMainMenuShow?.Invoke();
-    public void InvokeKnowledgeBaseShow() => InvokeKnowBaswShow?.Invoke();
-    public void InvokeKnowledgeBaseHide() => InvokedMainMenuShow?.Invoke();
-    public void InvokeLeaderboardShow() => InvokedLeaderboardShow?.Invoke();
-    public void InvokeLeaderboardHide() => InvokedMainMenuShow?.Invoke();
+        public void InvokeUpgradesShow() => InvokedUpgradesShowed?.Invoke();
+        public void InvokeUpgradesHide() => InvokedMainMenuShowed?.Invoke();
+        public void InvokeLevelsShow() => InvokedLevelsShowed?.Invoke();
+        public void InvokeLevelsHide() => InvokedMainMenuShowed?.Invoke();
+        public void InvokeSettingsShow() => InvokedSettingsShowed?.Invoke();
+        public void InvokeSettingsHide() => InvokedMainMenuShowed?.Invoke();
+        public void InvokeWeaponsShow() => InvokedWeaponsShowed?.Invoke();
+        public void InvokeWeaponsHide() => InvokedMainMenuShowed?.Invoke();
+        public void InvokeClassAbilityShow() => InvokedClassAbilityShowed?.Invoke();
+        public void InvokeClassAbilityHide() => InvokedMainMenuShowed?.Invoke();
+        public void InvokeMainMenuShow() => InvokedMainMenuShowed?.Invoke();
+        public void InvokeKnowledgeBaseShow() => InvokeKnowBaswShowed?.Invoke();
+        public void InvokeKnowledgeBaseHide() => InvokedMainMenuShowed?.Invoke();
+        public void InvokeLeaderboardShow() => InvokedLeaderboardShowed?.Invoke();
+        public void InvokeLeaderboardHide() => InvokedMainMenuShowed?.Invoke();
 
-    public void Dispose()
-    {
-        YG2.onFocusWindowGame -= OnVisibilityWindowGame;
-        GC.SuppressFinalize(this);
-    }
+        public void Dispose()
+        {
+            YG2.onFocusWindowGame -= OnVisibilityWindowGame;
+            GC.SuppressFinalize(this);
+        }
 
-    private void OnVisibilityWindowGame(bool state)
-    {
-        if (state == true)
-            GameResumed?.Invoke(state);
-        else
-            GamePaused?.Invoke(state);
+        private void OnVisibilityWindowGame(bool state)
+        {
+            if (state == true)
+                GameResumed?.Invoke(state);
+            else
+                GamePaused?.Invoke(state);
+        }
     }
 }

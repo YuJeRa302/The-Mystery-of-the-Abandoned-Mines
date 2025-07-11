@@ -1,16 +1,17 @@
-using Assets.Source.Game.Scripts;
-
-public class WeaponsModel
+namespace Assets.Source.Game.Scripts
 {
-    private readonly PersistentDataService _persistentDataService;
-
-    public WeaponsModel(PersistentDataService persistentDataService) 
+    public class WeaponsModel
     {
-        _persistentDataService = persistentDataService;
-    }
+        private readonly PersistentDataService _persistentDataService;
 
-    public WeaponState GetWeaponState(WeaponData weaponData)
-    {
-        return _persistentDataService.PlayerProgress.WeaponService.GetWeaponStateByData(weaponData);
+        public WeaponsModel(PersistentDataService persistentDataService)
+        {
+            _persistentDataService = persistentDataService;
+        }
+
+        public WeaponState GetWeaponState(WeaponData weaponData)
+        {
+            return _persistentDataService.PlayerProgress.WeaponService.GetWeaponStateByData(weaponData);
+        }
     }
 }

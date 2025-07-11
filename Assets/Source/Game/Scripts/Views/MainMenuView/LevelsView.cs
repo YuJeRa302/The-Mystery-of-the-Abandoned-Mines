@@ -91,7 +91,7 @@ namespace Assets.Source.Game.Scripts
 
         private void AddListener()
         {
-            _levelsViewModel.InvokedShow += Show;
+            _levelsViewModel.Showing += Show;
             _backButton.onClick.AddListener(OnBackButtonClicked);
             _buyButton.onClick.AddListener(OnBuyButtonClick);
             _cancelButton.onClick.AddListener(OnCancelButtonClick);
@@ -103,7 +103,7 @@ namespace Assets.Source.Game.Scripts
 
         private void RemoveListener()
         {
-            _levelsViewModel.InvokedShow -= Show;
+            _levelsViewModel.Showing -= Show;
             _backButton.onClick.RemoveListener(OnBackButtonClicked);
             _buyButton.onClick.RemoveListener(OnBuyButtonClick);
             _cancelButton.onClick.RemoveListener(OnCancelButtonClick);

@@ -68,7 +68,7 @@ namespace Assets.Source.Game.Scripts
 
         private void OnCloseAdCallback()
         {
-            RewardAdClosed?.Invoke();
+            CloseRewardAds();
             _countRerollPointsText.text = GamePanelsViewModel.GetPlayer().RerollPoints.ToString();
             _buttonReroll.gameObject.SetActive(GamePanelsViewModel.GetPlayer().TryGetRerollPoints());
         }

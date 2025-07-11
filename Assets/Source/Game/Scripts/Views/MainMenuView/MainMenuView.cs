@@ -79,7 +79,7 @@ namespace Assets.Source.Game.Scripts
             _openClassAbilityButton.onClick.AddListener(ShowClassAbility);
             _opneKnowledgeBaseButton.onClick.AddListener(ShowKnowledgeBase);
             _openLeaderboardButton.onClick.AddListener(ShowLeaderboard);
-            _menuViewModel.InvokedShow += Show;
+            _menuViewModel.Showing += Show;
             _menuViewModel.GamePaused += OnGamePaused;
             _menuViewModel.GameResumed += OnGameResumed;
         }
@@ -93,7 +93,7 @@ namespace Assets.Source.Game.Scripts
             _openClassAbilityButton.onClick.RemoveListener(ShowClassAbility);
             _opneKnowledgeBaseButton.onClick.RemoveListener(ShowKnowledgeBase);
             _openLeaderboardButton.onClick.RemoveListener(ShowLeaderboard);
-            _menuViewModel.InvokedShow -= Show;
+            _menuViewModel.Showing -= Show;
             _menuViewModel.GamePaused -= OnGamePaused;
             _menuViewModel.GameResumed -= OnGameResumed;
         }

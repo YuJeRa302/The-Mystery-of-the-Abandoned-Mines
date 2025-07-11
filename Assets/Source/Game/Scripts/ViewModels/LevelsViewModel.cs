@@ -1,31 +1,33 @@
-using Assets.Source.Game.Scripts;
 using System;
 
-public class LevelsViewModel
+namespace Assets.Source.Game.Scripts
 {
-    private readonly LevelsModel _levelsModel;
-    private readonly MenuModel _menuModel;
-
-    public LevelsViewModel(LevelsModel levelsModel, MenuModel menuModel) 
+    public class LevelsViewModel
     {
-        _levelsModel = levelsModel;
-        _menuModel = menuModel;
-        _menuModel.InvokedLevelsShow += () => InvokedShow?.Invoke();
-        _menuModel.InvokedMainMenuShow += () => InvokedHide?.Invoke();
+        private readonly LevelsModel _levelsModel;
+        private readonly MenuModel _menuModel;
+
+        public LevelsViewModel(LevelsModel levelsModel, MenuModel menuModel)
+        {
+            _levelsModel = levelsModel;
+            _menuModel = menuModel;
+            _menuModel.InvokedLevelsShowed += () => Showing?.Invoke();
+            _menuModel.InvokedMainMenuShowed += () => Hiding?.Invoke();
+        }
+
+        public event Action Showing;
+        public event Action Hiding;
+
+        public void Hide() => _menuModel.InvokeLevelsHide();
+        public bool TryUnlockContractButton(int index) => _levelsModel.TryUnlockContractButton(index);
+        public bool TryBuyContract(int cost) => _levelsModel.TryBuyContract(cost);
+        public bool TryUnlockLevel(int levelId) => _levelsModel.TryUnlockLevel(levelId);
+        public LevelState GetLevelState(LevelData levelData) => _levelsModel.GetLevelState(levelData);
+        public WeaponState GetWeaponState(WeaponData weaponData) => _levelsModel.GetWeaponState(weaponData);
+        public int GetPlayerConins() => _levelsModel.GetPlayerCoinCount();
+        public void SelectLevel(LevelDataView levelDataView) => _levelsModel.SelectLevel(levelDataView);
+        public void SelectClass(PlayerClassDataView playerClassDataView) => _levelsModel.SelectClass(playerClassDataView);
+        public void SelectWeapon(WeaponDataView weaponDataView) => _levelsModel.SelectWeapon(weaponDataView);
+        public void LoadLevel() => _levelsModel.LoadScene();
     }
-
-    public event Action InvokedShow;
-    public event Action InvokedHide;
-
-    public void Hide() => _menuModel.InvokeLevelsHide();
-    public bool TryUnlockContractButton(int index) => _levelsModel.TryUnlockContractButton(index);
-    public bool TryBuyContract(int cost) => _levelsModel.TryBuyContract(cost);
-    public bool TryUnlockLevel(int levelId) => _levelsModel.TryUnlockLevel(levelId);
-    public LevelState GetLevelState(LevelData levelData) => _levelsModel.GetLevelState(levelData);
-    public WeaponState GetWeaponState(WeaponData weaponData) => _levelsModel.GetWeaponState(weaponData);
-    public int GetPlayerConins() => _levelsModel.GetPlayerCoinCount();
-    public void SelectLevel(LevelDataView levelDataView) => _levelsModel.SelectLevel(levelDataView);
-    public void SelectClass(PlayerClassDataView playerClassDataView) => _levelsModel.SelectClass(playerClassDataView);
-    public void SelectWeapon(WeaponDataView weaponDataView) => _levelsModel.SelectWeapon(weaponDataView);
-    public void LoadLevel() => _levelsModel.LoadScene();
 }

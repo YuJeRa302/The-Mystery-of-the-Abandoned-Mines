@@ -1,5 +1,4 @@
 using Lean.Localization;
-using System;
 using UnityEngine;
 using YG;
 
@@ -27,8 +26,6 @@ namespace Assets.Source.Game.Scripts
         private SaveAndLoader _saveAndLoad;
         private PersistentDataService _persistentDataService;
 
-        public Action EnableSave;
-
         private void Awake()
         {
             Time.timeScale = _resumeValue;
@@ -42,7 +39,6 @@ namespace Assets.Source.Game.Scripts
         {
             _persistentDataService = new PersistentDataService();
             _saveAndLoad = new(_persistentDataService, _configData);
-            EnableSave?.Invoke();
 
             if (_saveAndLoad.TryGetGameData())
                 _saveAndLoad.LoadDataFromCloud();

@@ -1,21 +1,24 @@
 using System;
 
-public class LeaderboardViewModel
+namespace Assets.Source.Game.Scripts
 {
-    private readonly LeaderboardModel _leaderboardModel;
-    private readonly MenuModel _menuModel;
-
-    public LeaderboardViewModel(LeaderboardModel leaderboardModel, MenuModel menuModel)
+    public class LeaderboardViewModel
     {
-        _leaderboardModel = leaderboardModel;
-        _menuModel = menuModel;
-        _menuModel.InvokedLeaderboardShow += () => InvokedShow?.Invoke();
-        _menuModel.InvokedMainMenuShow += () => InvokedHide?.Invoke();
+        private readonly LeaderboardModel _leaderboardModel;
+        private readonly MenuModel _menuModel;
+
+        public LeaderboardViewModel(LeaderboardModel leaderboardModel, MenuModel menuModel)
+        {
+            _leaderboardModel = leaderboardModel;
+            _menuModel = menuModel;
+            _menuModel.InvokedLeaderboardShowed += () => Showing?.Invoke();
+            _menuModel.InvokedMainMenuShowed += () => Hiding?.Invoke();
+        }
+
+        public event Action Showing;
+        public event Action Hiding;
+
+        public void Hide() => _menuModel.InvokeLeaderboardHide();
+        public int GetScore() => _leaderboardModel.GetScore();
     }
-
-    public event Action InvokedShow;
-    public event Action InvokedHide;
-
-    public void Hide() => _menuModel.InvokeLeaderboardHide();
-    public int GetScore() => _leaderboardModel.GetScore();
 }

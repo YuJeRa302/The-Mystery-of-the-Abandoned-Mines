@@ -1,11 +1,14 @@
-public class LeaderboardModel
+namespace Assets.Source.Game.Scripts
 {
-    private readonly PersistentDataService _persistentDataService;
-
-    public LeaderboardModel(PersistentDataService persistentDataService)
+    public class LeaderboardModel
     {
-        _persistentDataService = persistentDataService;
-    }
+        private readonly PersistentDataService _persistentDataService;
 
-    public int GetScore() => _persistentDataService.PlayerProgress.Score;
+        public LeaderboardModel(PersistentDataService persistentDataService)
+        {
+            _persistentDataService = persistentDataService;
+        }
+
+        public int GetScore() => _persistentDataService.PlayerProgress.Score;
+    }
 }

@@ -27,7 +27,7 @@ namespace Assets.Source.Game.Scripts
         private void OnDestroy()
         {
             _enemy.Stuned -= OnEnemyStuned;
-            _enemy.EndedStun -= OnEnemyEndedStun;
+            _enemy.StunEnded -= OnEnemyEndedStun;
         }
 
         public void InitializeStateMashine(Player target)
@@ -35,7 +35,7 @@ namespace Assets.Source.Game.Scripts
             _meshAgent = GetComponent<NavMeshAgent>();
             _enemy = GetComponent<Enemy>();
             _enemy.Stuned += OnEnemyStuned;
-            _enemy.EndedStun += OnEnemyEndedStun;
+            _enemy.StunEnded += OnEnemyEndedStun;
             _target = target;
             _stateMashine = new StateMashine();
 

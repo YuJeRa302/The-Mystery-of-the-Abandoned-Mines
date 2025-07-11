@@ -25,8 +25,8 @@ namespace Assets.Source.Game.Scripts
         private void OnDestroy()
         {
             _button.onClick.RemoveListener(OnSelected);
-            _classAbilityViewModel.InvokedAbilityUpgrade -= OnAbilityUpgraded;
-            _classAbilityViewModel.InvokedAbilityReset -= OnResetState;
+            _classAbilityViewModel.InvokedAbilityUpgraded -= OnAbilityUpgraded;
+            _classAbilityViewModel.InvokedAbilityReseted -= OnResetState;
         }
 
         public void Initialize(ClassAbilityData classAbilityData, 
@@ -39,8 +39,8 @@ namespace Assets.Source.Game.Scripts
             ClassAbilityState = classAbilityState;
             ClassAbilityData = classAbilityData;
             _button.onClick.AddListener(OnSelected);
-            _classAbilityViewModel.InvokedAbilityUpgrade += OnAbilityUpgraded;
-            _classAbilityViewModel.InvokedAbilityReset += OnResetState;
+            _classAbilityViewModel.InvokedAbilityUpgraded += OnAbilityUpgraded;
+            _classAbilityViewModel.InvokedAbilityReseted += OnResetState;
             Fill(ClassAbilityData);
         }
 

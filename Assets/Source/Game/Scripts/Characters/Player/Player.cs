@@ -262,7 +262,7 @@ namespace Assets.Source.Game.Scripts
             _playerView.PassiveAbilityViewCreated += OnPassiveAbilityViewCreated;
             _playerView.LegendaryAbilityViewCreated += OnLegendaryAbilityViewCreated;
             _playerView.ClassAbilityViewCreated += OnClassAbilityViewCreated;
-            _playerStats.AddingConins += OnAddCoins;
+            _playerStats.CoinsAdding += OnAddCoins;
         }
 
         private void RemoveListeners()
@@ -281,7 +281,7 @@ namespace Assets.Source.Game.Scripts
             _playerStats.HealthUpgradeApplied -= OnHealthUpgradeApplied;
             _playerStats.Healed -= OnHealing;
             _playerStats.HealthReduced -= OnReduceHealth;
-            _playerStats.AddingConins -= OnAddCoins;
+            _playerStats.CoinsAdding -= OnAddCoins;
             _playerStats.AbilityDurationChanged -= OnAbilityDurationChange;
             _playerStats.AbilityDamageChanged -= OnAbilityDamageChanged;
             _playerStats.AbilityCooldownReductionChanged -= OnAbilityCooldownReductionChanged;

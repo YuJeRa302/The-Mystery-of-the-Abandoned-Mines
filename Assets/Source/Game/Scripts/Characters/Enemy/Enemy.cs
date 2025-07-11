@@ -7,9 +7,9 @@ namespace Assets.Source.Game.Scripts
 {
     public class Enemy : PoolObject
     {
-        private readonly System.Random _rnd = new ();
-
         [SerializeField] protected Pool Pool;
+
+        private readonly System.Random _rnd = new ();
 
         [SerializeField] private EnemyStateMashineExample _stateMashine;
         [SerializeField] private EnemyAnimation _animationController;
@@ -54,10 +54,10 @@ namespace Assets.Source.Game.Scripts
 
         public event Action<Enemy> Died;
         public event Action Stuned;
-        public event Action EndedStun;
+        public event Action StunEnded;
         public event Action<float> DamageTaked;
         public event Action HealthChanged;
-        public event Action<AudioClip> AttackPlayer;
+        public event Action<AudioClip> PlayerAttacked;
 
         private void OnDisable()
         {
@@ -238,7 +238,7 @@ namespace Assets.Source.Game.Scripts
 
         private void OnEnemyAttack()
         {
-            AttackPlayer?.Invoke(_hitAudio);
+            PlayerAttacked?.Invoke(_hitAudio);
         }
 
         private void CreateDamageParticle(PoolParticle poolParticle)
@@ -321,7 +321,7 @@ namespace Assets.Source.Game.Scripts
             CreateDamageParticle(particle);
             Stuned?.Invoke();
             yield return new WaitForSeconds(duration);
-            EndedStun?.Invoke();
+            StunEnded?.Invoke();
             DisableParticle(particle);
         }
 

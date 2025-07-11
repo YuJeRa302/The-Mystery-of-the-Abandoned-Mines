@@ -8,13 +8,13 @@ namespace Assets.Source.Game.Scripts
     {
         protected GamePanelsViewModel GamePanelsViewModel;
 
-        public Action PanelOpened;
-        public Action PanelClosed;
-        public Action RewardAdOpened;
-        public Action RewardAdClosed;
-        public Action FullscreenAdOpened;
-        public Action FullscreenAdClosed;
-        public Action GameClosed;
+        public event Action PanelOpened;
+        public event Action PanelClosed;
+        public event Action RewardAdOpened;
+        public event Action RewardAdClosed;
+        public event Action FullscreenAdOpened;
+        public event Action FullscreenAdClosed;
+        public event Action GameClosed;
 
         public virtual void Initialize(GamePanelsViewModel gamePanelsViewModel)
         {

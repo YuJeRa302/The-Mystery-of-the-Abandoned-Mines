@@ -74,9 +74,9 @@ namespace Assets.Source.Game.Scripts
 
         private void AddListener()
         {
-            _classAbilityViewModel.InvokedShow += Show;
-            _classAbilityViewModel.InvokedAbilityUpgrade += OnAbilityUpgraded;
-            _classAbilityViewModel.InvokedAbilityReset += OnAbilityReseted;
+            _classAbilityViewModel.Showing += Show;
+            _classAbilityViewModel.InvokedAbilityUpgraded += OnAbilityUpgraded;
+            _classAbilityViewModel.InvokedAbilityReseted += OnAbilityReseted;
             _backButton.onClick.AddListener(OnExitButtonClicked);
             _upgradeButton.onClick.AddListener(Upgrade);
             _resetButton.onClick.AddListener(ResetAbilities);
@@ -84,9 +84,9 @@ namespace Assets.Source.Game.Scripts
 
         private void RemoveListener()
         {
-            _classAbilityViewModel.InvokedShow -= Show;
-            _classAbilityViewModel.InvokedAbilityUpgrade -= OnAbilityUpgraded;
-            _classAbilityViewModel.InvokedAbilityReset -= OnAbilityReseted;
+            _classAbilityViewModel.Showing -= Show;
+            _classAbilityViewModel.InvokedAbilityUpgraded -= OnAbilityUpgraded;
+            _classAbilityViewModel.InvokedAbilityReseted -= OnAbilityReseted;
             _backButton.onClick.RemoveListener(OnExitButtonClicked);
             _upgradeButton.onClick.RemoveListener(Upgrade);
             _resetButton.onClick.RemoveListener(ResetAbilities);

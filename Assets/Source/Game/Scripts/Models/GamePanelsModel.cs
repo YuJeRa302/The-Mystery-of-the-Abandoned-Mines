@@ -47,7 +47,7 @@ namespace Assets.Source.Game.Scripts
 
         public event Action StageCompleted;
         public event Action CardPoolCreated;
-        public event Action<int> LootRoomComplitetd;
+        public event Action<int> LootRoomCompleted;
         public event Action CardPanelOpened;
         public event Action<bool> GameEnded;
 
@@ -185,7 +185,7 @@ namespace Assets.Source.Game.Scripts
 
         private void OnLootRoomComplited(int reward)
         {
-            LootRoomComplitetd?.Invoke(reward);
+            LootRoomCompleted?.Invoke(reward);
         }
 
         private void OnCardPoolCreate()

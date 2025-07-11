@@ -1,13 +1,16 @@
 using System;
 
-public class KnowledgeBaseModel : IDisposable
+namespace Assets.Source.Game.Scripts
 {
-    public KnowledgeBaseModel()
+    public class KnowledgeBaseModel : IDisposable
     {
-    }
+        public KnowledgeBaseModel()
+        {
+        }
 
-    public void Dispose()
-    {
-        GC.SuppressFinalize(this);
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
+        }
     }
 }

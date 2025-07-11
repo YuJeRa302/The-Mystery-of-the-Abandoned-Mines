@@ -77,7 +77,7 @@ namespace Assets.Source.Game.Scripts
         public event Action<int> KillCountChanged;
         public event Action<int, int, int> PlayerLevelChanged;
         public event Action<int, int, int> PlayerUpgradeLevelChanged;
-        public event Action<int> AddingConins;
+        public event Action<int> CoinsAdding;
 
         public DamageSource DamageSource => _damageSource;
         public int Armor => _armor;
@@ -109,7 +109,7 @@ namespace Assets.Source.Game.Scripts
             _countKillEnemy++;
             UpgradeExperienceValueChanged?.Invoke(enemy.UpgradeExperienceReward);
             ExperienceValueChanged?.Invoke(enemy.ExperienceReward);
-            AddingConins?.Invoke(enemy.GoldReward);
+            CoinsAdding?.Invoke(enemy.GoldReward);
             KillCountChanged?.Invoke(_countKillEnemy);
             SetNewPlayerLevel(_currentLevel);
             SetNewUpgradePoints(_currentUpgradeLevel);
@@ -122,7 +122,7 @@ namespace Assets.Source.Game.Scripts
 
         public void TakeLootRoomReward(int reward)
         {
-            AddingConins?.Invoke(reward);
+            CoinsAdding?.Invoke(reward);
         }
 
         public void UpdateCardPanelByRerollPoints()

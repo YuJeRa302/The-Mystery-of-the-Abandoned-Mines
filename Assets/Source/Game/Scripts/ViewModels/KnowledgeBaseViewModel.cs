@@ -1,26 +1,29 @@
 using System;
 
-public class KnowledgeBaseViewModel : IDisposable
+namespace Assets.Source.Game.Scripts
 {
-    private KnowledgeBaseModel _knowledgeBaseModel;
-    private MenuModel _menuModel;
-
-    public KnowledgeBaseViewModel(KnowledgeBaseModel knowledgeBaseModel, MenuModel menuModel)
+    public class KnowledgeBaseViewModel : IDisposable
     {
-        _knowledgeBaseModel = knowledgeBaseModel;
-        _menuModel = menuModel;
-        _menuModel.InvokeKnowBaswShow += () => InvokedShow?.Invoke();
-        _menuModel.InvokedMainMenuShow += () => InvokedHide?.Invoke();
-    }
+        private KnowledgeBaseModel _knowledgeBaseModel;
+        private MenuModel _menuModel;
 
-    public event Action InvokedShow;
-    public event Action InvokedHide;
+        public KnowledgeBaseViewModel(KnowledgeBaseModel knowledgeBaseModel, MenuModel menuModel)
+        {
+            _knowledgeBaseModel = knowledgeBaseModel;
+            _menuModel = menuModel;
+            _menuModel.InvokeKnowBaswShowed += () => Showing?.Invoke();
+            _menuModel.InvokedMainMenuShowed += () => Hiding?.Invoke();
+        }
 
-    public void Hide() => _menuModel.InvokeUpgradesHide();
+        public event Action Showing;
+        public event Action Hiding;
 
-    public void Dispose()
-    {
-        _knowledgeBaseModel.Dispose();
-        GC.SuppressFinalize(this);
+        public void Hide() => _menuModel.InvokeKnowledgeBaseHide();
+
+        public void Dispose()
+        {
+            _knowledgeBaseModel.Dispose();
+            GC.SuppressFinalize(this);
+        }
     }
 }

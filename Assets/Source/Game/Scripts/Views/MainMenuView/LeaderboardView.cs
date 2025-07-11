@@ -2,86 +2,89 @@ using UnityEngine;
 using UnityEngine.UI;
 using YG;
 
-public class LeaderboardView : MonoBehaviour
+namespace Assets.Source.Game.Scripts
 {
-    [SerializeField] private Button _openAuthorize;
-    [SerializeField] private Button _closeAuthorize;
-    [SerializeField] private Button _closeButton;
-    [SerializeField] private GameObject _authorizationPanel;
-    [SerializeField] private LeaderboardYG _leaderboardYG;
-
-    private LeaderboardViewModel _leaderboardViewModel;
-
-    private void OnDestroy()
+    public class LeaderboardView : MonoBehaviour
     {
-        RemoveListeners();
-    }
+        [SerializeField] private Button _openAuthorize;
+        [SerializeField] private Button _closeAuthorize;
+        [SerializeField] private Button _closeButton;
+        [SerializeField] private GameObject _authorizationPanel;
+        [SerializeField] private LeaderboardYG _leaderboardYG;
 
-    public void Initialize(LeaderboardViewModel leaderboardViewModel)
-    {
-        _leaderboardViewModel = leaderboardViewModel;
-        AddListeners();
-        gameObject.SetActive(false);
-        _leaderboardYG.gameObject.SetActive(false);
-    }
+        private LeaderboardViewModel _leaderboardViewModel;
 
-    private void AddListeners()
-    {
-        _leaderboardViewModel.InvokedShow += Show;
-        _leaderboardViewModel.InvokedHide += Hide;
-        _closeButton.onClick.AddListener(OnExitButtonClicked);
-        _closeAuthorize.onClick.AddListener(OnCloseAuthorizeClicked);
-        _openAuthorize.onClick.AddListener(Authorize);
-    }
+        private void OnDestroy()
+        {
+            RemoveListeners();
+        }
 
-    private void RemoveListeners()
-    {
-        _leaderboardViewModel.InvokedShow -= Show;
-        _leaderboardViewModel.InvokedHide -= Hide;
-        _closeButton.onClick.RemoveListener(OnExitButtonClicked);
-        _closeAuthorize.onClick.RemoveListener(OnCloseAuthorizeClicked);
-        _openAuthorize.onClick.RemoveListener(Authorize);
-    }
+        public void Initialize(LeaderboardViewModel leaderboardViewModel)
+        {
+            _leaderboardViewModel = leaderboardViewModel;
+            AddListeners();
+            gameObject.SetActive(false);
+            _leaderboardYG.gameObject.SetActive(false);
+        }
 
-    private void Authorize()
-    {
-        YG2.OpenAuthDialog();
+        private void AddListeners()
+        {
+            _leaderboardViewModel.Showing += Show;
+            _leaderboardViewModel.Hiding += Hide;
+            _closeButton.onClick.AddListener(OnExitButtonClicked);
+            _closeAuthorize.onClick.AddListener(OnCloseAuthorizeClicked);
+            _openAuthorize.onClick.AddListener(Authorize);
+        }
 
-        if (YG2.player.auth == true)
-            CreateLeaderboard(_leaderboardViewModel.GetScore());
-        else
-            return;
-    }
+        private void RemoveListeners()
+        {
+            _leaderboardViewModel.Showing -= Show;
+            _leaderboardViewModel.Hiding -= Hide;
+            _closeButton.onClick.RemoveListener(OnExitButtonClicked);
+            _closeAuthorize.onClick.RemoveListener(OnCloseAuthorizeClicked);
+            _openAuthorize.onClick.RemoveListener(Authorize);
+        }
 
-    private void CreateLeaderboard(int score)
-    {
-        _authorizationPanel.gameObject.SetActive(false);
-        _leaderboardYG.gameObject.SetActive(true);
-        _leaderboardYG.SetLeaderboard(score);
-        _leaderboardYG.UpdateLB();
-    }
+        private void Authorize()
+        {
+            YG2.OpenAuthDialog();
 
-    private void OnCloseAuthorizeClicked()
-    {
-        _authorizationPanel.gameObject.SetActive(false);
-        _leaderboardViewModel.Hide();
-    }
+            if (YG2.player.auth == true)
+                CreateLeaderboard(_leaderboardViewModel.GetScore());
+            else
+                return;
+        }
 
-    private void OnExitButtonClicked() => _leaderboardViewModel.Hide();
+        private void CreateLeaderboard(int score)
+        {
+            _authorizationPanel.gameObject.SetActive(false);
+            _leaderboardYG.gameObject.SetActive(true);
+            _leaderboardYG.SetLeaderboard(score);
+            _leaderboardYG.UpdateLB();
+        }
 
-    private void Show()
-    {
-        gameObject.SetActive(true);
+        private void OnCloseAuthorizeClicked()
+        {
+            _authorizationPanel.gameObject.SetActive(false);
+            _leaderboardViewModel.Hide();
+        }
 
-        if (YG2.player.auth == true)
-            CreateLeaderboard(_leaderboardViewModel.GetScore());
-        else
-            _authorizationPanel.gameObject.SetActive(true);
-    }
+        private void OnExitButtonClicked() => _leaderboardViewModel.Hide();
 
-    private void Hide() 
-    {
-        gameObject.SetActive(false);
-        _leaderboardYG.gameObject.SetActive(false);
+        private void Show()
+        {
+            gameObject.SetActive(true);
+
+            if (YG2.player.auth == true)
+                CreateLeaderboard(_leaderboardViewModel.GetScore());
+            else
+                _authorizationPanel.gameObject.SetActive(true);
+        }
+
+        private void Hide()
+        {
+            gameObject.SetActive(false);
+            _leaderboardYG.gameObject.SetActive(false);
+        }
     }
 }

@@ -220,7 +220,6 @@ namespace Assets.Source.Game.Scripts
             Transform throwPoint,
             ActiveAbilityData abilityAttributeData)
         {
-            Debug.Log(abilityAttributeData == null);
             Ability newAbility = _abilityFactory.CreateLegendaryAbility(
                 (abilityAttributeData as LegendaryAbilityData),
                 abilityAttributeData,

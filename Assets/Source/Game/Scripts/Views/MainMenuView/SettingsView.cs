@@ -63,8 +63,8 @@ public class SettingsView : MonoBehaviour
 
     private void AddListeners()
     {
-        _settingsViewModel.InvokedShow += Show;
-        _settingsViewModel.InvokedHide += Hide;
+        _settingsViewModel.Showing += Show;
+        _settingsViewModel.Hiding += Hide;
         _closeButton.onClick.AddListener(OnExitButtonClicked);
         _ambientSlider.onValueChanged.AddListener(OnAmbientValueChanged);
         _sfxSlider.onValueChanged.AddListener(OnSfxValueChanged);
@@ -73,8 +73,8 @@ public class SettingsView : MonoBehaviour
 
     private void RemoveListeners()
     {
-        _settingsViewModel.InvokedShow -= Show;
-        _settingsViewModel.InvokedHide -= Hide;
+        _settingsViewModel.Showing -= Show;
+        _settingsViewModel.Hiding -= Hide;
         _closeButton.onClick.RemoveListener(OnExitButtonClicked);
         _ambientSlider.onValueChanged.RemoveListener(OnAmbientValueChanged);
         _sfxSlider.onValueChanged.RemoveListener(OnSfxValueChanged);

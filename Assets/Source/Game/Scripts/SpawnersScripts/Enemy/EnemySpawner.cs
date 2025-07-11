@@ -53,7 +53,7 @@ namespace Assets.Source.Game.Scripts
             foreach(Enemy enemy in _enemies)
             {
                 enemy.Died -= OnEnemyDead;
-                enemy.AttackPlayer -= OnEnemyAttack;
+                enemy.PlayerAttacked -= OnEnemyAttack;
             }
 
             GC.SuppressFinalize(this);
@@ -178,7 +178,7 @@ namespace Assets.Source.Game.Scripts
                 _enemuPool.InstantiatePoolObject(enemy, enemyData.PrefabEnemy.name);
                 enemy.Initialize(_player, _currentRoomLevel, enemyData, _currentLevelTier);
                 enemy.Died += OnEnemyDead;
-                enemy.AttackPlayer += OnEnemyAttack;
+                enemy.PlayerAttacked += OnEnemyAttack;
                 _enemies.Add(enemy);
 
                 if (_deadParticles.ContainsKey(enemyData.PrefabEnemy.name) == false)

@@ -11,12 +11,12 @@ namespace Assets.Source.Game.Scripts
         {
             _weaponsModel = weaponsModel;
             _menuModel = menuModel;
-            _menuModel.InvokedWeaponsShow += () => InvokedShow?.Invoke();
-            _menuModel.InvokedMainMenuShow += () => InvokedHide?.Invoke();
+            _menuModel.InvokedWeaponsShowed += () => Showing?.Invoke();
+            _menuModel.InvokedMainMenuShowed += () => Hiding?.Invoke();
         }
 
-        public event Action InvokedShow;
-        public event Action InvokedHide;
+        public event Action Showing;
+        public event Action Hiding;
 
         public void Hide() => _menuModel.InvokeWeaponsHide();
 

@@ -44,7 +44,7 @@ namespace Assets.Source.Game.Scripts
 
         private void OnDestroy()
         {
-            _weaponsViewModel.InvokedShow -= Show;
+            _weaponsViewModel.Showing -= Show;
             _backButton.onClick.RemoveListener(OnBackButtonClicked);
         }
 
@@ -54,7 +54,7 @@ namespace Assets.Source.Game.Scripts
             _audioPlayerService = audioPlayerService;
             _parametrPanel.SetActive(false);
             gameObject.SetActive(false);
-            _weaponsViewModel.InvokedShow += Show;
+            _weaponsViewModel.Showing += Show;
             _backButton.onClick.AddListener(OnBackButtonClicked);
             SortElementsByTier();
         }

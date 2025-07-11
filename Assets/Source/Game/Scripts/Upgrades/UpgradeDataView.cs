@@ -27,8 +27,8 @@ namespace Assets.Source.Game.Scripts
         private void OnDestroy()
         {
             _button.onClick.RemoveListener(OnSelected);
-            _upgradeViewModel.InvokedStatsUpgrade -= OnStateUpgraded;
-            _upgradeViewModel.InvokedStatsReset -= OnResetState;
+            _upgradeViewModel.InvokedStatsUpgraded -= OnStateUpgraded;
+            _upgradeViewModel.InvokedStatsReseted -= OnResetState;
         }
 
         public void Initialize(UpgradeData upgradeData, UpgradeState upgradeState, UpgradeViewModel upgradeViewModel, IAudioPlayerService audioPlayerService)
@@ -38,8 +38,8 @@ namespace Assets.Source.Game.Scripts
             _upgradeData = upgradeData;
             _upgradeState = upgradeState;
             _button.onClick.AddListener(OnSelected);
-            _upgradeViewModel.InvokedStatsUpgrade += OnStateUpgraded;
-            _upgradeViewModel.InvokedStatsReset += OnResetState;
+            _upgradeViewModel.InvokedStatsUpgraded += OnStateUpgraded;
+            _upgradeViewModel.InvokedStatsReseted += OnResetState;
             Fill(upgradeData);
         }
 

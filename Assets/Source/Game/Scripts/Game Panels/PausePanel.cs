@@ -1,8 +1,11 @@
+using Assets.Source.Game.Scripts.Services;
+using Assets.Source.Game.Scripts.ViewModels;
+using Assets.Source.Game.Scripts.Views;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.GamePanels
 {
     public class PausePanel : GamePanelsView
     {
@@ -26,7 +29,7 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private Text _currentRoomLevel;
         [SerializeField] private Text _killCount;
 
-        private List<LanguageButtonView> _languageButtonViews = new ();
+        private List<LanguageButtonView> _languageButtonViews = new();
         private IAudioPlayerService _audioPlayerService;
 
         private void OnDestroy()
@@ -73,7 +76,7 @@ namespace Assets.Source.Game.Scripts
             _muteToggle.onValueChanged.RemoveListener(OnMuteValueChanged);
         }
 
-        private void FillGameParameters() 
+        private void FillGameParameters()
         {
             _playerHealth.text = GamePanelsViewModel.GetPlayer().CurrentHealth.ToString();
             _playerDamage.text = GamePanelsViewModel.GetPlayer().DamageSource.Damage.ToString();
@@ -83,7 +86,7 @@ namespace Assets.Source.Game.Scripts
             _killCount.text = GamePanelsViewModel.GetPlayer().KillCount.ToString();
         }
 
-        private void CreateLanguageButton() 
+        private void CreateLanguageButton()
         {
             foreach (LanguageButtonData languageButton in _languageButtonData)
             {

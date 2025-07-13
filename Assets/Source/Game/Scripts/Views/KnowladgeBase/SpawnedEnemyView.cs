@@ -1,12 +1,15 @@
 using Lean.Localization;
 using UnityEngine;
 
-public class SpawnedEnemyView : MonoBehaviour
+namespace Assets.Source.Game.Scripts.Views
 {
-    [SerializeField] private LeanLocalizedText _nameEnemy;
-
-    public void Initialize(string name)
+    public class SpawnedEnemyView : MonoBehaviour
     {
-        _nameEnemy.TranslationName = name;
+        [SerializeField] private LeanLocalizedText _nameEnemy;
+
+        public void Initialize(string name)
+        {
+            _nameEnemy.TranslationName = name;
+        }
     }
 }

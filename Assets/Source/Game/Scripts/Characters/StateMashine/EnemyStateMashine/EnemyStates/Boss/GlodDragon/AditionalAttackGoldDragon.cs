@@ -1,36 +1,40 @@
-using Assets.Source.Game.Scripts;
 using System;
 
-public class AditionalAttackGoldDragon : BossAdditionalAttackState
+namespace Assets.Source.Game.Scripts.Characters
 {
-    private DragonSpell _spell;
-    private float _damage;
-
-    public AditionalAttackGoldDragon(StateMashine stateMashine, Player target, Enemy enemy) : base(stateMashine, target, enemy)
+    public class AditionalAttackGoldDragon : BossAdditionalAttackState
     {
-        Target = target;
-        Enemy = enemy;
-        AnimationController = Enemy.AnimationStateController;
-        Boss boss = Enemy as Boss;
-        GoldDragon goldDragon = boss as GoldDragon;
-        _spell = goldDragon.DragonSpell;
-        _damage = goldDragon.DamageSpell;
+        private DragonSpell _spell;
+        private float _damage;
+        private EnemyAnimation _animationController;
 
-        AnimationController.AdditionalAttacked += AditionalAttackAppalyDamage;
-        AnimationController.AnimationCompleted += OnAllowTransition;
-    }
+        public AditionalAttackGoldDragon(StateMachine stateMashine, Player target, Enemy enemy)
+            : base(stateMashine, target, enemy)
+        {
+            Target = target;
+            Enemy = enemy;
+            _animationController = Enemy.AnimationStateController;
+            Boss boss = Enemy as Boss;
+            GoldDragon goldDragon = boss as GoldDragon;
+            _spell = goldDragon.DragonSpell;
+            _damage = goldDragon.DamageSpell;
 
-    public override void EnterState()
-    {
-        base.EnterState();
-        AdditionalAttackEvent();
-    }
+            _animationController.AdditionalAttacked += AditionalAttackAppalyDamage;
+            _animationController.AnimationCompleted += OnAllowTransition;
+        }
 
-    protected override void AditionalAttackAppalyDamage()
-    {
-        if (_spell.TryFindPlayer(out Player player))
-            player.TakeDamage(Convert.ToInt32(_damage));
-        else
-            return;
+        public override void EnterState()
+        {
+            base.EnterState();
+            AdditionalAttackEvent();
+        }
+
+        private void AditionalAttackAppalyDamage()
+        {
+            if (_spell.TryFindPlayer(out Player player))
+                player.TakeDamage(Convert.ToInt32(_damage));
+            else
+                return;
+        }
     }
 }

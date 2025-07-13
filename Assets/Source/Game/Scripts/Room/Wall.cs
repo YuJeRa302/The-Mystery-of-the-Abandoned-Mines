@@ -1,11 +1,14 @@
 using UnityEngine;
 
-public class Wall : MonoBehaviour
+namespace Assets.Source.Game.Scripts.Rooms
 {
-    [SerializeField] private MeshRenderer _meshRenderer;
-
-    public void UpdateMaterial(Color color) 
+    public class Wall : MonoBehaviour
     {
-        _meshRenderer.material.color = color;
+        [SerializeField] private MeshRenderer _meshRenderer;
+
+        public void UpdateMaterial(Color color)
+        {
+            _meshRenderer.material.color = color;
+        }
     }
 }

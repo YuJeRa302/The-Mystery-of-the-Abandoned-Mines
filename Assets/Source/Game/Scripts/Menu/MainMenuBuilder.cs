@@ -1,8 +1,13 @@
+using Assets.Source.Game.Scripts.Models;
+using Assets.Source.Game.Scripts.Saves;
+using Assets.Source.Game.Scripts.Services;
+using Assets.Source.Game.Scripts.ViewModels;
+using Assets.Source.Game.Scripts.Views;
 using Lean.Localization;
 using UnityEngine;
 using YG;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.Menu
 {
     public class MainMenuBuilder : MonoBehaviour, ICoroutineRunner
     {
@@ -31,7 +36,7 @@ namespace Assets.Source.Game.Scripts
             Time.timeScale = _resumeValue;
             Build();
 
-            if(YG2.isGameplaying != true)
+            if (YG2.isGameplaying != true)
                 InitYandexGameEntities();
         }
 
@@ -56,8 +61,10 @@ namespace Assets.Source.Game.Scripts
 
         private void CreateMenuEntities()
         {
-            SettingsModel settingsModel = new SettingsModel(_persistentDataService, _leanLocalization, _audioPlayer);
-            LevelsModel levelsModel = new LevelsModel(_persistentDataService, this, _saveAndLoad, _canvasLoader);
+            SettingsModel settingsModel = new SettingsModel(
+                _persistentDataService, _leanLocalization, _audioPlayer);
+            LevelsModel levelsModel = new LevelsModel(
+                _persistentDataService, this, _saveAndLoad, _canvasLoader);
             UpgradeModel upgradeModel = new UpgradeModel(_persistentDataService);
             MenuModel menuModel = new MenuModel();
             WeaponsModel weaponsModel = new WeaponsModel(_persistentDataService);
@@ -71,7 +78,8 @@ namespace Assets.Source.Game.Scripts
             UpgradeViewModel upgradeViewModel = new UpgradeViewModel(upgradeModel, menuModel);
             WeaponsViewModel weaponsViewModel = new WeaponsViewModel(weaponsModel, menuModel);
             ClassAbilityViewModel classAbilityViewModel = new ClassAbilityViewModel(classAbilityModel, menuModel);
-            KnowledgeBaseViewModel knowledgeBaseViewModel = new KnowledgeBaseViewModel(knowledgeBaseModel, menuModel);
+            KnowledgeBaseViewModel knowledgeBaseViewModel = new KnowledgeBaseViewModel(
+                knowledgeBaseModel, menuModel);
             LeaderboardViewModel leaderboardViewModel = new LeaderboardViewModel(leaderboardModel, menuModel);
 
             _settingsView.Initialize(settingsViewModel, _audioPlayer);

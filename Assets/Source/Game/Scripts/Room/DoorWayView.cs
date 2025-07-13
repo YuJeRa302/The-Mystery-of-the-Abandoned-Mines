@@ -1,6 +1,7 @@
+using Assets.Source.Game.Scripts.Enums;
 using UnityEngine;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.Rooms
 {
     public class DoorWayView : MonoBehaviour
     {

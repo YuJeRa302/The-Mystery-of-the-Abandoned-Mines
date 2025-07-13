@@ -1,8 +1,17 @@
+using Assets.Source.Game.Scripts.AbilityScripts;
+using Assets.Source.Game.Scripts.Card;
+using Assets.Source.Game.Scripts.Factories;
+using Assets.Source.Game.Scripts.Items;
+using Assets.Source.Game.Scripts.Menu;
+using Assets.Source.Game.Scripts.PoolSystem;
+using Assets.Source.Game.Scripts.ScriptableObjects;
+using Assets.Source.Game.Scripts.Services;
+using Assets.Source.Game.Scripts.Views;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.Characters
 {
     public class Player : MonoBehaviour, ICoroutineRunner
     {
@@ -80,18 +89,20 @@ namespace Assets.Source.Game.Scripts
             PersistentDataService persistentDataService,
             GamePauseService gamePauseService,
             GameConfig gameConfig,
-            CameraControiler cameraControiler,
+            CameraScripts.CameraController cameraController,
             PlayerView playerView,
             PlayerClassData playerClassData,
             Transform spawnPoint,
-            AudioPlayer audioPlayer) 
+            AudioPlayer audioPlayer)
         {
             _spawnPoint = spawnPoint;
             _playerView = playerView;
             _audioPlayer = audioPlayer;
             _miniMapIcon.sprite = playerClassData.Icon;
             _playerHealth = new PlayerHealth(this, this, gamePauseService, _currentHealth);
-            _playerAnimation = new PlayerAnimation(_animator, _rigidbody, _moveSpeed, playerClassData, this, this, gamePauseService);
+            _playerAnimation = new PlayerAnimation(_animator,
+                _rigidbody,
+                _moveSpeed, playerClassData, this, this, gamePauseService);
 
             _playerWeapons = new PlayerWeapons(
                 this,
@@ -111,8 +122,8 @@ namespace Assets.Source.Game.Scripts
                 _countKillEnemy);
 
             _playerMovement = new PlayerMovement(
-                cameraControiler.Camera,
-                cameraControiler.VariableJoystick,
+                cameraController.Camera,
+                cameraController.VariableJoystick,
                 _rigidbody,
                 this,
                 this,
@@ -128,8 +139,13 @@ namespace Assets.Source.Game.Scripts
                 _poolBullet);
 
             _wallet = new PlayerWallet();
-            _cardDeck = new CardDeck(gameConfig.GetLevelData(persistentDataService.PlayerProgress.LevelService.CurrentLevelId).IsContractLevel);
-            _playerAbilityCaster = new PlayerAbilityCaster(abilityFactory, abilityPresenterFactory, this, persistentDataService, playerClassData, _audioPlayer);
+            _cardDeck = new CardDeck(
+                gameConfig.GetLevelData(
+                    persistentDataService.PlayerProgress.LevelService.CurrentLevelId).IsContractLevel);
+            _playerAbilityCaster = new PlayerAbilityCaster(
+                abilityFactory,
+                abilityPresenterFactory, this,
+                persistentDataService, playerClassData, _audioPlayer);
             _playerView.Initialize(playerClassData.Icon, _throwAbilityPoint);
             SetPlayerStats();
             AddListeners();
@@ -162,7 +178,7 @@ namespace Assets.Source.Game.Scripts
             _cardDeck.TakeCard(cardView);
         }
 
-        public void ResetPosition() 
+        public void ResetPosition()
         {
             transform.position = _spawnPoint.transform.position;
         }
@@ -237,7 +253,7 @@ namespace Assets.Source.Game.Scripts
             _cardDeck.SetNewAbility += OnSetNewAbility;
             _cardDeck.RerollPointsUpdated += OnUpdateRerollPoints;
             _cardDeck.PlayerStatsUpdated += OnStatsUpdate;
-            _cardDeck.TakedPassivAbility += OnTakedPassivAbility;
+            _cardDeck.TakedPassivAbility += OnTakenPassiveAbility;
             _playerStats.ExperienceValueChanged += OnExperienceValueChanged;
             _playerStats.UpgradeExperienceValueChanged += OnUpgradeExperienceValueChanged;
             _playerStats.MaxHealthChanged += OnMaxHealthChanged;
@@ -274,7 +290,7 @@ namespace Assets.Source.Game.Scripts
             _cardDeck.SetNewAbility -= OnSetNewAbility;
             _cardDeck.RerollPointsUpdated -= OnUpdateRerollPoints;
             _cardDeck.PlayerStatsUpdated -= OnStatsUpdate;
-            _cardDeck.TakedPassivAbility -= OnTakedPassivAbility;
+            _cardDeck.TakedPassivAbility -= OnTakenPassiveAbility;
             _playerStats.ExperienceValueChanged -= OnExperienceValueChanged;
             _playerStats.UpgradeExperienceValueChanged -= OnUpgradeExperienceValueChanged;
             _playerStats.MaxHealthChanged -= OnMaxHealthChanged;
@@ -304,10 +320,15 @@ namespace Assets.Source.Game.Scripts
 
         private void SetPlayerStats()
         {
-            _playerView.ChangeUpgradeLevel(_currentUpgradeLevel, _playerStats.GetMaxUpgradeExperienceValue(_currentUpgradeLevel), _currentUpgradeExperience);
-            _playerView.ChangePlayerLevel(_currentLevel, _playerStats.GetMaxExperienceValue(_currentLevel), _currentExperience);
+            _playerView.ChangeUpgradeLevel(_currentUpgradeLevel,
+                _playerStats.GetMaxUpgradeExperienceValue(_currentUpgradeLevel),
+                _currentUpgradeExperience);
+            _playerView.ChangePlayerLevel(_currentLevel,
+                _playerStats.GetMaxExperienceValue(_currentLevel),
+                _currentExperience);
             _playerView.ChangeKillCount(_countKillEnemy);
-            _playerView.ChangeMaxHealthValue(_playerHealth.GetMaxHealth(), _playerHealth.GetCurrentHealth());
+            _playerView.ChangeMaxHealthValue(_playerHealth.GetMaxHealth(),
+                _playerHealth.GetCurrentHealth());
         }
 
         public void OnPlayerDead()
@@ -317,14 +338,19 @@ namespace Assets.Source.Game.Scripts
             PlayerDied?.Invoke();
         }
 
-        private void OnClassAbilityViewCreated(ClassAbilityData classAbilityData, ClassSkillButtonView classSkillButtonView, int currentLevel)
+        private void OnClassAbilityViewCreated(ClassAbilityData classAbilityData,
+            ClassSkillButtonView classSkillButtonView,
+            int currentLevel)
         {
             _playerAbilityCaster.CreateClassAbilityView(classAbilityData, classSkillButtonView, currentLevel);
         }
 
-        private void OnLegendaryAbilityViewCreated(AbilityView abilityView, ParticleSystem particleSystem, Transform throwPoint, ActiveAbilityData abilityAttributeData)
+        private void OnLegendaryAbilityViewCreated(AbilityView abilityView,
+            ParticleSystem particleSystem,
+            Transform throwPoint, ActiveAbilityData abilityAttributeData)
         {
-            _playerAbilityCaster.CreateLegendaryAbilityView(abilityView, particleSystem, throwPoint, abilityAttributeData);
+            _playerAbilityCaster.CreateLegendaryAbilityView(abilityView,
+                particleSystem, throwPoint, abilityAttributeData);
         }
 
         private void OnPassiveAbilityViewCreated(PassiveAbilityView passiveAbilityView)
@@ -332,7 +358,9 @@ namespace Assets.Source.Game.Scripts
             _playerAbilityCaster.CreatePassiveAbilityView(passiveAbilityView);
         }
 
-        private void OnAbilityViewCreated(AbilityView abilityView, ParticleSystem particleSystem, Transform throwPoint)
+        private void OnAbilityViewCreated(AbilityView abilityView,
+            ParticleSystem particleSystem,
+            Transform throwPoint)
         {
             _playerAbilityCaster.CreateAbilityView(abilityView, particleSystem, throwPoint);
         }
@@ -357,7 +385,8 @@ namespace Assets.Source.Game.Scripts
             _playerView.TakeAbility(abilityAttributeData, currentLevel);
         }
 
-        private void OnPlayerUpgradeLevelChanged(int currenLevel, int maxExperienceValue, int currentExperience)
+        private void OnPlayerUpgradeLevelChanged(int currenLevel,
+            int maxExperienceValue, int currentExperience)
         {
             _playerView.ChangeUpgradeLevel(currenLevel, maxExperienceValue, currentExperience);
         }
@@ -470,7 +499,7 @@ namespace Assets.Source.Game.Scripts
             cardView.CardState.Weight++;
         }
 
-        private void OnTakedPassivAbility(CardView cardView)
+        private void OnTakenPassiveAbility(CardView cardView)
         {
             _playerStats.UpdatePlayerStats(cardView);
             _playerAbilityCaster.TakeAbility(cardView);
@@ -490,7 +519,7 @@ namespace Assets.Source.Game.Scripts
         {
             _playerAttacker.AttackEnemy();
             _playerWeapons.ChangeTrailEffect();
-            _audioPlayer.PlayCharesterAudio(_playerStats.PlayerClassData.AttackEffect);
+            _audioPlayer.PlayCharacterAudio(_playerStats.PlayerClassData.AttackEffect);
         }
 
         private void AttackEnd()

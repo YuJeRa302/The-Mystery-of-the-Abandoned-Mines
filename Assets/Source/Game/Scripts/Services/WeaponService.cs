@@ -1,75 +1,78 @@
-using Assets.Source.Game.Scripts;
+using Assets.Source.Game.Scripts.Items;
 using System;
 using System.Collections.Generic;
 
-[Serializable]
-public class WeaponService
+namespace Assets.Source.Game.Scripts.Services
 {
-    public int CurrentWeaponId;
-    public List<WeaponState> WeaponStates = new ();
-
-    public void SetWeaponStates(WeaponState[] weaponStates)
+    [Serializable]
+    public class WeaponService
     {
-        for (int index = 0; index < weaponStates.Length; index++)
+        public int CurrentWeaponId;
+        public List<WeaponState> WeaponStates = new();
+
+        public void SetWeaponStates(WeaponState[] weaponStates)
         {
-            WeaponStates.Add(weaponStates[index]);
-        }
-    }
-
-    public void UnlockWeaponByData(WeaponData weaponData)
-    {
-        if (WeaponStates == null)
-            return;
-
-        bool found = false;
-
-        for (int i = 0; i < WeaponStates.Count; i++)
-        {
-            WeaponState weaponState = WeaponStates[i];
-
-            if (weaponState.Id == weaponData.Id)
+            for (int index = 0; index < weaponStates.Length; index++)
             {
-                weaponState.IsUnlock = true;
-                found = true;
-                break;
+                WeaponStates.Add(weaponStates[index]);
             }
         }
 
-        if (!found)
+        public void UnlockWeaponByData(WeaponData weaponData)
         {
-            WeaponState newWeaponState = InitWeaponState(weaponData);
-            WeaponStates.Add(new (newWeaponState.Id, newWeaponState.IsEquip, newWeaponState.IsUnlock == true));
-        }
-    }
+            if (WeaponStates == null)
+                return;
 
-    public WeaponState GetWeaponStateByData(WeaponData weaponData)
-    {
-        WeaponState weaponState = FindWeaponState(weaponData.Id);
+            bool found = false;
 
-        if (weaponState == null)
-            weaponState = InitWeaponState(weaponData);
-
-        return weaponState;
-    }
-
-    private WeaponState FindWeaponState(int id)
-    {
-        if (WeaponStates != null)
-        {
-            foreach (WeaponState weaponState in WeaponStates)
+            for (int i = 0; i < WeaponStates.Count; i++)
             {
-                if (weaponState.Id == id)
-                    return weaponState;
+                WeaponState weaponState = WeaponStates[i];
+
+                if (weaponState.Id == weaponData.Id)
+                {
+                    weaponState.IsUnlock = true;
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found)
+            {
+                WeaponState newWeaponState = InitWeaponState(weaponData);
+                WeaponStates.Add(new(newWeaponState.Id, newWeaponState.IsEquip, newWeaponState.IsUnlock == true));
             }
         }
 
-        return null;
-    }
+        public WeaponState GetWeaponStateByData(WeaponData weaponData)
+        {
+            WeaponState weaponState = FindWeaponState(weaponData.Id);
 
-    private WeaponState InitWeaponState(WeaponData weaponData)
-    {
-        WeaponState weaponState = new (weaponData.Id, false, false);
-        WeaponStates.Add(weaponState);
-        return weaponState;
+            if (weaponState == null)
+                weaponState = InitWeaponState(weaponData);
+
+            return weaponState;
+        }
+
+        private WeaponState FindWeaponState(int id)
+        {
+            if (WeaponStates != null)
+            {
+                foreach (WeaponState weaponState in WeaponStates)
+                {
+                    if (weaponState.Id == id)
+                        return weaponState;
+                }
+            }
+
+            return null;
+        }
+
+        private WeaponState InitWeaponState(WeaponData weaponData)
+        {
+            WeaponState weaponState = new(weaponData.Id, false, false);
+            WeaponStates.Add(weaponState);
+            return weaponState;
+        }
     }
 }

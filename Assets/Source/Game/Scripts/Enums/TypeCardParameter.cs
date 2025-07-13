@@ -1,8 +1,11 @@
-public enum TypeCardParameter
+namespace Assets.Source.Game.Scripts.Enums
 {
-    Default,
-    Ability,
-    RerollPoints,
-    LegendariAbility,
-    PassivAbllity
+    public enum TypeCardParameter
+    {
+        Default,
+        Ability,
+        RerollPoints,
+        LegendaryAbility,
+        PassiveAbility
+    }
 }

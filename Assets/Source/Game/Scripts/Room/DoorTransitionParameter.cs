@@ -1,4 +1,7 @@
-public enum DoorTransitionParameter
+namespace Assets.Source.Game.Scripts.Rooms
 {
-    IsOpen
+    public enum DoorTransitionParameter
+    {
+        IsOpen
+    }
 }

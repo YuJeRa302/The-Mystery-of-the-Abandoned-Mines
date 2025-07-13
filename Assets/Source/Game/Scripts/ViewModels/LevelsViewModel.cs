@@ -1,6 +1,10 @@
+using Assets.Source.Game.Scripts.Items;
+using Assets.Source.Game.Scripts.Levels;
+using Assets.Source.Game.Scripts.Models;
+using Assets.Source.Game.Scripts.Views;
 using System;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.ViewModels
 {
     public class LevelsViewModel
     {
@@ -26,7 +30,8 @@ namespace Assets.Source.Game.Scripts
         public WeaponState GetWeaponState(WeaponData weaponData) => _levelsModel.GetWeaponState(weaponData);
         public int GetPlayerConins() => _levelsModel.GetPlayerCoinCount();
         public void SelectLevel(LevelDataView levelDataView) => _levelsModel.SelectLevel(levelDataView);
-        public void SelectClass(PlayerClassDataView playerClassDataView) => _levelsModel.SelectClass(playerClassDataView);
+        public void SelectClass(PlayerClassDataView playerClassDataView) =>
+            _levelsModel.SelectClass(playerClassDataView);
         public void SelectWeapon(WeaponDataView weaponDataView) => _levelsModel.SelectWeapon(weaponDataView);
         public void LoadLevel() => _levelsModel.LoadScene();
     }

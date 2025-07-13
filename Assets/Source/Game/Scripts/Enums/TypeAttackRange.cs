@@ -1,5 +1,8 @@
-public enum TypeAttackRange
+namespace Assets.Source.Game.Scripts.Enums
 {
-    Melee,
-    Ranged
+    public enum TypeAttackRange
+    {
+        Melee,
+        Ranged
+    }
 }

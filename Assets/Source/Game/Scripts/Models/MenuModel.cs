@@ -1,7 +1,7 @@
 using System;
 using YG;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.Models
 {
     public class MenuModel : IDisposable
     {

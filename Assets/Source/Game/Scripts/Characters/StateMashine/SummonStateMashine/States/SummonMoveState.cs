@@ -1,107 +1,110 @@
-using Assets.Source.Game.Scripts;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class SummonMoveState : State
+namespace Assets.Source.Game.Scripts.Characters
 {
-    private Player _player;
-    private Summon _summon;
-    private Transform _direction;
-    private NavMeshAgent _navMeshAgent;
-    private Dictionary<float, Enemy> _enemies = new Dictionary<float, Enemy>();
-
-    public SummonMoveState(StateMashine stateMashine, Player player, Summon summon, NavMeshAgent navMeshAgent) : base(stateMashine)
+    public class SummonMoveState : State
     {
-        _player = player;
-        _summon = summon;
-        _navMeshAgent = navMeshAgent;
-    }
+        private Player _player;
+        private Summon _summon;
+        private Transform _direction;
+        private NavMeshAgent _navMeshAgent;
+        private Dictionary<float, Enemy> _enemies = new Dictionary<float, Enemy>();
 
-    public override void EnterState()
-    {
-        base.EnterState();
-        _navMeshAgent.speed = _summon.MoveSpeed;
-        MoveEvent();
-
-        if (_summon.Target != null)
+        public SummonMoveState(StateMachine stateMashine, Player player, Summon summon, NavMeshAgent navMeshAgent)
+            : base(stateMashine)
         {
-            _direction = _summon.Target.transform;
-        }
-        else
-        {
-            _direction = _player.transform;
-        }
-    }
-
-    public override void UpdateState()
-    {
-        if (FindEnemy(out Enemy target))
-        {
-            _summon.SetTarget(target);
-            _direction = _summon.Target.transform;
+            _player = player;
+            _summon = summon;
+            _navMeshAgent = navMeshAgent;
         }
 
-        Vector3 directionToTarget = _summon.transform.position - _direction.position;
-        float distance = directionToTarget.magnitude;
-
-        if (distance < _summon.DistanceToTarget)
+        public override void EnterState()
         {
+            base.EnterState();
+            _navMeshAgent.speed = _summon.MoveSpeed;
+            MoveEvent();
+
             if (_summon.Target != null)
             {
-                if (_summon.Target.isActiveAndEnabled != false)
-                {
-                    StateMashine.SetState<SummonAttackState>();
-                }            
+                _direction = _summon.Target.transform;
             }
             else
             {
-                StateMashine.SetState<SummonIdleState>();
+                _direction = _player.transform;
             }
         }
 
-        Move();
-    }
-
-    private void Move()
-    {
-        _navMeshAgent.SetDestination(Vector3.forward + _direction.transform.position);
-        _navMeshAgent.destination = _direction.transform.position;
-        _summon.transform.LookAt(_direction.transform.position);
-    }
-
-    private bool FindEnemy(out Enemy target)
-    {
-        _enemies.Clear();
-        var colliders = Physics.OverlapSphere(_summon.transform.position, _summon.SearchRadius);
-
-        for (int i = 0; i < colliders.Length; i++)
+        public override void UpdateState()
         {
-            if (colliders[i].TryGetComponent(out Enemy enemy))
+            if (FindEnemy(out Enemy target))
             {
-                float distanceToTarget = Vector3.Distance(enemy.transform.position, _summon.transform.position);
-
-                if (distanceToTarget <= _summon.SearchRadius)
-                    if(_enemies.ContainsKey(distanceToTarget) == false)
-                        _enemies.Add(distanceToTarget, enemy);
+                _summon.SetTarget(target);
+                _direction = _summon.Target.transform;
             }
-        }
 
-        if (_enemies.Count == 0)
-        {
-            target = null;
-        }
-        else
-        {
-            target = _enemies.OrderBy(distance => distance.Key).First().Value;
+            Vector3 directionToTarget = _summon.transform.position - _direction.position;
+            float distance = directionToTarget.magnitude;
 
-            if (target != null && target.isActiveAndEnabled == true)
+            if (distance < _summon.DistanceToTarget)
             {
-                return true;
+                if (_summon.Target != null)
+                {
+                    if (_summon.Target.isActiveAndEnabled != false)
+                    {
+                        StateMashine.SetState<SummonAttackState>();
+                    }
+                }
+                else
+                {
+                    StateMashine.SetState<SummonIdleState>();
+                }
             }
+
+            Move();
         }
 
-        return (target != null && target.isActiveAndEnabled == true);
+        private void Move()
+        {
+            _navMeshAgent.SetDestination(Vector3.forward + _direction.transform.position);
+            _navMeshAgent.destination = _direction.transform.position;
+            _summon.transform.LookAt(_direction.transform.position);
+        }
+
+        private bool FindEnemy(out Enemy target)
+        {
+            _enemies.Clear();
+            var colliders = Physics.OverlapSphere(_summon.transform.position, _summon.SearchRadius);
+
+            for (int i = 0; i < colliders.Length; i++)
+            {
+                if (colliders[i].TryGetComponent(out Enemy enemy))
+                {
+                    float distanceToTarget = Vector3.Distance(enemy.transform.position, _summon.transform.position);
+
+                    if (distanceToTarget <= _summon.SearchRadius)
+                        if (_enemies.ContainsKey(distanceToTarget) == false)
+                            _enemies.Add(distanceToTarget, enemy);
+                }
+            }
+
+            if (_enemies.Count == 0)
+            {
+                target = null;
+            }
+            else
+            {
+                target = _enemies.OrderBy(distance => distance.Key).First().Value;
+
+                if (target != null && target.isActiveAndEnabled == true)
+                {
+                    return true;
+                }
+            }
+
+            return target != null && target.isActiveAndEnabled == true;
+        }
     }
 }

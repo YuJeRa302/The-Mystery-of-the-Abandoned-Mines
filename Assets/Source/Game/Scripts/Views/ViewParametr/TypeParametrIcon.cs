@@ -1,12 +1,16 @@
+using Assets.Source.Game.Scripts.Enums;
 using System;
 using UnityEngine;
 
-[Serializable]
-public class TypeParametrIcon
+namespace Assets.Source.Game.Scripts.Views
 {
-    [SerializeField] private TypeParameter _type;
-    [SerializeField] private Sprite _icon;
+    [Serializable]
+    public class TypeParametrIcon
+    {
+        [SerializeField] private TypeParameter _type;
+        [SerializeField] private Sprite _icon;
 
-    public TypeParameter TypeDamage => _type;
-    public Sprite Icon => _icon;
+        public TypeParameter TypeDamage => _type;
+        public Sprite Icon => _icon;
+    }
 }

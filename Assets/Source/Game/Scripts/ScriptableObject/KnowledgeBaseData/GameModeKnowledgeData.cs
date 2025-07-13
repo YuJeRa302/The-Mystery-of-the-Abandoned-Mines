@@ -1,21 +1,25 @@
+using Assets.Source.Game.Scripts.Views;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New KnowledgeBaseData", menuName = "Create KnowledgeBase/GameMode", order = 51)]
-public class GameModeKnowledgeData : KnowledgeData
+namespace Assets.Source.Game.Scripts.ScriptableObjects
 {
-    [SerializeField] private List<GameModData> _gameModeData;
-
-    public override void GetView(Transform conteiner, out List<KnowladgeView> knowladgeViews)
+    [CreateAssetMenu(fileName = "New KnowledgeBaseData", menuName = "Create KnowledgeBase/GameMode", order = 51)]
+    public class GameModeKnowledgeData : KnowledgeData
     {
-        knowladgeViews = new();
-        GameModeKnowledgeBaseView gameModeKnowladgeView;
+        [SerializeField] private List<GameModData> _gameModeData;
 
-        foreach (GameModData gameMode in _gameModeData)
+        public override void GetView(Transform conteiner, out List<KnowladgeView> knowladgeViews)
         {
-            gameModeKnowladgeView = Instantiate(_knowladgeView as GameModeKnowledgeBaseView, conteiner);
-            gameModeKnowladgeView.Initialize(gameMode);
-            knowladgeViews.Add(gameModeKnowladgeView);
+            knowladgeViews = new();
+            GameModeKnowledgeBaseView gameModeKnowladgeView;
+
+            foreach (GameModData gameMode in _gameModeData)
+            {
+                gameModeKnowladgeView = Instantiate(_knowladgeView as GameModeKnowledgeBaseView, conteiner);
+                gameModeKnowladgeView.Initialize(gameMode);
+                knowladgeViews.Add(gameModeKnowladgeView);
+            }
         }
     }
 }

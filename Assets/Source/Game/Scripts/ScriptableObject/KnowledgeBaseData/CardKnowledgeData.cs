@@ -1,22 +1,25 @@
-using Assets.Source.Game.Scripts;
+using Assets.Source.Game.Scripts.Views;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New KnowledgeBaseData", menuName = "Create KnowledgeBase/Card", order = 51)]
-public class CardKnowledgeData : KnowledgeData
+namespace Assets.Source.Game.Scripts.ScriptableObjects
 {
-    [SerializeField] private List<CardData> _cardDatas;
-
-    public override void GetView(Transform conteiner, out List<KnowladgeView> knowladgeViews)
+    [CreateAssetMenu(fileName = "New KnowledgeBaseData", menuName = "Create KnowledgeBase/Card", order = 51)]
+    public class CardKnowledgeData : KnowledgeData
     {
-        knowladgeViews = new();
-        CardKnowledgebaseView cardKnowladgeView;
+        [SerializeField] private List<CardData> _cardDatas;
 
-        foreach (CardData cardData in _cardDatas)
+        public override void GetView(Transform conteiner, out List<KnowladgeView> knowladgeViews)
         {
-            cardKnowladgeView = Instantiate(_knowladgeView as CardKnowledgebaseView, conteiner);
-            cardKnowladgeView.Initialize(cardData);
-            knowladgeViews.Add(cardKnowladgeView);
+            knowladgeViews = new();
+            CardKnowledgebaseView cardKnowladgeView;
+
+            foreach (CardData cardData in _cardDatas)
+            {
+                cardKnowladgeView = Instantiate(_knowladgeView as CardKnowledgebaseView, conteiner);
+                cardKnowladgeView.Initialize(cardData);
+                knowladgeViews.Add(cardKnowladgeView);
+            }
         }
     }
 }

@@ -1,5 +1,8 @@
 using UnityEngine;
 
-public class KnowladgeView : MonoBehaviour
+namespace Assets.Source.Game.Scripts.Views
 {
+    public class KnowladgeView : MonoBehaviour
+    {
+    }
 }

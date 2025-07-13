@@ -1,12 +1,13 @@
+using Assets.Source.Game.Scripts.Views;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.Rooms
 {
     public class RoomPlacer : MonoBehaviour
     {
-        private readonly System.Random _rnd = new ();
+        private readonly System.Random _rnd = new();
         private readonly int _roomSize = 40;
         private readonly int _minValue = 0;
         private readonly int _shiftIndex = 1;
@@ -21,16 +22,17 @@ namespace Assets.Source.Game.Scripts
         private int _spawnCenterCoordinate = 5;
         private int _maxRoomSize = 11;
         private RoomView[,] _spawnedRooms;
-        private List<RoomView> _createdRooms = new ();
+        private List<RoomView> _createdRooms = new();
         private int _maxRoomCount = 0;
 
         public List<RoomView> CreatedRooms => _createdRooms;
         public RoomView StartRoom => _startRoom;
 
-        public void Initialize(int currentRoomLevel, bool canSeeDoor, int countRooms, CameraControiler cameraControiler)
+        public void Initialize(int currentRoomLevel,
+            bool canSeeDoor, int countRooms, CameraScripts.CameraController cameraControiler)
         {
             _startRoom.SetCameraArial(canSeeDoor);
-            _maxRoomSize = (countRooms * _multiplierRoomSize) + _shiftIndex;
+            _maxRoomSize = countRooms * _multiplierRoomSize + _shiftIndex;
             _spawnCenterCoordinate = countRooms;
             _maxRoomCount = countRooms;
             _spawnedRooms = new RoomView[_maxRoomSize, _maxRoomSize];
@@ -43,9 +45,9 @@ namespace Assets.Source.Game.Scripts
             }
         }
 
-        public void Clear() 
+        public void Clear()
         {
-            foreach (var room in _createdRooms) 
+            foreach (var room in _createdRooms)
             {
                 Destroy(room.gameObject);
             }
@@ -85,7 +87,7 @@ namespace Assets.Source.Game.Scripts
             RoomData randomRoomData = GetRandomRoom();
 
             if (roomIndex + _shiftIndex == _maxRoomCount)
-                randomRoomData =  _bossRoomData;
+                randomRoomData = _bossRoomData;
 
             RoomView newRoom = Instantiate(randomRoomData.Room);
             int limitRoomPlace = 500;
@@ -96,7 +98,8 @@ namespace Assets.Source.Game.Scripts
 
                 if (ConnectRooms(newRoom, position))
                 {
-                    newRoom.transform.position = new Vector3(position.x - _spawnCenterCoordinate, 0, position.y - _spawnCenterCoordinate) * _roomSize;
+                    newRoom.transform.position = new Vector3(position.x - _spawnCenterCoordinate,
+                        0, position.y - _spawnCenterCoordinate) * _roomSize;
                     _spawnedRooms[position.x, position.y] = newRoom;
                     newRoom.Initialize(randomRoomData, currentRoomLevel, canSeeDoor);
                     _createdRooms.Add(newRoom);
@@ -112,18 +115,22 @@ namespace Assets.Source.Game.Scripts
             int maxX = _spawnedRooms.GetLength(_minValue) - _shiftIndex;
             int maxY = _spawnedRooms.GetLength(_shiftIndex) - _shiftIndex;
 
-            List<Vector2Int> neighbours = new ();
+            List<Vector2Int> neighbours = new();
 
-            if (room.WallUpper != null && vector2.y < maxY && _spawnedRooms[vector2.x, vector2.y + _shiftIndex]?.WallDown != null)
+            if (room.WallUpper != null && vector2.y <
+                maxY && _spawnedRooms[vector2.x, vector2.y + _shiftIndex]?.WallDown != null)
                 neighbours.Add(Vector2Int.up);
 
-            if (room.WallDown != null && vector2.y > 0 && _spawnedRooms[vector2.x, vector2.y - _shiftIndex]?.WallUpper != null)
+            if (room.WallDown != null && vector2.y >
+                0 && _spawnedRooms[vector2.x, vector2.y - _shiftIndex]?.WallUpper != null)
                 neighbours.Add(Vector2Int.down);
 
-            if (room.WallRight != null && vector2.x < maxX && _spawnedRooms[vector2.x + _shiftIndex, vector2.y]?.WallLeft != null)
+            if (room.WallRight != null && vector2.x <
+                maxX && _spawnedRooms[vector2.x + _shiftIndex, vector2.y]?.WallLeft != null)
                 neighbours.Add(Vector2Int.right);
 
-            if (room.WallLeft != null && vector2.x > 0 && _spawnedRooms[vector2.x - _shiftIndex, vector2.y]?.WallRight != null)
+            if (room.WallLeft != null && vector2.x >
+                0 && _spawnedRooms[vector2.x - _shiftIndex, vector2.y]?.WallRight != null)
                 neighbours.Add(Vector2Int.left);
 
             if (neighbours.Count == 0)
@@ -158,7 +165,7 @@ namespace Assets.Source.Game.Scripts
 
         private RoomData GetRandomRoom()
         {
-            List<float> chances = new ();
+            List<float> chances = new();
 
             for (int index = 0; index < _roomDatas.Length; index++)
             {

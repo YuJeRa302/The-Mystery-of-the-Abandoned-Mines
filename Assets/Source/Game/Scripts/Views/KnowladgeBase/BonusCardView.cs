@@ -1,5 +1,8 @@
 using UnityEngine;
 
-public class BonusCardView : MonoBehaviour
+namespace Assets.Source.Game.Scripts.Views
 {
+    public class BonusCardView : MonoBehaviour
+    {
+    }
 }

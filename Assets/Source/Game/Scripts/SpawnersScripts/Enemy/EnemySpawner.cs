@@ -1,13 +1,18 @@
+using Assets.Source.Game.Scripts.Characters;
+using Assets.Source.Game.Scripts.Menu;
+using Assets.Source.Game.Scripts.PoolSystem;
+using Assets.Source.Game.Scripts.Services;
+using Assets.Source.Game.Scripts.Views;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.SpawnersScripts
 {
     public class EnemySpawner : IDisposable
     {
-        private readonly System.Random _rnd = new ();
+        private readonly System.Random _rnd = new();
         private readonly int _minValueChance = 0;
         private readonly int _maxValueChance = 100;
 
@@ -19,7 +24,7 @@ namespace Assets.Source.Game.Scripts
         private Coroutine _spawnEnemy;
         private ICoroutineRunner _coroutineRunner;
         private int _currentRoomLevel;
-        private List<Enemy> _enemies = new ();
+        private List<Enemy> _enemies = new();
         private Dictionary<string, PoolParticle> _deadParticles = new Dictionary<string, PoolParticle>();
         private int _deadEnemy = 0;
         private int _totalEnemyCount;
@@ -28,7 +33,10 @@ namespace Assets.Source.Game.Scripts
         private AudioPlayer _audioPlayer;
         private int _currentLevelTier;
 
-        public EnemySpawner(Pool enemyPool, ICoroutineRunner coroutineRunner, AudioPlayer audioPlayer, int currentLevelTier)
+        public EnemySpawner(Pool enemyPool,
+            ICoroutineRunner coroutineRunner,
+            AudioPlayer audioPlayer,
+            int currentLevelTier)
         {
             _enemuPool = enemyPool;
             _coroutineRunner = coroutineRunner;
@@ -50,7 +58,7 @@ namespace Assets.Source.Game.Scripts
             if (_player != null)
                 _player.PlayerDied -= OnPlayerDead;
 
-            foreach(Enemy enemy in _enemies)
+            foreach (Enemy enemy in _enemies)
             {
                 enemy.Died -= OnEnemyDead;
                 enemy.PlayerAttacked -= OnEnemyAttack;
@@ -140,7 +148,7 @@ namespace Assets.Source.Game.Scripts
                     }
                 }
 
-                if(_currentEnemyCount < _totalEnemyCount)
+                if (_currentEnemyCount < _totalEnemyCount)
                 {
                     while (currentEnemyCount < enemyData.EnemyStats[_currentLevelTier].EnemyCount)
                     {
@@ -153,7 +161,7 @@ namespace Assets.Source.Game.Scripts
 
                 _isEnemySpawned = true;
             }
-            else 
+            else
             {
                 yield return null;
                 _totalEnemyCount -= enemyData.EnemyStats[_currentLevelTier].EnemyCount;
@@ -174,7 +182,8 @@ namespace Assets.Source.Game.Scripts
             }
             else
             {
-                enemy = GameObject.Instantiate(enemyData.PrefabEnemy, _spawnPoints[value].position, _spawnPoints[value].rotation);
+                enemy = UnityEngine.Object.Instantiate(enemyData.PrefabEnemy,
+                    _spawnPoints[value].position, _spawnPoints[value].rotation);
                 _enemuPool.InstantiatePoolObject(enemy, enemyData.PrefabEnemy.name);
                 enemy.Initialize(_player, _currentRoomLevel, enemyData, _currentLevelTier);
                 enemy.Died += OnEnemyDead;
@@ -188,7 +197,7 @@ namespace Assets.Source.Game.Scripts
 
         private void OnEnemyAttack(AudioClip audioClip)
         {
-            _audioPlayer.PlayCharesterAudio(audioClip);
+            _audioPlayer.PlayCharacterAudio(audioClip);
         }
 
         private bool TryFindEnemy(GameObject enemyType, out Enemy poolEnemy)
@@ -203,7 +212,7 @@ namespace Assets.Source.Game.Scripts
 
         private void OnEnemyDead(Enemy enemy)
         {
-            _audioPlayer.PlayCharesterAudio(enemy.DeathAudio);
+            _audioPlayer.PlayCharacterAudio(enemy.DeathAudio);
             EnemyDied?.Invoke(enemy);
 
             if (_deadParticles.TryGetValue(enemy.NameObject, out PoolParticle particlePrefab))
@@ -218,7 +227,8 @@ namespace Assets.Source.Game.Scripts
                 }
                 else
                 {
-                    particle = GameObject.Instantiate(particlePrefab, enemy.transform.position, Quaternion.identity);
+                    particle = UnityEngine.Object.Instantiate(particlePrefab,
+                        enemy.transform.position, Quaternion.identity);
                     _enemuPool.InstantiatePoolObject(particle, particlePrefab.name);
                 }
             }

@@ -2,14 +2,17 @@ using Lean.Localization;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class LinkCardView : MonoBehaviour
+namespace Assets.Source.Game.Scripts.Views
 {
-    [SerializeField] private Image _icon;
-    [SerializeField] private LeanLocalizedText _name;
-
-    public void Initialize(Sprite icon, string name)
+    public class LinkCardView : MonoBehaviour
     {
-        _icon.sprite = icon;
-        _name.TranslationName = name;
+        [SerializeField] private Image _icon;
+        [SerializeField] private LeanLocalizedText _name;
+
+        public void Initialize(Sprite icon, string name)
+        {
+            _icon.sprite = icon;
+            _name.TranslationName = name;
+        }
     }
 }

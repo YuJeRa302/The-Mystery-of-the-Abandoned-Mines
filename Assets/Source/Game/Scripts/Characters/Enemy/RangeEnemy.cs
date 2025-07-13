@@ -1,12 +1,13 @@
+using Assets.Source.Game.Scripts.SpawnersScripts;
 using UnityEngine;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.Characters
 {
     public class RangeEnemy : Enemy
     {
         [SerializeField] private EnemyBullet _bullet;
         [SerializeField] private Transform _shootPoint;
-        
+
         private BulletSpawner _bulletSpawner;
 
         public BulletSpawner BulletSpawner => _bulletSpawner;

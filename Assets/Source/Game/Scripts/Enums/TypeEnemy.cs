@@ -1,6 +1,9 @@
-public enum TypeEnemy
+namespace Assets.Source.Game.Scripts.Enums
 {
-    Standart,
-    Hard,
-    Boss
+    public enum TypeEnemy
+    {
+        Standart,
+        Hard,
+        Boss
+    }
 }

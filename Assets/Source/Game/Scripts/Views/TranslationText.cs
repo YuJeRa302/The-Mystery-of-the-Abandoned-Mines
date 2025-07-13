@@ -2,20 +2,23 @@ using Lean.Localization;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TranslationText : MonoBehaviour
+namespace Assets.Source.Game.Scripts.Views
 {
-    [SerializeField] private Text _text;
-    [SerializeField] private LeanLocalizedText _leanLocalizedText;
-
-    private string _key;
-
-    private void Awake()
+    public class TranslationText : MonoBehaviour
     {
-        _key = _text.text;
-    }
+        [SerializeField] private Text _text;
+        [SerializeField] private LeanLocalizedText _leanLocalizedText;
 
-    private void OnEnable()
-    {
-        _leanLocalizedText.TranslationName = _key;
+        private string _key;
+
+        private void Awake()
+        {
+            _key = _text.text;
+        }
+
+        private void OnEnable()
+        {
+            _leanLocalizedText.TranslationName = _key;
+        }
     }
 }

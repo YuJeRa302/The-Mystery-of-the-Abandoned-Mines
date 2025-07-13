@@ -1,9 +1,12 @@
-using Assets.Source.Game.Scripts;
+using Assets.Source.Game.Scripts.Characters;
 
-public class DamageZone : Trap
+namespace Assets.Source.Game.Scripts.Traps
 {
-    protected override void ApplyDamage(Player player)
+    public class DamageZone : Trap
     {
-        player.TakeDamage(_damage);
+        protected override void ApplyDamage(Player player)
+        {
+            player.TakeDamage(_damage);
+        }
     }
 }

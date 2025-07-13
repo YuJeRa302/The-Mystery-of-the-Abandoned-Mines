@@ -1,66 +1,67 @@
-using Assets.Source.Game.Scripts;
+using Assets.Source.Game.Scripts.Levels;
 using System;
 using System.Collections.Generic;
 
-[Serializable]
-public class LevelService
+namespace Assets.Source.Game.Scripts.Services
 {
-    public int CurrentLevelId;
-    public List<LevelState> LevelStates = new ();
-
-    public void SetLevelStates(LevelState[] levelStates) 
+    [Serializable]
+    public class LevelService
     {
-        for (int index = 0; index < levelStates.Length; index++)
+        public int CurrentLevelId;
+        public List<LevelState> LevelStates = new();
+
+        public void SetLevelStates(LevelState[] levelStates)
         {
-            LevelStates.Add(levelStates[index]);
-        }
-    }
-
-    public void AddLevelState(int id, bool isComplete) 
-    {
-        LevelState levelState = GetLevelStateById(id);
-
-        if (levelState.IsComplete == true)
-            return;
-        else
-            levelState.IsComplete = isComplete;
-    }
-
-    public LevelState GetLevelStateByLevelData(LevelData levelData)
-    {
-        LevelState levelState = GetLevelStateById(levelData.Id);
-
-        if (levelState == null)
-            levelState = InitLevelState(levelData);
-
-        return levelState;
-    }
-
-    public LevelState GetLevelStateById(int id)
-    {
-        if (LevelStates != null)
-        {
-            foreach (LevelState levelState in LevelStates)
+            for (int index = 0; index < levelStates.Length; index++)
             {
-                if (levelState.Id == id)
-                    return levelState;
+                LevelStates.Add(levelStates[index]);
             }
         }
 
-        return null;
-    }
-
-    private LevelState InitLevelState(LevelData levelData)
-    {
-        LevelState levelState = new ()
+        public void AddLevelState(int id, bool isComplete)
         {
-            Id = levelData.Id,
-            IsComplete = false,
-            CurrentCompleteStages = 0,
-            Tier = levelData.Tier
-        };
+            LevelState levelState = GetLevelStateById(id);
 
-        LevelStates.Add(levelState);
-        return levelState;
+            if (levelState.IsComplete == true)
+                return;
+            else
+                levelState.IsComplete = isComplete;
+        }
+
+        public LevelState GetLevelStateByLevelData(LevelData levelData)
+        {
+            LevelState levelState = GetLevelStateById(levelData.Id);
+
+            if (levelState == null)
+                levelState = InitLevelState(levelData);
+
+            return levelState;
+        }
+
+        public LevelState GetLevelStateById(int id)
+        {
+            if (LevelStates != null)
+            {
+                foreach (LevelState levelState in LevelStates)
+                {
+                    if (levelState.Id == id)
+                        return levelState;
+                }
+            }
+
+            return null;
+        }
+
+        private LevelState InitLevelState(LevelData levelData)
+        {
+            LevelState levelState = new()
+            {
+                Id = levelData.Id,
+                IsComplete = false,
+            };
+
+            LevelStates.Add(levelState);
+            return levelState;
+        }
     }
 }

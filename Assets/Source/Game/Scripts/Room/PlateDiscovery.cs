@@ -1,25 +1,28 @@
-using Assets.Source.Game.Scripts;
+using Assets.Source.Game.Scripts.Characters;
 using System;
 using UnityEngine;
 
-public class PlateDiscovery : MonoBehaviour
+namespace Assets.Source.Game.Scripts.Rooms
 {
-    [SerializeField] private ParticleSystem _effects;
-
-    private bool _isUsed = false;
-
-    public event Action<Player> PlateEntered;
-
-    private void OnCollisionEnter(Collision collision)
+    public class PlateDiscovery : MonoBehaviour
     {
-        if (_isUsed == false)
+        [SerializeField] private ParticleSystem _effects;
+
+        private bool _isUsed = false;
+
+        public event Action<Player> PlateEntered;
+
+        private void OnCollisionEnter(Collision collision)
         {
-            if (collision.collider.TryGetComponent(out Player player))
+            if (_isUsed == false)
             {
-                PlateEntered?.Invoke(player);
-                _effects.gameObject.SetActive(true);
-                _effects.Play();
-                _isUsed = true;
+                if (collision.collider.TryGetComponent(out Player player))
+                {
+                    PlateEntered?.Invoke(player);
+                    _effects.gameObject.SetActive(true);
+                    _effects.Play();
+                    _isUsed = true;
+                }
             }
         }
     }

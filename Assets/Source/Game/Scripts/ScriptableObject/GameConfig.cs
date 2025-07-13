@@ -1,3 +1,4 @@
+using Assets.Source.Game.Scripts.ScriptableObjects;
 using System.Collections.Generic;
 using UnityEngine;
 

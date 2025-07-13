@@ -1,75 +1,79 @@
-using Assets.Source.Game.Scripts;
+using Assets.Source.Game.Scripts.GamePanels;
+using Assets.Source.Game.Scripts.ViewModels;
 using System;
 using System.Collections.Generic;
 
-public class GamePanelsService : IDisposable
+namespace Assets.Source.Game.Scripts.Services
 {
-    private readonly List<GamePanelsView> _gamePanelsViews = new ();
-
-    public GamePanelsService(List<GamePanelsView> gamePanelsViews)
+    public class GamePanelsService : IDisposable
     {
-        _gamePanelsViews = gamePanelsViews;
-    }
+        private readonly List<GamePanelsView> _gamePanelsViews = new();
 
-    public event Action ByMenuPaused;
-    public event Action ByMenuResumed;
-    public event Action PauseByRewarded;
-    public event Action ResumeByRewarded;
-    public event Action ByFullscreenAdPaused;
-    public event Action ByFullscreenAdResumed;
-    public event Action GameClosed;
-
-    public void Dispose()
-    {
-        RemoveListener();
-        GC.SuppressFinalize(this);
-    }
-
-    public void ClosePanels()
-    {
-        foreach (var panel in _gamePanelsViews)
-            panel.gameObject.SetActive(false);
-    }
-
-    public void InitGamePanels(GamePanelsViewModel gamePanelsViewModel)
-    {
-        foreach (var panel in _gamePanelsViews)
+        public GamePanelsService(List<GamePanelsView> gamePanelsViews)
         {
-            panel.Initialize(gamePanelsViewModel);
+            _gamePanelsViews = gamePanelsViews;
         }
 
-        AddListener();
-        gamePanelsViewModel.OpenCardPanel();
-    }
+        public event Action ByMenuPaused;
+        public event Action ByMenuResumed;
+        public event Action PauseByRewarded;
+        public event Action ResumeByRewarded;
+        public event Action ByFullscreenAdPaused;
+        public event Action ByFullscreenAdResumed;
+        public event Action GameClosed;
 
-    private void AddListener()
-    {
-        foreach (var panel in _gamePanelsViews)
+        public void Dispose()
         {
-            panel.PanelOpened += () => ByMenuPaused?.Invoke();
-            panel.PanelClosed += () => ByMenuResumed?.Invoke();
-            panel.GameClosed += () => GameClosed?.Invoke();
-            panel.RewardAdOpened += () => PauseByRewarded.Invoke();
-            panel.RewardAdClosed += () => ResumeByRewarded.Invoke();
-            panel.FullscreenAdOpened += () => ByFullscreenAdPaused.Invoke();
-            panel.FullscreenAdClosed += () => ByFullscreenAdResumed.Invoke();
+            RemoveListener();
+            GC.SuppressFinalize(this);
         }
-    }
 
-    private void RemoveListener()
-    {
-        foreach (var panel in _gamePanelsViews)
+        public void ClosePanels()
         {
-            if (panel == null)
-                continue;
+            foreach (var panel in _gamePanelsViews)
+                panel.gameObject.SetActive(false);
+        }
 
-            panel.PanelOpened -= () => ByMenuPaused?.Invoke();
-            panel.PanelClosed -= () => ByMenuResumed?.Invoke();
-            panel.GameClosed -= () => GameClosed?.Invoke();
-            panel.RewardAdOpened -= () => PauseByRewarded.Invoke();
-            panel.RewardAdClosed -= () => ResumeByRewarded.Invoke();
-            panel.FullscreenAdOpened -= () => ByFullscreenAdPaused.Invoke();
-            panel.FullscreenAdClosed -= () => ByFullscreenAdResumed.Invoke();
+        public void InitGamePanels(GamePanelsViewModel gamePanelsViewModel)
+        {
+            foreach (var panel in _gamePanelsViews)
+            {
+                panel.Initialize(gamePanelsViewModel);
+            }
+
+            AddListener();
+            gamePanelsViewModel.OpenCardPanel();
+        }
+
+        private void AddListener()
+        {
+            foreach (var panel in _gamePanelsViews)
+            {
+                panel.PanelOpened += () => ByMenuPaused?.Invoke();
+                panel.PanelClosed += () => ByMenuResumed?.Invoke();
+                panel.GameClosed += () => GameClosed?.Invoke();
+                panel.RewardAdOpened += () => PauseByRewarded.Invoke();
+                panel.RewardAdClosed += () => ResumeByRewarded.Invoke();
+                panel.FullscreenAdOpened += () => ByFullscreenAdPaused.Invoke();
+                panel.FullscreenAdClosed += () => ByFullscreenAdResumed.Invoke();
+            }
+        }
+
+        private void RemoveListener()
+        {
+            foreach (var panel in _gamePanelsViews)
+            {
+                if (panel == null)
+                    continue;
+
+                panel.PanelOpened -= () => ByMenuPaused?.Invoke();
+                panel.PanelClosed -= () => ByMenuResumed?.Invoke();
+                panel.GameClosed -= () => GameClosed?.Invoke();
+                panel.RewardAdOpened -= () => PauseByRewarded.Invoke();
+                panel.RewardAdClosed -= () => ResumeByRewarded.Invoke();
+                panel.FullscreenAdOpened -= () => ByFullscreenAdPaused.Invoke();
+                panel.FullscreenAdClosed -= () => ByFullscreenAdResumed.Invoke();
+            }
         }
     }
 }

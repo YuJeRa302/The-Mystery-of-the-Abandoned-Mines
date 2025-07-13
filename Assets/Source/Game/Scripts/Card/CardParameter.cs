@@ -1,4 +1,6 @@
-namespace Assets.Source.Game.Scripts
+using Assets.Source.Game.Scripts.Enums;
+
+namespace Assets.Source.Game.Scripts.Card
 {
     [System.Serializable]
     public class CardParameter

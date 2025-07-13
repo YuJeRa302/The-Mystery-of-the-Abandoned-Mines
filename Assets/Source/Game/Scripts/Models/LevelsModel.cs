@@ -1,8 +1,12 @@
+using Assets.Source.Game.Scripts.Items;
+using Assets.Source.Game.Scripts.Levels;
+using Assets.Source.Game.Scripts.Services;
+using Assets.Source.Game.Scripts.Views;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.Models
 {
     public class LevelsModel
     {

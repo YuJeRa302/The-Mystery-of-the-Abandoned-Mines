@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.Card
 {
     [System.Serializable]
     public class Parameters

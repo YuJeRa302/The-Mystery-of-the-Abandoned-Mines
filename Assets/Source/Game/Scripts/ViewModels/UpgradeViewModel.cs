@@ -1,6 +1,8 @@
+using Assets.Source.Game.Scripts.Models;
+using Assets.Source.Game.Scripts.Upgrades;
 using System;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.ViewModels
 {
     public class UpgradeViewModel : IDisposable
     {

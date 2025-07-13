@@ -1,4 +1,4 @@
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.States
 {
     [System.Serializable]
     public class ClassAbilityState

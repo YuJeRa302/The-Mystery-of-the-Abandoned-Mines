@@ -1,10 +1,12 @@
+using Assets.Source.Game.Scripts.ScriptableObjects;
+using Assets.Source.Game.Scripts.Services;
 using Lean.Localization;
 using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.Views
 {
     public class PlayerClassDataView : MonoBehaviour, IPointerEnterHandler, IPointerDownHandler
     {

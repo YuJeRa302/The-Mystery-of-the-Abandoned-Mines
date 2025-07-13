@@ -1,21 +1,18 @@
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.Characters
 {
     public class BossSpecialAttackState : State
     {
-        protected Player Target;
         protected Enemy Enemy;
         protected EnemyAnimation AnimationController;
 
-        public BossSpecialAttackState(StateMashine stateMashine, Player player, Enemy enemy) : base(stateMashine)
+        public BossSpecialAttackState(StateMachine stateMashine, Enemy enemy) : base(stateMashine)
         {
-            Target = player;
             Enemy = enemy;
             AnimationController = Enemy.AnimationStateController;
         }
 
         public override void EnterState()
         {
-            base.EnterState();
             CanTransit = false;
         }
 

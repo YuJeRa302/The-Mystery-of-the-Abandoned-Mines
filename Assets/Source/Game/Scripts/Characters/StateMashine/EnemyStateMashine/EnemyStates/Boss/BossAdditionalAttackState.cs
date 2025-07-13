@@ -1,33 +1,26 @@
-using Assets.Source.Game.Scripts;
-using UnityEngine;
-
-public class BossAdditionalAttackState : State
+namespace Assets.Source.Game.Scripts.Characters
 {
-    protected Player Target;
-    protected Enemy Enemy;
-    protected EnemyAnimation AnimationController;
-    protected Vector3 DirectionToTarget;
-    protected float DistanceToTarget;
-
-    public BossAdditionalAttackState(StateMashine stateMashine, Player target, Enemy enemy) : base(stateMashine)
+    public class BossAdditionalAttackState : State
     {
-        Target = target;
-        Enemy = enemy;
-    }
+        protected Player Target;
+        protected Enemy Enemy;
 
-    public override void EnterState()
-    {
-        base.EnterState();
-        CanTransit = false;
-    }
+        public BossAdditionalAttackState(StateMachine stateMashine, Player target, Enemy enemy)
+            : base(stateMashine)
+        {
+            Target = target;
+            Enemy = enemy;
+        }
 
-    public override void UpdateState()
-    {
-        if (CanTransit)
-            StateMashine.SetState<EnemyMoveState>();
-    }
+        public override void EnterState()
+        {
+            CanTransit = false;
+        }
 
-    protected virtual void AditionalAttackAppalyDamage()
-    {
+        public override void UpdateState()
+        {
+            if (CanTransit)
+                StateMashine.SetState<EnemyMoveState>();
+        }
     }
 }

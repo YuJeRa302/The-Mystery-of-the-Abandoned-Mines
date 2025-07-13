@@ -1,6 +1,8 @@
+using Assets.Source.Game.Scripts.Menu;
+using Assets.Source.Game.Scripts.Services;
 using Lean.Localization;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.Models
 {
     public class SettingsModel
     {

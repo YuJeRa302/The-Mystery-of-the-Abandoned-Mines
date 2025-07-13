@@ -1,12 +1,16 @@
+using Assets.Source.Game.Scripts.Enums;
 using System;
 using UnityEngine;
 
-[Serializable]
-public class DamageSupportivePatametrIcon
+namespace Assets.Source.Game.Scripts.Views
 {
-    [SerializeField] private TypeDamageParameter _typeDamage;
-    [SerializeField] private Sprite _icon;
+    [Serializable]
+    public class DamageSupportivePatametrIcon
+    {
+        [SerializeField] private TypeDamageParameter _typeDamage;
+        [SerializeField] private Sprite _icon;
 
-    public TypeDamageParameter TypeDamage => _typeDamage;
-    public Sprite Icon => _icon;
+        public TypeDamageParameter TypeDamage => _typeDamage;
+        public Sprite Icon => _icon;
+    }
 }

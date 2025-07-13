@@ -1,7 +1,10 @@
-public enum TypeAttackAbility
+namespace Assets.Source.Game.Scripts.Enums
 {
-    AoEAbility,
-    ProjectileAbility,
-    TargetSpell,
-    RotationAbility
+    public enum TypeAttackAbility
+    {
+        AoEAbility,
+        ProjectileAbility,
+        TargetSpell,
+        RotationAbility
+    }
 }

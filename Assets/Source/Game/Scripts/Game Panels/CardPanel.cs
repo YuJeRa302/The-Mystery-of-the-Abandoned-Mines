@@ -1,9 +1,11 @@
+using Assets.Source.Game.Scripts.Card;
+using Assets.Source.Game.Scripts.ViewModels;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using YG;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.GamePanels
 {
     public class CardPanel : GamePanelsView
     {
@@ -15,7 +17,7 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private Button _buttonTest;
         [SerializeField] private Text _countRerollPointsText;
 
-        private List<CardView> _cardViews = new ();
+        private List<CardView> _cardViews = new();
         private GamePanelsViewModel _gamePanelsViewModel;
 
         private void OnDestroy()

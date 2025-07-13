@@ -1,12 +1,15 @@
-using Assets.Source.Game.Scripts;
+using Assets.Source.Game.Scripts.AbilityScripts;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New ClassAbility", menuName = "Create Class Ability/Epiphany", order = 51)]
-public class EpiphanyClassAbilityData : ClassAbilityData
+namespace Assets.Source.Game.Scripts.ScriptableObjects
 {
-    [SerializeField] private ParticleSystem _epiphanyParticle;
-    [SerializeField] private Spell _spell;
+    [CreateAssetMenu(fileName = "New ClassAbility", menuName = "Create Class Ability/Epiphany", order = 51)]
+    public class EpiphanyClassAbilityData : ClassAbilityData
+    {
+        [SerializeField] private ParticleSystem _epiphanyParticle;
+        [SerializeField] private Spell _spell;
 
-    public Spell Spell => _spell;
-    public ParticleSystem EpiphanyParticle => _epiphanyParticle;
+        public Spell Spell => _spell;
+        public ParticleSystem EpiphanyParticle => _epiphanyParticle;
+    }
 }

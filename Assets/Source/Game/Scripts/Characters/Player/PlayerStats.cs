@@ -1,13 +1,19 @@
+using Assets.Source.Game.Scripts.AbilityScripts;
+using Assets.Source.Game.Scripts.Card;
+using Assets.Source.Game.Scripts.Enums;
+using Assets.Source.Game.Scripts.ScriptableObjects;
+using Assets.Source.Game.Scripts.Services;
+using Assets.Source.Game.Scripts.Upgrades;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.Characters
 {
     public class PlayerStats : IDisposable
     {
-        private readonly Dictionary<int, int> _levels = new ();
-        private readonly Dictionary<int, int> _upgradeLevels = new ();
+        private readonly Dictionary<int, int> _levels = new();
+        private readonly Dictionary<int, int> _upgradeLevels = new();
         private readonly int _maxExperience = 50;
         private readonly int _maxUpgradeExperience = 500;
         private readonly int _minValue = 0;
@@ -130,7 +136,7 @@ namespace Assets.Source.Game.Scripts
             _rerollPoints = Mathf.Clamp(_rerollPoints--, _minValue, _rerollPoints);
         }
 
-        public void GetReward(int value) 
+        public void GetReward(int value)
         {
             _rerollPoints += value;
         }
@@ -149,7 +155,8 @@ namespace Assets.Source.Game.Scripts
 
         public void UpdatePlayerStats(CardView cardView)
         {
-            foreach (var parameter in cardView.CardData.AttributeData.Parameters[cardView.CardState.CurrentLevel].CardParameters)
+            foreach (var parameter in
+                cardView.CardData.AttributeData.Parameters[cardView.CardState.CurrentLevel].CardParameters)
             {
                 switch (parameter.TypeParameter)
                 {
@@ -174,10 +181,11 @@ namespace Assets.Source.Game.Scripts
 
         public void UpdateRerollPoints(CardView cardView)
         {
-            _rerollPoints += cardView.CardData.AttributeData.Parameters[cardView.CardState.CurrentLevel].CardParameters[0].Value;
+            _rerollPoints +=
+                cardView.CardData.AttributeData.Parameters[cardView.CardState.CurrentLevel].CardParameters[0].Value;
         }
 
-        public void SetPlayerUpgrades(GameConfig gameConfig, PersistentDataService persistentDataService) 
+        public void SetPlayerUpgrades(GameConfig gameConfig, PersistentDataService persistentDataService)
         {
             UpgradeData upgradeData;
 
@@ -199,25 +207,33 @@ namespace Assets.Source.Game.Scripts
                             _armor += upgradeData.GetUpgradeParameterByCurrentLevel(upgradeState.CurrentLevel).Value;
                             break;
                         case TypeParameter.Damage:
-                            _damageSource.ChangeDamage(_damageSource.Damage + upgradeData.GetUpgradeParameterByCurrentLevel(upgradeState.CurrentLevel).Value);
+                            _damageSource.ChangeDamage(
+                                _damageSource.Damage +
+                                upgradeData.GetUpgradeParameterByCurrentLevel(upgradeState.CurrentLevel).Value);
                             break;
                         case TypeParameter.Regeneration:
-                            _regeneration += upgradeData.GetUpgradeParameterByCurrentLevel(upgradeState.CurrentLevel).Value;
+                            _regeneration += upgradeData.GetUpgradeParameterByCurrentLevel(
+                                upgradeState.CurrentLevel).Value;
                             break;
                         case TypeParameter.Reroll:
-                            _rerollPoints += upgradeData.GetUpgradeParameterByCurrentLevel(upgradeState.CurrentLevel).Value;
+                            _rerollPoints += upgradeData.GetUpgradeParameterByCurrentLevel(
+                                upgradeState.CurrentLevel).Value;
                             break;
                         case TypeParameter.Health:
-                            HealthUpgradeApplied?.Invoke(upgradeData.GetUpgradeParameterByCurrentLevel(upgradeState.CurrentLevel).Value);
+                            HealthUpgradeApplied?.Invoke(upgradeData.GetUpgradeParameterByCurrentLevel(
+                                upgradeState.CurrentLevel).Value);
                             break;
                         case TypeParameter.AbilityCooldown:
-                            AbilityCooldownReductionChanged?.Invoke(upgradeData.GetUpgradeParameterByCurrentLevel(upgradeState.CurrentLevel).Value);
+                            AbilityCooldownReductionChanged?.Invoke(upgradeData.GetUpgradeParameterByCurrentLevel(
+                                upgradeState.CurrentLevel).Value);
                             break;
                         case TypeParameter.AbilityDuration:
-                            AbilityDurationChanged?.Invoke(upgradeData.GetUpgradeParameterByCurrentLevel(upgradeState.CurrentLevel).Value);
+                            AbilityDurationChanged?.Invoke(upgradeData.GetUpgradeParameterByCurrentLevel(
+                                upgradeState.CurrentLevel).Value);
                             break;
                         case TypeParameter.AbilityValue:
-                            AbilityDamageChanged?.Invoke(upgradeData.GetUpgradeParameterByCurrentLevel(upgradeState.CurrentLevel).Value);
+                            AbilityDamageChanged?.Invoke(upgradeData.GetUpgradeParameterByCurrentLevel(
+                                upgradeState.CurrentLevel).Value);
                             break;
                     }
                 }
@@ -383,7 +399,7 @@ namespace Assets.Source.Game.Scripts
                 ApplyPlayerRange(_defaultAttackRange, _defaultSearchRadius);
         }
 
-        private void ApplyPlayerRange(float attackRange, float searchRange) 
+        private void ApplyPlayerRange(float attackRange, float searchRange)
         {
             _attackRange = attackRange;
             _searchRadius = searchRange;
@@ -400,7 +416,8 @@ namespace Assets.Source.Game.Scripts
                     _currentUpgradePoints++;
                     _currentUpgradeExperience = difference;
                     _upgradeLevels.TryGetValue(_currentUpgradeLevel, out int maxExperienceValue);
-                    PlayerUpgradeLevelChanged?.Invoke(_currentUpgradeLevel, maxExperienceValue, _currentUpgradeExperience);
+                    PlayerUpgradeLevelChanged?.Invoke(_currentUpgradeLevel,
+                        maxExperienceValue, _currentUpgradeExperience);
                 }
             }
         }

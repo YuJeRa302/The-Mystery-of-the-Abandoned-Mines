@@ -1,12 +1,15 @@
+using Assets.Source.Game.Scripts.Characters;
+using Assets.Source.Game.Scripts.Enums;
+using Assets.Source.Game.Scripts.ScriptableObjects;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.Card
 {
     public class CardLoader : MonoBehaviour
     {
-        private readonly System.Random _rnd = new ();
+        private readonly System.Random _rnd = new();
         private readonly int _minValue = 0;
         private readonly int _shiftIndex = 1;
         private readonly int _maxCardsPool = 3;
@@ -15,7 +18,7 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private List<CardData> _defaultCardData;
 
         private Player _player;
-        private List<CardData> _mainCardsPool = new ();
+        private List<CardData> _mainCardsPool = new();
 
         public event Action CardPoolCreated;
 
@@ -73,7 +76,7 @@ namespace Assets.Source.Game.Scripts
             foreach (var card in cardsData)
             {
                 CardState cardState = _player.GetCardStateByData(card);
-                
+
                 if (cardState.IsLocked == false)
                 {
                     if (cardState.IsTaked == false)
@@ -93,7 +96,7 @@ namespace Assets.Source.Game.Scripts
             return null;
         }
 
-        private CardData AddDefaultCard() 
+        private CardData AddDefaultCard()
         {
             return _defaultCardData[_rnd.Next(_minValue, _defaultCardData.Count)];
         }
@@ -112,14 +115,16 @@ namespace Assets.Source.Game.Scripts
                         ProcessAbilityCard(card, cardState, cards);
                         break;
 
-                    case TypeCardParameter.LegendariAbility:
+                    case TypeCardParameter.LegendaryAbility:
                         ProcessLegendaryCard(card, cardState);
                         break;
                 }
             }
         }
 
-        private bool FindLegendaryCard(List<CardData> cards, TypeUpgradeAbility upgradeType, out CardData legendaryCard)
+        private bool FindLegendaryCard(List<CardData> cards,
+            TypeUpgradeAbility upgradeType,
+            out CardData legendaryCard)
         {
             for (int i = 0; i < cards.Count; i++)
             {
@@ -132,7 +137,8 @@ namespace Assets.Source.Game.Scripts
                     {
                         if ((card.AttributeData as LegendaryAbilityData).UpgradeType == upgradeType)
                         {
-                            if (cardState.CurrentLevel <= (card.AttributeData as LegendaryAbilityData).Parameters.Count)
+                            if (cardState.CurrentLevel <=
+                                (card.AttributeData as LegendaryAbilityData).Parameters.Count)
                             {
                                 if (!cardState.IsCardUpgraded)
                                 {
@@ -149,7 +155,7 @@ namespace Assets.Source.Game.Scripts
             return false;
         }
 
-        private bool TryFindPassivCard(List<CardData> cards, TypeMagic magicType)
+        private bool TryFindPassiveCard(List<CardData> cards, TypeMagic magicType)
         {
             for (int i = 0; i < cards.Count; i++)
             {
@@ -184,9 +190,9 @@ namespace Assets.Source.Game.Scripts
 
             if (card.AttributeData is ActiveAbilityData activeAbility)
             {
-                if (TryFindPassivCard(allCards, activeAbility.MagicType))
+                if (TryFindPassiveCard(allCards, activeAbility.MagicType))
                 {
-                    if(FindLegendaryCard(allCards, activeAbility.UpgradeType, out CardData legendaryCard))
+                    if (FindLegendaryCard(allCards, activeAbility.UpgradeType, out CardData legendaryCard))
                     {
                         _player.GetCardStateByData(legendaryCard).IsLocked = false;
                     }

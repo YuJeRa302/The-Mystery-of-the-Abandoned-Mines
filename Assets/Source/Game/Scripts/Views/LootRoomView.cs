@@ -1,12 +1,14 @@
+using Assets.Source.Game.Scripts.Characters;
+using Assets.Source.Game.Scripts.Rooms;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.Views
 {
     public class LootRoomView : RoomView
     {
-        private readonly System.Random _rnd = new ();
+        private readonly System.Random _rnd = new();
 
         [SerializeField] private PlateDiscovery _plateDiscovery;
         [SerializeField] private int _minValue;

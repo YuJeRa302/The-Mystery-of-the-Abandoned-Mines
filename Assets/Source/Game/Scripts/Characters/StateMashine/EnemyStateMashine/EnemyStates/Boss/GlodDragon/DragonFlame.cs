@@ -1,26 +1,28 @@
-using Assets.Source.Game.Scripts;
 using UnityEngine;
 
-public class DragonFlame : MonoBehaviour
+namespace Assets.Source.Game.Scripts.Characters
 {
-    [SerializeField] private int _damage;
-    
-    private float _damageInterval = 0.5f;
-    private float _lastDamageTime;
-
-    public void Initialize(int damage)
+    public class DragonFlame : MonoBehaviour
     {
-        _damage = damage;
-    }
+        [SerializeField] private int _damage;
 
-    private void OnParticleCollision(GameObject other)
-    {
-        if (Time.time - _lastDamageTime > _damageInterval)
+        private float _damageInterval = 0.5f;
+        private float _lastDamageTime;
+
+        public void Initialize(int damage)
         {
-            if (other.gameObject.TryGetComponent(out Player player))
+            _damage = damage;
+        }
+
+        private void OnParticleCollision(GameObject other)
+        {
+            if (Time.time - _lastDamageTime > _damageInterval)
             {
-                player.TakeDamage(_damage);
-                _lastDamageTime = Time.time;
+                if (other.gameObject.TryGetComponent(out Player player))
+                {
+                    player.TakeDamage(_damage);
+                    _lastDamageTime = Time.time;
+                }
             }
         }
     }

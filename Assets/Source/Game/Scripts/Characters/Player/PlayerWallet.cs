@@ -1,25 +1,24 @@
 using System;
 
-public class PlayerWallet : IDisposable
+namespace Assets.Source.Game.Scripts.Characters
 {
-    private int _currentCoins;
-
-    public PlayerWallet()
+    public class PlayerWallet : IDisposable
     {
-    }
+        private int _currentCoins;
 
-    public int CurrentCoins => _currentCoins;
+        public int CurrentCoins => _currentCoins;
 
-    public void AddCoins(int reward)
-    {
-        if (reward <= 0)
-            return;
+        public void AddCoins(int reward)
+        {
+            if (reward <= 0)
+                return;
 
-        _currentCoins += reward;
-    }
+            _currentCoins += reward;
+        }
 
-    public void Dispose()
-    {
-        GC.SuppressFinalize(this);
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
+        }
     }
 }

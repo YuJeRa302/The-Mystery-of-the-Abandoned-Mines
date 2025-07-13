@@ -1,7 +1,10 @@
-public enum TypeMagic
+namespace Assets.Source.Game.Scripts.Enums
 {
-    Fiery,
-    Electric,
-    Icy,
-    None
+    public enum TypeMagic
+    {
+        Fiery,
+        Electric,
+        Icy,
+        None
+    }
 }

@@ -1,8 +1,10 @@
+using Assets.Source.Game.Scripts.ScriptableObjects;
+using Assets.Source.Game.Scripts.Services;
 using System;
 using System.Collections;
 using UnityEngine;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.Characters
 {
     public class PlayerAnimation : IDisposable
     {
@@ -13,7 +15,7 @@ namespace Assets.Source.Game.Scripts
         private Rigidbody _rigidbody;
         private Coroutine _moveCorontine;
         private Player _player;
-        private HashAnimationPlayer _animationPlayer = new ();
+        private AnimationPlayerName _animationPlayer = new();
         private float _maxSpeed;
 
         public PlayerAnimation(
@@ -66,7 +68,7 @@ namespace Assets.Source.Game.Scripts
             _gamePauseService.GameResumed += OnGameResumed;
         }
 
-        private void RemoveListeners() 
+        private void RemoveListeners()
         {
             if (_gamePauseService != null)
             {

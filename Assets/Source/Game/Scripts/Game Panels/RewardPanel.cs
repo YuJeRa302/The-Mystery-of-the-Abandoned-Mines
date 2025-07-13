@@ -2,8 +2,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using YG;
 using Lean.Localization;
+using Assets.Source.Game.Scripts.Utility;
+using Assets.Source.Game.Scripts.ViewModels;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.GamePanels
 {
     public class RewardPanel : GamePanelsView
     {
@@ -190,7 +192,9 @@ namespace Assets.Source.Game.Scripts
                 {
                     _weaponContractReward.SetActive(true);
                     _weaponIcon.sprite = _currentWeaponData.Icon;
-                    _weaponBackgroundIcon.color = new Color(_currentWeaponData.TierColor.r, _currentWeaponData.TierColor.g, _currentWeaponData.TierColor.b);
+                    _weaponBackgroundIcon.color = new Color(_currentWeaponData.TierColor.r,
+                        _currentWeaponData.TierColor.g,
+                        _currentWeaponData.TierColor.b);
                     Fill();
                 }
                 else
@@ -215,7 +219,8 @@ namespace Assets.Source.Game.Scripts
         {
             _levelCompleteReward.SetActive(true);
             _imageGameState.sprite = gameState == true ? _winGameSprite : _loseGameSprite;
-            _gameStateText.TranslationName = gameState == true ? GameConstants.WinGameTranslationKey : GameConstants.LoseGameTranslationKey;
+            _gameStateText.TranslationName = gameState ==
+                true ? GameConstants.WinGameTranslationKey : GameConstants.LoseGameTranslationKey;
         }
 
         private void CreateCoinsRewards()

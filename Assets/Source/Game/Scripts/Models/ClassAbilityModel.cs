@@ -1,6 +1,10 @@
+using Assets.Source.Game.Scripts.ScriptableObjects;
+using Assets.Source.Game.Scripts.Services;
+using Assets.Source.Game.Scripts.States;
+using Assets.Source.Game.Scripts.Views;
 using System;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.Models
 {
     public class ClassAbilityModel
     {
@@ -29,7 +33,8 @@ namespace Assets.Source.Game.Scripts
 
         public ClassAbilityState GetClassAbilityState(ClassAbilityData classAbilityData)
         {
-            return _persistentDataService.PlayerProgress.ClassAbilityService.GetClassAbilityStateById(classAbilityData.Id);
+            return _persistentDataService.PlayerProgress.
+                ClassAbilityService.GetClassAbilityStateById(classAbilityData.Id);
         }
 
         public void SelectPlayerClass(PlayerClassData playerClassData)
@@ -53,13 +58,15 @@ namespace Assets.Source.Game.Scripts
 
             if (Coins >= _currentClassAbilityData.AbilityClassParameters[_currentClassAbilityState.CurrentLevel].Cost)
             {
-                _persistentDataService.TrySpendCoins(_currentClassAbilityData.AbilityClassParameters[_currentClassAbilityState.CurrentLevel].Cost);
+                _persistentDataService.TrySpendCoins(
+                    _currentClassAbilityData.AbilityClassParameters[_currentClassAbilityState.CurrentLevel].Cost);
 
                 if (_currentClassAbilityState.CurrentLevel < _maxAbilityLevel)
                     _currentClassAbilityState.CurrentLevel++;
 
                 InvokedAbilityUpgraded?.Invoke(_currentClassAbilityState);
-                _persistentDataService.PlayerProgress.ClassAbilityService.SetClassAbilityState(_currentClassAbilityState);
+                _persistentDataService.PlayerProgress.
+                    ClassAbilityService.SetClassAbilityState(_currentClassAbilityState);
             }
             else
             {

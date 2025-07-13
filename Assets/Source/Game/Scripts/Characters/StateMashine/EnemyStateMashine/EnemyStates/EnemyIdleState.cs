@@ -1,10 +1,10 @@
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.Characters
 {
     public class EnemyIdleState : State
     {
         private Player _target;
 
-        public EnemyIdleState(StateMashine stateMashine, Player player) : base(stateMashine)
+        public EnemyIdleState(StateMachine stateMashine, Player player) : base(stateMashine)
         {
             _target = player;
         }

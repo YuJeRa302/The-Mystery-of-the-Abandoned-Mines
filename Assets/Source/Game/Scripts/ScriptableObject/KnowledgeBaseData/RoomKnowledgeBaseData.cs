@@ -1,22 +1,26 @@
-using Assets.Source.Game.Scripts;
+using Assets.Source.Game.Scripts.Rooms;
+using Assets.Source.Game.Scripts.Views;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New KnowledgeBaseData", menuName = "Create KnowledgeBase/Room", order = 51)]
-public class RoomKnowledgeBaseData : KnowledgeData
+namespace Assets.Source.Game.Scripts.ScriptableObjects
 {
-    [SerializeField] private List<RoomData> _roomDatas;
-
-    public override void GetView(Transform conteiner, out List<KnowladgeView> knowladgeViews)
+    [CreateAssetMenu(fileName = "New KnowledgeBaseData", menuName = "Create KnowledgeBase/Room", order = 51)]
+    public class RoomKnowledgeBaseData : KnowledgeData
     {
-        knowladgeViews = new();
-        RoomKnowladgeView roomKnowladgeView;
+        [SerializeField] private List<RoomData> _roomDatas;
 
-        foreach (RoomData roomData in _roomDatas)
+        public override void GetView(Transform conteiner, out List<KnowladgeView> knowladgeViews)
         {
-            roomKnowladgeView = Instantiate(_knowladgeView as RoomKnowladgeView, conteiner);
-            roomKnowladgeView.Initialize(roomData);
-            knowladgeViews.Add(roomKnowladgeView);
+            knowladgeViews = new();
+            RoomKnowladgeView roomKnowladgeView;
+
+            foreach (RoomData roomData in _roomDatas)
+            {
+                roomKnowladgeView = Instantiate(_knowladgeView as RoomKnowladgeView, conteiner);
+                roomKnowladgeView.Initialize(roomData);
+                knowladgeViews.Add(roomKnowladgeView);
+            }
         }
     }
 }

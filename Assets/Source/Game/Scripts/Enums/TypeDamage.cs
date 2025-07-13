@@ -1,8 +1,11 @@
-public enum TypeDamage
+namespace Assets.Source.Game.Scripts.Enums
 {
-    PhysicalDamage,
-    StunDamage,
-    BurningDamage,
-    SlowedDamage,
-    RepulsiveDamage
+    public enum TypeDamage
+    {
+        PhysicalDamage,
+        StunDamage,
+        BurningDamage,
+        SlowedDamage,
+        RepulsiveDamage
+    }
 }

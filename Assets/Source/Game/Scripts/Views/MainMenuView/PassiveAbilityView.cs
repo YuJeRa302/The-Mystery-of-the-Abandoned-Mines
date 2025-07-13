@@ -1,7 +1,9 @@
+using Assets.Source.Game.Scripts.Enums;
+using Assets.Source.Game.Scripts.ScriptableObjects;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.Views
 {
     public class PassiveAbilityView : MonoBehaviour
     {

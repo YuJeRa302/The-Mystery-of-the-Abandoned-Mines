@@ -1,10 +1,13 @@
+using Assets.Source.Game.Scripts.Characters;
+using Assets.Source.Game.Scripts.Enums;
+using Assets.Source.Game.Scripts.Rooms;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.AI.Navigation;
 using UnityEngine;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.Views
 {
     public abstract class RoomView : MonoBehaviour
     {
@@ -30,16 +33,20 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private SpriteRenderer _renderer;
         [SerializeField] private Sprite _complitIcon;
 
-        private List<RoomDoorView> _roomDoorViews =  new ();
+        private List<RoomDoorView> _roomDoorViews = new();
         private RoomDoorView _openDoor;
         private int _dividerIndexColor = 2;
 
         public event Action<RoomView> RoomEntering;
 
-        public RemovableWall WallUpper => _removableWalls.SingleOrDefault(wall => wall.TypeRoomSide == TypeRoomSide.Upper);
-        public RemovableWall WallRight => _removableWalls.SingleOrDefault(wall => wall.TypeRoomSide == TypeRoomSide.Right);
-        public RemovableWall WallDown => _removableWalls.SingleOrDefault(wall => wall.TypeRoomSide == TypeRoomSide.Down);
-        public RemovableWall WallLeft => _removableWalls.SingleOrDefault(wall => wall.TypeRoomSide == TypeRoomSide.Left);
+        public RemovableWall WallUpper => _removableWalls.SingleOrDefault(
+            wall => wall.TypeRoomSide == TypeRoomSide.Upper);
+        public RemovableWall WallRight => _removableWalls.SingleOrDefault(
+            wall => wall.TypeRoomSide == TypeRoomSide.Right);
+        public RemovableWall WallDown => _removableWalls.SingleOrDefault(
+            wall => wall.TypeRoomSide == TypeRoomSide.Down);
+        public RemovableWall WallLeft => _removableWalls.SingleOrDefault(
+            wall => wall.TypeRoomSide == TypeRoomSide.Left);
         public BoxCollider Confiner => _confiner;
         public Transform[] EnemySpawnPoints => _enemySpawnPoints;
         public Transform[] TrapSpawnPoints => _trapSpawnpoints;
@@ -57,7 +64,7 @@ namespace Assets.Source.Game.Scripts
 
             foreach (DoorWayView doorWayView in _doorWayViews)
             {
-                if(doorWayView != null)
+                if (doorWayView != null)
                     Destroy(doorWayView.gameObject);
             }
 
@@ -146,7 +153,7 @@ namespace Assets.Source.Game.Scripts
             _renderer.sprite = _complitIcon;
         }
 
-        private void AddListener() 
+        private void AddListener()
         {
             foreach (var door in _roomDoorViews)
             {
@@ -154,7 +161,7 @@ namespace Assets.Source.Game.Scripts
             }
         }
 
-        private void UpdateMaterialColor(Color color) 
+        private void UpdateMaterialColor(Color color)
         {
             foreach (Wall wall in _walls)
             {
@@ -166,19 +173,21 @@ namespace Assets.Source.Game.Scripts
                 wall.UpdateMaterial(color);
             }
 
-            foreach (Light light in _lights) 
+            foreach (Light light in _lights)
             {
                 light.color = color;
             }
         }
 
-        private void CreateDoorway() 
+        private void CreateDoorway()
         {
-            foreach (RemovableWall removableWall in _removableWalls) 
+            foreach (RemovableWall removableWall in _removableWalls)
             {
-                foreach (DoorWayView doorWayView in _doorWayViews) 
+                foreach (DoorWayView doorWayView in _doorWayViews)
                 {
-                    if (removableWall.gameObject != null && removableWall.gameObject.activeSelf == false && removableWall.TypeRoomSide == doorWayView.TypeRoomSide)
+                    if (removableWall.gameObject != null &&
+                        removableWall.gameObject.activeSelf == false &&
+                        removableWall.TypeRoomSide == doorWayView.TypeRoomSide)
                     {
                         doorWayView.gameObject.SetActive(true);
                         _roomDoorViews.Add(doorWayView.RoomDoor);
@@ -187,7 +196,7 @@ namespace Assets.Source.Game.Scripts
             }
         }
 
-        private void RemoveUnusedDoors() 
+        private void RemoveUnusedDoors()
         {
             foreach (DoorWayView doorWayView in _doorWayViews)
             {
@@ -205,7 +214,7 @@ namespace Assets.Source.Game.Scripts
             }
         }
 
-        private void OnDoorTaked(RoomDoorView roomDoor) 
+        private void OnDoorTaked(RoomDoorView roomDoor)
         {
             _openDoor = roomDoor;
         }

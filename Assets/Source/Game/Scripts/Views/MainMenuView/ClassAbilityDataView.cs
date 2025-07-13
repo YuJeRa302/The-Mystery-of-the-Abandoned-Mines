@@ -1,9 +1,13 @@
+using Assets.Source.Game.Scripts.ScriptableObjects;
+using Assets.Source.Game.Scripts.Services;
+using Assets.Source.Game.Scripts.States;
+using Assets.Source.Game.Scripts.ViewModels;
 using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.Views
 {
     public class ClassAbilityDataView : MonoBehaviour, IPointerEnterHandler, IPointerDownHandler
     {
@@ -29,9 +33,9 @@ namespace Assets.Source.Game.Scripts
             _classAbilityViewModel.InvokedAbilityReseted -= OnResetState;
         }
 
-        public void Initialize(ClassAbilityData classAbilityData, 
-            ClassAbilityState classAbilityState, 
-            ClassAbilityViewModel classAbilityViewModel, 
+        public void Initialize(ClassAbilityData classAbilityData,
+            ClassAbilityState classAbilityState,
+            ClassAbilityViewModel classAbilityViewModel,
             IAudioPlayerService audioPlayerService)
         {
             _audioPlayerService = audioPlayerService;

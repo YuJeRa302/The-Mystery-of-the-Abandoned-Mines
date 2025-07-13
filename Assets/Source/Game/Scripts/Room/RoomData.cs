@@ -1,6 +1,8 @@
+using Assets.Source.Game.Scripts.Characters;
+using Assets.Source.Game.Scripts.Views;
 using UnityEngine;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.Rooms
 {
     [CreateAssetMenu(fileName = "New Room", menuName = "Create Room", order = 51)]
     public class RoomData : ScriptableObject

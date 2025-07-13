@@ -1,41 +1,44 @@
-using Assets.Source.Game.Scripts;
+using Assets.Source.Game.Scripts.Rooms;
 using Lean.Localization;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class RoomKnowladgeView : KnowladgeView
+namespace Assets.Source.Game.Scripts.Views
 {
-    [SerializeField] private Image _roomIcon;
-    [SerializeField] private LeanLocalizedText _roomName;
-    [SerializeField] private LeanLocalizedText _roomDescription;
-    [SerializeField] private Transform _spawnedEnemyConteiner;
-    [SerializeField] private SpawnedEnemyView _spawnedEnemyView;
-
-    public void Initialize(RoomData roomData)
+    public class RoomKnowladgeView : KnowladgeView
     {
-        _roomIcon.sprite = roomData.Room.IconRoom;
-        _roomName.TranslationName = roomData.RoomName;
-        _roomDescription.TranslationName = roomData.RoomDescription;
+        [SerializeField] private Image _roomIcon;
+        [SerializeField] private LeanLocalizedText _roomName;
+        [SerializeField] private LeanLocalizedText _roomDescription;
+        [SerializeField] private Transform _spawnedEnemyConteiner;
+        [SerializeField] private SpawnedEnemyView _spawnedEnemyView;
 
-        SpawnEnemyView(roomData);
-    }
-
-    private void SpawnEnemyView(RoomData roomData)
-    {
-        if (roomData.EnemyDatas.Length > 1)
+        public void Initialize(RoomData roomData)
         {
-            foreach (var enemy in roomData.EnemyDatas)
-            {
-                SpawnedEnemyView spawnedEnemyView = Instantiate(_spawnedEnemyView, _spawnedEnemyConteiner);
-                spawnedEnemyView.Initialize(enemy.Name);
-            }
+            _roomIcon.sprite = roomData.Room.IconRoom;
+            _roomName.TranslationName = roomData.RoomName;
+            _roomDescription.TranslationName = roomData.RoomDescription;
+
+            SpawnEnemyView(roomData);
         }
-        else
+
+        private void SpawnEnemyView(RoomData roomData)
         {
-            foreach (var trap in roomData.Traps)
+            if (roomData.EnemyDatas.Length > 1)
             {
-                SpawnedEnemyView spawnedEnemyView = Instantiate(_spawnedEnemyView, _spawnedEnemyConteiner);
-                spawnedEnemyView.Initialize(trap.gameObject.name);
+                foreach (var enemy in roomData.EnemyDatas)
+                {
+                    SpawnedEnemyView spawnedEnemyView = Instantiate(_spawnedEnemyView, _spawnedEnemyConteiner);
+                    spawnedEnemyView.Initialize(enemy.Name);
+                }
+            }
+            else
+            {
+                foreach (var trap in roomData.Traps)
+                {
+                    SpawnedEnemyView spawnedEnemyView = Instantiate(_spawnedEnemyView, _spawnedEnemyConteiner);
+                    spawnedEnemyView.Initialize(trap.gameObject.name);
+                }
             }
         }
     }

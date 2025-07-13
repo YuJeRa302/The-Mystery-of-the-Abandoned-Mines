@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.Characters
 {
     public class EnemyMoveState : State
     {
@@ -11,7 +11,8 @@ namespace Assets.Source.Game.Scripts
         private Enemy _enemy;
         private NavMeshAgent _navMeshAgent;
 
-        public EnemyMoveState(StateMashine stateMashine, Player player, NavMeshAgent meshAgent, Enemy enemy) : base(stateMashine)
+        public EnemyMoveState(StateMachine stateMashine, Player player, NavMeshAgent meshAgent, Enemy enemy)
+            : base(stateMashine)
         {
             _target = player;
             _enemy = enemy;

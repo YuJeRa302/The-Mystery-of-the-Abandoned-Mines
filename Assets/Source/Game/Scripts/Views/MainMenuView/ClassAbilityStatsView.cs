@@ -3,36 +3,39 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ClassAbilityStatsView : MonoBehaviour
+namespace Assets.Source.Game.Scripts.Views
 {
-    [SerializeField] private LeanLocalizedText _nameStats;
-    [SerializeField] private Text _valueCurrentLvlText;
-    [SerializeField] private Text _valueNextLvlText;
-    [SerializeField] private Image _haveNextLvlImage;
-    [SerializeField] private Image _iconParametr;
-    [SerializeField] private List<TypeParametrIcon> _parametrIcons;
-
-    public void Initialize(string translationName, string valueCurrentLvl, string valueNextLvl)
+    public class ClassAbilityStatsView : MonoBehaviour
     {
-        _nameStats.TranslationName = translationName;
-        _valueCurrentLvlText.text = valueCurrentLvl;
-        _valueNextLvlText.text = valueNextLvl;
-        RenderIcon();
+        [SerializeField] private LeanLocalizedText _nameStats;
+        [SerializeField] private Text _valueCurrentLvlText;
+        [SerializeField] private Text _valueNextLvlText;
+        [SerializeField] private Image _haveNextLvlImage;
+        [SerializeField] private Image _iconParametr;
+        [SerializeField] private List<TypeParametrIcon> _parametrIcons;
 
-        if (_valueNextLvlText.text == string.Empty)
+        public void Initialize(string translationName, string valueCurrentLvl, string valueNextLvl)
         {
-            _haveNextLvlImage.gameObject.SetActive(false);
-        }
-    }
+            _nameStats.TranslationName = translationName;
+            _valueCurrentLvlText.text = valueCurrentLvl;
+            _valueNextLvlText.text = valueNextLvl;
+            RenderIcon();
 
-    private void RenderIcon()
-    {
-        foreach (var parametr in _parametrIcons)
-        {
-            if (parametr.TypeDamage.ToString() == _nameStats.TranslationName)
+            if (_valueNextLvlText.text == string.Empty)
             {
-                _iconParametr.sprite = parametr.Icon;
-                return;
+                _haveNextLvlImage.gameObject.SetActive(false);
+            }
+        }
+
+        private void RenderIcon()
+        {
+            foreach (var parametr in _parametrIcons)
+            {
+                if (parametr.TypeDamage.ToString() == _nameStats.TranslationName)
+                {
+                    _iconParametr.sprite = parametr.Icon;
+                    return;
+                }
             }
         }
     }

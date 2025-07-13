@@ -1,3 +1,6 @@
+using Assets.Source.Game.Scripts.Services;
+using Assets.Source.Game.Scripts.Upgrades;
+using Assets.Source.Game.Scripts.ViewModels;
 using DG.Tweening;
 using Lean.Localization;
 using System.Collections;
@@ -5,7 +8,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.Views
 {
     public class UpgradesView : MonoBehaviour
     {

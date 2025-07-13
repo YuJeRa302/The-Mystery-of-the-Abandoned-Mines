@@ -1,19 +1,21 @@
+using Assets.Source.Game.Scripts.Enums;
+using Assets.Source.Game.Scripts.ScriptableObjects;
 using System;
 using System.Collections.Generic;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.Card
 {
     public class CardDeck
     {
-        private readonly System.Random _rnd = new ();
+        private readonly Random _rnd = new();
         private readonly int _defaultStateLevel = 0;
         private readonly int _defaultStateWeight = 1;
         private readonly int _defaultLevelCardCount = 3;
-        private readonly int _contrackLevelCardCount = 2;
+        private readonly int _contractLevelCardCount = 2;
 
-        private List<CardData> _cardDataAbility = new ();
-        private List<CardData> _activeCardAbility = new ();
-        private List<CardState> _cardState = new ();
+        private List<CardData> _cardDataAbility = new();
+        private List<CardData> _activeCardAbility = new();
+        private List<CardState> _cardState = new();
         private int _currentMaxCardCount;
 
         public event Action<CardView> SetNewAbility;
@@ -21,10 +23,10 @@ namespace Assets.Source.Game.Scripts
         public event Action<CardView> PlayerStatsUpdated;
         public event Action<CardView> TakedPassivAbility;
 
-        public CardDeck(bool isCpntractLevel)
+        public CardDeck(bool isContractLevel)
         {
-            if (isCpntractLevel)
-                _currentMaxCardCount = _contrackLevelCardCount;
+            if (isContractLevel)
+                _currentMaxCardCount = _contractLevelCardCount;
             else
                 _currentMaxCardCount = _defaultLevelCardCount;
         }
@@ -39,10 +41,10 @@ namespace Assets.Source.Game.Scripts
                 case TypeCardParameter.Default:
                     PlayerStatsUpdated?.Invoke(cardView);
                     break;
-                case TypeCardParameter.PassivAbllity:
+                case TypeCardParameter.PassiveAbility:
                     TakePassiveAbility(cardView);
                     break;
-                case TypeCardParameter.LegendariAbility:
+                case TypeCardParameter.LegendaryAbility:
                     TakeAbility(cardView);
                     break;
                 case TypeCardParameter.Ability:
@@ -122,11 +124,11 @@ namespace Assets.Source.Game.Scripts
 
         public CardState InitState(CardData cardData)
         {
-            CardState cardState = new ();
+            CardState cardState = new();
             cardState.Id = cardData.Id;
             cardState.CurrentLevel = _defaultStateLevel;
 
-            if (cardData.TypeCardParameter == TypeCardParameter.LegendariAbility)
+            if (cardData.TypeCardParameter == TypeCardParameter.LegendaryAbility)
                 cardState.IsLocked = true;
             else
                 cardState.IsLocked = false;
@@ -172,7 +174,7 @@ namespace Assets.Source.Game.Scripts
             }
         }
 
-        private void TakePassiveAbility(CardView cardView) 
+        private void TakePassiveAbility(CardView cardView)
         {
             if (_cardDataAbility.Count > 0)
                 AddCardAbilityData(cardView, _cardDataAbility);

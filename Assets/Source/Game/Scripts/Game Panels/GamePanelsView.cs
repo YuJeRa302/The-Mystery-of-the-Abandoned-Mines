@@ -1,8 +1,9 @@
+using Assets.Source.Game.Scripts.ViewModels;
 using System;
 using UnityEngine;
 using YG;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.GamePanels
 {
     public abstract class GamePanelsView : MonoBehaviour
     {
@@ -34,7 +35,7 @@ namespace Assets.Source.Game.Scripts
             PanelClosed?.Invoke();
         }
 
-        protected virtual void CloseGame() 
+        protected virtual void CloseGame()
         {
 #if UNITY_EDITOR
             GameClosed?.Invoke();

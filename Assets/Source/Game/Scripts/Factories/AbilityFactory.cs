@@ -1,4 +1,8 @@
-namespace Assets.Source.Game.Scripts
+using Assets.Source.Game.Scripts.AbilityScripts;
+using Assets.Source.Game.Scripts.ScriptableObjects;
+using Assets.Source.Game.Scripts.Services;
+
+namespace Assets.Source.Game.Scripts.Factories
 {
     public class AbilityFactory
     {
@@ -9,9 +13,15 @@ namespace Assets.Source.Game.Scripts
             _coroutineRunner = coroutineRunner;
         }
 
-        public Ability CreateAbility(ActiveAbilityData abilityAttributeData, int currentLevel, float abilityCooldownReduction, float abilityDuration, int abilityValue, bool isAutoCast)
+        public Ability CreateAbility(ActiveAbilityData abilityAttributeData,
+            int currentLevel, float abilityCooldownReduction,
+            float abilityDuration, int abilityValue,
+            bool isAutoCast)
         {
-            Ability ability = new(abilityAttributeData, currentLevel, abilityCooldownReduction, abilityDuration, abilityValue, isAutoCast, _coroutineRunner);
+            Ability ability = new(abilityAttributeData,
+                currentLevel, abilityCooldownReduction,
+                abilityDuration, abilityValue,
+                isAutoCast, _coroutineRunner);
             return ability;
         }
 
@@ -29,7 +39,11 @@ namespace Assets.Source.Game.Scripts
             int abilityValue,
             bool isAutoCast)
         {
-            Ability ability = new (legendaryAbilityData, abilityAttributeData, abilityCooldownReduction, abilityDuration, abilityValue, isAutoCast, _coroutineRunner);
+            Ability ability = new(legendaryAbilityData,
+                abilityAttributeData,
+                abilityCooldownReduction,
+                abilityDuration, abilityValue,
+                isAutoCast, _coroutineRunner);
             return ability;
         }
     }

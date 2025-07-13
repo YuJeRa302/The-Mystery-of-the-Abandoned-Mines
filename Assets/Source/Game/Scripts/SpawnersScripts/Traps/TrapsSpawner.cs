@@ -1,59 +1,62 @@
-using Assets.Source.Game.Scripts;
+using Assets.Source.Game.Scripts.Views;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TrapsSpawner : IDisposable
+namespace Assets.Source.Game.Scripts.SpawnersScripts
 {
-    private readonly System.Random _rnd = new ();
-
-    private Transform[] _spawnPoints;
-    private GameObject[] _traps;
-    private List<GameObject> _spawnedTraps = new ();
-    private LootRoomView _currentRoom;
-
-    public TrapsSpawner ()
+    public class TrapsSpawner : IDisposable
     {
-    }
+        private readonly System.Random _rnd = new();
 
-    public void Initialize(RoomView room)
-    {
-        if (_currentRoom != null)
-            _currentRoom.RoomCompleted -= OnDisableTraps;
+        private Transform[] _spawnPoints;
+        private GameObject[] _traps;
+        private List<GameObject> _spawnedTraps = new();
+        private LootRoomView _currentRoom;
 
-        _spawnedTraps.Clear();
-        _currentRoom = room as LootRoomView;
-        
-        if (_currentRoom != null)
+        public TrapsSpawner()
         {
-            _currentRoom.RoomCompleted += OnDisableTraps;
-            _spawnPoints = _currentRoom.TrapSpawnPoints;
-            _traps = _currentRoom.RoomData.Traps;
-            SpawnTraps();
         }
-    }
 
-    public void Dispose()
-    {
-        if (_currentRoom != null)
-            _currentRoom.RoomCompleted -= OnDisableTraps;
-
-        GC.SuppressFinalize(this);
-    }
-
-    private void SpawnTraps()
-    {
-        foreach (var point in _spawnPoints)
+        public void Initialize(RoomView room)
         {
-            _spawnedTraps.Add(GameObject.Instantiate(_traps[_rnd.Next(_traps.Length)], point));
+            if (_currentRoom != null)
+                _currentRoom.RoomCompleted -= OnDisableTraps;
+
+            _spawnedTraps.Clear();
+            _currentRoom = room as LootRoomView;
+
+            if (_currentRoom != null)
+            {
+                _currentRoom.RoomCompleted += OnDisableTraps;
+                _spawnPoints = _currentRoom.TrapSpawnPoints;
+                _traps = _currentRoom.RoomData.Traps;
+                SpawnTraps();
+            }
         }
-    }
 
-    private void OnDisableTraps()
-    {
-        foreach (var trap in _spawnedTraps)
+        public void Dispose()
         {
-            trap.gameObject.SetActive(false);
+            if (_currentRoom != null)
+                _currentRoom.RoomCompleted -= OnDisableTraps;
+
+            GC.SuppressFinalize(this);
+        }
+
+        private void SpawnTraps()
+        {
+            foreach (var point in _spawnPoints)
+            {
+                _spawnedTraps.Add(UnityEngine.Object.Instantiate(_traps[_rnd.Next(_traps.Length)], point));
+            }
+        }
+
+        private void OnDisableTraps()
+        {
+            foreach (var trap in _spawnedTraps)
+            {
+                trap.gameObject.SetActive(false);
+            }
         }
     }
 }

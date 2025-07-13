@@ -1,8 +1,12 @@
+using Assets.Source.Game.Scripts.Card;
+using Assets.Source.Game.Scripts.Characters;
+using Assets.Source.Game.Scripts.Menu;
+using Assets.Source.Game.Scripts.Services;
 using Lean.Localization;
 using System;
 using System.Collections.Generic;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.Models
 {
     public class GamePanelsModel
     {
@@ -10,7 +14,7 @@ namespace Assets.Source.Game.Scripts
         private readonly string _rerollPointsRewardIndex = "1";
         private readonly int _countRerollPointsReward = 2;
         private readonly int _minWeaponCount = 1;
-        private readonly System.Random _rnd = new ();
+        private readonly Random _rnd = new();
         private readonly PersistentDataService _persistentDataService;
         private readonly RoomService _roomService;
         private readonly GamePauseService _gamePauseService;
@@ -20,7 +24,7 @@ namespace Assets.Source.Game.Scripts
         private readonly LeanLocalization _leanLocalization;
         private readonly LevelData _currentLevelData;
 
-        private List<WeaponData> _weaponDatasForReward = new ();
+        private List<WeaponData> _weaponDatasForReward = new();
         private WeaponData _rewardWeaponData;
 
         public GamePanelsModel(
@@ -31,7 +35,7 @@ namespace Assets.Source.Game.Scripts
             Player player,
             LevelData levelData,
             AudioPlayer audioPlayer,
-            LeanLocalization leanLocalization) 
+            LeanLocalization leanLocalization)
         {
             _roomService = roomService;
             _gamePauseService = gamePauseService;
@@ -56,7 +60,7 @@ namespace Assets.Source.Game.Scripts
         public bool IsMuted { get; private set; } = false;
         public AudioPlayer AudioPlayer => _audioPlayer;
 
-        public string GetRerollPointsRewardIndex() 
+        public string GetRerollPointsRewardIndex()
         {
             return _rerollPointsRewardIndex;
         }
@@ -130,11 +134,6 @@ namespace Assets.Source.Game.Scripts
                 Mute();
             else
                 UnMute();
-        }
-
-        public IAudioPlayerService GetAudioService()
-        {
-            return _audioPlayer;
         }
 
         public void GetRerollPointsReward()
@@ -214,7 +213,7 @@ namespace Assets.Source.Game.Scripts
             _persistentDataService.PlayerProgress.IsMuted = IsMuted;
         }
 
-        private void SetApplicationParameters() 
+        private void SetApplicationParameters()
         {
             IsMuted = _persistentDataService.PlayerProgress.IsMuted;
             AmbientVolumeValue = _persistentDataService.PlayerProgress.AmbientVolume;

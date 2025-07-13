@@ -1,6 +1,9 @@
+using Assets.Source.Game.Scripts.AbilityScripts;
+using Assets.Source.Game.Scripts.Characters;
+using Assets.Source.Game.Scripts.Enums;
 using UnityEngine;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.ScriptableObjects
 {
     [CreateAssetMenu(fileName = "New Ability Attribute", menuName = "Create Attribute/Ability Attribute ", order = 51)]
     public abstract class ActiveAbilityData : AttributeData

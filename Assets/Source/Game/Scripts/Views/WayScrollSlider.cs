@@ -1,29 +1,32 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class WayScrollSlider : MonoBehaviour
+namespace Assets.Source.Game.Scripts.Views
 {
-    [SerializeField] private ScrollRect _scrollRect;
-    [SerializeField] private Slider _slider;
-    
-    private bool _isSliderDragging = false;
-
-    private void Start()
+    public class WayScrollSlider : MonoBehaviour
     {
-        _slider.onValueChanged.AddListener(OnSliderChanged);
-        _scrollRect.onValueChanged.AddListener(OnScrollChanged);
-    }
+        [SerializeField] private ScrollRect _scrollRect;
+        [SerializeField] private Slider _slider;
 
-    private void OnSliderChanged(float value)
-    {
-        if (!_isSliderDragging)
+        private bool _isSliderDragging = false;
+
+        private void Start()
         {
-            _scrollRect.verticalNormalizedPosition = value;
+            _slider.onValueChanged.AddListener(OnSliderChanged);
+            _scrollRect.onValueChanged.AddListener(OnScrollChanged);
         }
-    }
 
-    private void OnScrollChanged(Vector2 scrollPos)
-    {
-        _slider.SetValueWithoutNotify(_scrollRect.verticalNormalizedPosition);
+        private void OnSliderChanged(float value)
+        {
+            if (!_isSliderDragging)
+            {
+                _scrollRect.verticalNormalizedPosition = value;
+            }
+        }
+
+        private void OnScrollChanged(Vector2 scrollPos)
+        {
+            _slider.SetValueWithoutNotify(_scrollRect.verticalNormalizedPosition);
+        }
     }
 }

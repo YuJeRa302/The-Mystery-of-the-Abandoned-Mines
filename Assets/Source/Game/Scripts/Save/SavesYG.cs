@@ -1,4 +1,7 @@
-﻿using Assets.Source.Game.Scripts;
+﻿using Assets.Source.Game.Scripts.Items;
+using Assets.Source.Game.Scripts.Levels;
+using Assets.Source.Game.Scripts.States;
+using Assets.Source.Game.Scripts.Upgrades;
 using System.Collections.Generic;
 
 namespace YG

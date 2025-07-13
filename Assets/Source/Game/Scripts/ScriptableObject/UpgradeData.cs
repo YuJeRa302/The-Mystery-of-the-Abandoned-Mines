@@ -1,3 +1,5 @@
+using Assets.Source.Game.Scripts.Enums;
+using Assets.Source.Game.Scripts.Upgrades;
 using System.Collections.Generic;
 using UnityEngine;
 

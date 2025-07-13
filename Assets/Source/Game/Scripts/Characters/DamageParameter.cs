@@ -1,22 +1,26 @@
+using Assets.Source.Game.Scripts.Enums;
 using UnityEngine;
 
-[System.Serializable]
-public class DamageParameter
+namespace Assets.Source.Game.Scripts.Characters
 {
-    [SerializeField] private float _value;
-    [SerializeField] private TypeDamageParameter _typeDamageParameter;
-
-    public DamageParameter(float value, TypeDamageParameter typeDamageParameter)
+    [System.Serializable]
+    public class DamageParameter
     {
-        _value = value;
-        _typeDamageParameter = typeDamageParameter;
-    }
+        [SerializeField] private float _value;
+        [SerializeField] private TypeDamageParameter _typeDamageParameter;
 
-    public float Value => _value;
-    public TypeDamageParameter TypeDamageParameter => _typeDamageParameter;
+        public DamageParameter(float value, TypeDamageParameter typeDamageParameter)
+        {
+            _value = value;
+            _typeDamageParameter = typeDamageParameter;
+        }
 
-    public void ChangeParameterValue(float value)
-    {
-        _value = value;
+        public float Value => _value;
+        public TypeDamageParameter TypeDamageParameter => _typeDamageParameter;
+
+        public void ChangeParameterValue(float value)
+        {
+            _value = value;
+        }
     }
 }

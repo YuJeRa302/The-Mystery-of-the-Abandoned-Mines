@@ -1,10 +1,16 @@
+using Assets.Source.Game.Scripts.Card;
+using Assets.Source.Game.Scripts.Enums;
+using Assets.Source.Game.Scripts.ScriptableObjects;
+using Assets.Source.Game.Scripts.Services;
+using Assets.Source.Game.Scripts.States;
+using Assets.Source.Game.Scripts.ViewModels;
 using Lean.Localization;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.Views
 {
     public class ClassAbilityView : MonoBehaviour
     {

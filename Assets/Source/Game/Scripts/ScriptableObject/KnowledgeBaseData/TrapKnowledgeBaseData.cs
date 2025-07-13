@@ -1,21 +1,25 @@
+using Assets.Source.Game.Scripts.Views;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New KnowledgeBaseData", menuName = "Create KnowledgeBase/Trap", order = 51)]
-public class TrapKnowledgeBaseData : KnowledgeData
+namespace Assets.Source.Game.Scripts.ScriptableObjects
 {
-    [SerializeField] private List<TrapData> _trapDatas;
-
-    public override void GetView(Transform conteiner, out List<KnowladgeView> knowladgeViews)
+    [CreateAssetMenu(fileName = "New KnowledgeBaseData", menuName = "Create KnowledgeBase/Trap", order = 51)]
+    public class TrapKnowledgeBaseData : KnowledgeData
     {
-        knowladgeViews = new();
-        TrapKnowladgeView trapKnowladgeView;
+        [SerializeField] private List<TrapData> _trapDatas;
 
-        foreach (TrapData data in _trapDatas)
+        public override void GetView(Transform conteiner, out List<KnowladgeView> knowladgeViews)
         {
-            trapKnowladgeView = Instantiate(_knowladgeView as TrapKnowladgeView, conteiner);
-            trapKnowladgeView.Initialize(data);
-            knowladgeViews.Add(trapKnowladgeView);
+            knowladgeViews = new();
+            TrapKnowladgeView trapKnowladgeView;
+
+            foreach (TrapData data in _trapDatas)
+            {
+                trapKnowladgeView = Instantiate(_knowladgeView as TrapKnowladgeView, conteiner);
+                trapKnowladgeView.Initialize(data);
+                knowladgeViews.Add(trapKnowladgeView);
+            }
         }
     }
 }

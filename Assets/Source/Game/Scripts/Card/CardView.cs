@@ -4,7 +4,7 @@ using Lean.Localization;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.Card
 {
     public class CardView : MonoBehaviour
     {
@@ -14,10 +14,10 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private LeanLocalizedText _cardName;
         [SerializeField] private LeanLocalizedText _description;
         [SerializeField] private Transform _cardParameterContainer;
-        [SerializeField] private Transform _supportiParametrContainer;
-        [SerializeField] private CardSupportivParametrsView _supportivParametrsView;
+        [SerializeField] private Transform _supportiveParameterContainer;
+        [SerializeField] private CardSupportivParametrsView _supportiveParametersView;
 
-        private List<CardParameterView> _cardParametersViews = new ();
+        private List<CardParameterView> _cardParametersViews = new();
         private CardState _cardState;
         private CardData _cardData;
 
@@ -49,8 +49,8 @@ namespace Assets.Source.Game.Scripts
             _applyButton.onClick.AddListener(TakeCard);
             CreateParameterField();
 
-            if (cardData.SuppurtivData.Count > 0)
-                CreateSupportivParametrField();
+            if (cardData.SuppurtiveData.Count > 0)
+                CreateSupportiveParameterField();
         }
 
         private void TakeCard()
@@ -60,7 +60,9 @@ namespace Assets.Source.Game.Scripts
 
         private void CreateParameterField()
         {
-            for (int index = 0; index < _cardData.AttributeData.Parameters[_cardState.CurrentLevel].CardParameters.Count; index++)
+            for (int index = 0;
+                index < _cardData.AttributeData.Parameters[_cardState.CurrentLevel].CardParameters.Count;
+                index++)
             {
                 CardParameterView view = Instantiate(_cardData.AttributeData.ParameterView, _cardParameterContainer);
                 _cardParametersViews.Add(view);
@@ -71,13 +73,13 @@ namespace Assets.Source.Game.Scripts
             }
         }
 
-        private void CreateSupportivParametrField()
+        private void CreateSupportiveParameterField()
         {
-            for (int i = 0; i < _cardData.SuppurtivData.Count; i++)
+            for (int i = 0; i < _cardData.SuppurtiveData.Count; i++)
             {
-                CardSupportivParametrsView view = Instantiate(_supportivParametrsView, _supportiParametrContainer);
+                CardSupportivParametrsView view = Instantiate(_supportiveParametersView, _supportiveParameterContainer);
 
-                view.Initialize(_cardData.SuppurtivData[i].Icon);
+                view.Initialize(_cardData.SuppurtiveData[i].Icon);
             }
         }
     }

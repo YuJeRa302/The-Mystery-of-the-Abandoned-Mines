@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.Characters
 {
     public class EnemyAttackState : State
     {
@@ -15,7 +15,7 @@ namespace Assets.Source.Game.Scripts
         protected Enemy Enemy;
         protected EnemyAnimation AnimationController;
 
-        public EnemyAttackState(StateMashine stateMashine, Player target, Enemy enemy) : base(stateMashine)
+        public EnemyAttackState(StateMachine stateMashine, Player target, Enemy enemy) : base(stateMashine)
         {
             Enemy = enemy;
             Target = target;

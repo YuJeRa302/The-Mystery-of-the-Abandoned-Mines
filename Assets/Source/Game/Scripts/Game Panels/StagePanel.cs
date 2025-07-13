@@ -1,9 +1,10 @@
+using Assets.Source.Game.Scripts.ViewModels;
 using Lean.Localization;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.GamePanels
 {
     public class StagePanel : GamePanelsView
     {
@@ -22,21 +23,14 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private Text _currentRoomLevel;
         [SerializeField] private Text _killCount;
 
-        public event Action RestartButtonClicked;
-        public event Action ExitButtonClicked;
-
         private void Awake()
         {
             _buttonNext.onClick.AddListener(ClickButtonNext);
-            _buttonRestart.onClick.AddListener(ClickButtonRestart);
-            _buttonExit.onClick.AddListener(ClickButtonExit);
         }
 
         private void OnDestroy()
         {
             _buttonNext.onClick.RemoveListener(ClickButtonNext);
-            _buttonRestart.onClick.RemoveListener(ClickButtonRestart);
-            _buttonExit.onClick.RemoveListener(ClickButtonExit);
             GamePanelsViewModel.StageCompleted -= Open;
         }
 
@@ -54,7 +48,9 @@ namespace Assets.Source.Game.Scripts
 
         private void FillGameParameters()
         {
-            _numberStageText.text = GamePanelsViewModel.GetCurrentRoomLevel().ToString() + " / " + GamePanelsViewModel.GetStagesCount().ToString();
+            _numberStageText.text =
+                GamePanelsViewModel.GetCurrentRoomLevel().ToString() +
+                " / " + GamePanelsViewModel.GetStagesCount().ToString();
             _playerHealth.text = GamePanelsViewModel.GetPlayer().CurrentHealth.ToString();
             _playerDamage.text = GamePanelsViewModel.GetPlayer().DamageSource.Damage.ToString();
             _coins.text = GamePanelsViewModel.GetPlayer().Coins.ToString();
@@ -63,19 +59,9 @@ namespace Assets.Source.Game.Scripts
             _killCount.text = GamePanelsViewModel.GetPlayer().KillCount.ToString();
         }
 
-        private void ClickButtonNext() 
+        private void ClickButtonNext()
         {
             Close();
-        }
-
-        private void ClickButtonRestart()
-        {
-            RestartButtonClicked?.Invoke();
-        }
-
-        private void ClickButtonExit()
-        {
-            ExitButtonClicked?.Invoke();
         }
     }
 }

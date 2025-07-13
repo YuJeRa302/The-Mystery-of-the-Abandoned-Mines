@@ -1,8 +1,11 @@
-public interface ISaveAndLoadProgress
+namespace Assets.Source.Game.Scripts.Services
 {
-    bool TryGetGameData();
-    void SaveData();
-    void SaveDataToPrefs();
-    void LoadDataFromPrefs();
-    void SaveGameProgerss(int score, int coins, int upgradePoints, int levelId, bool isComplete, bool isGameInterrupted);
+    public interface ISaveAndLoadProgress
+    {
+        bool TryGetGameData();
+        void SaveData();
+        void SaveDataToPrefs();
+        void LoadDataFromPrefs();
+        void SaveGameProgerss(int score, int coins, int upgradePoints, int levelId, bool isComplete, bool isGameInterrupted);
+    }
 }

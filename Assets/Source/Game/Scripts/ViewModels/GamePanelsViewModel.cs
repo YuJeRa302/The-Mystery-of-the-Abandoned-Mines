@@ -1,7 +1,10 @@
+using Assets.Source.Game.Scripts.Characters;
+using Assets.Source.Game.Scripts.Models;
+using Assets.Source.Game.Scripts.Services;
 using System;
 using System.Collections.Generic;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.ViewModels
 {
     public class GamePanelsViewModel
     {
@@ -13,7 +16,7 @@ namespace Assets.Source.Game.Scripts
             _gamePanelsModel.StageCompleted += () => StageCompleted?.Invoke();
             _gamePanelsModel.CardPoolCreated += () => CardPoolCreated?.Invoke();
             _gamePanelsModel.LootRoomCompleted += OnLootRoomComplete;
-            _gamePanelsModel.GameEnded += (bool state) => GameEnded?.Invoke(state);
+            _gamePanelsModel.GameEnded += (state) => GameEnded?.Invoke(state);
             _gamePanelsModel.CardPanelOpened += () => CardPanelOpened?.Invoke();
         }
 

@@ -1,4 +1,7 @@
-public static class DataPath
+namespace Assets.Source.Game.Scripts.Utility
 {
-    public const string GameConfigDataPath = "GameData/GameData";
+    public static class DataPath
+    {
+        public const string GameConfigDataPath = "GameData/GameData";
+    }
 }

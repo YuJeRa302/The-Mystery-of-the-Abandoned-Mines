@@ -1,17 +1,20 @@
-using Assets.Source.Game.Scripts;
+using Assets.Source.Game.Scripts.Characters;
 using UnityEngine;
 
-public abstract class Trap : MonoBehaviour
+namespace Assets.Source.Game.Scripts.Traps
 {
-    [SerializeField] protected int _damage;
-
-    public int Damage => _damage;
-
-    protected abstract void ApplyDamage(Player player);
-
-    private void OnCollisionEnter(Collision collision)
+    public abstract class Trap : MonoBehaviour
     {
-        if (collision.collider.TryGetComponent(out Player player))
-            ApplyDamage(player);
+        [SerializeField] protected int _damage;
+
+        public int Damage => _damage;
+
+        protected abstract void ApplyDamage(Player player);
+
+        private void OnCollisionEnter(Collision collision)
+        {
+            if (collision.collider.TryGetComponent(out Player player))
+                ApplyDamage(player);
+        }
     }
 }

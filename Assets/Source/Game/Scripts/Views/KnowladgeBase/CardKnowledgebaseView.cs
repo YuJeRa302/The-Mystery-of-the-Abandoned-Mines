@@ -1,84 +1,90 @@
 using Assets.Source.Game.Scripts;
+using Assets.Source.Game.Scripts.Card;
+using Assets.Source.Game.Scripts.Enums;
+using Assets.Source.Game.Scripts.ScriptableObjects;
 using Lean.Localization;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CardKnowledgebaseView : KnowladgeView
+namespace Assets.Source.Game.Scripts.Views
 {
-    [SerializeField] private Image _cardIcon;
-    [SerializeField] private Image _cardTear;
-    [SerializeField] private LeanLocalizedText _cardName;
-    [SerializeField] private LeanLocalizedText _cardDiscription;
-    [Space(20)]
-    [SerializeField] private Transform _linkCardConteiner;
-    [SerializeField] private LinkCardView _linkCardView;
-    [SerializeField] private BonusCardView _bonusCardView;
-    [Space(20)]
-    [SerializeField] private KnowleadgeCardParameterView _parameterView;
-    [SerializeField] private Transform _parametrContainer;
-
-    public void Initialize(CardData cardData)
+    public class CardKnowledgebaseView : KnowladgeView
     {
-        _cardTear.color = new Color(
-                cardData.TypeCardColor[(int)cardData.TypeCardParameter].r,
-                cardData.TypeCardColor[(int)cardData.TypeCardParameter].g,
-                cardData.TypeCardColor[(int)cardData.TypeCardParameter].b);
+        [SerializeField] private Image _cardIcon;
+        [SerializeField] private Image _cardTear;
+        [SerializeField] private LeanLocalizedText _cardName;
+        [SerializeField] private LeanLocalizedText _cardDiscription;
+        [Space(20)]
+        [SerializeField] private Transform _linkCardConteiner;
+        [SerializeField] private LinkCardView _linkCardView;
+        [SerializeField] private BonusCardView _bonusCardView;
+        [Space(20)]
+        [SerializeField] private KnowleadgeCardParameterView _parameterView;
+        [SerializeField] private Transform _parametrContainer;
 
-        _cardIcon.sprite = cardData.AttributeData.Icon;
-        _cardName.TranslationName = cardData.AttributeData.Name;
-        _cardDiscription.TranslationName = cardData.AttributeData.Description;
-
-        CreateSupportCardsView(cardData);
-        CreateParametrView(cardData);
-    }
-
-    private void CreateSupportCardsView(CardData cardData)
-    {
-        if (cardData.SuppurtivData.Count <= 0)
+        public void Initialize(CardData cardData)
         {
-            Instantiate(_bonusCardView, _linkCardConteiner);
-            return;
+            _cardTear.color = new Color(
+                    cardData.TypeCardColor[(int)cardData.TypeCardParameter].r,
+                    cardData.TypeCardColor[(int)cardData.TypeCardParameter].g,
+                    cardData.TypeCardColor[(int)cardData.TypeCardParameter].b);
+
+            _cardIcon.sprite = cardData.AttributeData.Icon;
+            _cardName.TranslationName = cardData.AttributeData.Name;
+            _cardDiscription.TranslationName = cardData.AttributeData.Description;
+
+            CreateSupportCardsView(cardData);
+            CreateParametrView(cardData);
         }
 
-        CreateSupportCardViews(cardData);
-        TryCreateLegendaryLinkCard(cardData);
-    }
-
-    private void CreateSupportCardViews(CardData cardData)
-    {
-        foreach (var supportData in cardData.SuppurtivData)
+        private void CreateSupportCardsView(CardData cardData)
         {
-            LinkCardView cardView = Instantiate(_linkCardView, _linkCardConteiner);
-            cardView.Initialize(supportData.Icon, supportData.Name);
+            if (cardData.SuppurtiveData.Count <= 0)
+            {
+                Instantiate(_bonusCardView, _linkCardConteiner);
+                return;
+            }
+
+            CreateSupportCardViews(cardData);
+            TryCreateLegendaryLinkCard(cardData);
         }
-    }
 
-    private void TryCreateLegendaryLinkCard(CardData cardData)
-    {
-        if (cardData.AttributeData is LegendaryAbilityData legendaryData &&
-            cardData.TypeCardParameter != TypeCardParameter.LegendariAbility)
+        private void CreateSupportCardViews(CardData cardData)
         {
-            LinkCardView cardView = Instantiate(_linkCardView, _linkCardConteiner);
-            cardView.Initialize(legendaryData.Icon, legendaryData.Name);
+            foreach (var supportData in cardData.SuppurtiveData)
+            {
+                LinkCardView cardView = Instantiate(_linkCardView, _linkCardConteiner);
+                cardView.Initialize(supportData.Icon, supportData.Name);
+            }
         }
-    }
 
-    private void CreateParametrView(CardData cardData)
-    {
-        if (cardData.AttributeData == null)
-            return;
-
-        List<Parameters> parameters = cardData.AttributeData switch
+        private void TryCreateLegendaryLinkCard(CardData cardData)
         {
-            LegendaryAbilityData legendaryData => legendaryData.Parameters,
-            _ => cardData.AttributeData.Parameters
-        };
+            if (cardData.AttributeData is LegendaryAbilityData legendaryData &&
+                cardData.TypeCardParameter != TypeCardParameter.LegendaryAbility)
+            {
+                LinkCardView cardView = Instantiate(_linkCardView, _linkCardConteiner);
+                cardView.Initialize(legendaryData.Icon, legendaryData.Name);
+            }
+        }
 
-        for (int i = 0; i < parameters.Count; i++)
+        private void CreateParametrView(CardData cardData)
         {
-            KnowleadgeCardParameterView view = Instantiate(_parameterView, _parametrContainer);
-            view.Initialize(cardData, i);
+            if (cardData.AttributeData == null)
+                return;
+
+            List<Parameters> parameters = cardData.AttributeData switch
+            {
+                LegendaryAbilityData legendaryData => legendaryData.Parameters,
+                _ => cardData.AttributeData.Parameters
+            };
+
+            for (int i = 0; i < parameters.Count; i++)
+            {
+                KnowleadgeCardParameterView view = Instantiate(_parameterView, _parametrContainer);
+                view.Initialize(cardData, i);
+            }
         }
     }
 }

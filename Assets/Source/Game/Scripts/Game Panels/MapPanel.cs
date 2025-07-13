@@ -1,7 +1,8 @@
+using Assets.Source.Game.Scripts.ViewModels;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.GamePanels
 {
     public class MapPanel : GamePanelsView
     {

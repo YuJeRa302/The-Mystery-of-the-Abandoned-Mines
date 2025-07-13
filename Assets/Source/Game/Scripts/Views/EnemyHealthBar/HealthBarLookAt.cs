@@ -1,19 +1,22 @@
 using UnityEngine;
 
-public class HealthBarLookAt : MonoBehaviour
+namespace Assets.Source.Game.Scripts.Views
 {
-    private Camera _camera;
-
-    private void Start()
+    public class HealthBarLookAt : MonoBehaviour
     {
-        _camera = Camera.main;
-    }
+        private Camera _camera;
 
-    private void FixedUpdate()
-    {
-        Vector3 direction = _camera.transform.position - transform.position;
+        private void Start()
+        {
+            _camera = Camera.main;
+        }
 
-        transform.rotation = Quaternion.LookRotation(direction);
-        transform.rotation = Quaternion.LookRotation(-transform.forward, _camera.transform.up);
+        private void FixedUpdate()
+        {
+            Vector3 direction = _camera.transform.position - transform.position;
+
+            transform.rotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.LookRotation(-transform.forward, _camera.transform.up);
+        }
     }
 }

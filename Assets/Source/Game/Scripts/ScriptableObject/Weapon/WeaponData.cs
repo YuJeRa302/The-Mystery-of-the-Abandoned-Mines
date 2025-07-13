@@ -1,3 +1,6 @@
+using Assets.Source.Game.Scripts.Characters;
+using Assets.Source.Game.Scripts.Enums;
+using Assets.Source.Game.Scripts.Items;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,7 +11,7 @@ public class WeaponData : ScriptableObject
     [SerializeField] private int _tier;
     [SerializeField] private Color[] _tierColor;
     [SerializeField] private TypePlayerClass _targetClass;
-    [SerializeField] private WeponPrefab _weaponPrefab;
+    [SerializeField] private WeaponPrefab _weaponPrefab;
     [SerializeField] private string _translationName;
     [SerializeField] private Sprite _icon;
     [SerializeField] private DamageSource _damageSource;
@@ -20,7 +23,7 @@ public class WeaponData : ScriptableObject
     public string TranslationName => _translationName;
     public Sprite Icon => _icon;
     public TypePlayerClass TypePlayerClass => _targetClass;
-    public WeponPrefab WeaponPrefab => _weaponPrefab;
+    public WeaponPrefab WeaponPrefab => _weaponPrefab;
     public DamageSource DamageSource => _damageSource;
     public List<WeaponParameter> WeaponParameters => _weaponParameters;
 }

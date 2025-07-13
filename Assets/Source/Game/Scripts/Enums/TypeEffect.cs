@@ -1,5 +1,8 @@
-public enum TypeEffect
+namespace Assets.Source.Game.Scripts.Enums
 {
-    Weapon,
-    Player
+    public enum TypeEffect
+    {
+        Weapon,
+        Player
+    }
 }

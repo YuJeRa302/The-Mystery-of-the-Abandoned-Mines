@@ -1,4 +1,4 @@
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.Upgrades
 {
     [System.Serializable]
     public class UpgradeState

@@ -1,7 +1,10 @@
-public enum TypeRoomSide
+namespace Assets.Source.Game.Scripts.Enums
 {
-    Left,
-    Right,
-    Upper,
-    Down
+    public enum TypeRoomSide
+    {
+        Left,
+        Right,
+        Upper,
+        Down
+    }
 }

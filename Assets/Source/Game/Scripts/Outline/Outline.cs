@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.Outlines
 {
     [DisallowMultipleComponent]
     public class Outline : MonoBehaviour
@@ -20,45 +20,15 @@ namespace Assets.Source.Game.Scripts
         [SerializeField]
         private bool _precomputeOutline;
         [SerializeField, HideInInspector]
-        private List<Mesh> _bakeKeys = new ();
+        private List<Mesh> _bakeKeys = new();
         [SerializeField, HideInInspector]
-        private List<ListVector3> _bakeValues = new ();
+        private List<ListVector3> _bakeValues = new();
 
         private Renderer[] _renderers;
         private Material _outlineMaskMaterial;
         private Material _outlineFillMaterial;
         private HashSet<Mesh> _registeredMeshes = new();
         private bool _needsUpdate;
-
-        public OutlineMode OutlineMode
-        {
-            get { return _outlineMode; }
-            set
-            {
-                _outlineMode = value;
-                _needsUpdate = true;
-            }
-        }
-
-        public Color OutlineColor
-        {
-            get { return _outlineColor; }
-            set
-            {
-                _outlineColor = value;
-                _needsUpdate = true;
-            }
-        }
-
-        public float OutlineWidth
-        {
-            get { return _outlineWidth; }
-            set
-            {
-                _outlineWidth = value;
-                _needsUpdate = true;
-            }
-        }
 
         private void Awake()
         {
@@ -145,7 +115,7 @@ namespace Assets.Source.Game.Scripts
                     continue;
 
                 var index = _bakeKeys.IndexOf(meshFilter.sharedMesh);
-                var smoothNormals = (index >= 0) ? _bakeValues[index].data : SmoothNormals(meshFilter.sharedMesh);
+                var smoothNormals = index >= 0 ? _bakeValues[index].data : SmoothNormals(meshFilter.sharedMesh);
                 meshFilter.sharedMesh.SetUVs(3, smoothNormals);
                 var renderer = meshFilter.GetComponent<Renderer>();
 
@@ -165,7 +135,8 @@ namespace Assets.Source.Game.Scripts
 
         private List<Vector3> SmoothNormals(Mesh mesh)
         {
-            var groups = mesh.vertices.Select((vertex, index) => new KeyValuePair<Vector3, int>(vertex, index)).GroupBy(pair => pair.Key);
+            var groups = mesh.vertices.Select((vertex, index) =>
+            new KeyValuePair<Vector3, int>(vertex, index)).GroupBy(pair => pair.Key);
             var smoothNormals = new List<Vector3>(mesh.normals);
 
             foreach (var group in groups)
@@ -210,32 +181,45 @@ namespace Assets.Source.Game.Scripts
             switch (_outlineMode)
             {
                 case OutlineMode.OutlineAll:
-                    _outlineMaskMaterial.SetFloat("_ZTest", (float)UnityEngine.Rendering.CompareFunction.Always);
-                    _outlineFillMaterial.SetFloat("_ZTest", (float)UnityEngine.Rendering.CompareFunction.Always);
-                    _outlineFillMaterial.SetFloat("_OutlineWidth", _outlineWidth);
+                    _outlineMaskMaterial.SetFloat("_ZTest",
+                        (float)UnityEngine.Rendering.CompareFunction.Always);
+                    _outlineFillMaterial.SetFloat("_ZTest",
+                        (float)UnityEngine.Rendering.CompareFunction.Always);
+                    _outlineFillMaterial.SetFloat("_OutlineWidth",
+                        _outlineWidth);
                     break;
 
                 case OutlineMode.OutlineVisible:
-                    _outlineMaskMaterial.SetFloat("_ZTest", (float)UnityEngine.Rendering.CompareFunction.Always);
-                    _outlineFillMaterial.SetFloat("_ZTest", (float)UnityEngine.Rendering.CompareFunction.LessEqual);
+                    _outlineMaskMaterial.SetFloat("_ZTest",
+                        (float)UnityEngine.Rendering.CompareFunction.Always);
+                    _outlineFillMaterial.SetFloat("_ZTest",
+                        (float)UnityEngine.Rendering.CompareFunction.LessEqual);
                     _outlineFillMaterial.SetFloat("_OutlineWidth", _outlineWidth);
                     break;
 
                 case OutlineMode.OutlineHidden:
-                    _outlineMaskMaterial.SetFloat("_ZTest", (float)UnityEngine.Rendering.CompareFunction.Always);
-                    _outlineFillMaterial.SetFloat("_ZTest", (float)UnityEngine.Rendering.CompareFunction.Greater);
-                    _outlineFillMaterial.SetFloat("_OutlineWidth", _outlineWidth);
+                    _outlineMaskMaterial.SetFloat("_ZTest",
+                        (float)UnityEngine.Rendering.CompareFunction.Always);
+                    _outlineFillMaterial.SetFloat("_ZTest", 
+                       (float)UnityEngine.Rendering.CompareFunction.Greater);
+                    _outlineFillMaterial.SetFloat("_OutlineWidth",
+                        _outlineWidth);
                     break;
 
                 case OutlineMode.OutlineAndSilhouette:
-                    _outlineMaskMaterial.SetFloat("_ZTest", (float)UnityEngine.Rendering.CompareFunction.LessEqual);
-                    _outlineFillMaterial.SetFloat("_ZTest", (float)UnityEngine.Rendering.CompareFunction.Always);
-                    _outlineFillMaterial.SetFloat("_OutlineWidth", _outlineWidth);
+                    _outlineMaskMaterial.SetFloat("_ZTest",
+                        (float)UnityEngine.Rendering.CompareFunction.LessEqual);
+                    _outlineFillMaterial.SetFloat("_ZTest",
+                        (float)UnityEngine.Rendering.CompareFunction.Always);
+                    _outlineFillMaterial.SetFloat("_OutlineWidth",
+                        _outlineWidth);
                     break;
 
                 case OutlineMode.SilhouetteOnly:
-                    _outlineMaskMaterial.SetFloat("_ZTest", (float)UnityEngine.Rendering.CompareFunction.LessEqual);
-                    _outlineFillMaterial.SetFloat("_ZTest", (float)UnityEngine.Rendering.CompareFunction.Greater);
+                    _outlineMaskMaterial.SetFloat("_ZTest", 
+                       (float)UnityEngine.Rendering.CompareFunction.LessEqual);
+                    _outlineFillMaterial.SetFloat("_ZTest", 
+                       (float)UnityEngine.Rendering.CompareFunction.Greater);
                     _outlineFillMaterial.SetFloat("_OutlineWidth", 0f);
                     break;
             }

@@ -1,8 +1,11 @@
+using Assets.Source.Game.Scripts.ScriptableObjects;
+using Assets.Source.Game.Scripts.Services;
+using Assets.Source.Game.Scripts.ViewModels;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.Views
 {
     public class KnowledgeBaseView : MonoBehaviour
     {
@@ -77,7 +80,8 @@ namespace Assets.Source.Game.Scripts
             foreach (var subcategotiesView in subcategories)
             {
                 subcategoriesButtonView = Instantiate(_subcategoriesButtonViewPrefab, _subcategoriesContainer);
-                subcategoriesButtonView.Initialize(subcategotiesView.Name, subcategotiesView.Icon, subcategotiesView.KnowledgeData);
+                subcategoriesButtonView.Initialize(subcategotiesView.Name,
+                    subcategotiesView.Icon, subcategotiesView.KnowledgeData);
                 subcategoriesButtonView.CategoryChanged += ShowKnowledgeCategory;
                 _subcategoriesButtonViews.Add(subcategoriesButtonView);
             }

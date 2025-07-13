@@ -1,14 +1,14 @@
 using System;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.Characters
 {
     public abstract class State
     {
-        protected readonly StateMashine StateMashine;
+        protected readonly StateMachine StateMashine;
 
         protected bool CanTransit = true;
 
-        public State(StateMashine stateMashine)
+        public State(StateMachine stateMashine)
         {
             StateMashine = stateMashine;
         }
@@ -17,8 +17,6 @@ namespace Assets.Source.Game.Scripts
         public event Action AdditionalAttacking;
         public event Action SpetiallAttacking;
         public event Action Moving;
-        public event Action TakedDamage;
-        public event Action PlayerLose;
         public event Action SetedIdle;
 
         public virtual void EnterState() { }
@@ -34,10 +32,6 @@ namespace Assets.Source.Game.Scripts
         protected void SpetiallAttackEvent() => SpetiallAttacking?.Invoke();
 
         protected void MoveEvent() => Moving?.Invoke();
-
-        protected void TakeDamageEvent() => TakedDamage?.Invoke();
-
-        protected void EnemyWinEvent() => PlayerLose?.Invoke();
 
         protected void SetIdleState() => SetedIdle?.Invoke();
 

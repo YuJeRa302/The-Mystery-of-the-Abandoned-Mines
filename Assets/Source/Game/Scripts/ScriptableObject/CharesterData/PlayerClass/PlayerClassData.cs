@@ -1,7 +1,8 @@
+using Assets.Source.Game.Scripts.Enums;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.ScriptableObjects
 {
     [CreateAssetMenu(fileName = "New Class", menuName = "Create Player Class", order = 51)]
     public class PlayerClassData : ScriptableObject

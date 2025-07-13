@@ -1,5 +1,8 @@
 using UnityEngine;
 
-public class UpgradeStatsView : MonoBehaviour
+namespace Assets.Source.Game.Scripts.Views
 {
+    public class UpgradeStatsView : MonoBehaviour
+    {
+    }
 }

@@ -1,36 +1,41 @@
-public class PersistentDataService
+using Assets.Source.Game.Scripts.Saves;
+
+namespace Assets.Source.Game.Scripts.Services
 {
-    public PlayerProgress PlayerProgress;
-
-    public PersistentDataService()
+    public class PersistentDataService
     {
-        if(PlayerProgress == null)
-            PlayerProgress = new ();
-    }
+        public PlayerProgress PlayerProgress;
 
-    public bool TrySpendCoins(int value)
-    {
-        if (PlayerProgress.Coins >= value)
+        public PersistentDataService()
         {
-            PlayerProgress.Coins -= value;
-            return true;
+            if (PlayerProgress == null)
+                PlayerProgress = new();
         }
-        else
-        {
-            return false;
-        }
-    }
 
-    public bool TrySpendUpgradePoints(int value)
-    {
-        if (PlayerProgress.UpgradePoints >= value)
+        public bool TrySpendCoins(int value)
         {
-            PlayerProgress.UpgradePoints -= value;
-            return true;
+            if (PlayerProgress.Coins >= value)
+            {
+                PlayerProgress.Coins -= value;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
-        else
+
+        public bool TrySpendUpgradePoints(int value)
         {
-            return false;
+            if (PlayerProgress.UpgradePoints >= value)
+            {
+                PlayerProgress.UpgradePoints -= value;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

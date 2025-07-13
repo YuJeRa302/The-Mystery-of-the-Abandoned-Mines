@@ -1,4 +1,4 @@
-using Assets.Source.Game.Scripts;
+using Assets.Source.Game.Scripts.Characters;
 using UnityEngine;
 
 public class DragonSpell : MonoBehaviour

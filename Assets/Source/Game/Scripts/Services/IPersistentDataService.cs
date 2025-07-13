@@ -1,8 +1,11 @@
-public interface IPersistentDataService
+namespace Assets.Source.Game.Scripts.Services
 {
-    void LoadDataFromCloud();
-    void LoadDataFromPrefs();
-    void SaveDataToPrefs();
-    bool TrySpendCoins(int value);
-    bool TrySpendUpgradePoints(int value);
+    public interface IPersistentDataService
+    {
+        void LoadDataFromCloud();
+        void LoadDataFromPrefs();
+        void SaveDataToPrefs();
+        bool TrySpendCoins(int value);
+        bool TrySpendUpgradePoints(int value);
+    }
 }

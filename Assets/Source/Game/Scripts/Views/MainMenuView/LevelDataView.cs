@@ -1,10 +1,13 @@
+using Assets.Source.Game.Scripts.Levels;
+using Assets.Source.Game.Scripts.Services;
+using Assets.Source.Game.Scripts.ViewModels;
 using Lean.Localization;
 using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.Views
 {
     public class LevelDataView : MonoBehaviour, IPointerEnterHandler, IPointerDownHandler
     {
@@ -32,7 +35,8 @@ namespace Assets.Source.Game.Scripts
             _button.onClick.RemoveListener(OnSelected);
         }
 
-        public void Initialize(LevelData levelData, LevelState levelState, LevelsViewModel levelsViewModel, IAudioPlayerService audioPlayerService)
+        public void Initialize(LevelData levelData,
+            LevelState levelState, LevelsViewModel levelsViewModel, IAudioPlayerService audioPlayerService)
         {
             _audioPlayerService = audioPlayerService;
             _levelData = levelData;
@@ -59,7 +63,7 @@ namespace Assets.Source.Game.Scripts
             _icon.color = new Color(levelData.TierColor.r, levelData.TierColor.g, levelData.TierColor.b);
         }
 
-        private void UpdateLevelState(LevelData levelData, LevelState levelState) 
+        private void UpdateLevelState(LevelData levelData, LevelState levelState)
         {
             if (levelData.IsContractLevel == false)
                 UpdateDefaultLevelState(levelState);
@@ -69,7 +73,7 @@ namespace Assets.Source.Game.Scripts
 
         private void UpdateDefaultLevelState(LevelState levelState)
         {
-            if (levelState.Id == _firstLevelIndex) 
+            if (levelState.Id == _firstLevelIndex)
             {
                 SetImageLevelState(true);
                 return;

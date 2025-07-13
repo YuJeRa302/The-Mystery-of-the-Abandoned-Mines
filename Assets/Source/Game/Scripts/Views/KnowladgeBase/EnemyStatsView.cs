@@ -2,14 +2,17 @@ using Lean.Localization;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class EnemyStatsView : MonoBehaviour
+namespace Assets.Source.Game.Scripts.Views
 {
-    [SerializeField] private LeanLocalizedText _nameStats;
-    [SerializeField] private Text _value;
-
-    public void Initialize(string nameStats, string value)
+    public class EnemyStatsView : MonoBehaviour
     {
-        _nameStats.TranslationName = nameStats;
-        _value.text = value;
+        [SerializeField] private LeanLocalizedText _nameStats;
+        [SerializeField] private Text _value;
+
+        public void Initialize(string nameStats, string value)
+        {
+            _nameStats.TranslationName = nameStats;
+            _value.text = value;
+        }
     }
 }

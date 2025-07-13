@@ -1,8 +1,9 @@
+using Assets.Source.Game.Scripts.Enums;
 using Lean.Localization;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.Card
 {
     public abstract class CardParameterView : MonoBehaviour
     {

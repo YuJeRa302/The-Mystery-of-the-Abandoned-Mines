@@ -1,6 +1,9 @@
-public enum TypePlayerClass
+namespace Assets.Source.Game.Scripts.Enums
 {
-    Paladin,
-    Warlock,
-    Barbarian
+    public enum TypePlayerClass
+    {
+        Paladin,
+        Warlock,
+        Barbarian
+    }
 }

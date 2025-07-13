@@ -1,9 +1,10 @@
+using Assets.Source.Game.Scripts.Services;
 using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.Views
 {
     public class LanguageButtonView : MonoBehaviour, IPointerEnterHandler, IPointerDownHandler
     {

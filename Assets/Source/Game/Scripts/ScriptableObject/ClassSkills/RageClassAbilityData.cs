@@ -1,10 +1,13 @@
-using Assets.Source.Game.Scripts;
+using Assets.Source.Game.Scripts.PoolSystem;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New ClassAbility", menuName = "Create Class Ability/Rage", order = 51)]
-public class RageClassAbilityData : ClassAbilityData
+namespace Assets.Source.Game.Scripts.ScriptableObjects
 {
-    [SerializeField] private PoolParticle _rageEffect;
+    [CreateAssetMenu(fileName = "New ClassAbility", menuName = "Create Class Ability/Rage", order = 51)]
+    public class RageClassAbilityData : ClassAbilityData
+    {
+        [SerializeField] private PoolParticle _rageEffect;
 
-    public PoolParticle RageEffect => _rageEffect;
+        public PoolParticle RageEffect => _rageEffect;
+    }
 }

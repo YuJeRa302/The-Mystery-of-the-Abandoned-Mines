@@ -1,8 +1,12 @@
+using Assets.Source.Game.Scripts.AbilityScripts;
+using Assets.Source.Game.Scripts.Enums;
+using Assets.Source.Game.Scripts.ScriptableObjects;
+using Assets.Source.Game.Scripts.Views;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.Characters
 {
     public class PlayerView : MonoBehaviour
     {
@@ -39,11 +43,6 @@ namespace Assets.Source.Game.Scripts
             _throwPoint = throwPoint;
         }
 
-        public void SetMobileInterface()
-        {
-            _mobileInterface.SetActive(true);
-        }
-
         public void TakeClassAbility(ClassAbilityData abilityData, int currentLevel)
         {
             ClassSkillButtonView abilityView;
@@ -53,7 +52,7 @@ namespace Assets.Source.Game.Scripts
             if (currentLevel == 0)
             {
                 abilityView.Initialize(_closeAbilityIcon);
-                abilityView.SetInerectableButton(false);
+                abilityView.SetInteractableButton(false);
                 return;
             }
 
@@ -88,7 +87,8 @@ namespace Assets.Source.Game.Scripts
             }
 
             abilityView.Initialize(abilityAttributeData.Icon, currentAbilityCooldown);
-            LegendaryAbilityViewCreated?.Invoke(abilityView, abilityAttributeData.Particle, _throwPoint, abilityAttributeData);
+            LegendaryAbilityViewCreated?.Invoke(
+                abilityView, abilityAttributeData.Particle, _throwPoint, abilityAttributeData);
         }
 
         public void TakeAbility(ActiveAbilityData abilityAttributeData, int currentLevel)

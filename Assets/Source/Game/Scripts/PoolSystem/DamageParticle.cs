@@ -1,20 +1,23 @@
-using Assets.Source.Game.Scripts;
+using Assets.Source.Game.Scripts.Characters;
 using UnityEngine;
 
-public class DamageParticle : PoolParticle
+namespace Assets.Source.Game.Scripts.PoolSystem
 {
-    private DamageSource _damageParametr;
-
-    public void Initialaze(DamageSource damageParametr)
+    public class DamageParticle : PoolParticle
     {
-        _damageParametr = damageParametr;
-    }
+        private DamageSource _damageParametr;
 
-    private void OnParticleCollision(GameObject other)
-    {
-        if (other.gameObject.TryGetComponent(out Enemy enemy))
+        public void Initialize(DamageSource damageParametr)
         {
-            enemy.TakeDamage(_damageParametr);
+            _damageParametr = damageParametr;
+        }
+
+        private void OnParticleCollision(GameObject other)
+        {
+            if (other.gameObject.TryGetComponent(out Enemy enemy))
+            {
+                enemy.TakeDamage(_damageParametr);
+            }
         }
     }
 }

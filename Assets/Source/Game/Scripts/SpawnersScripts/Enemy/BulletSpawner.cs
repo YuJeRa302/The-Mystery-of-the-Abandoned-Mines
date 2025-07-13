@@ -1,7 +1,9 @@
+using Assets.Source.Game.Scripts.Characters;
+using Assets.Source.Game.Scripts.PoolSystem;
 using System;
 using UnityEngine;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.SpawnersScripts
 {
     public class BulletSpawner
     {
@@ -33,7 +35,8 @@ namespace Assets.Source.Game.Scripts
             }
             else
             {
-                bullet = GameObject.Instantiate(_bulletBrefab, _shotPoint.transform.position, _shotPoint.transform.rotation);
+                bullet = UnityEngine.Object.Instantiate(_bulletBrefab,
+                    _shotPoint.transform.position, _shotPoint.transform.rotation);
                 _pool.InstantiatePoolObject(bullet, _bulletBrefab.name);
             }
 

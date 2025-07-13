@@ -1,9 +1,13 @@
+using Assets.Source.Game.Scripts.Views;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class KnowledgeData : ScriptableObject
+namespace Assets.Source.Game.Scripts.ScriptableObjects
 {
-    [SerializeField] protected KnowladgeView _knowladgeView;
+    public abstract class KnowledgeData : ScriptableObject
+    {
+        [SerializeField] protected KnowladgeView _knowladgeView;
 
-    public abstract void GetView(Transform conteiner, out List<KnowladgeView> knowladgeViews);
+        public abstract void GetView(Transform conteiner, out List<KnowladgeView> knowladgeViews);
+    }
 }

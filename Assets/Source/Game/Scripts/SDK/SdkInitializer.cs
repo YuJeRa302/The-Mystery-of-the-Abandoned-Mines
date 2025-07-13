@@ -3,7 +3,7 @@ using YG;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.SDK
 {
     public class SdkInitializer : MonoBehaviour
     {

@@ -1,8 +1,11 @@
-public enum TypeDamageParameter 
+namespace Assets.Source.Game.Scripts.Enums
 {
-    Chance,
-    Duration,
-    Repulsive,
-    Slowdown,
-    Gradual
+    public enum TypeDamageParameter
+    {
+        Chance,
+        Duration,
+        Repulsive,
+        Slowdown,
+        Gradual
+    }
 }

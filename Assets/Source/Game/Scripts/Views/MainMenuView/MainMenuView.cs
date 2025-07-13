@@ -1,3 +1,5 @@
+using Assets.Source.Game.Scripts.Services;
+using Assets.Source.Game.Scripts.ViewModels;
 using DG.Tweening;
 using System;
 using System.Collections;
@@ -5,11 +7,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.Views
 {
     public class MainMenuView : MonoBehaviour
     {
-        private readonly System.Random _rnd = new ();
+        private readonly System.Random _rnd = new();
 
         [SerializeField] private Button _openUpgradesButton;
         [SerializeField] private Button _openSettingsButton;
@@ -28,7 +30,7 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private float _duration = 1f;
         [SerializeField] private float _timeNewTips = 10;
 
-        private List<TipView> _tipViews = new ();
+        private List<TipView> _tipViews = new();
         private IEnumerator _getTips;
         private IEnumerator _animationTips;
         private IAudioPlayerService _audioPlayerService;
@@ -70,7 +72,7 @@ namespace Assets.Source.Game.Scripts
             GetRandomTip();
         }
 
-        private void AddListener() 
+        private void AddListener()
         {
             _openUpgradesButton.onClick.AddListener(ShowUpgrades);
             _openSettingsButton.onClick.AddListener(ShowSettings);
@@ -84,7 +86,7 @@ namespace Assets.Source.Game.Scripts
             _menuViewModel.GameResumed += OnGameResumed;
         }
 
-        private void RemoveListener() 
+        private void RemoveListener()
         {
             _openUpgradesButton.onClick.RemoveListener(ShowUpgrades);
             _openSettingsButton.onClick.RemoveListener(ShowSettings);
@@ -112,28 +114,28 @@ namespace Assets.Source.Game.Scripts
             gameObject.SetActive(false);
         }
 
-        private void ShowUpgrades() 
+        private void ShowUpgrades()
         {
             _menuViewModel.InvokeUpgradesShow();
             _audioPlayerService.PlayOneShotButtonClickSound();
             gameObject.SetActive(false);
         }
 
-        private void ShowSettings() 
+        private void ShowSettings()
         {
             _menuViewModel.InvokeSettingsShow();
             _audioPlayerService.PlayOneShotButtonClickSound();
             gameObject.SetActive(false);
         }
 
-        private void ShowLevels() 
+        private void ShowLevels()
         {
             _menuViewModel.InvokeLevelsShow();
             _audioPlayerService.PlayOneShotButtonClickSound();
             gameObject.SetActive(false);
         }
 
-        private void ShowWeapons() 
+        private void ShowWeapons()
         {
             _menuViewModel.InvokeWeaponsShow();
             _audioPlayerService.PlayOneShotButtonClickSound();

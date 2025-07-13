@@ -1,15 +1,15 @@
 using System;
 using UnityEngine;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.Characters
 {
     [RequireComponent(typeof(Animator))]
     public class EnemyAnimation : MonoBehaviour
     {
-        [SerializeField] private EnemyStateMashineExample _enemyStateMashine;
+        [SerializeField] private EnemyStateMachineExample _enemyStateMachine;
 
         private Animator _animator;
-        private HashAnimation _animationEnemy = new HashAnimation ();
+        private AnimationMobName _animationEnemy = new AnimationMobName();
 
         public event Action Attacked;
         public event Action AdditionalAttacked;
@@ -22,19 +22,17 @@ namespace Assets.Source.Game.Scripts
 
         private void OnEnable()
         {
-            _enemyStateMashine.MashineInitialized += AddAnimationAction;
+            _enemyStateMachine.MachineInitialized += AddAnimationAction;
         }
 
         private void OnDestroy()
         {
-            _enemyStateMashine.MashineInitialized -= AddAnimationAction;
+            _enemyStateMachine.MachineInitialized -= AddAnimationAction;
 
-            foreach (var events in _enemyStateMashine.MashineStates)
+            foreach (var events in _enemyStateMachine.MashineStates)
             {
                 events.Value.Attacking -= OnAttack;
                 events.Value.Moving -= OnMove;
-                events.Value.TakedDamage -= OnTakeDamage;
-                events.Value.PlayerLose -= OnWinGame;
                 events.Value.AdditionalAttacking -= OnAdditionalAttack;
                 events.Value.SpetiallAttacking -= OnSpetialAttack;
             }
@@ -42,7 +40,7 @@ namespace Assets.Source.Game.Scripts
 
         private void TryAttackPlayer()
         {
-           Attacked?.Invoke();
+            Attacked?.Invoke();
         }
 
         private void TryAdditionAtacked()
@@ -52,12 +50,10 @@ namespace Assets.Source.Game.Scripts
 
         private void AddAnimationAction()
         {
-            foreach (var events in _enemyStateMashine.MashineStates)
+            foreach (var events in _enemyStateMachine.MashineStates)
             {
                 events.Value.Attacking += OnAttack;
                 events.Value.Moving += OnMove;
-                events.Value.TakedDamage += OnTakeDamage;
-                events.Value.PlayerLose += OnWinGame;
                 events.Value.AdditionalAttacking += OnAdditionalAttack;
                 events.Value.SpetiallAttacking += OnSpetialAttack;
             }
@@ -70,11 +66,5 @@ namespace Assets.Source.Game.Scripts
         private void OnAdditionalAttack() => _animator.SetTrigger(_animationEnemy.AdditionalAttackAnimation);
 
         private void OnSpetialAttack() => _animator.SetTrigger(_animationEnemy.SpecialAttackAnimation);
-
-        private void OnTakeDamage() => _animator.SetTrigger(_animationEnemy.TakeDamageAnimation);
-
-        private void OnWinGame() => _animator.SetTrigger(_animationEnemy.WinDanceAnimation);
-
-        private void EndAnimation() => AnimationCompleted?.Invoke();
     }
 }

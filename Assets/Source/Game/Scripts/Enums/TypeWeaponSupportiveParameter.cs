@@ -1,8 +1,11 @@
-public enum TypeWeaponSupportiveParameter
+namespace Assets.Source.Game.Scripts.Enums
 {
-    LifeStealValue,
-    LifeStealChance,
-    CritChance,
-    CritDamage,
-    BonusArmor
+    public enum TypeWeaponSupportiveParameter
+    {
+        LifeStealValue,
+        LifeStealChance,
+        CritChance,
+        CritDamage,
+        BonusArmor
+    }
 }

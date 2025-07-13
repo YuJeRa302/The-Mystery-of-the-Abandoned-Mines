@@ -1,31 +1,38 @@
-using Assets.Source.Game.Scripts;
+using Assets.Source.Game.Scripts.Characters;
 using System.Collections;
 using UnityEngine;
 
-public class Mine : Trap
+namespace Assets.Source.Game.Scripts.Traps
 {
-    [SerializeField] private GameObject _explosionEffect;
-
-    private Coroutine _coroutine;
-
-    protected override void ApplyDamage(Player player)
+    public class Mine : Trap
     {
-        if (_coroutine != null)
-            StopCoroutine(_coroutine);
+        [SerializeField] private GameObject _explosionEffect;
 
-        _coroutine = StartCoroutine(Explode(player));
-    }
+        private Coroutine _coroutine;
 
-    private IEnumerator Explode(Player player)
-    {
-        yield return new WaitForSeconds(1);
-        Vector3 directionToTarget = transform.position - player.transform.position;
-        float distance = directionToTarget.magnitude;
+        protected override void ApplyDamage(Player player)
+        {
+            if (_coroutine != null)
+                StopCoroutine(_coroutine);
 
-        if (distance <= 4f)
-            player.TakeDamage(_damage);
+            _coroutine = StartCoroutine(Explode(player));
+        }
 
-        Instantiate(_explosionEffect, new Vector3(transform.position.x, transform.position.y, transform.position.z), Quaternion.identity);
-        gameObject.SetActive(false);
+        private IEnumerator Explode(Player player)
+        {
+            yield return new WaitForSeconds(1);
+            Vector3 directionToTarget = transform.position - player.transform.position;
+            float distance = directionToTarget.magnitude;
+
+            if (distance <= 4f)
+                player.TakeDamage(_damage);
+
+            Instantiate(_explosionEffect, new Vector3(
+                transform.position.x,
+                transform.position.y,
+                transform.position.z),
+                Quaternion.identity);
+            gameObject.SetActive(false);
+        }
     }
 }

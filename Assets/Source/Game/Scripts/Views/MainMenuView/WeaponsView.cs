@@ -1,9 +1,14 @@
+using Assets.Source.Game.Scripts.Enums;
+using Assets.Source.Game.Scripts.Items;
+using Assets.Source.Game.Scripts.ScriptableObjects;
+using Assets.Source.Game.Scripts.Services;
+using Assets.Source.Game.Scripts.ViewModels;
 using Lean.Localization;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.Views
 {
     public class WeaponsView : MonoBehaviour
     {
@@ -31,9 +36,9 @@ namespace Assets.Source.Game.Scripts
         [Space(20)]
         [SerializeField] private GameObject _parametrPanel;
 
-        private List<WeaponStatsView> _weaponStatsViews = new ();
-        private List<PlayerClassDataView> _playerClassDataViews = new ();
-        private List<WeaponDataView> _weaponDataViews = new ();
+        private List<WeaponStatsView> _weaponStatsViews = new();
+        private List<PlayerClassDataView> _playerClassDataViews = new();
+        private List<WeaponDataView> _weaponDataViews = new();
         private WeaponsViewModel _weaponsViewModel;
         private IAudioPlayerService _audioPlayerService;
 
@@ -89,7 +94,7 @@ namespace Assets.Source.Game.Scripts
             }
         }
 
-        private void SortElementsByTier() 
+        private void SortElementsByTier()
         {
             _weaponDatas.Sort(delegate (WeaponData x, WeaponData y) { return x.Tier.CompareTo(y.Tier); });
         }
@@ -151,7 +156,7 @@ namespace Assets.Source.Game.Scripts
             CreateWeaponStats(weaponDataView);
         }
 
-        private void CreateWeaponStats(WeaponDataView weaponDataView) 
+        private void CreateWeaponStats(WeaponDataView weaponDataView)
         {
             var damageSource = weaponDataView.WeaponData.DamageSource;
             var weaponParameters = weaponDataView.WeaponData.WeaponParameters;

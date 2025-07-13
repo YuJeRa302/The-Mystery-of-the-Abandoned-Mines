@@ -1,7 +1,11 @@
+using Assets.Source.Game.Scripts.AbilityScripts;
+using Assets.Source.Game.Scripts.Characters;
+using Assets.Source.Game.Scripts.PoolSystem;
+using Assets.Source.Game.Scripts.Services;
 using System.Linq;
 using UnityEngine;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.Factories
 {
     public class AbilityPresenterFactory
     {
@@ -9,7 +13,9 @@ namespace Assets.Source.Game.Scripts
         private readonly GameLoopService _gameLoopService;
         private readonly GamePauseService _gamePauseService;
 
-        public AbilityPresenterFactory(GameLoopService gameLoopService, GamePauseService gamePauseService, ICoroutineRunner coroutineRunner)
+        public AbilityPresenterFactory(GameLoopService gameLoopService,
+            GamePauseService gamePauseService,
+            ICoroutineRunner coroutineRunner)
         {
             _gameLoopService = gameLoopService;
             _gamePauseService = gamePauseService;
@@ -37,7 +43,7 @@ namespace Assets.Source.Game.Scripts
             return attackAbilityPresenter;
         }
 
-        public AmplifierAbilityPresenter CreateAmplifierAbilityPresenter(Ability ability, 
+        public AmplifierAbilityPresenter CreateAmplifierAbilityPresenter(Ability ability,
             AbilityView abilityView, ParticleSystem particleSystem)
         {
             return CreatePresenter<AmplifierAbilityPresenter>(
@@ -47,15 +53,13 @@ namespace Assets.Source.Game.Scripts
                 _gameLoopService);
         }
 
-        public SummonAbillityPresenter CreateSummonAbilityPresenter(
+        public SummonAbilityPresenter CreateSummonAbilityPresenter(
             Ability ability,
             AbilityView abilityView,
-            Transform spawnPoint,
             Player player,
-            Summon summonPrefab,
-            Pool pool)
+            Summon summonPrefab)
         {
-            SummonAbillityPresenter summonAbillityPresenter = new SummonAbillityPresenter(
+            SummonAbilityPresenter summonAbillityPresenter = new SummonAbilityPresenter(
                 ability,
                 abilityView,
                 player,
@@ -71,7 +75,7 @@ namespace Assets.Source.Game.Scripts
             Ability ability,
             AbilityView abilityView,
             Player player,
-            AxemMssile axemMssile)
+            AxeMissile axemMssile)
         {
             ThrowAxeAbilityPresenter throwAxeAbilityPresenter = new ThrowAxeAbilityPresenter(
                 ability,
@@ -85,13 +89,13 @@ namespace Assets.Source.Game.Scripts
             return throwAxeAbilityPresenter;
         }
 
-        public JerkFrontAbillityPresenter CreateJerkFrontAbilityPresenter(
+        public JerkFrontAbilityPresenter CreateJerkFrontAbilityPresenter(
             Ability ability,
             AbilityView abilityView,
             Player player,
             PoolParticle abilityEffect)
         {
-            JerkFrontAbillityPresenter jerkFrontAbillityPresenter = new JerkFrontAbillityPresenter(
+            JerkFrontAbilityPresenter jerkFrontAbillityPresenter = new JerkFrontAbilityPresenter(
                 ability,
                 abilityView,
                 player,
@@ -103,13 +107,13 @@ namespace Assets.Source.Game.Scripts
             return jerkFrontAbillityPresenter;
         }
 
-        public RageAbillityPresenter CreateRageAbilityPresenter(
+        public RageAbilityPresenter CreateRageAbilityPresenter(
             Ability ability,
             AbilityView abilityView,
             Player player,
             PoolParticle abilityEffect)
         {
-            RageAbillityPresenter rageAbillityPresenter = new RageAbillityPresenter(
+            RageAbilityPresenter rageAbillityPresenter = new RageAbilityPresenter(
                 ability,
                 abilityView,
                 player,
@@ -141,13 +145,13 @@ namespace Assets.Source.Game.Scripts
             return epiphanyAbilityPresenter;
         }
 
-        public ShildUpAbilityPresenter CreateShieldUpAbility(
+        public ShieldUpAbilityPresenter CreateShieldUpAbility(
             Ability ability,
             AbilityView abilityView,
             Player player,
             PoolParticle poolParticle)
         {
-            ShildUpAbilityPresenter shildUpAbilityPresenter = new ShildUpAbilityPresenter(
+            ShieldUpAbilityPresenter shildUpAbilityPresenter = new ShieldUpAbilityPresenter(
                 ability,
                 abilityView,
                 player,
@@ -179,7 +183,10 @@ namespace Assets.Source.Game.Scripts
             return soulExplosionAbilityPresenter;
         }
 
-        public DarkPactAbilityPresenter CreateDarkPactAbilityPresenter(Ability ability, AbilityView abilityView, Player player, PoolParticle poolParticle)
+        public DarkPactAbilityPresenter CreateDarkPactAbilityPresenter(Ability ability,
+            AbilityView abilityView,
+            Player player,
+            PoolParticle poolParticle)
         {
             DarkPactAbilityPresenter darkPactAbilityPresenter = new DarkPactAbilityPresenter(
                 ability,
@@ -216,7 +223,7 @@ namespace Assets.Source.Game.Scripts
             AbilityView abilityView,
             Player player,
             ParticleSystem particleSystem,
-            LegendaryAbilitySpell spell)
+            LegendaryThunderAbilitySpell spell)
         {
             GlobularLightningPresenter globularLightningPresenter = new(
                 ability,
@@ -236,7 +243,7 @@ namespace Assets.Source.Game.Scripts
             AbilityView abilityView,
             Player player,
             ParticleSystem particleSystem,
-            LegendaryAbilitySpell spell)
+            LegendaryThunderAbilitySpell spell)
         {
             FirestormPresenter firestormPresenter = new FirestormPresenter(
                 ability,
@@ -251,17 +258,17 @@ namespace Assets.Source.Game.Scripts
             return firestormPresenter;
         }
 
-        public MeteorShowerPresenter CreateMetiorSowerPresenter(
+        public MeteorShowerPresenter CreateMeteorShowerPresenter(
             Ability ability,
             AbilityView abilityView,
             Player player,
             ParticleSystem particleSystem,
-            LegendaryAbilitySpell spell)
+            LegendaryThunderAbilitySpell spell)
         {
             MeteorShowerPresenter metiorSower = new MeteorShowerPresenter(
                 ability,
                 abilityView,
-                player, 
+                player,
                 _gamePauseService,
                 _gameLoopService,
                 _coroutineRunner,
@@ -276,7 +283,7 @@ namespace Assets.Source.Game.Scripts
             AbilityView abilityView,
             Player player,
             ParticleSystem particleSystem,
-            LegendaryAbilitySpell spell)
+            LegendaryThunderAbilitySpell spell)
         {
             ElectricGuardPresenter electricGuardPresenter = new ElectricGuardPresenter(
                 ability,
@@ -296,7 +303,7 @@ namespace Assets.Source.Game.Scripts
             AbilityView abilityView,
             Player player,
             ParticleSystem particleSystem,
-            LegendaryAbilitySpell spell)
+            LegendaryThunderAbilitySpell spell)
         {
             ThunderPresenter thunderPresenter = new ThunderPresenter(
                 ability,
@@ -316,7 +323,7 @@ namespace Assets.Source.Game.Scripts
             AbilityView abilityView,
             Player player,
             ParticleSystem particleSystem,
-            LegendaryAbilitySpell spell)
+            LegendaryThunderAbilitySpell spell)
         {
             DragonTracePresenter dragonTracePresenter = new DragonTracePresenter(
                 ability,
@@ -336,7 +343,7 @@ namespace Assets.Source.Game.Scripts
             AbilityView abilityView,
             Player player,
             ParticleSystem particleSystem,
-            LegendaryAbilitySpell spell)
+            LegendaryThunderAbilitySpell spell)
         {
             SnowfallPresenter snowfallPresenter = new SnowfallPresenter(
                 ability,
@@ -356,7 +363,7 @@ namespace Assets.Source.Game.Scripts
             AbilityView abilityView,
             Player player,
             ParticleSystem particleSystem,
-            LegendaryAbilitySpell spell)
+            LegendaryThunderAbilitySpell spell)
         {
             IciAvalanchePresenter iciAvalanchePresenter = new IciAvalanchePresenter(
                 ability,
@@ -375,7 +382,7 @@ namespace Assets.Source.Game.Scripts
             Ability ability,
             AbilityView abilityView,
             Player player, ParticleSystem particleSystem,
-            LegendaryAbilitySpell spell)
+            LegendaryThunderAbilitySpell spell)
         {
             BuranPresenter buranPresenter = new BuranPresenter(
                 ability,

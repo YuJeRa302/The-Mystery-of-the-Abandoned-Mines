@@ -1,27 +1,30 @@
 using System;
 using UnityEngine;
 
-public class PoolObject : MonoBehaviour
+namespace Assets.Source.Game.Scripts.PoolSystem
 {
-    private string _nameObject;
-
-    public string NameObject => _nameObject;
-
-    public event Action<PoolObject> PoolReturned;
-
-    public virtual void InitializeObject(string name)
+    public class PoolObject : MonoBehaviour
     {
-        _nameObject = name;
-    }
+        private string _nameObject;
 
-    public virtual void ReturnObjectPool()
-    {
-        ReturnToPool();
-    }
+        public string NameObject => _nameObject;
 
-    protected virtual void ReturnToPool()
-    {
-        gameObject.SetActive(false);
-        PoolReturned?.Invoke(this);
+        public event Action<PoolObject> PoolReturned;
+
+        public virtual void InitializeObject(string name)
+        {
+            _nameObject = name;
+        }
+
+        public virtual void ReturnObjectPool()
+        {
+            ReturnToPool();
+        }
+
+        protected virtual void ReturnToPool()
+        {
+            gameObject.SetActive(false);
+            PoolReturned?.Invoke(this);
+        }
     }
 }

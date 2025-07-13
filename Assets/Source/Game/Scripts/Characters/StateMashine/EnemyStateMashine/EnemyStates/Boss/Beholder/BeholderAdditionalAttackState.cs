@@ -1,44 +1,48 @@
-using Assets.Source.Game.Scripts;
+using Assets.Source.Game.Scripts.SpawnersScripts;
 using UnityEngine;
 
-public class BeholderAdditionalAttackState : BossAdditionalAttackState
+namespace Assets.Source.Game.Scripts.Characters
 {
-    private BulletSpawner _bulletSpawner;
-    private Transform[] _shotPoints;
-    private int _currentShotPointIndex;
-    private int _maxShotPointIndex;
-
-    public BeholderAdditionalAttackState(StateMashine stateMashine, Player target, Enemy enemy) : base(stateMashine, target, enemy)
+    public class BeholderAdditionalAttackState : BossAdditionalAttackState
     {
-        Target = target;
-        Enemy = enemy;
-        AnimationController = Enemy.AnimationStateController;
-        Beholder boss = Enemy as Beholder;
+        private BulletSpawner _bulletSpawner;
+        private Transform[] _shotPoints;
+        private int _currentShotPointIndex;
+        private int _maxShotPointIndex;
+        private EnemyAnimation _animationController;
 
-        _shotPoints = boss.ShotPoints;
-        _maxShotPointIndex = _shotPoints.Length;
-        _currentShotPointIndex = 0;
-        _bulletSpawner = new BulletSpawner(boss.Bullet, boss.Pool, _shotPoints[_currentShotPointIndex], Enemy);
+        public BeholderAdditionalAttackState(StateMachine stateMashine, Player target, Enemy enemy) : base(stateMashine, target, enemy)
+        {
+            Target = target;
+            Enemy = enemy;
+            _animationController = Enemy.AnimationStateController;
+            Beholder boss = Enemy as Beholder;
 
-        AnimationController.AdditionalAttacked += AditionalAttackAppalyDamage;
-        AnimationController.AnimationCompleted += OnAllowTransition;
-    }
+            _shotPoints = boss.ShotPoints;
+            _maxShotPointIndex = _shotPoints.Length;
+            _currentShotPointIndex = 0;
+            _bulletSpawner = new BulletSpawner(boss.Bullet, enemy.EnemyBulletPool, _shotPoints[_currentShotPointIndex], Enemy);
 
-    public override void EnterState()
-    {
-        base.EnterState();
-        _currentShotPointIndex = 0;
-        AdditionalAttackEvent();
-    }
+            _animationController.AdditionalAttacked += AditionalAttackAppalyDamage;
+            _animationController.AnimationCompleted += OnAllowTransition;
+        }
 
-    protected override void AditionalAttackAppalyDamage()
-    {
-        _bulletSpawner.SpawnBullet();
-        _currentShotPointIndex++;
+        public override void EnterState()
+        {
+            base.EnterState();
+            _currentShotPointIndex = 0;
+            AdditionalAttackEvent();
+        }
 
-        if (_currentShotPointIndex == _maxShotPointIndex)
-            return;
+        private void AditionalAttackAppalyDamage()
+        {
+            _bulletSpawner.SpawnBullet();
+            _currentShotPointIndex++;
 
-        _bulletSpawner.ChengeShotPoint(_shotPoints[_currentShotPointIndex]);
+            if (_currentShotPointIndex == _maxShotPointIndex)
+                return;
+
+            _bulletSpawner.ChengeShotPoint(_shotPoints[_currentShotPointIndex]);
+        }
     }
 }

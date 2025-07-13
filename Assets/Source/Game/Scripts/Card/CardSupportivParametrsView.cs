@@ -1,12 +1,15 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CardSupportivParametrsView : MonoBehaviour
+namespace Assets.Source.Game.Scripts.Card
 {
-    [SerializeField] private Image _iconParametr;
-
-    public void Initialize(Sprite icon)
+    public class CardSupportivParametrsView : MonoBehaviour
     {
-        _iconParametr.sprite = icon;
+        [SerializeField] private Image _iconParametr;
+
+        public void Initialize(Sprite icon)
+        {
+            _iconParametr.sprite = icon;
+        }
     }
 }

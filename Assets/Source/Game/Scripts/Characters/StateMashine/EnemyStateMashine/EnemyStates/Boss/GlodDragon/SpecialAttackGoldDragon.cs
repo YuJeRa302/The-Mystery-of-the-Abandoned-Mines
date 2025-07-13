@@ -1,40 +1,40 @@
-using Assets.Source.Game.Scripts;
-
-public class SpecialAttackGoldDragon : BossSpecialAttackState
+namespace Assets.Source.Game.Scripts.Characters
 {
-    private int _countWave = 0;
-    private int _maxCountWave = 2;
-
-    public SpecialAttackGoldDragon(StateMashine stateMashine, Player player, Enemy enemy) : base(stateMashine, player, enemy)
+    public class SpecialAttackGoldDragon : BossSpecialAttackState
     {
-        Target = player;
-        Enemy = enemy;
-        AnimationController = Enemy.AnimationStateController;
+        private int _countWave = 0;
+        private int _maxCountWave = 2;
 
-        AnimationController.AnimationCompleted += SpetialAttackCounter;
-    }
+        public SpecialAttackGoldDragon(StateMachine stateMashine, Enemy enemy) : base(stateMashine, enemy)
+        {
+            Enemy = enemy;
+            AnimationController = Enemy.AnimationStateController;
 
-    public override void EnterState()
-    {
-        base.EnterState();
-        _countWave = 0;
-        GoldDragon dragon = Enemy as GoldDragon;
-        dragon.DragonFlame.gameObject.SetActive(true);
-        SpetiallAttackEvent();
-    }
+            AnimationController.AnimationCompleted += SpetialAttackCounter;
+        }
 
-    public override void ExitState()
-    {
-        base.ExitState();
-        GoldDragon dragon = Enemy as GoldDragon;
-        dragon.DragonFlame.gameObject.SetActive(false);
-    }
+        public override void EnterState()
+        {
+            base.EnterState();
+            _countWave = 0;
+            GoldDragon dragon = Enemy as GoldDragon;
+            dragon.DragonFlame.gameObject.SetActive(true);
+            SpetiallAttackEvent();
+        }
 
-    private void SpetialAttackCounter()
-    {
-        _countWave++;
+        public override void ExitState()
+        {
+            base.ExitState();
+            GoldDragon dragon = Enemy as GoldDragon;
+            dragon.DragonFlame.gameObject.SetActive(false);
+        }
 
-        if (_countWave >= _maxCountWave)
-            CanTransit = true;
+        private void SpetialAttackCounter()
+        {
+            _countWave++;
+
+            if (_countWave >= _maxCountWave)
+                CanTransit = true;
+        }
     }
 }

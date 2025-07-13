@@ -1,7 +1,9 @@
+using Assets.Source.Game.Scripts.Card;
+using Assets.Source.Game.Scripts.Enums;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.ScriptableObjects
 {
     [CreateAssetMenu(fileName = "New Attribute", menuName = "Create Attribute/Attribute  ", order = 51)]
     public abstract class AttributeData : ScriptableObject

@@ -1,23 +1,13 @@
 using UnityEngine;
 
-[RequireComponent(typeof(ParticleSystem))]
-public class PoolParticle : PoolObject
+namespace Assets.Source.Game.Scripts.PoolSystem
 {
-    private ParticleSystem _particleSystem;
-
-    private void OnEnable()
+    [RequireComponent(typeof(ParticleSystem))]
+    public class PoolParticle : PoolObject
     {
-        _particleSystem = GetComponent<ParticleSystem>();
-    }
-
-    public override void InitializeObject(string name)
-    {
-        base.InitializeObject(name);
-        _particleSystem = GetComponent<ParticleSystem>();
-    }
-
-    private void OnParticleSystemStopped()
-    {
-        ReturnToPool();
+        private void OnParticleSystemStopped()
+        {
+            ReturnToPool();
+        }
     }
 }

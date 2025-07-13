@@ -1,3 +1,4 @@
+using Assets.Source.Game.Scripts.Characters;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Barbarian Wapon", menuName = "Create Weapon/Warlock Weapon", order = 51)]

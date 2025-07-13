@@ -1,22 +1,26 @@
-using Assets.Source.Game.Scripts;
+using Assets.Source.Game.Scripts.Characters;
+using Assets.Source.Game.Scripts.Views;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New KnowledgeBaseData", menuName = "Create KnowledgeBase/Enemy", order = 51)]
-public class EnemyKniwledgeBaseData : KnowledgeData
+namespace Assets.Source.Game.Scripts.ScriptableObjects
 {
-    [SerializeField] private List<EnemyData> _enemyDatas;
-
-    public override void GetView(Transform conteiner, out List<KnowladgeView> knowladgeViews)
+    [CreateAssetMenu(fileName = "New KnowledgeBaseData", menuName = "Create KnowledgeBase/Enemy", order = 51)]
+    public class EnemyKniwledgeBaseData : KnowledgeData
     {
-        knowladgeViews = new();
-        EnemyKnowladgeView enemyKnowladgeView;
+        [SerializeField] private List<EnemyData> _enemyDatas;
 
-        foreach (EnemyData EnemyData in _enemyDatas)
+        public override void GetView(Transform conteiner, out List<KnowladgeView> knowladgeViews)
         {
-            enemyKnowladgeView = Instantiate(_knowladgeView as EnemyKnowladgeView, conteiner);
-            enemyKnowladgeView.Initialize(EnemyData);
-            knowladgeViews.Add(enemyKnowladgeView);
+            knowladgeViews = new();
+            EnemyKnowladgeView enemyKnowladgeView;
+
+            foreach (EnemyData EnemyData in _enemyDatas)
+            {
+                enemyKnowladgeView = Instantiate(_knowladgeView as EnemyKnowladgeView, conteiner);
+                enemyKnowladgeView.Initialize(EnemyData);
+                knowladgeViews.Add(enemyKnowladgeView);
+            }
         }
     }
 }

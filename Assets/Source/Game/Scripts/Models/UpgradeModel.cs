@@ -1,6 +1,8 @@
+using Assets.Source.Game.Scripts.Services;
+using Assets.Source.Game.Scripts.Upgrades;
 using System;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.Models
 {
     public class UpgradeModel : IDisposable
     {
@@ -47,7 +49,8 @@ namespace Assets.Source.Game.Scripts
 
             if (UpgradePoints >= _currentUpgradeData.UpgradeParameters[_currentStats.CurrentLevel].Cost)
             {
-                _persistentDataService.TrySpendUpgradePoints(_currentUpgradeData.UpgradeParameters[_currentStats.CurrentLevel].Cost);
+                _persistentDataService.TrySpendUpgradePoints(
+                    _currentUpgradeData.UpgradeParameters[_currentStats.CurrentLevel].Cost);
 
                 if (_currentStats.CurrentLevel < _maxStatsLevel)
                     _currentStats.CurrentLevel++;

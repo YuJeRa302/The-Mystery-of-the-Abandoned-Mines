@@ -1,4 +1,4 @@
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.Items
 {
     [System.Serializable]
     public class WeaponState
@@ -7,7 +7,7 @@ namespace Assets.Source.Game.Scripts
         public bool IsEquip;
         public bool IsUnlock;
 
-        public WeaponState(int id, bool isEquip, bool isUnlock) 
+        public WeaponState(int id, bool isEquip, bool isUnlock)
         {
             Id = id;
             IsEquip = isEquip;

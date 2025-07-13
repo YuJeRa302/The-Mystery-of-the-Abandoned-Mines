@@ -1,3 +1,9 @@
+using Assets.Source.Game.Scripts.Enums;
+using Assets.Source.Game.Scripts.Items;
+using Assets.Source.Game.Scripts.Levels;
+using Assets.Source.Game.Scripts.ScriptableObjects;
+using Assets.Source.Game.Scripts.Services;
+using Assets.Source.Game.Scripts.ViewModels;
 using DG.Tweening;
 using Lean.Localization;
 using System;
@@ -5,7 +11,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.Views
 {
     public class LevelsView : MonoBehaviour
     {
@@ -60,9 +66,9 @@ namespace Assets.Source.Game.Scripts
 
         private bool _isContractLevel = false;
         private LevelDataView _currentLevelDataView;
-        private List<PlayerClassDataView> _playerClassDataViews = new ();
-        private List<LevelDataView> _levelDataViews = new ();
-        private List<WeaponDataView> _weaponDataViews = new ();
+        private List<PlayerClassDataView> _playerClassDataViews = new();
+        private List<LevelDataView> _levelDataViews = new();
+        private List<WeaponDataView> _weaponDataViews = new();
         private LevelsViewModel _levelsViewModel;
         private IAudioPlayerService _audioPlayerService;
         private bool _isLevelSelect = false;
@@ -221,7 +227,7 @@ namespace Assets.Source.Game.Scripts
             CreateClass();
         }
 
-        private void HideLevels() 
+        private void HideLevels()
         {
             _levelImage.gameObject.SetActive(false);
             _textHint.TranslationName = _chooseLevelType;
@@ -321,7 +327,7 @@ namespace Assets.Source.Game.Scripts
             _isLevelSelect = true;
         }
 
-        private void OnBuyButtonClick() 
+        private void OnBuyButtonClick()
         {
             if (_levelsViewModel.TryBuyContract(_currentLevelDataView.LevelData.Cost))
                 LoadLevel();
@@ -331,7 +337,7 @@ namespace Assets.Source.Game.Scripts
             _audioPlayerService.PlayOneShotButtonClickSound();
         }
 
-        private void OnCancelButtonClick() 
+        private void OnCancelButtonClick()
         {
             _audioPlayerService.PlayOneShotButtonClickSound();
             _dialogPanel.SetActive(false);
@@ -347,7 +353,7 @@ namespace Assets.Source.Game.Scripts
                 if (_isWeaponSelect == true)
                     ShowDialogPanel();
             }
-            else 
+            else
             {
                 if (_isWeaponSelect == true)
                     LoadLevel();
@@ -360,13 +366,13 @@ namespace Assets.Source.Game.Scripts
         {
             _audioPlayerService.PlayOneShotButtonClickSound();
 
-            if (_isPlayerClassShow == true) 
+            if (_isPlayerClassShow == true)
             {
                 HidePlayerClass();
                 return;
             }
 
-            if (_isLevelsShow == true) 
+            if (_isLevelsShow == true)
             {
                 HideLevels();
                 return;
@@ -376,7 +382,7 @@ namespace Assets.Source.Game.Scripts
             _levelsViewModel.Hide();
         }
 
-        private void PlayCoinsAnimation() 
+        private void PlayCoinsAnimation()
         {
             _goldTextDialogPanel.transform.localScale = Vector3.zero;
 
@@ -386,7 +392,7 @@ namespace Assets.Source.Game.Scripts
                 .SetLink(_goldTextDialogPanel.gameObject);
         }
 
-        private void ShowDialogPanel() 
+        private void ShowDialogPanel()
         {
             _dialogPanel.SetActive(true);
             _currentPlayerGold.text = _levelsViewModel.GetPlayerConins().ToString();

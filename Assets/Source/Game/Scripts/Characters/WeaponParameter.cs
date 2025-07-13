@@ -1,7 +1,12 @@
-[System.Serializable]
+using Assets.Source.Game.Scripts.Enums;
 
-public class WeaponParameter 
+namespace Assets.Source.Game.Scripts.Characters
 {
-    public float Value;
-    public TypeWeaponSupportiveParameter SupportivePatametr;
+    [System.Serializable]
+
+    public class WeaponParameter
+    {
+        public float Value;
+        public TypeWeaponSupportiveParameter SupportivePatametr;
+    }
 }

@@ -1,13 +1,9 @@
-using Assets.Source.Game.Scripts;
-
-public class EnemyStunedState : State
+namespace Assets.Source.Game.Scripts.Characters
 {
-    public EnemyStunedState(StateMashine stateMashine) : base(stateMashine)
-    { 
-    }
-
-    public override void EnterState()
+    public class EnemyStunedState : State
     {
-        base.EnterState();
+        public EnemyStunedState(StateMachine stateMashine) : base(stateMashine)
+        {
+        }
     }
 }

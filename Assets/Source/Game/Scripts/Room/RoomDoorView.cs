@@ -1,7 +1,9 @@
+using Assets.Source.Game.Scripts.Characters;
+using Assets.Source.Game.Scripts.Outlines;
 using System;
 using UnityEngine;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.Rooms
 {
     public class RoomDoorView : MonoBehaviour
     {
@@ -13,7 +15,7 @@ namespace Assets.Source.Game.Scripts
 
         private void OnTriggerEnter(Collider collider)
         {
-            if (collider.TryGetComponent(out Player player)) 
+            if (collider.TryGetComponent(out Player player))
             {
                 SetDoorState(true);
                 RoomDoorTaked?.Invoke(this);
@@ -26,27 +28,27 @@ namespace Assets.Source.Game.Scripts
                 SetDoorState(false);
         }
 
-        public void Lock() 
+        public void Lock()
         {
             SetDoorState(false);
             _colider.enabled = false;
             _outline.enabled = false;
         }
 
-        public void Unlock() 
+        public void Unlock()
         {
             _colider.enabled = true;
             _outline.enabled = true;
         }
 
-        public void SetDoorOpen() 
+        public void SetDoorOpen()
         {
             SetDoorState(true);
             _colider.enabled = false;
             _outline.enabled = false;
         }
 
-        private void SetDoorState(bool state) 
+        private void SetDoorState(bool state)
         {
             _animator.SetBool(DoorTransitionParameter.IsOpen.ToString(), state);
         }

@@ -1,6 +1,6 @@
 using System;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.Services
 {
     public interface IGameLoopService
     {

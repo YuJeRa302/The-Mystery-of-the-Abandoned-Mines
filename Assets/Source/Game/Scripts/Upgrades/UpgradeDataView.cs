@@ -1,9 +1,11 @@
+using Assets.Source.Game.Scripts.Services;
+using Assets.Source.Game.Scripts.ViewModels;
 using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.Upgrades
 {
     public class UpgradeDataView : MonoBehaviour, IPointerEnterHandler, IPointerDownHandler
     {
@@ -31,7 +33,10 @@ namespace Assets.Source.Game.Scripts
             _upgradeViewModel.InvokedStatsReseted -= OnResetState;
         }
 
-        public void Initialize(UpgradeData upgradeData, UpgradeState upgradeState, UpgradeViewModel upgradeViewModel, IAudioPlayerService audioPlayerService)
+        public void Initialize(UpgradeData upgradeData,
+            UpgradeState upgradeState,
+            UpgradeViewModel upgradeViewModel,
+            IAudioPlayerService audioPlayerService)
         {
             _audioPlayerService = audioPlayerService;
             _upgradeViewModel = upgradeViewModel;
@@ -50,7 +55,7 @@ namespace Assets.Source.Game.Scripts
 
         public void OnPointerDown(PointerEventData eventData)
         {
-           _audioPlayerService.PlayOneShotButtonClickSound();
+            _audioPlayerService.PlayOneShotButtonClickSound();
         }
 
         private void OnResetState()

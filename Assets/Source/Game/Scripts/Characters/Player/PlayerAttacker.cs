@@ -1,14 +1,18 @@
+using Assets.Source.Game.Scripts.Enums;
+using Assets.Source.Game.Scripts.PoolSystem;
+using Assets.Source.Game.Scripts.Services;
+using Assets.Source.Game.Scripts.SpawnersScripts;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.Characters
 {
     public class PlayerAttacker : IDisposable
     {
-        private readonly System.Random _rnd = new ();
+        private readonly System.Random _rnd = new();
         private readonly GamePauseService _gamePauseService;
         private readonly ICoroutineRunner _coroutineRunner;
         private readonly int _divider = 100;
@@ -78,7 +82,9 @@ namespace Assets.Source.Game.Scripts
         private void CreateBulletSpawner(WeaponData weaponData)
         {
             if (_typeAttackRange == TypeAttackRange.Ranged)
-                _bulletSpawner = new ProjectileSpawner((weaponData as WarlockWeaponData).BulletPrafab, _poolBullet, _shotPoint, _player.DamageSource);
+                _bulletSpawner = new ProjectileSpawner(
+                    (weaponData as WarlockWeaponData).BulletPrafab,
+                    _poolBullet, _shotPoint, _player.DamageSource);
         }
 
         private void AddListeners()
@@ -128,7 +134,7 @@ namespace Assets.Source.Game.Scripts
                 _coroutineRunner.StopCoroutine(_findTarget);
 
             _findTarget = _coroutineRunner.StartCoroutine(FindTarget());
-            
+
         }
 
         private IEnumerator FindTarget()
@@ -144,10 +150,11 @@ namespace Assets.Source.Game.Scripts
                 {
                     if (colliders[i].TryGetComponent(out Enemy enemy))
                     {
-                        float distanceToTarget = Vector3.Distance(enemy.transform.position, _player.transform.position);
+                        float distanceToTarget =
+                            Vector3.Distance(enemy.transform.position, _player.transform.position);
 
                         if (distanceToTarget <= _player.SearchRadius)
-                            if(_enemies.ContainsKey(distanceToTarget) == false)
+                            if (_enemies.ContainsKey(distanceToTarget) == false)
                                 _enemies.Add(distanceToTarget, enemy);
                     }
                 }
@@ -196,7 +203,8 @@ namespace Assets.Source.Game.Scripts
                         _player.DamageSource.TypeDamage,
                         _player.DamageSource.DamageParameters,
                         _player.DamageSource.PoolParticle,
-                        _player.DamageSource.Damage * (_defaultCriticalDamageMultiplier + _player.CriticalDamageMultiplier / _divider));
+                        _player.DamageSource.Damage *
+                        (_defaultCriticalDamageMultiplier + _player.CriticalDamageMultiplier / _divider));
 
                     _currentTarget.TakeDamage(criticalDamageSource);
                     CritAttacked?.Invoke();

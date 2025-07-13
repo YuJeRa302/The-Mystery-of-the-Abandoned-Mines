@@ -1,81 +1,67 @@
 using System;
 using UnityEngine;
 
-[RequireComponent(typeof(Animator))]
-public class SummonAnimation : MonoBehaviour
+namespace Assets.Source.Game.Scripts.Characters
 {
-    private SummonStateMashineExample _summonStateMashine;
-    private Animator _animator;
-    private HashAnimation _animationEnemy = new HashAnimation ();
-
-    public event Action Attacked;
-    public event Action AdditionalAttacked;
-    public event Action AnimationCompleted;
-
-    private void Awake()
+    [RequireComponent(typeof(Animator))]
+    public class SummonAnimation : MonoBehaviour
     {
-        _animator = GetComponent<Animator>();
-    }
+        private SummonStateMashineExample _summonStateMashine;
+        private Animator _animator;
+        private AnimationMobName _animationEnemy = new AnimationMobName();
 
-    private void OnDestroy()
-    {
-        _summonStateMashine.MashineInitialized -= AddAnimationAction;
+        public event Action Attacked;
 
-        foreach (var events in _summonStateMashine.MashineStates)
+        private void Awake()
         {
-            events.Value.Attacking -= OnAttack;
-            events.Value.Moving -= OnMove;
-            events.Value.TakedDamage -= OnTakeDamage;
-            events.Value.PlayerLose -= OnWinGame;
-            events.Value.AdditionalAttacking -= OnAdditionalAttack;
-            events.Value.SpetiallAttacking -= OnSpetialAttack;
-            events.Value.SetedIdle -= OnIdle;
+            _animator = GetComponent<Animator>();
         }
-    }
 
-    public void Initialization(SummonStateMashineExample summonStateMashine)
-    {
-        _summonStateMashine = summonStateMashine;
-        AddAnimationAction();
-    }
-
-    private void TryAttackPlayer()
-    {
-        Attacked?.Invoke();
-    }
-
-    private void TryAdditionAtacked()
-    {
-        AdditionalAttacked?.Invoke();
-    }
-
-    private void AddAnimationAction()
-    {
-        foreach (var events in _summonStateMashine.MashineStates)
+        private void OnDestroy()
         {
-            events.Value.SetedIdle += OnIdle;
-            events.Value.Attacking += OnAttack;
-            events.Value.Moving += OnMove;
-            events.Value.TakedDamage += OnTakeDamage;
-            events.Value.PlayerLose += OnWinGame;
-            events.Value.AdditionalAttacking += OnAdditionalAttack;
-            events.Value.SpetiallAttacking += OnSpetialAttack;
+            _summonStateMashine.MashineInitialized -= AddAnimationAction;
+
+            foreach (var events in _summonStateMashine.MashineStates)
+            {
+                events.Value.Attacking -= OnAttack;
+                events.Value.Moving -= OnMove;
+                events.Value.AdditionalAttacking -= OnAdditionalAttack;
+                events.Value.SpetiallAttacking -= OnSpetialAttack;
+                events.Value.SetedIdle -= OnIdle;
+            }
         }
+
+        public void Initialization(SummonStateMashineExample summonStateMashine)
+        {
+            _summonStateMashine = summonStateMashine;
+            AddAnimationAction();
+        }
+
+        private void TryAttackEnemy()
+        {
+            Attacked?.Invoke();
+        }
+
+        private void AddAnimationAction()
+        {
+            foreach (var events in _summonStateMashine.MashineStates)
+            {
+                events.Value.SetedIdle += OnIdle;
+                events.Value.Attacking += OnAttack;
+                events.Value.Moving += OnMove;
+                events.Value.AdditionalAttacking += OnAdditionalAttack;
+                events.Value.SpetiallAttacking += OnSpetialAttack;
+            }
+        }
+
+        private void OnMove() => _animator.SetTrigger(_animationEnemy.MoveAnimation);
+
+        private void OnAttack() => _animator.SetTrigger(_animationEnemy.AttackAnimation);
+
+        private void OnAdditionalAttack() => _animator.SetTrigger(_animationEnemy.AdditionalAttackAnimation);
+
+        private void OnSpetialAttack() => _animator.SetTrigger(_animationEnemy.SpecialAttackAnimation);
+
+        private void OnIdle() => _animator.SetTrigger(_animationEnemy.IdleAnimation);
     }
-
-    private void OnMove() => _animator.SetTrigger(_animationEnemy.MoveAnimation);
-
-    private void OnAttack() => _animator.SetTrigger(_animationEnemy.AttackAnimation);
-
-    private void OnAdditionalAttack() => _animator.SetTrigger(_animationEnemy.AdditionalAttackAnimation);
-
-    private void OnSpetialAttack() => _animator.SetTrigger(_animationEnemy.SpecialAttackAnimation);
-
-    private void OnTakeDamage() => _animator.SetTrigger(_animationEnemy.TakeDamageAnimation);
-
-    private void OnWinGame() => _animator.SetTrigger(_animationEnemy.WinDanceAnimation);
-
-    private void OnIdle() => _animator.SetTrigger(_animationEnemy.IdleAnimation);
-
-    private void EndAnimation() => AnimationCompleted?.Invoke();
 }

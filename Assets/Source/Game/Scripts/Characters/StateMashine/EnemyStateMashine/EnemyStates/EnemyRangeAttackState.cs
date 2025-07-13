@@ -1,62 +1,69 @@
-using Assets.Source.Game.Scripts;
+using Assets.Source.Game.Scripts.SpawnersScripts;
 using UnityEngine;
 
-public class EnemyRangeAttackState : EnemyAttackState
+namespace Assets.Source.Game.Scripts.Characters
 {
-    private BulletSpawner _bulletSpawner;
-
-    public EnemyRangeAttackState(StateMashine stateMashine, Player target, Enemy enemy, BulletSpawner bulletSpawner) : base(stateMashine, target, enemy)
+    public class EnemyRangeAttackState : EnemyAttackState
     {
-        Enemy = enemy;
-        Target = target;
-        AttackRange = Enemy.AttackDistance;
-        Damage = Enemy.Damage;
-        AttackDelay = Enemy.AttackDelay;
-        AnimationController = Enemy.AnimationStateController;
-        _bulletSpawner = bulletSpawner;
-    }
+        private BulletSpawner _bulletSpawner;
 
-    public override void SubscrabeIvent()
-    {
-        AnimationController.Attacked += LaunchBullet;
-    }
-
-    public override void UpdateState()
-    {
-        if (CanTransit)
+        public EnemyRangeAttackState(StateMachine stateMashine,
+            Player target,
+            Enemy enemy,
+            BulletSpawner bulletSpawner)
+            : base(stateMashine, target, enemy)
         {
-            DirectionToTarget = Enemy.transform.position - Target.transform.position;
-            DistanceToTarget = DirectionToTarget.magnitude;
-
-            if (DistanceToTarget > AttackRange)
-                StateMashine.SetState<EnemyMoveState>();
-
-            if (Attack())
-                AttackEvent();
+            Enemy = enemy;
+            Target = target;
+            AttackRange = Enemy.AttackDistance;
+            Damage = Enemy.Damage;
+            AttackDelay = Enemy.AttackDelay;
+            AnimationController = Enemy.AnimationStateController;
+            _bulletSpawner = bulletSpawner;
         }
-    }
 
-    protected override bool Attack()
-    {
-        if (DistanceToTarget <= AttackRange)
+        public override void SubscrabeIvent()
         {
-            Enemy.transform.LookAt(Target.transform.position);
+            AnimationController.Attacked += LaunchBullet;
+        }
 
-            if (LastAttackTime <= 0)
+        public override void UpdateState()
+        {
+            if (CanTransit)
             {
-                LastAttackTime = AttackDelay;
-                CanTransit = false;
-                return true;
+                DirectionToTarget = Enemy.transform.position - Target.transform.position;
+                DistanceToTarget = DirectionToTarget.magnitude;
+
+                if (DistanceToTarget > AttackRange)
+                    StateMashine.SetState<EnemyMoveState>();
+
+                if (Attack())
+                    AttackEvent();
             }
         }
 
-        LastAttackTime -= Time.deltaTime;
-        return false;
-    }
+        protected override bool Attack()
+        {
+            if (DistanceToTarget <= AttackRange)
+            {
+                Enemy.transform.LookAt(Target.transform.position);
 
-    private void LaunchBullet()
-    {
-        _bulletSpawner.SpawnBullet();
-        CanTransit = true;
+                if (LastAttackTime <= 0)
+                {
+                    LastAttackTime = AttackDelay;
+                    CanTransit = false;
+                    return true;
+                }
+            }
+
+            LastAttackTime -= Time.deltaTime;
+            return false;
+        }
+
+        private void LaunchBullet()
+        {
+            _bulletSpawner.SpawnBullet();
+            CanTransit = true;
+        }
     }
 }

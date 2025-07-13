@@ -1,4 +1,6 @@
-namespace Assets.Source.Game.Scripts
+using Assets.Source.Game.Scripts.Services;
+
+namespace Assets.Source.Game.Scripts.Models
 {
     public class LeaderboardModel
     {

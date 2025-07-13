@@ -1,6 +1,7 @@
+using Assets.Source.Game.Scripts.SpawnersScripts;
 using UnityEngine;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.Characters
 {
     public class BossAttackState : EnemyAttackState
     {
@@ -11,18 +12,21 @@ namespace Assets.Source.Game.Scripts
         private float _additionalAttackDelay = 7f;
         private float _specialAttackDelay = 7f;
 
-        public BossAttackState(StateMashine stateMashine, Player target, Enemy enemy) : base(stateMashine, target, enemy)
+        public BossAttackState(StateMachine stateMashine, Player target, Enemy enemy)
+            : base(stateMashine, target, enemy)
         {
             Boss boss = enemy as Boss;
             _additionalAttackDelay = boss.AdditionalAttackDelay;
-            _specialAttackDelay = boss.SpecilaAttackDelay;
+            _specialAttackDelay = boss.SpecialAttackDelay;
         }
 
         public override void SubscrabeIvent()
         {
             if (Enemy.TryGetComponent(out Beholder beholder))
             {
-                _bulletSpawner = new BulletSpawner(beholder.Bullet, beholder.Pool, beholder.BaseShotPoint, Enemy);
+                _bulletSpawner = new BulletSpawner(beholder.Bullet,
+                    beholder.EnemyBulletPool,
+                    beholder.BaseShotPoint, Enemy);
                 AnimationController.Attacked += LaunchBullet;
             }
             else

@@ -1,9 +1,11 @@
+using Assets.Source.Game.Scripts.Items;
+using Assets.Source.Game.Scripts.Services;
 using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.Views
 {
     public class WeaponDataView : MonoBehaviour, IPointerEnterHandler, IPointerDownHandler
     {
@@ -35,7 +37,8 @@ namespace Assets.Source.Game.Scripts
                 _levelsView.WeaponStateReseted -= ResetState;
         }
 
-        public void Initialize(WeaponData weaponData, WeaponState weaponState, IAudioPlayerService audioPlayerService, LevelsView levelsView)
+        public void Initialize(WeaponData weaponData, WeaponState weaponState,
+            IAudioPlayerService audioPlayerService, LevelsView levelsView)
         {
             _audioPlayerService = audioPlayerService;
             _levelsView = levelsView;
@@ -65,7 +68,8 @@ namespace Assets.Source.Game.Scripts
         private void Fill(WeaponData weaponData)
         {
             _icon.sprite = weaponData.Icon;
-            _colorTierWeapon.color = new Color(weaponData.TierColor.r, weaponData.TierColor.g, weaponData.TierColor.b);
+            _colorTierWeapon.color = new Color(weaponData.TierColor.r,
+                weaponData.TierColor.g, weaponData.TierColor.b);
 
             if (_levelsView != null)
                 _levelsView.WeaponStateReseted += ResetState;

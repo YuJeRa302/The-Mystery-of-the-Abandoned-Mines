@@ -1,8 +1,12 @@
+using Assets.Source.Game.Scripts.Enums;
 using UnityEngine;
 
-public class RemovableWall : Wall
+namespace Assets.Source.Game.Scripts.Rooms
 {
-    [SerializeField] private TypeRoomSide _typeRoomSide;
+    public class RemovableWall : Wall
+    {
+        [SerializeField] private TypeRoomSide _typeRoomSide;
 
-    public TypeRoomSide TypeRoomSide => _typeRoomSide;
+        public TypeRoomSide TypeRoomSide => _typeRoomSide;
+    }
 }

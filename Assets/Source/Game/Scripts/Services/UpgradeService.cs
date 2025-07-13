@@ -1,58 +1,61 @@
-using Assets.Source.Game.Scripts;
+using Assets.Source.Game.Scripts.Upgrades;
 using System;
 using System.Collections.Generic;
 
-[Serializable]
-public class UpgradeService
+namespace Assets.Source.Game.Scripts.Services
 {
-    public List<UpgradeState> UpgradeStates = new ();
-
-    public void SetUpgradeStates(List<UpgradeState> upgradeStates)
+    [Serializable]
+    public class UpgradeService
     {
-        UpgradeStates = upgradeStates;
-    }
+        public List<UpgradeState> UpgradeStates = new();
 
-    public void SetUpgradeState(UpgradeState newUpgradeState) 
-    {
-        if (UpgradeStates != null)
+        public void SetUpgradeStates(List<UpgradeState> upgradeStates)
         {
-            UpgradeState upgradeState = UpgradeStates.Find(state => state.Id == newUpgradeState.Id);
-
-            if (upgradeState != null)
-                upgradeState.CurrentLevel = newUpgradeState.CurrentLevel;
-            else
-                UpgradeStates.Add(new(newUpgradeState.Id, newUpgradeState.CurrentLevel));
+            UpgradeStates = upgradeStates;
         }
-    }
 
-    public UpgradeState GetUpgradeState(UpgradeData upgradeData)
-    {
-        UpgradeState upgradeState = FindUpgradeState(upgradeData.Id);
-
-        if (upgradeState == null)
-            upgradeState = InitState(upgradeData);
-
-        return upgradeState;
-    }
-
-    private UpgradeState FindUpgradeState(int id)
-    {
-        if (UpgradeStates != null)
+        public void SetUpgradeState(UpgradeState newUpgradeState)
         {
-            foreach (UpgradeState upgradeState in UpgradeStates)
+            if (UpgradeStates != null)
             {
-                if (upgradeState.Id == id)
-                    return upgradeState;
+                UpgradeState upgradeState = UpgradeStates.Find(state => state.Id == newUpgradeState.Id);
+
+                if (upgradeState != null)
+                    upgradeState.CurrentLevel = newUpgradeState.CurrentLevel;
+                else
+                    UpgradeStates.Add(new(newUpgradeState.Id, newUpgradeState.CurrentLevel));
             }
         }
 
-        return null;
-    }
+        public UpgradeState GetUpgradeState(UpgradeData upgradeData)
+        {
+            UpgradeState upgradeState = FindUpgradeState(upgradeData.Id);
 
-    private UpgradeState InitState(UpgradeData upgradeData)
-    {
-        UpgradeState upgradeState = new(upgradeData.Id, 0);
-        UpgradeStates.Add(upgradeState);
-        return upgradeState;
+            if (upgradeState == null)
+                upgradeState = InitState(upgradeData);
+
+            return upgradeState;
+        }
+
+        private UpgradeState FindUpgradeState(int id)
+        {
+            if (UpgradeStates != null)
+            {
+                foreach (UpgradeState upgradeState in UpgradeStates)
+                {
+                    if (upgradeState.Id == id)
+                        return upgradeState;
+                }
+            }
+
+            return null;
+        }
+
+        private UpgradeState InitState(UpgradeData upgradeData)
+        {
+            UpgradeState upgradeState = new(upgradeData.Id, 0);
+            UpgradeStates.Add(upgradeState);
+            return upgradeState;
+        }
     }
 }

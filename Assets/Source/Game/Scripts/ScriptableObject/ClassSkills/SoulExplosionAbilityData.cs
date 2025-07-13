@@ -1,12 +1,15 @@
-using Assets.Source.Game.Scripts;
+using Assets.Source.Game.Scripts.AbilityScripts;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New ClassAbility", menuName = "Create Class Ability/SoulExplosion", order = 51)]
-public class SoulExplosionAbilityData : ClassAbilityData
+namespace Assets.Source.Game.Scripts.ScriptableObjects
 {
-    [SerializeField] private Spell _spell;
-    [SerializeField] private ParticleSystem _damageParticle;
+    [CreateAssetMenu(fileName = "New ClassAbility", menuName = "Create Class Ability/SoulExplosion", order = 51)]
+    public class SoulExplosionAbilityData : ClassAbilityData
+    {
+        [SerializeField] private Spell _spell;
+        [SerializeField] private ParticleSystem _damageParticle;
 
-    public ParticleSystem DamageParticle => _damageParticle;
-    public Spell Spell => _spell;
+        public ParticleSystem DamageParticle => _damageParticle;
+        public Spell Spell => _spell;
+    }
 }

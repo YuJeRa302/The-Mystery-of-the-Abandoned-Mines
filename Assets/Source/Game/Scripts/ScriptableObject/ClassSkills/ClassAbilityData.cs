@@ -1,7 +1,12 @@
+using Assets.Source.Game.Scripts.AbilityScripts;
+using Assets.Source.Game.Scripts.Card;
+using Assets.Source.Game.Scripts.Characters;
+using Assets.Source.Game.Scripts.Enums;
+using Assets.Source.Game.Scripts.Upgrades;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.ScriptableObjects
 {
     [CreateAssetMenu(fileName = "New ClassAbility", menuName = "Create Class Ability/New Class Ability", order = 51)]
     public class ClassAbilityData : ScriptableObject

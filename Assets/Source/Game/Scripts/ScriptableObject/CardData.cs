@@ -1,3 +1,5 @@
+using Assets.Source.Game.Scripts.Enums;
+using Assets.Source.Game.Scripts.ScriptableObjects;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,12 +12,12 @@ namespace Assets.Source.Game.Scripts
         [SerializeField] private Color[] _typeCardColor;
         [SerializeField] private TypeCardParameter _typeCardParameter;
         [SerializeField] private AttributeData _attributeData;
-        [SerializeField] private List<AttributeData> _suppurtivData;
+        [SerializeField] private List<AttributeData> _suppurtiveData;
 
         public int Id => _id;
         public Color[] TypeCardColor => _typeCardColor;
         public AttributeData AttributeData => _attributeData;
         public TypeCardParameter TypeCardParameter => _typeCardParameter;
-        public List<AttributeData> SuppurtivData => _suppurtivData;
+        public List<AttributeData> SuppurtiveData => _suppurtiveData;
     }
 }

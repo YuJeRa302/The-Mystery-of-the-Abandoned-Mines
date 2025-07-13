@@ -1,8 +1,9 @@
+using Assets.Source.Game.Scripts.Services;
 using System;
 using System.Collections;
 using UnityEngine;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.Characters
 {
     public class PlayerHealth : IDisposable
     {
@@ -19,7 +20,10 @@ namespace Assets.Source.Game.Scripts
         private Coroutine _timeReduce;
         private bool _canHealind = true;
 
-        public PlayerHealth(Player player, ICoroutineRunner coroutineRunner, GamePauseService gamePauseService, int currentHealth)
+        public PlayerHealth(Player player,
+            ICoroutineRunner coroutineRunner,
+            GamePauseService gamePauseService,
+            int currentHealth)
         {
             _player = player;
             _coroutineRunner = coroutineRunner;

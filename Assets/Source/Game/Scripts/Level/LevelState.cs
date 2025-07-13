@@ -1,11 +1,9 @@
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.Levels
 {
     [System.Serializable]
     public class LevelState
     {
         public int Id;
         public bool IsComplete;
-        public int CurrentCompleteStages;
-        public int Tier;
     }
 }

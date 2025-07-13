@@ -1,10 +1,12 @@
-using Assets.Source.Game.Scripts;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New ClassAbility", menuName = "Create Class Ability/SummonSkeleton", order = 51)]
-public class SummonAbilityData : ClassAbilityData
+namespace Assets.Source.Game.Scripts.ScriptableObjects
 {
-    [SerializeField] private SummonData _summonData;
+    [CreateAssetMenu(fileName = "New ClassAbility", menuName = "Create Class Ability/SummonSkeleton", order = 51)]
+    public class SummonAbilityData : ClassAbilityData
+    {
+        [SerializeField] private SummonData _summonData;
 
-    public SummonData Summon => _summonData;
+        public SummonData Summon => _summonData;
+    }
 }

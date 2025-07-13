@@ -1,8 +1,11 @@
-public enum OutlineMode
+namespace Assets.Source.Game.Scripts.Outlines
 {
-    OutlineAll,
-    OutlineVisible,
-    OutlineHidden,
-    OutlineAndSilhouette,
-    SilhouetteOnly
+    public enum OutlineMode
+    {
+        OutlineAll,
+        OutlineVisible,
+        OutlineHidden,
+        OutlineAndSilhouette,
+        SilhouetteOnly
+    }
 }

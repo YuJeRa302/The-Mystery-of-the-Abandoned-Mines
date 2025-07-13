@@ -1,19 +1,23 @@
+using Assets.Source.Game.Scripts.Enums;
+using Assets.Source.Game.Scripts.PoolSystem;
+using Assets.Source.Game.Scripts.Utility;
+using Assets.Source.Game.Scripts.Views;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.Characters
 {
     public class Enemy : PoolObject
     {
         [SerializeField] protected Pool Pool;
 
-        private readonly System.Random _rnd = new ();
+        private readonly System.Random _rnd = new();
 
-        [SerializeField] private EnemyStateMashineExample _stateMashine;
+        [SerializeField] private EnemyStateMachineExample _stateMachine;
         [SerializeField] private EnemyAnimation _animationController;
-        [SerializeField] private Transform _damageEffectConteiner;
+        [SerializeField] private Transform _damageEffectContainer;
         [SerializeField] private HealthBarView _healthView;
 
         private int _damage;
@@ -34,10 +38,10 @@ namespace Assets.Source.Game.Scripts
         private Coroutine _burnDamage;
         private Coroutine _slowDamage;
         private Coroutine _repulsiveDamage;
-        private List<PoolObject> _spawnedEffects = new ();
+        private List<PoolObject> _spawnedEffects = new();
         private AudioClip _deathAudio;
         private AudioClip _hitAudio;
-        private int _tire;
+        private int _tier;
 
         public float AttackDelay => _attackDelay;
         public float Damage => _damage;
@@ -51,6 +55,7 @@ namespace Assets.Source.Game.Scripts
         public float CurrentHealth => _currentHealth;
         public EnemyAnimation AnimationStateController => _animationController;
         public AudioClip DeathAudio => _deathAudio;
+        public Pool EnemyBulletPool => Pool;
 
         public event Action<Enemy> Died;
         public event Action Stuned;
@@ -66,10 +71,10 @@ namespace Assets.Source.Game.Scripts
                 spawnedParticle.ReturnObjectPool();
             }
 
-            CorountineStop(_slowDamage);
-            CorountineStop(_stunDamage);
-            CorountineStop(_repulsiveDamage);
-            CorountineStop(_burnDamage);
+            CoroutineStop(_slowDamage);
+            CoroutineStop(_stunDamage);
+            CoroutineStop(_repulsiveDamage);
+            CoroutineStop(_burnDamage);
         }
 
         private void OnDestroy()
@@ -81,9 +86,9 @@ namespace Assets.Source.Game.Scripts
         {
             _rigidbody = GetComponent<Rigidbody>();
             _currentLvlRoom = lvlRoom;
-            _tire = tire;
+            _tier = tire;
             Fill(data);
-            _stateMashine.InitializeStateMashine(player);
+            _stateMachine.InitializeStateMachine(player);
             _healthView.Initialize(this);
             _currentHealth = _health;
             _animationController.Attacked += OnEnemyAttack;
@@ -95,25 +100,81 @@ namespace Assets.Source.Game.Scripts
             _isDead = false;
             _currentHealth = _health;
 
-            if(_currentLvlRoom < lvlRoom)
+            if (_currentLvlRoom < lvlRoom)
             {
                 _health = _health * (1 + lvlRoom / GameConstants.EnemyBoostDivider);
                 _damage = _damage * (1 + lvlRoom / GameConstants.EnemyBoostDivider);
             }
 
-            _stateMashine.ResetState();
+            _stateMachine.ResetState();
             _currentHealth = _health;
             HealthChanged?.Invoke();
         }
 
         public void TakeDamage(DamageSource damageSource)
         {
-            float damageValue = damageSource.Damage;
-            float chance = 0;
-            float duration = 0;
-            float repulsive = 0;
-            float gradual = 0;
-            float slowDown = 0;
+            if (damageSource == null)
+                return;
+
+            ExtractDamageParameters(damageSource,
+                out float chance, out float duration,
+                out float repulsive, out float gradual,
+                out float slowDown);
+
+            ApplyDamage(damageSource.Damage);
+
+            if (_isDead)
+                return;
+
+            switch (damageSource.TypeDamage)
+            {
+                case TypeDamage.PhysicalDamage:
+                    break;
+                case TypeDamage.StunDamage:
+                    TryApplyEffect(chance, () =>
+                        _stunDamage = StartCoroutine(Stun(duration, damageSource.PoolParticle)),
+                        _stunDamage);
+                    break;
+                case TypeDamage.RepulsiveDamage:
+                    _repulsiveDamage = RestartCoroutine(_repulsiveDamage,
+                        () => Repulsive(repulsive));
+                    break;
+                case TypeDamage.BurningDamage:
+                    _burnDamage = RestartCoroutine(_burnDamage,
+                        () => Burn(gradual, duration, damageSource.PoolParticle));
+                    break;
+                case TypeDamage.SlowedDamage:
+                    _slowDamage = RestartCoroutine(_slowDamage,
+                        () => Slowed(duration, slowDown, damageSource.PoolParticle));
+                    break;
+            }
+        }
+
+        protected override void ReturnToPool()
+        {
+            CoroutineStop(_slowDamage);
+            CoroutineStop(_stunDamage);
+            CoroutineStop(_repulsiveDamage);
+            CoroutineStop(_burnDamage);
+            base.ReturnToPool();
+            _isDead = true;
+            _speed = _baseMoveSpeed;
+            _rigidbody.velocity = Vector3.zero;
+            _rigidbody.isKinematic = true;
+            _currentHealth = _health;
+        }
+
+        private void ExtractDamageParameters(
+            DamageSource damageSource,
+            out float chance, out float duration,
+            out float repulsive, out float gradual,
+            out float slowDown)
+        {
+            chance = 0;
+            duration = 0;
+            repulsive = 0;
+            gradual = 0;
+            slowDown = 0;
 
             foreach (var parametr in damageSource.DamageParameters)
             {
@@ -136,67 +197,22 @@ namespace Assets.Source.Game.Scripts
                         break;
                 }
             }
+        }
 
-            if (damageSource.TypeDamage == TypeDamage.PhysicalDamage)
-                ApplyDamage(damageValue);
-
-            if (damageSource.TypeDamage == TypeDamage.StunDamage)
+        private void TryApplyEffect(float chance, Action effectAction, Coroutine runningCoroutine)
+        {
+            if (_rnd.Next(0, 100) <= chance)
             {
-                ApplyDamage(damageValue);
-
-                if (_isDead)
-                    return;
-
-                if (_rnd.Next(0, 100) <= chance)
-                {
-                    CorountineStop(_stunDamage);
-                    _stunDamage = StartCoroutine(Stun(duration, damageSource.PoolParticle));
-                }
-            }
-            else if (damageSource.TypeDamage == TypeDamage.RepulsiveDamage)
-            {
-                ApplyDamage(damageValue);
-
-                if (_isDead)
-                    return;
-
-                CorountineStop(_repulsiveDamage);
-                _repulsiveDamage = StartCoroutine(Repulsive(repulsive));
-            }
-            else if (damageSource.TypeDamage == TypeDamage.BurningDamage)
-            {
-                ApplyDamage(damageValue);
-
-                if (_isDead)
-                    return;
-
-                CorountineStop(_burnDamage);
-                _burnDamage = StartCoroutine(Burn(gradual, duration, damageSource.PoolParticle));
-            }
-            else if (damageSource.TypeDamage == TypeDamage.SlowedDamage)
-            {
-                ApplyDamage(damageValue);
-
-                if (_isDead)
-                    return;
-
-                CorountineStop(_slowDamage);
-                _slowDamage = StartCoroutine(Slowed(duration, slowDown, damageSource.PoolParticle));
+                CoroutineStop(runningCoroutine);
+                effectAction();
             }
         }
 
-        protected override void ReturnToPool()
+        private Coroutine RestartCoroutine(Coroutine runningCoroutine, Func<IEnumerator> coroutineMethod)
         {
-            CorountineStop(_slowDamage);
-            CorountineStop(_stunDamage);
-            CorountineStop(_repulsiveDamage);
-            CorountineStop(_burnDamage);
-            base.ReturnToPool();
-            _isDead = true;
-            _speed = _baseMoveSpeed;
-            _rigidbody.velocity = Vector3.zero;
-            _rigidbody.isKinematic = true;
-            _currentHealth = _health;
+            CoroutineStop(runningCoroutine);
+
+            return StartCoroutine(coroutineMethod());
         }
 
         private void ApplyDamage(float damage)
@@ -222,15 +238,15 @@ namespace Assets.Source.Game.Scripts
 
         private void Fill(EnemyData data)
         {
-            _health = data.EnemyStats[_tire].Health;
-            _damage = data.EnemyStats[_tire].Damage;
-            _speed = data.EnemyStats[_tire].MoveSpeed;
-            _attackDelay = data.EnemyStats[_tire].AttackDelay;
-            _attackDistance = data.EnemyStats[_tire].AttackDistance;
-            _gold = data.EnemyStats[_tire].GoldReward;
-            _score = data.EnemyStats[_tire].Score;
-            _experience = data.EnemyStats[_tire].ExperienceReward;
-            _upgradeExperience = data.EnemyStats[_tire].UpgradeExperienceReward;
+            _health = data.EnemyStats[_tier].Health;
+            _damage = data.EnemyStats[_tier].Damage;
+            _speed = data.EnemyStats[_tier].MoveSpeed;
+            _attackDelay = data.EnemyStats[_tier].AttackDelay;
+            _attackDistance = data.EnemyStats[_tier].AttackDistance;
+            _gold = data.EnemyStats[_tier].GoldReward;
+            _score = data.EnemyStats[_tier].Score;
+            _experience = data.EnemyStats[_tier].ExperienceReward;
+            _upgradeExperience = data.EnemyStats[_tier].UpgradeExperienceReward;
             _baseMoveSpeed = _speed;
             _deathAudio = data.AudioClipDie;
             _hitAudio = data.Hit;
@@ -245,16 +261,16 @@ namespace Assets.Source.Game.Scripts
         {
             PoolParticle particle;
 
-            if (Pool.TryPoolObject(poolParticle.gameObject, out PoolObject pollParticle))
+            if (Pool.TryPoolObject(poolParticle.gameObject, out PoolObject poolObject))
             {
-                particle = pollParticle as PoolParticle;
-                particle.transform.position = _damageEffectConteiner.position;
+                particle = poolObject as PoolParticle;
+                particle.transform.position = _damageEffectContainer.position;
                 particle.gameObject.SetActive(true);
             }
             else
             {
-                particle = Instantiate(poolParticle, _damageEffectConteiner);
-                Pool.InstantiatePoolObject(particle, poolParticle.name);
+                particle = Instantiate(poolParticle, _damageEffectContainer);
+                Pool.InstantiatePoolObject(particle, poolObject.name);
                 _spawnedEffects.Add(particle);
             }
         }
@@ -269,7 +285,7 @@ namespace Assets.Source.Game.Scripts
             }
         }
 
-        private void CorountineStop(Coroutine corontine)
+        private void CoroutineStop(Coroutine corontine)
         {
             if (corontine != null)
                 StopCoroutine(corontine);
@@ -330,7 +346,7 @@ namespace Assets.Source.Game.Scripts
             float currentTime = 0;
             CreateDamageParticle(particle);
             _baseMoveSpeed = _speed;
-            _speed = _speed * (1 - valueSlowed/100);
+            _speed = _speed * (1 - valueSlowed / 100);
 
             while (currentTime <= duration)
             {

@@ -1,27 +1,31 @@
+using Assets.Source.Game.Scripts.PoolSystem;
 using System.Collections;
 using UnityEngine;
 
-public class Bullet : PoolObject
+namespace Assets.Source.Game.Scripts.Characters
 {
-    private readonly float _lifeTimeBullet = 6f;
-
-    protected float Damage;
-
-    private Coroutine _coroutine;
-
-    public void Initialaze(int damage)
+    public class Bullet : PoolObject
     {
-        Damage = damage;
+        private readonly float _lifeTimeBullet = 6f;
 
-        if (_coroutine != null)
-            StopCoroutine(_coroutine);
+        protected float Damage;
 
-        _coroutine = StartCoroutine(LifeTimeCounter());
-    }
+        private Coroutine _coroutine;
 
-    private IEnumerator LifeTimeCounter()
-    {
-        yield return new WaitForSeconds(_lifeTimeBullet);
-        ReturnObjectPool();
+        public void Initialaze(int damage)
+        {
+            Damage = damage;
+
+            if (_coroutine != null)
+                StopCoroutine(_coroutine);
+
+            _coroutine = StartCoroutine(LifeTimeCounter());
+        }
+
+        private IEnumerator LifeTimeCounter()
+        {
+            yield return new WaitForSeconds(_lifeTimeBullet);
+            ReturnObjectPool();
+        }
     }
 }

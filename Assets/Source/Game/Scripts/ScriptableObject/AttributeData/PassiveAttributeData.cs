@@ -1,6 +1,7 @@
+using Assets.Source.Game.Scripts.Views;
 using UnityEngine;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.ScriptableObjects
 {
     [CreateAssetMenu(fileName = "New Primary Attribute", menuName = "Create Attribute/Passive Ability Attribute", order = 51)]
     public class PassiveAttributeData : AttributeData

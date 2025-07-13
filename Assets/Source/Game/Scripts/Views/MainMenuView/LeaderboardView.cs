@@ -1,8 +1,9 @@
+using Assets.Source.Game.Scripts.ViewModels;
 using UnityEngine;
 using UnityEngine.UI;
 using YG;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.Views
 {
     public class LeaderboardView : MonoBehaviour
     {

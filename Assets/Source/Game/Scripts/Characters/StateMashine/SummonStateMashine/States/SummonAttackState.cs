@@ -15,7 +15,7 @@ namespace Assets.Source.Game.Scripts.Characters
         private Summon _summon;
         private Enemy _target;
 
-        public SummonAttackState(StateMachine stateMashine, Summon summon) : base(stateMashine)
+        public SummonAttackState(StateMachine stateMachine, Summon summon) : base(stateMachine)
         {
             _summon = summon;
             AttackDelay = _summon.AttackDelay;

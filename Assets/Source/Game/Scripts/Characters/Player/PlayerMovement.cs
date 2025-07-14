@@ -65,7 +65,7 @@ namespace Assets.Source.Game.Scripts.Characters
             GC.SuppressFinalize(this);
         }
 
-        public void DisableMovment()
+        public void DisableMovement()
         {
             _canMove = false;
 

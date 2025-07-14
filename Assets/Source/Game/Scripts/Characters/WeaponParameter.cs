@@ -7,6 +7,6 @@ namespace Assets.Source.Game.Scripts.Characters
     public class WeaponParameter
     {
         public float Value;
-        public TypeWeaponSupportiveParameter SupportivePatametr;
+        public TypeWeaponSupportiveParameter SupportiveParameter;
     }
 }

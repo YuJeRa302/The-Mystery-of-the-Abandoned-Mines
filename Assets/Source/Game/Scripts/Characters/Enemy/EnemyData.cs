@@ -29,7 +29,7 @@ namespace Assets.Source.Game.Scripts.Characters
         public AudioClip Hit => _hit;
         public Enemy PrefabEnemy => _prefabEnemy;
         public Sprite Icon => _enemyIcon;
-        public string Descroption => _descripton;
+        public string Description => _descripton;
         public string Name => _name;
         public List<EnemyStats> EnemyStats => _enemyStats;
     }

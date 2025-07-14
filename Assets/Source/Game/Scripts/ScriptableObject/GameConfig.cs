@@ -1,8 +1,7 @@
-using Assets.Source.Game.Scripts.ScriptableObjects;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.ScriptableObjects
 {
     [CreateAssetMenu(fileName = "New GameConfig", menuName = "Create GameConfig", order = 51)]
     public class GameConfig : ScriptableObject

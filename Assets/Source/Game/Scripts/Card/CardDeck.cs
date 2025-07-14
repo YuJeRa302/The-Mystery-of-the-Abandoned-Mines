@@ -21,7 +21,7 @@ namespace Assets.Source.Game.Scripts.Card
         public event Action<CardView> SetNewAbility;
         public event Action<CardView> RerollPointsUpdated;
         public event Action<CardView> PlayerStatsUpdated;
-        public event Action<CardView> TakedPassivAbility;
+        public event Action<CardView> TakedPassiveAbility;
 
         public CardDeck(bool isContractLevel)
         {
@@ -181,7 +181,7 @@ namespace Assets.Source.Game.Scripts.Card
             else
                 _cardDataAbility.Add(cardView.CardData);
 
-            TakedPassivAbility?.Invoke(cardView);
+            TakedPassiveAbility?.Invoke(cardView);
         }
 
         private void AddCardAbilityData(CardView cardView, List<CardData> repository)

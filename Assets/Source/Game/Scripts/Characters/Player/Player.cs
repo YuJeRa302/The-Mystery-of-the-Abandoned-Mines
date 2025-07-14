@@ -253,7 +253,7 @@ namespace Assets.Source.Game.Scripts.Characters
             _cardDeck.SetNewAbility += OnSetNewAbility;
             _cardDeck.RerollPointsUpdated += OnUpdateRerollPoints;
             _cardDeck.PlayerStatsUpdated += OnStatsUpdate;
-            _cardDeck.TakedPassivAbility += OnTakenPassiveAbility;
+            _cardDeck.TakedPassiveAbility += OnTakenPassiveAbility;
             _playerStats.ExperienceValueChanged += OnExperienceValueChanged;
             _playerStats.UpgradeExperienceValueChanged += OnUpgradeExperienceValueChanged;
             _playerStats.MaxHealthChanged += OnMaxHealthChanged;
@@ -290,7 +290,7 @@ namespace Assets.Source.Game.Scripts.Characters
             _cardDeck.SetNewAbility -= OnSetNewAbility;
             _cardDeck.RerollPointsUpdated -= OnUpdateRerollPoints;
             _cardDeck.PlayerStatsUpdated -= OnStatsUpdate;
-            _cardDeck.TakedPassivAbility -= OnTakenPassiveAbility;
+            _cardDeck.TakedPassiveAbility -= OnTakenPassiveAbility;
             _playerStats.ExperienceValueChanged -= OnExperienceValueChanged;
             _playerStats.UpgradeExperienceValueChanged -= OnUpgradeExperienceValueChanged;
             _playerStats.MaxHealthChanged -= OnMaxHealthChanged;
@@ -334,7 +334,7 @@ namespace Assets.Source.Game.Scripts.Characters
         public void OnPlayerDead()
         {
             _playerHealth.DisableHealing();
-            _playerMovement.DisableMovment();
+            _playerMovement.DisableMovement();
             PlayerDied?.Invoke();
         }
 

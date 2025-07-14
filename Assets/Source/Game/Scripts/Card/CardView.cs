@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Assets.Source.Game.Scripts.ScriptableObjects;
 using Lean.Localization;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,7 +16,7 @@ namespace Assets.Source.Game.Scripts.Card
         [SerializeField] private LeanLocalizedText _description;
         [SerializeField] private Transform _cardParameterContainer;
         [SerializeField] private Transform _supportiveParameterContainer;
-        [SerializeField] private CardSupportivParametrsView _supportiveParametersView;
+        [SerializeField] private CardSupportivParametersView _supportiveParametersView;
 
         private List<CardParameterView> _cardParametersViews = new();
         private CardState _cardState;
@@ -49,7 +50,7 @@ namespace Assets.Source.Game.Scripts.Card
             _applyButton.onClick.AddListener(TakeCard);
             CreateParameterField();
 
-            if (cardData.SuppurtiveData.Count > 0)
+            if (cardData.SupportiveData.Count > 0)
                 CreateSupportiveParameterField();
         }
 
@@ -75,11 +76,11 @@ namespace Assets.Source.Game.Scripts.Card
 
         private void CreateSupportiveParameterField()
         {
-            for (int i = 0; i < _cardData.SuppurtiveData.Count; i++)
+            for (int i = 0; i < _cardData.SupportiveData.Count; i++)
             {
-                CardSupportivParametrsView view = Instantiate(_supportiveParametersView, _supportiveParameterContainer);
+                CardSupportivParametersView view = Instantiate(_supportiveParametersView, _supportiveParameterContainer);
 
-                view.Initialize(_cardData.SuppurtiveData[i].Icon);
+                view.Initialize(_cardData.SupportiveData[i].Icon);
             }
         }
     }

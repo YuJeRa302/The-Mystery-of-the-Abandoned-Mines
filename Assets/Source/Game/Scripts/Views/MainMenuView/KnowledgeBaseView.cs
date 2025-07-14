@@ -25,7 +25,7 @@ namespace Assets.Source.Game.Scripts.Views
         [SerializeField] private GameObject _infoPanel;
 
         private List<SubcategoriesButtonView> _subcategoriesButtonViews = new();
-        private List<KnowladgeView> _knowladgeViews = new();
+        private List<KnowledgeView> _knowladgeViews = new();
         private KnowledgeBaseViewModel _knowledgeBaseViewModel;
         private IAudioPlayerService _audioPlayerService;
 
@@ -91,7 +91,7 @@ namespace Assets.Source.Game.Scripts.Views
         {
             ClearInfoConteiner();
             _infoPanel.SetActive(true);
-            knowledgeData.GetView(_knowInfoConteiner, out List<KnowladgeView> knowView);
+            knowledgeData.GetView(_knowInfoConteiner, out List<KnowledgeView> knowView);
             _knowladgeViews = knowView;
         }
 
@@ -109,7 +109,7 @@ namespace Assets.Source.Game.Scripts.Views
 
         private void ClearInfoConteiner()
         {
-            foreach (KnowladgeView view in _knowladgeViews)
+            foreach (KnowledgeView view in _knowladgeViews)
             {
                 Destroy(view.gameObject);
             }

@@ -147,7 +147,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7500800857533305031}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be5d8b205f2012c40bcbfed1001b018d, type: 3}
+  m_Script: {fileID: 11500000, guid: 1c0c9b787ed59ef4aaba220fb233e55e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _kickEffect: {fileID: 3612227131668783371, guid: b2fc69acc3a4e6840addd2fbe6f1aecd, type: 3}

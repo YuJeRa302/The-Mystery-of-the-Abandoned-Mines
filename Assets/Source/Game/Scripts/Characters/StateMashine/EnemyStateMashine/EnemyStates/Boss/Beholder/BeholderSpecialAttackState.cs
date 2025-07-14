@@ -13,7 +13,7 @@ namespace Assets.Source.Game.Scripts.Characters
         private Transform _transformEnemy;
         private Sequence _sequence;
 
-        public BeholderSpecialAttackState(StateMachine stateMashine, Enemy enemy) : base(stateMashine, enemy)
+        public BeholderSpecialAttackState(StateMachine stateMachine, Enemy enemy) : base(stateMachine, enemy)
         {
             _transformEnemy = Enemy.transform;
         }

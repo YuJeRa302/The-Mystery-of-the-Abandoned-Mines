@@ -15,7 +15,7 @@ namespace Assets.Source.Game.Scripts.Characters
 
         public event Action Attacking;
         public event Action AdditionalAttacking;
-        public event Action SpetiallAttacking;
+        public event Action SpecialAttacking;
         public event Action Moving;
         public event Action SetedIdle;
 
@@ -29,7 +29,7 @@ namespace Assets.Source.Game.Scripts.Characters
 
         protected void AdditionalAttackEvent() => AdditionalAttacking?.Invoke();
 
-        protected void SpetiallAttackEvent() => SpetiallAttacking?.Invoke();
+        protected void SpetiallAttackEvent() => SpecialAttacking?.Invoke();
 
         protected void MoveEvent() => Moving?.Invoke();
 

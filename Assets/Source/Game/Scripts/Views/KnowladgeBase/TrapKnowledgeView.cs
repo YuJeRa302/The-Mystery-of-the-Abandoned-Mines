@@ -1,10 +1,11 @@
+using Assets.Source.Game.Scripts.ScriptableObjects;
 using Lean.Localization;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Assets.Source.Game.Scripts.Views
 {
-    public class TrapKnowladgeView : KnowladgeView
+    public class TrapKnowledgeView : KnowledgeView
     {
         [SerializeField] Image _icon;
         [SerializeField] private LeanLocalizedText _name;

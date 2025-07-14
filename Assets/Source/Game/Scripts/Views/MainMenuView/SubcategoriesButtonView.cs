@@ -17,9 +17,9 @@ namespace Assets.Source.Game.Scripts.Views
 
         public event Action<KnowledgeData> CategoryChanged;
 
-        public void Initialize(string nameCategori, Sprite icon, KnowledgeData knowledgeData)
+        public void Initialize(string nameCategory, Sprite icon, KnowledgeData knowledgeData)
         {
-            _nameStats.TranslationName = nameCategori;
+            _nameStats.TranslationName = nameCategory;
             _icon.sprite = icon;
             _knowledgeData = knowledgeData;
             _button = GetComponent<Button>();

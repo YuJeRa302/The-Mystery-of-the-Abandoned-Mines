@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.ScriptableObjects
 {
     [CreateAssetMenu(fileName = "New Level Data", menuName = "Create Level Data", order = 51)]
     public class LevelData : ScriptableObject

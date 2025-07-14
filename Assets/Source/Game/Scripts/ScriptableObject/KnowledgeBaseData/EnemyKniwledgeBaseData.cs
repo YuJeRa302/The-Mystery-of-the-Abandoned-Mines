@@ -10,14 +10,14 @@ namespace Assets.Source.Game.Scripts.ScriptableObjects
     {
         [SerializeField] private List<EnemyData> _enemyDatas;
 
-        public override void GetView(Transform conteiner, out List<KnowladgeView> knowladgeViews)
+        public override void GetView(Transform conteiner, out List<KnowledgeView> knowladgeViews)
         {
             knowladgeViews = new();
-            EnemyKnowladgeView enemyKnowladgeView;
+            EnemyKnowledgeView enemyKnowladgeView;
 
             foreach (EnemyData EnemyData in _enemyDatas)
             {
-                enemyKnowladgeView = Instantiate(_knowladgeView as EnemyKnowladgeView, conteiner);
+                enemyKnowladgeView = Instantiate(_knowladgeView as EnemyKnowledgeView, conteiner);
                 enemyKnowladgeView.Initialize(EnemyData);
                 knowladgeViews.Add(enemyKnowladgeView);
             }

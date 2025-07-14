@@ -7,6 +7,7 @@ using Assets.Source.Game.Scripts.Models;
 using Assets.Source.Game.Scripts.PoolSystem;
 using Assets.Source.Game.Scripts.Rooms;
 using Assets.Source.Game.Scripts.Saves;
+using Assets.Source.Game.Scripts.ScriptableObjects;
 using Assets.Source.Game.Scripts.Services;
 using Assets.Source.Game.Scripts.SpawnersScripts;
 using Assets.Source.Game.Scripts.Utility;

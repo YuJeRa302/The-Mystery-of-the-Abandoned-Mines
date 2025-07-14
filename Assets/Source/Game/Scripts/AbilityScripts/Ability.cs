@@ -81,11 +81,11 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
             int currentLvl,
             ICoroutineRunner coroutineRunner)
         {
-            FillClassSkillParametr(classAbilityData, currentLvl);
+            FillClassSkillParameter(classAbilityData, currentLvl);
             TypeAbility = classAbilityData.AbilityType;
             _isAutoCast = isAutoCast;
             _coroutineRunner = coroutineRunner;
-            AmplifierParametrs = classAbilityData.Parameters[currentLvl].CardParameters;
+            AmplifierParameters = classAbilityData.Parameters[currentLvl].CardParameters;
         }
 
         public event Action AbilityRemoved;
@@ -95,7 +95,7 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
         public event Action<float> CooldownValueChanged;
         public event Action<float> CooldownValueReseted;
 
-        public List<CardParameter> AmplifierParametrs { get; private set; } = new List<CardParameter>();
+        public List<CardParameter> AmplifierParameters { get; private set; } = new List<CardParameter>();
         public bool IsAbilityEnded { get; private set; } = false;
         public bool IsAutoCast => _isAutoCast;
         public float CurrentDuration => _currentDuration;
@@ -190,7 +190,7 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
             _damageSource = legendaryAbilityData.Damage;
         }
 
-        private void FillClassSkillParametr(ClassAbilityData abilityAttributeData, int currentLevel)
+        private void FillClassSkillParameter(ClassAbilityData abilityAttributeData, int currentLevel)
         {
             foreach (CardParameter parameter in abilityAttributeData.Parameters[currentLevel].CardParameters)
             {
@@ -208,7 +208,7 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
                     _quantity = parameter.Value;
             }
 
-            _damageSource = abilityAttributeData.DamageParametr;
+            _damageSource = abilityAttributeData.DamageParameter;
 
             if (_damageSource != null)
                 ApplyDamageSource();

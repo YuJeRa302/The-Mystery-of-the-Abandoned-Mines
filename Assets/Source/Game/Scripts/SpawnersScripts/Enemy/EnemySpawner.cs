@@ -219,9 +219,9 @@ namespace Assets.Source.Game.Scripts.SpawnersScripts
             {
                 PoolParticle particle;
 
-                if (_enemuPool.TryPoolObject(particlePrefab.gameObject, out PoolObject pollParticle))
+                if (_enemuPool.TryPoolObject(particlePrefab.gameObject, out PoolObject poolParticle))
                 {
-                    particle = pollParticle as PoolParticle;
+                    particle = poolParticle as PoolParticle;
                     particle.transform.position = enemy.transform.position;
                     particle.gameObject.SetActive(true);
                 }

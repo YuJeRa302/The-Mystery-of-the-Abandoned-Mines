@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.ScriptableObjects
 {
     [CreateAssetMenu(fileName = "New Tips", menuName = "Create Tips", order = 51)]
     public class TipData : ScriptableObject

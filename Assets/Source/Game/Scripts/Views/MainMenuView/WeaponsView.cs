@@ -13,7 +13,7 @@ namespace Assets.Source.Game.Scripts.Views
     public class WeaponsView : MonoBehaviour
     {
         private readonly string _typeDamageTranslationName = "TypeDamage";
-        private readonly string _damageParametrName = "Damage";
+        private readonly string _damageParameterName = "Damage";
 
         [SerializeField] private Image _weaponImage;
         [SerializeField] private Sprite _defaultSprite;
@@ -34,7 +34,7 @@ namespace Assets.Source.Game.Scripts.Views
         [Space(20)]
         [SerializeField] private Button _backButton;
         [Space(20)]
-        [SerializeField] private GameObject _parametrPanel;
+        [SerializeField] private GameObject _parameterPanel;
 
         private List<WeaponStatsView> _weaponStatsViews = new();
         private List<PlayerClassDataView> _playerClassDataViews = new();
@@ -44,7 +44,7 @@ namespace Assets.Source.Game.Scripts.Views
 
         private void OnEnable()
         {
-            _parametrPanel.SetActive(false);
+            _parameterPanel.SetActive(false);
         }
 
         private void OnDestroy()
@@ -57,7 +57,7 @@ namespace Assets.Source.Game.Scripts.Views
         {
             _weaponsViewModel = weaponsViewModel;
             _audioPlayerService = audioPlayerService;
-            _parametrPanel.SetActive(false);
+            _parameterPanel.SetActive(false);
             gameObject.SetActive(false);
             _weaponsViewModel.Showing += Show;
             _backButton.onClick.AddListener(OnBackButtonClicked);
@@ -149,7 +149,7 @@ namespace Assets.Source.Game.Scripts.Views
 
         private void OnWeaponSelected(WeaponDataView weaponDataView)
         {
-            _parametrPanel.SetActive(true);
+            _parameterPanel.SetActive(true);
             ClearWeaponStats();
             _nameWeapon.TranslationName = weaponDataView.WeaponData.TranslationName;
             _weaponImage.sprite = weaponDataView.WeaponData.Icon;
@@ -162,7 +162,7 @@ namespace Assets.Source.Game.Scripts.Views
             var weaponParameters = weaponDataView.WeaponData.WeaponParameters;
 
             InstantiateStatView(_typeDamageTranslationName, damageSource.TypeDamage.ToString(), true);
-            InstantiateStatView(_damageParametrName, damageSource.Damage.ToString(), false);
+            InstantiateStatView(_damageParameterName, damageSource.Damage.ToString(), false);
 
             foreach (var param in damageSource.DamageParameters)
             {
@@ -171,7 +171,7 @@ namespace Assets.Source.Game.Scripts.Views
 
             foreach (var param in weaponParameters)
             {
-                InstantiateStatView(param.SupportivePatametr.ToString(), param.Value.ToString(), false);
+                InstantiateStatView(param.SupportiveParameter.ToString(), param.Value.ToString(), false);
             }
         }
 

@@ -29,12 +29,12 @@ namespace Assets.Source.Game.Scripts.Characters
         {
             _enemyStateMachine.MachineInitialized -= AddAnimationAction;
 
-            foreach (var events in _enemyStateMachine.MashineStates)
+            foreach (var events in _enemyStateMachine.MachineStates)
             {
                 events.Value.Attacking -= OnAttack;
                 events.Value.Moving -= OnMove;
                 events.Value.AdditionalAttacking -= OnAdditionalAttack;
-                events.Value.SpetiallAttacking -= OnSpetialAttack;
+                events.Value.SpecialAttacking -= OnSpetialAttack;
             }
         }
 
@@ -50,12 +50,12 @@ namespace Assets.Source.Game.Scripts.Characters
 
         private void AddAnimationAction()
         {
-            foreach (var events in _enemyStateMachine.MashineStates)
+            foreach (var events in _enemyStateMachine.MachineStates)
             {
                 events.Value.Attacking += OnAttack;
                 events.Value.Moving += OnMove;
                 events.Value.AdditionalAttacking += OnAdditionalAttack;
-                events.Value.SpetiallAttacking += OnSpetialAttack;
+                events.Value.SpecialAttacking += OnSpetialAttack;
             }
         }
 

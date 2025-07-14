@@ -5,7 +5,7 @@ namespace Assets.Source.Game.Scripts.Characters
         private int _countWave = 0;
         private int _maxCountWave = 2;
 
-        public SpecialAttackGoldDragon(StateMachine stateMashine, Enemy enemy) : base(stateMashine, enemy)
+        public SpecialAttackGoldDragon(StateMachine stateMachine, Enemy enemy) : base(stateMachine, enemy)
         {
             Enemy = enemy;
             AnimationController = Enemy.AnimationStateController;

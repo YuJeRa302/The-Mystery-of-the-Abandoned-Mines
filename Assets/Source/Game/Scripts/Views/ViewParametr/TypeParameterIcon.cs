@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Assets.Source.Game.Scripts.Views
 {
     [Serializable]
-    public class TypeParametrIcon
+    public class TypeParameterIcon
     {
         [SerializeField] private TypeParameter _type;
         [SerializeField] private Sprite _icon;

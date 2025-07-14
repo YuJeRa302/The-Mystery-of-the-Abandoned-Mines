@@ -13,8 +13,8 @@ namespace Assets.Source.Game.Scripts.Characters
         private NavMeshAgent _navMeshAgent;
         private Dictionary<float, Enemy> _enemies = new Dictionary<float, Enemy>();
 
-        public SummonMoveState(StateMachine stateMashine, Player player, Summon summon, NavMeshAgent navMeshAgent)
-            : base(stateMashine)
+        public SummonMoveState(StateMachine stateMachine, Player player, Summon summon, NavMeshAgent navMeshAgent)
+            : base(stateMachine)
         {
             _player = player;
             _summon = summon;

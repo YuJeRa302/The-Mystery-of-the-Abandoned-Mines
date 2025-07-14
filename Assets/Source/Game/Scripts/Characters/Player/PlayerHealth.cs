@@ -18,7 +18,7 @@ namespace Assets.Source.Game.Scripts.Characters
         private int _delayHealing = 1;
         private Coroutine _regeneration;
         private Coroutine _timeReduce;
-        private bool _canHealind = true;
+        private bool _canHealing = true;
 
         public PlayerHealth(Player player,
             ICoroutineRunner coroutineRunner,
@@ -67,7 +67,7 @@ namespace Assets.Source.Game.Scripts.Characters
 
         public void DisableHealing()
         {
-            _canHealind = false;
+            _canHealing = false;
 
             if (_regeneration != null && _coroutineRunner != null)
                 _coroutineRunner.StopCoroutine(_regeneration);
@@ -145,7 +145,7 @@ namespace Assets.Source.Game.Scripts.Characters
             if (_timeReduce != null)
                 _coroutineRunner.StopCoroutine(_timeReduce);
 
-            if (_canHealind)
+            if (_canHealing)
                 _regeneration = _coroutineRunner.StartCoroutine(RegenerationHealth());
         }
 

@@ -12,8 +12,8 @@ namespace Assets.Source.Game.Scripts.Characters
         private float _additionalAttackDelay = 7f;
         private float _specialAttackDelay = 7f;
 
-        public BossAttackState(StateMachine stateMashine, Player target, Enemy enemy)
-            : base(stateMashine, target, enemy)
+        public BossAttackState(StateMachine stateMachine, Player target, Enemy enemy)
+            : base(stateMachine, target, enemy)
         {
             Boss boss = enemy as Boss;
             _additionalAttackDelay = boss.AdditionalAttackDelay;

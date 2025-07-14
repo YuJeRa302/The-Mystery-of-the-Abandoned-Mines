@@ -10,7 +10,7 @@ namespace Assets.Source.Game.Scripts.Characters
         private Summon _summon;
         private Dictionary<float, Enemy> _enemies = new Dictionary<float, Enemy>();
 
-        public SummonIdleState(StateMachine stateMashine, Player player, Summon summon) : base(stateMashine)
+        public SummonIdleState(StateMachine stateMachine, Player player, Summon summon) : base(stateMachine)
         {
             _player = player;
             _summon = summon;

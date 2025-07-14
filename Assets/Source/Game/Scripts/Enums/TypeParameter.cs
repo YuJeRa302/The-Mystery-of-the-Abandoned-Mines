@@ -14,7 +14,7 @@ namespace Assets.Source.Game.Scripts.Enums
         MoveSpeed,
         Healing,
         AbilityDamage,
-        HealtReduce,
+        HealthReduce,
         TargetMoveSpeed,
         Chance
     }

@@ -75,7 +75,7 @@ namespace Assets.Source.Game.Scripts.Factories
             Ability ability,
             AbilityView abilityView,
             Player player,
-            AxeMissile axemMssile)
+            AxeMissile axeMssile)
         {
             ThrowAxeAbilityPresenter throwAxeAbilityPresenter = new ThrowAxeAbilityPresenter(
                 ability,
@@ -84,7 +84,7 @@ namespace Assets.Source.Game.Scripts.Factories
                 _gamePauseService,
                 _gameLoopService,
                 _coroutineRunner,
-                axemMssile);
+                axeMssile);
 
             return throwAxeAbilityPresenter;
         }

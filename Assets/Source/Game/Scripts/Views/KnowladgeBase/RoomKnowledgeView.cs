@@ -5,12 +5,12 @@ using UnityEngine.UI;
 
 namespace Assets.Source.Game.Scripts.Views
 {
-    public class RoomKnowladgeView : KnowladgeView
+    public class RoomKnowledgeView : KnowledgeView
     {
         [SerializeField] private Image _roomIcon;
         [SerializeField] private LeanLocalizedText _roomName;
         [SerializeField] private LeanLocalizedText _roomDescription;
-        [SerializeField] private Transform _spawnedEnemyConteiner;
+        [SerializeField] private Transform _spawnedEnemyContainer;
         [SerializeField] private SpawnedEnemyView _spawnedEnemyView;
 
         public void Initialize(RoomData roomData)
@@ -19,16 +19,16 @@ namespace Assets.Source.Game.Scripts.Views
             _roomName.TranslationName = roomData.RoomName;
             _roomDescription.TranslationName = roomData.RoomDescription;
 
-            SpawnEnemyView(roomData);
+            SpawnEnemyViews(roomData);
         }
 
-        private void SpawnEnemyView(RoomData roomData)
+        private void SpawnEnemyViews(RoomData roomData)
         {
             if (roomData.EnemyDatas.Length > 1)
             {
                 foreach (var enemy in roomData.EnemyDatas)
                 {
-                    SpawnedEnemyView spawnedEnemyView = Instantiate(_spawnedEnemyView, _spawnedEnemyConteiner);
+                    SpawnedEnemyView spawnedEnemyView = Instantiate(_spawnedEnemyView, _spawnedEnemyContainer);
                     spawnedEnemyView.Initialize(enemy.Name);
                 }
             }
@@ -36,7 +36,7 @@ namespace Assets.Source.Game.Scripts.Views
             {
                 foreach (var trap in roomData.Traps)
                 {
-                    SpawnedEnemyView spawnedEnemyView = Instantiate(_spawnedEnemyView, _spawnedEnemyConteiner);
+                    SpawnedEnemyView spawnedEnemyView = Instantiate(_spawnedEnemyView, _spawnedEnemyContainer);
                     spawnedEnemyView.Initialize(trap.gameObject.name);
                 }
             }

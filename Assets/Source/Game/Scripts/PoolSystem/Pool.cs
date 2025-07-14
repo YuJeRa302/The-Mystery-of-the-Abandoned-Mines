@@ -14,9 +14,9 @@ namespace Assets.Source.Game.Scripts.PoolSystem
 
         private void OnDisable()
         {
-            foreach (var pollObject in _poolObjects)
+            foreach (var poolObject in _poolObjects)
             {
-                pollObject.PoolReturned -= PoolObject;
+                poolObject.PoolReturned -= PoolObject;
             }
         }
 

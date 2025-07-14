@@ -15,7 +15,7 @@ namespace Assets.Source.Game.Scripts.Characters
         protected Enemy Enemy;
         protected EnemyAnimation AnimationController;
 
-        public EnemyAttackState(StateMachine stateMashine, Player target, Enemy enemy) : base(stateMashine)
+        public EnemyAttackState(StateMachine stateMachine, Player target, Enemy enemy) : base(stateMachine)
         {
             Enemy = enemy;
             Target = target;

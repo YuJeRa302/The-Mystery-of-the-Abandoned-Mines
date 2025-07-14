@@ -24,9 +24,9 @@ namespace Assets.Source.Game.Scripts.SpawnersScripts
         {
             PlayerProjectile playerProjectile;
 
-            if (_pool.TryPoolObject(_bulletBrefab.gameObject, out PoolObject pollBullet))
+            if (_pool.TryPoolObject(_bulletBrefab.gameObject, out PoolObject poolBullet))
             {
-                playerProjectile = pollBullet as PlayerProjectile;
+                playerProjectile = poolBullet as PlayerProjectile;
                 playerProjectile.transform.position = _shotPoint.transform.position;
                 playerProjectile.transform.rotation = _shotPoint.transform.rotation;
                 playerProjectile.gameObject.SetActive(true);

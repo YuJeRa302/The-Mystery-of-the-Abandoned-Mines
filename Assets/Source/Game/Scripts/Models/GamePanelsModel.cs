@@ -1,6 +1,7 @@
 using Assets.Source.Game.Scripts.Card;
 using Assets.Source.Game.Scripts.Characters;
 using Assets.Source.Game.Scripts.Menu;
+using Assets.Source.Game.Scripts.ScriptableObjects;
 using Assets.Source.Game.Scripts.Services;
 using Lean.Localization;
 using System;

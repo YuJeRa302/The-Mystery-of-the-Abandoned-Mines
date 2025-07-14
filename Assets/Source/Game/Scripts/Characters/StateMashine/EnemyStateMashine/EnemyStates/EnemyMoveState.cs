@@ -11,8 +11,8 @@ namespace Assets.Source.Game.Scripts.Characters
         private Enemy _enemy;
         private NavMeshAgent _navMeshAgent;
 
-        public EnemyMoveState(StateMachine stateMashine, Player player, NavMeshAgent meshAgent, Enemy enemy)
-            : base(stateMashine)
+        public EnemyMoveState(StateMachine stateMachine, Player player, NavMeshAgent meshAgent, Enemy enemy)
+            : base(stateMachine)
         {
             _target = player;
             _enemy = enemy;

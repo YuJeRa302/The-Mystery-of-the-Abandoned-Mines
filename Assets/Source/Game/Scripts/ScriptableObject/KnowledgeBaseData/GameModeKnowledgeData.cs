@@ -9,7 +9,7 @@ namespace Assets.Source.Game.Scripts.ScriptableObjects
     {
         [SerializeField] private List<GameModData> _gameModeData;
 
-        public override void GetView(Transform conteiner, out List<KnowladgeView> knowladgeViews)
+        public override void GetView(Transform conteiner, out List<KnowledgeView> knowladgeViews)
         {
             knowladgeViews = new();
             GameModeKnowledgeBaseView gameModeKnowladgeView;

@@ -3,13 +3,13 @@ using UnityEngine.UI;
 
 namespace Assets.Source.Game.Scripts.Card
 {
-    public class CardSupportivParametrsView : MonoBehaviour
+    public class CardSupportivParametersView : MonoBehaviour
     {
-        [SerializeField] private Image _iconParametr;
+        [SerializeField] private Image _iconParameter;
 
         public void Initialize(Sprite icon)
         {
-            _iconParametr.sprite = icon;
+            _iconParameter.sprite = icon;
         }
     }
 }

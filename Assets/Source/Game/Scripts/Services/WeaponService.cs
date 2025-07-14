@@ -1,4 +1,5 @@
 using Assets.Source.Game.Scripts.Items;
+using Assets.Source.Game.Scripts.ScriptableObjects;
 using System;
 using System.Collections.Generic;
 

@@ -1,10 +1,10 @@
-using Assets.Source.Game.Scripts;
 using Assets.Source.Game.Scripts.Card;
+using Assets.Source.Game.Scripts.ScriptableObjects;
 using UnityEngine;
 
 namespace Assets.Source.Game.Scripts.Views
 {
-    public class KnowleadgeCardParameterView : MonoBehaviour
+    public class KnowledgeCardParameterView : MonoBehaviour
     {
         [SerializeField] private Transform _container;
 

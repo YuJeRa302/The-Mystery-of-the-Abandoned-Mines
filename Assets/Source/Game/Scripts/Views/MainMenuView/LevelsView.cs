@@ -395,7 +395,7 @@ namespace Assets.Source.Game.Scripts.Views
         private void ShowDialogPanel()
         {
             _dialogPanel.SetActive(true);
-            _currentPlayerGold.text = _levelsViewModel.GetPlayerConins().ToString();
+            _currentPlayerGold.text = _levelsViewModel.GetPlayerCoins().ToString();
             _goldTextDialogPanel.text = _currentLevelDataView.LevelData.Cost.ToString();
         }
 

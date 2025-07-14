@@ -6,7 +6,7 @@ namespace Assets.Source.Game.Scripts.Characters
     [RequireComponent(typeof(Animator))]
     public class SummonAnimation : MonoBehaviour
     {
-        private SummonStateMashineExample _summonStateMashine;
+        private SummonStateMachineExample _summonStateMashine;
         private Animator _animator;
         private AnimationMobName _animationEnemy = new AnimationMobName();
 
@@ -19,19 +19,19 @@ namespace Assets.Source.Game.Scripts.Characters
 
         private void OnDestroy()
         {
-            _summonStateMashine.MashineInitialized -= AddAnimationAction;
+            _summonStateMashine.MachineInitialized -= AddAnimationAction;
 
-            foreach (var events in _summonStateMashine.MashineStates)
+            foreach (var events in _summonStateMashine.MachineStates)
             {
                 events.Value.Attacking -= OnAttack;
                 events.Value.Moving -= OnMove;
                 events.Value.AdditionalAttacking -= OnAdditionalAttack;
-                events.Value.SpetiallAttacking -= OnSpetialAttack;
+                events.Value.SpecialAttacking -= OnSpetialAttack;
                 events.Value.SetedIdle -= OnIdle;
             }
         }
 
-        public void Initialization(SummonStateMashineExample summonStateMashine)
+        public void Initialization(SummonStateMachineExample summonStateMashine)
         {
             _summonStateMashine = summonStateMashine;
             AddAnimationAction();
@@ -44,13 +44,13 @@ namespace Assets.Source.Game.Scripts.Characters
 
         private void AddAnimationAction()
         {
-            foreach (var events in _summonStateMashine.MashineStates)
+            foreach (var events in _summonStateMashine.MachineStates)
             {
                 events.Value.SetedIdle += OnIdle;
                 events.Value.Attacking += OnAttack;
                 events.Value.Moving += OnMove;
                 events.Value.AdditionalAttacking += OnAdditionalAttack;
-                events.Value.SpetiallAttacking += OnSpetialAttack;
+                events.Value.SpecialAttacking += OnSpetialAttack;
             }
         }
 

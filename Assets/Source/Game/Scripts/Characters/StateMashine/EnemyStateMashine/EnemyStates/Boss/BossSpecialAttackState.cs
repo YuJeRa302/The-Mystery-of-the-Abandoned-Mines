@@ -5,7 +5,7 @@ namespace Assets.Source.Game.Scripts.Characters
         protected Enemy Enemy;
         protected EnemyAnimation AnimationController;
 
-        public BossSpecialAttackState(StateMachine stateMashine, Enemy enemy) : base(stateMashine)
+        public BossSpecialAttackState(StateMachine stateMachine, Enemy enemy) : base(stateMachine)
         {
             Enemy = enemy;
             AnimationController = Enemy.AnimationStateController;

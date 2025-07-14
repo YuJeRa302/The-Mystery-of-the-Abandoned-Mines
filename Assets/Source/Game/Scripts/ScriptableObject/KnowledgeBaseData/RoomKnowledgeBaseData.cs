@@ -10,14 +10,14 @@ namespace Assets.Source.Game.Scripts.ScriptableObjects
     {
         [SerializeField] private List<RoomData> _roomDatas;
 
-        public override void GetView(Transform conteiner, out List<KnowladgeView> knowladgeViews)
+        public override void GetView(Transform conteiner, out List<KnowledgeView> knowladgeViews)
         {
             knowladgeViews = new();
-            RoomKnowladgeView roomKnowladgeView;
+            RoomKnowledgeView roomKnowladgeView;
 
             foreach (RoomData roomData in _roomDatas)
             {
-                roomKnowladgeView = Instantiate(_knowladgeView as RoomKnowladgeView, conteiner);
+                roomKnowladgeView = Instantiate(_knowladgeView as RoomKnowledgeView, conteiner);
                 roomKnowladgeView.Initialize(roomData);
                 knowladgeViews.Add(roomKnowladgeView);
             }

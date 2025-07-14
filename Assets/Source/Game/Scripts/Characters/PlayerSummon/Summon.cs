@@ -9,7 +9,7 @@ namespace Assets.Source.Game.Scripts.Characters
         private readonly float _distanceToTarget = 2f;
         private readonly float _searchRadius = 10f;
 
-        [SerializeField] private SummonStateMashineExample _mashineExample;
+        [SerializeField] private SummonStateMachineExample _machineExample;
         [SerializeField] private SummonAnimation _animation;
         [SerializeField] private float _moveSpeed;
         [SerializeField] private DamageSource _damageSource;
@@ -33,8 +33,8 @@ namespace Assets.Source.Game.Scripts.Characters
             _player = player;
             _damageSource = damageSource;
             _lifeTime = lifeTime;
-            _mashineExample.MashineInitialized += OnStateMashineInitialize;
-            _mashineExample.InitializeStateMashine(_player);
+            _machineExample.MachineInitialized += OnStateMashineInitialize;
+            _machineExample.InitializeStateMashine(_player);
 
             if (_coroutine != null)
                 StopCoroutine(_coroutine);
@@ -54,7 +54,7 @@ namespace Assets.Source.Game.Scripts.Characters
 
         public void ResetStats()
         {
-            _mashineExample.ResetState();
+            _machineExample.ResetState();
 
             if (_coroutine != null)
                 StopCoroutine(_coroutine);
@@ -64,7 +64,7 @@ namespace Assets.Source.Game.Scripts.Characters
 
         private void OnStateMashineInitialize()
         {
-            _animation.Initialization(_mashineExample);
+            _animation.Initialization(_machineExample);
         }
 
         private IEnumerator CountLifeTime()

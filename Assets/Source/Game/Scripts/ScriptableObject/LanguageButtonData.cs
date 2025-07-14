@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.ScriptableObjects
 {
     [CreateAssetMenu(fileName = "New LangButton", menuName = "Create LangButton", order = 51)]
     public class LanguageButtonData : ScriptableObject

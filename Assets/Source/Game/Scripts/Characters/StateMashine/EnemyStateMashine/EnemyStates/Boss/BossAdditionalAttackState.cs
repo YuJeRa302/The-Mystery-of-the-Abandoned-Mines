@@ -5,8 +5,8 @@ namespace Assets.Source.Game.Scripts.Characters
         protected Player Target;
         protected Enemy Enemy;
 
-        public BossAdditionalAttackState(StateMachine stateMashine, Player target, Enemy enemy)
-            : base(stateMashine)
+        public BossAdditionalAttackState(StateMachine stateMachine, Player target, Enemy enemy)
+            : base(stateMachine)
         {
             Target = target;
             Enemy = enemy;

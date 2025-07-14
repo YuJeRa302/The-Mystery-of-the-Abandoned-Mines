@@ -1,4 +1,3 @@
-using Assets.Source.Game.Scripts;
 using Assets.Source.Game.Scripts.Card;
 using Assets.Source.Game.Scripts.Enums;
 using Assets.Source.Game.Scripts.ScriptableObjects;
@@ -9,19 +8,19 @@ using UnityEngine.UI;
 
 namespace Assets.Source.Game.Scripts.Views
 {
-    public class CardKnowledgebaseView : KnowladgeView
+    public class CardKnowledgebaseView : KnowledgeView
     {
         [SerializeField] private Image _cardIcon;
         [SerializeField] private Image _cardTear;
         [SerializeField] private LeanLocalizedText _cardName;
-        [SerializeField] private LeanLocalizedText _cardDiscription;
+        [SerializeField] private LeanLocalizedText _cardDescription;
         [Space(20)]
-        [SerializeField] private Transform _linkCardConteiner;
+        [SerializeField] private Transform _linkCardContainer;
         [SerializeField] private LinkCardView _linkCardView;
         [SerializeField] private BonusCardView _bonusCardView;
         [Space(20)]
-        [SerializeField] private KnowleadgeCardParameterView _parameterView;
-        [SerializeField] private Transform _parametrContainer;
+        [SerializeField] private KnowledgeCardParameterView _parameterView;
+        [SerializeField] private Transform _parameterContainer;
 
         public void Initialize(CardData cardData)
         {
@@ -32,17 +31,17 @@ namespace Assets.Source.Game.Scripts.Views
 
             _cardIcon.sprite = cardData.AttributeData.Icon;
             _cardName.TranslationName = cardData.AttributeData.Name;
-            _cardDiscription.TranslationName = cardData.AttributeData.Description;
+            _cardDescription.TranslationName = cardData.AttributeData.Description;
 
             CreateSupportCardsView(cardData);
-            CreateParametrView(cardData);
+            CreateParameterView(cardData);
         }
 
         private void CreateSupportCardsView(CardData cardData)
         {
-            if (cardData.SuppurtiveData.Count <= 0)
+            if (cardData.SupportiveData.Count <= 0)
             {
-                Instantiate(_bonusCardView, _linkCardConteiner);
+                Instantiate(_bonusCardView, _linkCardContainer);
                 return;
             }
 
@@ -52,9 +51,9 @@ namespace Assets.Source.Game.Scripts.Views
 
         private void CreateSupportCardViews(CardData cardData)
         {
-            foreach (var supportData in cardData.SuppurtiveData)
+            foreach (var supportData in cardData.SupportiveData)
             {
-                LinkCardView cardView = Instantiate(_linkCardView, _linkCardConteiner);
+                LinkCardView cardView = Instantiate(_linkCardView, _linkCardContainer);
                 cardView.Initialize(supportData.Icon, supportData.Name);
             }
         }
@@ -64,12 +63,12 @@ namespace Assets.Source.Game.Scripts.Views
             if (cardData.AttributeData is LegendaryAbilityData legendaryData &&
                 cardData.TypeCardParameter != TypeCardParameter.LegendaryAbility)
             {
-                LinkCardView cardView = Instantiate(_linkCardView, _linkCardConteiner);
+                LinkCardView cardView = Instantiate(_linkCardView, _linkCardContainer);
                 cardView.Initialize(legendaryData.Icon, legendaryData.Name);
             }
         }
 
-        private void CreateParametrView(CardData cardData)
+        private void CreateParameterView(CardData cardData)
         {
             if (cardData.AttributeData == null)
                 return;
@@ -82,7 +81,7 @@ namespace Assets.Source.Game.Scripts.Views
 
             for (int i = 0; i < parameters.Count; i++)
             {
-                KnowleadgeCardParameterView view = Instantiate(_parameterView, _parametrContainer);
+                KnowledgeCardParameterView view = Instantiate(_parameterView, _parameterContainer);
                 view.Initialize(cardData, i);
             }
         }

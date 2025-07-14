@@ -9,14 +9,14 @@ namespace Assets.Source.Game.Scripts.ScriptableObjects
     {
         [SerializeField] private List<PlayerClassData> _playerClassDatas;
 
-        public override void GetView(Transform conteiner, out List<KnowladgeView> knowladgeViews)
+        public override void GetView(Transform conteiner, out List<KnowledgeView> knowladgeViews)
         {
             knowladgeViews = new();
-            PlayerClassKnowladgeView playerClassKnowladgeView;
+            PlayerClassKnowledgeView playerClassKnowladgeView;
 
             foreach (PlayerClassData classData in _playerClassDatas)
             {
-                playerClassKnowladgeView = Instantiate(_knowladgeView as PlayerClassKnowladgeView, conteiner);
+                playerClassKnowladgeView = Instantiate(_knowladgeView as PlayerClassKnowledgeView, conteiner);
                 playerClassKnowladgeView.Initialize(classData);
                 knowladgeViews.Add(playerClassKnowladgeView);
             }

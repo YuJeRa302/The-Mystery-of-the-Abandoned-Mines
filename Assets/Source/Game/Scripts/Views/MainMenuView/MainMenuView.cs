@@ -1,3 +1,4 @@
+using Assets.Source.Game.Scripts.ScriptableObjects;
 using Assets.Source.Game.Scripts.Services;
 using Assets.Source.Game.Scripts.ViewModels;
 using DG.Tweening;
@@ -19,7 +20,7 @@ namespace Assets.Source.Game.Scripts.Views
         [SerializeField] private Button _openWeaponsButton;
         [SerializeField] private Button _openClassAbilityButton;
         [SerializeField] private Button _openLeaderboardButton;
-        [SerializeField] private Button _opneKnowledgeBaseButton;
+        [SerializeField] private Button _openKnowledgeBaseButton;
         [Space(20)]
         [SerializeField] private List<TipData> _tipsDatas;
         [Space(20)]
@@ -35,7 +36,7 @@ namespace Assets.Source.Game.Scripts.Views
         private IEnumerator _animationTips;
         private IAudioPlayerService _audioPlayerService;
         private MainMenuViewModel _menuViewModel;
-        private WaitForSeconds _delayNewTrips;
+        private WaitForSeconds _delayNewTips;
 
         private void OnEnable()
         {
@@ -59,7 +60,7 @@ namespace Assets.Source.Game.Scripts.Views
         {
             _menuViewModel = menuViewModel;
             _audioPlayerService = audioPlayerService;
-            _delayNewTrips = new WaitForSeconds(_timeNewTips);
+            _delayNewTips = new WaitForSeconds(_timeNewTips);
             AddListener();
 
             if (_getTips != null)
@@ -79,7 +80,7 @@ namespace Assets.Source.Game.Scripts.Views
             _openLevelsButton.onClick.AddListener(ShowLevels);
             _openWeaponsButton.onClick.AddListener(ShowWeapons);
             _openClassAbilityButton.onClick.AddListener(ShowClassAbility);
-            _opneKnowledgeBaseButton.onClick.AddListener(ShowKnowledgeBase);
+            _openKnowledgeBaseButton.onClick.AddListener(ShowKnowledgeBase);
             _openLeaderboardButton.onClick.AddListener(ShowLeaderboard);
             _menuViewModel.Showing += Show;
             _menuViewModel.GamePaused += OnGamePaused;
@@ -93,7 +94,7 @@ namespace Assets.Source.Game.Scripts.Views
             _openLevelsButton.onClick.RemoveListener(ShowLevels);
             _openWeaponsButton.onClick.RemoveListener(ShowWeapons);
             _openClassAbilityButton.onClick.RemoveListener(ShowClassAbility);
-            _opneKnowledgeBaseButton.onClick.RemoveListener(ShowKnowledgeBase);
+            _openKnowledgeBaseButton.onClick.RemoveListener(ShowKnowledgeBase);
             _openLeaderboardButton.onClick.RemoveListener(ShowLeaderboard);
             _menuViewModel.Showing -= Show;
             _menuViewModel.GamePaused -= OnGamePaused;
@@ -160,7 +161,7 @@ namespace Assets.Source.Game.Scripts.Views
 
         private IEnumerator LoadNewTip()
         {
-            yield return _delayNewTrips;
+            yield return _delayNewTips;
             ClearTip();
             CreateTip();
             GetRandomTip();

@@ -1,3 +1,4 @@
+using Assets.Source.Game.Scripts.ScriptableObjects;
 using Assets.Source.Game.Scripts.Services;
 using Assets.Source.Game.Scripts.Upgrades;
 using Assets.Source.Game.Scripts.ViewModels;
@@ -15,7 +16,7 @@ namespace Assets.Source.Game.Scripts.Views
         private readonly string _upgradeNameText = "UpgradeName";
         private readonly string _buttonResetText = "ButtonReset";
         private readonly string _nameText = "Name";
-        private readonly string _descriptionText = "DescriptionsStats";
+        private readonly string _descriptionText = "DescriptionStats";
         private readonly float _delay = 0.25f;
         private readonly float _duration = 1f;
         private readonly int _breakValue = -1;
@@ -31,8 +32,8 @@ namespace Assets.Source.Game.Scripts.Views
         [SerializeField] private Sprite _defaultSprite;
         [SerializeField] private UpgradeDataView _upgradeDataView;
         [SerializeField] private Transform _upgradesContainer;
-        [SerializeField] private Transform _statsConteiner;
-        [SerializeField] private ClassAbilityStatsView _statsViewPrafab;
+        [SerializeField] private Transform _statsContainer;
+        [SerializeField] private ClassAbilityStatsView _statsViewPrefab;
         [SerializeField] private Text _currentPrice;
         [Space(20)]
         [SerializeField] private List<UpgradeData> _defaultUpgradeData;
@@ -41,7 +42,7 @@ namespace Assets.Source.Game.Scripts.Views
         [SerializeField] private Button _resetButton;
         [SerializeField] private Button _closeButton;
         [Space(20)]
-        [SerializeField] private GameObject _parametrPanel;
+        [SerializeField] private GameObject _parameterPanel;
 
         private List<UpgradeDataView> _upgradeDataViews = new();
         private UpgradeViewModel _upgradeViewModel;
@@ -65,7 +66,7 @@ namespace Assets.Source.Game.Scripts.Views
 
         private void OnDisable()
         {
-            _parametrPanel.SetActive(false);
+            _parameterPanel.SetActive(false);
         }
 
         public void Initialize(UpgradeViewModel upgradeViewModel, IAudioPlayerService audioPlayerService)
@@ -79,7 +80,7 @@ namespace Assets.Source.Game.Scripts.Views
             _namePanel.TranslationName = _upgradeNameText;
             _resetButtonText.TranslationName = _buttonResetText;
             AddListener();
-            _parametrPanel.SetActive(false);
+            _parameterPanel.SetActive(false);
             gameObject.SetActive(false);
         }
 
@@ -139,7 +140,7 @@ namespace Assets.Source.Game.Scripts.Views
                 }
             }
 
-            _parametrPanel.SetActive(false);
+            _parameterPanel.SetActive(false);
             _upgradeViewModel.ResetUpgrades(currentUpgradePoints);
             _countUpgradePoints.text = _upgradeViewModel.GetUpgradePoints().ToString();
             Clear();
@@ -172,14 +173,14 @@ namespace Assets.Source.Game.Scripts.Views
 
         private void OnStatsSelected(UpgradeDataView upgradeDataView)
         {
-            _parametrPanel.SetActive(true);
+            _parameterPanel.SetActive(true);
             RenderCurrentUpgrade(upgradeDataView);
             _upgradeViewModel.SelectStats(upgradeDataView);
             ClearStats();
 
             int currentLevel = upgradeDataView.UpgradeState.CurrentLevel;
             int parametersCount = upgradeDataView.UpgradeData.UpgradeParameters.Count;
-            string nameParametr = upgradeDataView.UpgradeData.TypeParameter.ToString();
+            string nameParameter = upgradeDataView.UpgradeData.TypeParameter.ToString();
 
             string valueCurrentLvl;
             string valueNextLvl = string.Empty;
@@ -187,11 +188,13 @@ namespace Assets.Source.Game.Scripts.Views
 
             if (currentLevel > 0)
             {
-                valueCurrentLvl = "+" + upgradeDataView.UpgradeData.UpgradeParameters[currentLevel - 1].Value.ToString();
+                valueCurrentLvl = "+" +
+                    upgradeDataView.UpgradeData.UpgradeParameters[currentLevel - 1].Value.ToString();
 
                 if (currentLevel < parametersCount)
                 {
-                    valueNextLvl = "+" + upgradeDataView.UpgradeData.UpgradeParameters[currentLevel].Value.ToString();
+                    valueNextLvl = "+" +
+                        upgradeDataView.UpgradeData.UpgradeParameters[currentLevel].Value.ToString();
                     priceLevel = currentLevel;
                 }
                 else
@@ -206,8 +209,8 @@ namespace Assets.Source.Game.Scripts.Views
             }
 
             _currentPrice.text = upgradeDataView.UpgradeData.UpgradeParameters[priceLevel].Cost.ToString();
-            ClassAbilityStatsView statsView = Instantiate(_statsViewPrafab, _statsConteiner);
-            statsView.Initialize(nameParametr, valueCurrentLvl, valueNextLvl);
+            ClassAbilityStatsView statsView = Instantiate(_statsViewPrefab, _statsContainer);
+            statsView.Initialize(nameParameter, valueCurrentLvl, valueNextLvl);
             _classAbilityStatsViews.Add(statsView);
         }
 
@@ -224,8 +227,6 @@ namespace Assets.Source.Game.Scripts.Views
 
         private IEnumerator SetUpgradeViewsAnimation()
         {
-            WaitForSeconds delay = new WaitForSeconds(_delay);
-
             foreach (var view in _upgradeDataViews)
             {
                 view.transform.localScale = Vector3.zero;

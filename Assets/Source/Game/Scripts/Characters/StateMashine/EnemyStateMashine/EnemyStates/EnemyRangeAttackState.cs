@@ -7,11 +7,11 @@ namespace Assets.Source.Game.Scripts.Characters
     {
         private BulletSpawner _bulletSpawner;
 
-        public EnemyRangeAttackState(StateMachine stateMashine,
+        public EnemyRangeAttackState(StateMachine stateMachine,
             Player target,
             Enemy enemy,
             BulletSpawner bulletSpawner)
-            : base(stateMashine, target, enemy)
+            : base(stateMachine, target, enemy)
         {
             Enemy = enemy;
             Target = target;

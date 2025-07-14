@@ -1,9 +1,8 @@
 using Assets.Source.Game.Scripts.Enums;
-using Assets.Source.Game.Scripts.ScriptableObjects;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.ScriptableObjects
 {
     [CreateAssetMenu(fileName = "New Card", menuName = "Create Card", order = 51)]
     public class CardData : ScriptableObject
@@ -18,6 +17,6 @@ namespace Assets.Source.Game.Scripts
         public Color[] TypeCardColor => _typeCardColor;
         public AttributeData AttributeData => _attributeData;
         public TypeCardParameter TypeCardParameter => _typeCardParameter;
-        public List<AttributeData> SuppurtiveData => _suppurtiveData;
+        public List<AttributeData> SupportiveData => _suppurtiveData;
     }
 }

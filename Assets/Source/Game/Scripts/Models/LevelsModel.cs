@@ -1,5 +1,6 @@
 using Assets.Source.Game.Scripts.Items;
 using Assets.Source.Game.Scripts.Levels;
+using Assets.Source.Game.Scripts.ScriptableObjects;
 using Assets.Source.Game.Scripts.Services;
 using Assets.Source.Game.Scripts.Views;
 using System.Collections;

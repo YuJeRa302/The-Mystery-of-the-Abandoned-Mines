@@ -1,4 +1,5 @@
 using Assets.Source.Game.Scripts.Card;
+using Assets.Source.Game.Scripts.ScriptableObjects;
 using Assets.Source.Game.Scripts.ViewModels;
 using System.Collections.Generic;
 using UnityEngine;

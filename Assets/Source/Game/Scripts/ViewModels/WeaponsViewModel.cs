@@ -1,5 +1,6 @@
 using Assets.Source.Game.Scripts.Items;
 using Assets.Source.Game.Scripts.Models;
+using Assets.Source.Game.Scripts.ScriptableObjects;
 using System;
 
 namespace Assets.Source.Game.Scripts.ViewModels

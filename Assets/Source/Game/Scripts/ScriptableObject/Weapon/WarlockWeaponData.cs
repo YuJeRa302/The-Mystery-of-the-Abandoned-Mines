@@ -1,10 +1,13 @@
 using Assets.Source.Game.Scripts.Characters;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New Barbarian Wapon", menuName = "Create Weapon/Warlock Weapon", order = 51)]
-public class WarlockWeaponData : WeaponData
+namespace Assets.Source.Game.Scripts.ScriptableObjects
 {
-    [SerializeField] private PlayerProjectile _bulletPrefab;
+    [CreateAssetMenu(fileName = "New Barbarian Wapon", menuName = "Create Weapon/Warlock Weapon", order = 51)]
+    public class WarlockWeaponData : WeaponData
+    {
+        [SerializeField] private PlayerProjectile _bulletPrefab;
 
-    public PlayerProjectile BulletPrafab => _bulletPrefab;
+        public PlayerProjectile BulletPrafab => _bulletPrefab;
+    }
 }

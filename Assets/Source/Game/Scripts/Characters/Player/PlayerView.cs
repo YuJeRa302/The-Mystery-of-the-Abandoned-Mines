@@ -56,10 +56,10 @@ namespace Assets.Source.Game.Scripts.Characters
                 return;
             }
 
-            foreach (var parametr in abilityData.Parameters[currentLevel - 1].CardParameters)
+            foreach (var parameter in abilityData.Parameters[currentLevel - 1].CardParameters)
             {
-                if (parametr.TypeParameter == TypeParameter.AbilityCooldown)
-                    currentAbilityCooldown = parametr.Value;
+                if (parameter.TypeParameter == TypeParameter.AbilityCooldown)
+                    currentAbilityCooldown = parameter.Value;
             }
 
             abilityView.Initialize(abilityData.Icon, currentAbilityCooldown);
@@ -80,10 +80,10 @@ namespace Assets.Source.Game.Scripts.Characters
 
             AbilityView abilityView = Instantiate(abilityAttributeData.AbilityView, _abilityObjectContainer);
 
-            foreach (var parametr in abilityAttributeData.Parameters[0].CardParameters)
+            foreach (var parameter in abilityAttributeData.Parameters[0].CardParameters)
             {
-                if (parametr.TypeParameter == TypeParameter.AbilityCooldown)
-                    currentAbilityCooldown = parametr.Value;
+                if (parameter.TypeParameter == TypeParameter.AbilityCooldown)
+                    currentAbilityCooldown = parameter.Value;
             }
 
             abilityView.Initialize(abilityAttributeData.Icon, currentAbilityCooldown);
@@ -98,10 +98,10 @@ namespace Assets.Source.Game.Scripts.Characters
 
             _abilityEffect = abilityAttributeData.Particle;
 
-            foreach (var parametr in abilityAttributeData.Parameters[currentLevel].CardParameters)
+            foreach (var parameter in abilityAttributeData.Parameters[currentLevel].CardParameters)
             {
-                if (parametr.TypeParameter == TypeParameter.AbilityCooldown)
-                    currentAbilityCooldown = parametr.Value;
+                if (parameter.TypeParameter == TypeParameter.AbilityCooldown)
+                    currentAbilityCooldown = parameter.Value;
             }
 
             abilityView = Instantiate(abilityAttributeData.AbilityView, _abilityObjectContainer);
@@ -109,16 +109,16 @@ namespace Assets.Source.Game.Scripts.Characters
             AbilityViewCreated?.Invoke(abilityView, _abilityEffect, _throwPoint);
         }
 
-        public void ChangePlayerLevel(int currenLevel, int maxExperienceValue, int currentExperience)
+        public void ChangePlayerLevel(int currentLevel, int maxExperienceValue, int currentExperience)
         {
-            _textPlayerLevel.text = currenLevel.ToString();
+            _textPlayerLevel.text = currentLevel.ToString();
             _sliderXP.maxValue = maxExperienceValue;
             _sliderXP.value = currentExperience;
         }
 
-        public void ChangeUpgradeLevel(int currenLevel, int maxExperienceValue, int currentExperience)
+        public void ChangeUpgradeLevel(int currentLevel, int maxExperienceValue, int currentExperience)
         {
-            _textUpgradePoints.text = currenLevel.ToString();
+            _textUpgradePoints.text = currentLevel.ToString();
             _sliderUpgradePoints.maxValue = maxExperienceValue;
             _sliderUpgradePoints.value = currentExperience;
         }

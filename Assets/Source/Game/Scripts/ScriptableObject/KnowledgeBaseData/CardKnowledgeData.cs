@@ -9,7 +9,7 @@ namespace Assets.Source.Game.Scripts.ScriptableObjects
     {
         [SerializeField] private List<CardData> _cardDatas;
 
-        public override void GetView(Transform conteiner, out List<KnowladgeView> knowladgeViews)
+        public override void GetView(Transform conteiner, out List<KnowledgeView> knowladgeViews)
         {
             knowladgeViews = new();
             CardKnowledgebaseView cardKnowladgeView;

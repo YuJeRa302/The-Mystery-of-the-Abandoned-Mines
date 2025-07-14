@@ -5,7 +5,7 @@ using Assets.Source.Game.Scripts.Upgrades;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.ScriptableObjects
 {
     [CreateAssetMenu(fileName = "New Config", menuName = "Create Config", order = 51)]
     public class ConfigData : ScriptableObject

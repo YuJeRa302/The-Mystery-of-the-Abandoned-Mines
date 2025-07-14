@@ -1,6 +1,7 @@
 using Assets.Source.Game.Scripts.Characters;
 using Assets.Source.Game.Scripts.Enums;
 using Assets.Source.Game.Scripts.PoolSystem;
+using Assets.Source.Game.Scripts.ScriptableObjects;
 using System;
 
 namespace Assets.Source.Game.Scripts.Items
@@ -42,9 +43,9 @@ namespace Assets.Source.Game.Scripts.Items
             {
                 PoolParticle particle;
 
-                if (_pool.TryPoolObject(_weponPrefab.KickEffect.gameObject, out PoolObject pollParticle))
+                if (_pool.TryPoolObject(_weponPrefab.KickEffect.gameObject, out PoolObject poolParticle))
                 {
-                    particle = pollParticle as PoolParticle;
+                    particle = poolParticle as PoolParticle;
                     particle.gameObject.SetActive(true);
                 }
                 else
@@ -59,9 +60,9 @@ namespace Assets.Source.Game.Scripts.Items
         {
             PoolParticle particle;
 
-            if (_pool.TryPoolObject(_critParticle.gameObject, out PoolObject pollParticle))
+            if (_pool.TryPoolObject(_critParticle.gameObject, out PoolObject poolParticle))
             {
-                particle = pollParticle as PoolParticle;
+                particle = poolParticle as PoolParticle;
                 particle.transform.position = _player.transform.position;
                 particle.transform.rotation = _player.transform.rotation;
                 particle.gameObject.SetActive(true);
@@ -78,9 +79,9 @@ namespace Assets.Source.Game.Scripts.Items
         {
             PoolParticle particle;
 
-            if (_pool.TryPoolObject(_vampirismParticle.gameObject, out PoolObject pollParticle))
+            if (_pool.TryPoolObject(_vampirismParticle.gameObject, out PoolObject poolParticle))
             {
-                particle = pollParticle as PoolParticle;
+                particle = poolParticle as PoolParticle;
                 particle.transform.position = _player.transform.position;
                 particle.gameObject.SetActive(true);
             }

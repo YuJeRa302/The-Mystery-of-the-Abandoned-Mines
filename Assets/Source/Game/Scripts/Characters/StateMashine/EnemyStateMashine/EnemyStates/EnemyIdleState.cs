@@ -4,13 +4,9 @@ namespace Assets.Source.Game.Scripts.Characters
     {
         private Player _target;
 
-        public EnemyIdleState(StateMachine stateMashine, Player player) : base(stateMashine)
+        public EnemyIdleState(StateMachine stateMachine, Player player) : base(stateMachine)
         {
             _target = player;
-        }
-
-        public override void EnterState()
-        {
         }
 
         public override void UpdateState()
@@ -19,10 +15,6 @@ namespace Assets.Source.Game.Scripts.Characters
             {
                 StateMashine.SetState<EnemyMoveState>();
             }
-        }
-
-        public override void ExitState()
-        {
         }
     }
 }

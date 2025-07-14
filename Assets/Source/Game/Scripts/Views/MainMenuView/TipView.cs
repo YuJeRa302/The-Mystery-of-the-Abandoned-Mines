@@ -1,3 +1,4 @@
+using Assets.Source.Game.Scripts.ScriptableObjects;
 using Lean.Localization;
 using UnityEngine;
 using UnityEngine.UI;

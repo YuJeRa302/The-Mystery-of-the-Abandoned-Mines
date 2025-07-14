@@ -3,7 +3,7 @@ using Assets.Source.Game.Scripts.Upgrades;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Assets.Source.Game.Scripts
+namespace Assets.Source.Game.Scripts.ScriptableObjects
 {
     [CreateAssetMenu(fileName = "New Upgrade", menuName = "Create Stats Upgrade", order = 51)]
     public class UpgradeData : ScriptableObject
@@ -22,7 +22,7 @@ namespace Assets.Source.Game.Scripts
         public Sprite Icon => _icon;
         public TypeParameter TypeParameter => _typeParameter;
 
-        public UpgradeParameter GetUpgradeParameterByCurrentLevel(int currentLevel) 
+        public UpgradeParameter GetUpgradeParameterByCurrentLevel(int currentLevel)
         {
             foreach (UpgradeParameter upgradeParameter in _upgradeParameters)
             {

@@ -5,18 +5,18 @@ namespace Assets.Source.Game.Scripts.PoolSystem
 {
     public class DamageParticle : PoolParticle
     {
-        private DamageSource _damageParametr;
+        private DamageSource _damageParameter;
 
-        public void Initialize(DamageSource damageParametr)
+        public void Initialize(DamageSource damageParameter)
         {
-            _damageParametr = damageParametr;
+            _damageParameter = damageParameter;
         }
 
         private void OnParticleCollision(GameObject other)
         {
             if (other.gameObject.TryGetComponent(out Enemy enemy))
             {
-                enemy.TakeDamage(_damageParametr);
+                enemy.TakeDamage(_damageParameter);
             }
         }
     }

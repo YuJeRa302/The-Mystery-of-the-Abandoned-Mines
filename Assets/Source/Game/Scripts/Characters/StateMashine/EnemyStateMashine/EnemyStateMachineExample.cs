@@ -16,7 +16,7 @@ namespace Assets.Source.Game.Scripts.Characters
 
         public event Action MachineInitialized;
 
-        public Dictionary<Type, State> MashineStates => _stateMashine.States;
+        public Dictionary<Type, State> MachineStates => _stateMashine.States;
 
         private void FixedUpdate()
         {

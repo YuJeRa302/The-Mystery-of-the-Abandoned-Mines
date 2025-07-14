@@ -26,9 +26,9 @@ namespace Assets.Source.Game.Scripts.SpawnersScripts
         {
             Bullet bullet;
 
-            if (_pool.TryPoolObject(_bulletBrefab.gameObject, out PoolObject pollBullet))
+            if (_pool.TryPoolObject(_bulletBrefab.gameObject, out PoolObject poolBullet))
             {
-                bullet = pollBullet as Bullet;
+                bullet = poolBullet as Bullet;
                 bullet.transform.position = _shotPoint.transform.position;
                 bullet.transform.rotation = _shotPoint.transform.rotation;
                 bullet.gameObject.SetActive(true);

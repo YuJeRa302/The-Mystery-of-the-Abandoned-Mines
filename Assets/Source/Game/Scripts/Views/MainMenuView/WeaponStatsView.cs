@@ -7,16 +7,16 @@ namespace Assets.Source.Game.Scripts.Views
 {
     public class WeaponStatsView : MonoBehaviour
     {
-        private readonly string _damageParametrName = "Damage";
+        private readonly string _damageParameterName = "Damage";
 
         [SerializeField] private LeanLocalizedText _valueLeanLocalizedText;
         [SerializeField] private Text _valueText;
         [SerializeField] private LeanLocalizedText _nameStats;
-        [SerializeField] private Image _imagePatametr;
+        [SerializeField] private Image _imageParameter;
         [SerializeField] private Sprite _damageIcon;
-        [SerializeField] private List<DamageParametrIcon> _damageParametrIcons;
+        [SerializeField] private List<DamageParameterIcon> _damageParameterIcons;
         [SerializeField] private List<WeaponSupportiveParameterIcon> _weaponSupportiveParameterIcons;
-        [SerializeField] private List<DamageSupportivePatametrIcon> _damageSupportiveParameterIcons;
+        [SerializeField] private List<DamageSupportiveParameterIcon> _damageSupportiveParameterIcons;
 
         public void Initialize(string translationName, string value, bool isOneParameter)
         {
@@ -27,18 +27,18 @@ namespace Assets.Source.Game.Scripts.Views
                 _valueLeanLocalizedText.TranslationName = value;
 
                 RenderIconDamageType(out Sprite icon);
-                _imagePatametr.sprite = icon;
+                _imageParameter.sprite = icon;
             }
             else
             {
-                if (translationName == _damageParametrName)
+                if (translationName == _damageParameterName)
                 {
-                    _imagePatametr.sprite = _damageIcon;
+                    _imageParameter.sprite = _damageIcon;
                 }
                 else
                 {
-                    RenderIconParametr(out Sprite icon);
-                    _imagePatametr.sprite = icon;
+                    RenderIconParameter(out Sprite icon);
+                    _imageParameter.sprite = icon;
                 }
 
                 _valueText.text = value;
@@ -49,34 +49,34 @@ namespace Assets.Source.Game.Scripts.Views
         {
             icon = null;
 
-            foreach (var parametr in _damageParametrIcons)
+            foreach (var parameter in _damageParameterIcons)
             {
-                if (parametr.TypeDamage.ToString() == _valueLeanLocalizedText.TranslationName)
+                if (parameter.TypeDamage.ToString() == _valueLeanLocalizedText.TranslationName)
                 {
-                    icon = parametr.Icon;
+                    icon = parameter.Icon;
                     return;
                 }
             }
         }
 
-        private void RenderIconParametr(out Sprite icon)
+        private void RenderIconParameter(out Sprite icon)
         {
             icon = null;
 
-            foreach (var parametr in _weaponSupportiveParameterIcons)
+            foreach (var parameter in _weaponSupportiveParameterIcons)
             {
-                if (parametr.TypeDamage.ToString() == _nameStats.TranslationName)
+                if (parameter.TypeDamage.ToString() == _nameStats.TranslationName)
                 {
-                    icon = parametr.Icon;
+                    icon = parameter.Icon;
                     return;
                 }
             }
 
-            foreach (var parametr in _damageSupportiveParameterIcons)
+            foreach (var parameter in _damageSupportiveParameterIcons)
             {
-                if (parametr.TypeDamage.ToString() == _nameStats.TranslationName)
+                if (parameter.TypeDamage.ToString() == _nameStats.TranslationName)
                 {
-                    icon = parametr.Icon;
+                    icon = parameter.Icon;
                     return;
                 }
             }

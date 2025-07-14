@@ -1,3 +1,4 @@
+using Assets.Source.Game.Scripts.ScriptableObjects;
 using Assets.Source.Game.Scripts.Services;
 using System;
 using UnityEngine;

@@ -1,6 +1,7 @@
 using Assets.Source.Game.Scripts.Items;
 using Assets.Source.Game.Scripts.Levels;
 using Assets.Source.Game.Scripts.Models;
+using Assets.Source.Game.Scripts.ScriptableObjects;
 using Assets.Source.Game.Scripts.Views;
 using System;
 
@@ -28,7 +29,7 @@ namespace Assets.Source.Game.Scripts.ViewModels
         public bool TryUnlockLevel(int levelId) => _levelsModel.TryUnlockLevel(levelId);
         public LevelState GetLevelState(LevelData levelData) => _levelsModel.GetLevelState(levelData);
         public WeaponState GetWeaponState(WeaponData weaponData) => _levelsModel.GetWeaponState(weaponData);
-        public int GetPlayerConins() => _levelsModel.GetPlayerCoinCount();
+        public int GetPlayerCoins() => _levelsModel.GetPlayerCoinCount();
         public void SelectLevel(LevelDataView levelDataView) => _levelsModel.SelectLevel(levelDataView);
         public void SelectClass(PlayerClassDataView playerClassDataView) =>
             _levelsModel.SelectClass(playerClassDataView);

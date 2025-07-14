@@ -51,9 +51,9 @@ namespace Assets.Source.Game.Scripts.Views
         {
             DamagePopup popup;
 
-            if (_pool.TryPoolObject(_damagePopupPrefab.gameObject, out PoolObject pollDamage))
+            if (_pool.TryPoolObject(_damagePopupPrefab.gameObject, out PoolObject poolDamage))
             {
-                popup = pollDamage as DamagePopup;
+                popup = poolDamage as DamagePopup;
                 popup.transform.position = _damagePopupText.position;
                 popup.gameObject.SetActive(true);
             }

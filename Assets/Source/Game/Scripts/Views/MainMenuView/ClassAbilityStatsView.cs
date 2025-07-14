@@ -11,8 +11,8 @@ namespace Assets.Source.Game.Scripts.Views
         [SerializeField] private Text _valueCurrentLvlText;
         [SerializeField] private Text _valueNextLvlText;
         [SerializeField] private Image _haveNextLvlImage;
-        [SerializeField] private Image _iconParametr;
-        [SerializeField] private List<TypeParametrIcon> _parametrIcons;
+        [SerializeField] private Image _iconParameter;
+        [SerializeField] private List<TypeParameterIcon> _parameterIcons;
 
         public void Initialize(string translationName, string valueCurrentLvl, string valueNextLvl)
         {
@@ -29,11 +29,11 @@ namespace Assets.Source.Game.Scripts.Views
 
         private void RenderIcon()
         {
-            foreach (var parametr in _parametrIcons)
+            foreach (var parameter in _parameterIcons)
             {
-                if (parametr.TypeDamage.ToString() == _nameStats.TranslationName)
+                if (parameter.TypeDamage.ToString() == _nameStats.TranslationName)
                 {
-                    _iconParametr.sprite = parametr.Icon;
+                    _iconParameter.sprite = parameter.Icon;
                     return;
                 }
             }

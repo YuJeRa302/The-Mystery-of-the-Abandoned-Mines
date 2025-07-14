@@ -4,6 +4,7 @@ using YG;
 using Lean.Localization;
 using Assets.Source.Game.Scripts.Utility;
 using Assets.Source.Game.Scripts.ViewModels;
+using Assets.Source.Game.Scripts.ScriptableObjects;
 
 namespace Assets.Source.Game.Scripts.GamePanels
 {

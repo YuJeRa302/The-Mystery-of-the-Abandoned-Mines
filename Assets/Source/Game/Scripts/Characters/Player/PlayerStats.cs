@@ -50,7 +50,7 @@ namespace Assets.Source.Game.Scripts.Characters
 
         public PlayerStats(
             WeaponData weaponData,
-            PlayerClassData calss,
+            PlayerClassData classData,
             int currentLevel,
             int rerollPoints,
             int armor,
@@ -65,10 +65,10 @@ namespace Assets.Source.Game.Scripts.Characters
             _maxMoveSpeed = _moveSpeed * _moveSpeedAmplifier;
             _regeneration = regeneration;
             _countKillEnemy = countKillEnemy;
-            _classData = calss;
+            _classData = classData;
             GenerateLevelPlayer(_maxPlayerLevel);
             GenerateUpgradeLevel(_maxUpgradeLevel);
-            ApplyWeaponParameters(weaponData, calss.TypeAttackRange);
+            ApplyWeaponParameters(weaponData, classData.TypeAttackRange);
         }
 
         public event Action<int> MaxHealthChanged;
@@ -265,7 +265,7 @@ namespace Assets.Source.Game.Scripts.Characters
             }
             else
             {
-                foreach (CardParameter parameter in ability.AmplifierParametrs)
+                foreach (CardParameter parameter in ability.AmplifierParameters)
                 {
                     switch (parameter.TypeParameter)
                     {
@@ -278,7 +278,7 @@ namespace Assets.Source.Game.Scripts.Characters
                         case TypeParameter.MoveSpeed:
                             IncreaseMoveSpeed(parameter.Value);
                             break;
-                        case TypeParameter.HealtReduce:
+                        case TypeParameter.HealthReduce:
                             HealthReduced?.Invoke(parameter.Value);
                             break;
                         case TypeParameter.Healing:
@@ -320,7 +320,7 @@ namespace Assets.Source.Game.Scripts.Characters
             }
             else
             {
-                foreach (CardParameter parameter in ability.AmplifierParametrs)
+                foreach (CardParameter parameter in ability.AmplifierParameters)
                 {
                     switch (parameter.TypeParameter)
                     {
@@ -371,24 +371,24 @@ namespace Assets.Source.Game.Scripts.Characters
                 weaponData.DamageSource.PoolParticle,
                 weaponData.DamageSource.Damage);
 
-            foreach (var parametr in weaponData.WeaponParameters)
+            foreach (var parameter in weaponData.WeaponParameters)
             {
-                switch (parametr.SupportivePatametr)
+                switch (parameter.SupportiveParameter)
                 {
                     case TypeWeaponSupportiveParameter.CritChance:
-                        _chanceCriticalDamage = parametr.Value;
+                        _chanceCriticalDamage = parameter.Value;
                         break;
                     case TypeWeaponSupportiveParameter.CritDamage:
-                        _criticalDamageMultiplier = parametr.Value;
+                        _criticalDamageMultiplier = parameter.Value;
                         break;
                     case TypeWeaponSupportiveParameter.LifeStealChance:
-                        _chanceVampirism = parametr.Value;
+                        _chanceVampirism = parameter.Value;
                         break;
                     case TypeWeaponSupportiveParameter.LifeStealValue:
-                        _vampirismValue = parametr.Value;
+                        _vampirismValue = parameter.Value;
                         break;
                     case TypeWeaponSupportiveParameter.BonusArmor:
-                        _armor += Convert.ToInt32(parametr.Value);
+                        _armor += Convert.ToInt32(parameter.Value);
                         break;
                 }
             }

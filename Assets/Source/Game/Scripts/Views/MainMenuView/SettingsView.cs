@@ -1,3 +1,4 @@
+using Assets.Source.Game.Scripts.ScriptableObjects;
 using Assets.Source.Game.Scripts.Services;
 using Assets.Source.Game.Scripts.ViewModels;
 using System.Collections.Generic;
@@ -22,7 +23,7 @@ namespace Assets.Source.Game.Scripts.Views
 
         private void OnDestroy()
         {
-            ClearLanguageButton();
+            ClearLanguageButtons();
             RemoveListeners();
         }
 
@@ -34,12 +35,12 @@ namespace Assets.Source.Game.Scripts.Views
             _sfxSlider.value = settingsViewModel.GetSfxVolume();
             _muteToggle.isOn = settingsViewModel.GetMuteStatus();
             AddListeners();
-            ClearLanguageButton();
-            CreateLanguageButton();
+            ClearLanguageButtons();
+            CreateLanguageButtons();
             gameObject.SetActive(false);
         }
 
-        private void CreateLanguageButton()
+        private void CreateLanguageButtons()
         {
             foreach (LanguageButtonData languageButton in _languageButtonData)
             {
@@ -50,7 +51,7 @@ namespace Assets.Source.Game.Scripts.Views
             }
         }
 
-        private void ClearLanguageButton()
+        private void ClearLanguageButtons()
         {
             if (_languageButtonViews.Count == 0)
                 return;

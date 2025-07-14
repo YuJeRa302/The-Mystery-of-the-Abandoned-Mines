@@ -176,24 +176,24 @@ namespace Assets.Source.Game.Scripts.Characters
             gradual = 0;
             slowDown = 0;
 
-            foreach (var parametr in damageSource.DamageParameters)
+            foreach (var parameter in damageSource.DamageParameters)
             {
-                switch (parametr.TypeDamageParameter)
+                switch (parameter.TypeDamageParameter)
                 {
                     case TypeDamageParameter.Chance:
-                        chance = parametr.Value;
+                        chance = parameter.Value;
                         break;
                     case TypeDamageParameter.Duration:
-                        duration = parametr.Value;
+                        duration = parameter.Value;
                         break;
                     case TypeDamageParameter.Repulsive:
-                        repulsive = parametr.Value;
+                        repulsive = parameter.Value;
                         break;
                     case TypeDamageParameter.Gradual:
-                        gradual = parametr.Value;
+                        gradual = parameter.Value;
                         break;
                     case TypeDamageParameter.Slowdown:
-                        slowDown = parametr.Value;
+                        slowDown = parameter.Value;
                         break;
                 }
             }
@@ -285,10 +285,10 @@ namespace Assets.Source.Game.Scripts.Characters
             }
         }
 
-        private void CoroutineStop(Coroutine corontine)
+        private void CoroutineStop(Coroutine coroutine)
         {
-            if (corontine != null)
-                StopCoroutine(corontine);
+            if (coroutine != null)
+                StopCoroutine(coroutine);
         }
 
         private IEnumerator Burn(float damage, float time, PoolParticle particle)

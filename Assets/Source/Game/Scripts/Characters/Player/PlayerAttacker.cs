@@ -1,5 +1,6 @@
 using Assets.Source.Game.Scripts.Enums;
 using Assets.Source.Game.Scripts.PoolSystem;
+using Assets.Source.Game.Scripts.ScriptableObjects;
 using Assets.Source.Game.Scripts.Services;
 using Assets.Source.Game.Scripts.SpawnersScripts;
 using System;
@@ -33,7 +34,7 @@ namespace Assets.Source.Game.Scripts.Characters
         private TypeAttackRange _typeAttackRange;
 
         public PlayerAttacker(
-            Transform shoPoint,
+            Transform shotPoint,
             Player player,
             TypeAttackRange typeAttackRange,
             WeaponData weaponData,
@@ -43,7 +44,7 @@ namespace Assets.Source.Game.Scripts.Characters
         {
             _gamePauseService = gamePauseService;
             _coroutineRunner = coroutineRunner;
-            _shotPoint = shoPoint;
+            _shotPoint = shotPoint;
             _player = player;
             _typeAttackRange = typeAttackRange;
             _poolBullet = pool;

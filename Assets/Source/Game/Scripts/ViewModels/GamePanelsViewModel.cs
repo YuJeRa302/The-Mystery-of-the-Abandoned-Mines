@@ -1,5 +1,6 @@
 using Assets.Source.Game.Scripts.Characters;
 using Assets.Source.Game.Scripts.Models;
+using Assets.Source.Game.Scripts.ScriptableObjects;
 using Assets.Source.Game.Scripts.Services;
 using System;
 using System.Collections.Generic;

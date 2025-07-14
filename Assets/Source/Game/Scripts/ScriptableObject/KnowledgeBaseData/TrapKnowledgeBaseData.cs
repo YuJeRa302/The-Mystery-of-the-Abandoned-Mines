@@ -9,14 +9,14 @@ namespace Assets.Source.Game.Scripts.ScriptableObjects
     {
         [SerializeField] private List<TrapData> _trapDatas;
 
-        public override void GetView(Transform conteiner, out List<KnowladgeView> knowladgeViews)
+        public override void GetView(Transform conteiner, out List<KnowledgeView> knowladgeViews)
         {
             knowladgeViews = new();
-            TrapKnowladgeView trapKnowladgeView;
+            TrapKnowledgeView trapKnowladgeView;
 
             foreach (TrapData data in _trapDatas)
             {
-                trapKnowladgeView = Instantiate(_knowladgeView as TrapKnowladgeView, conteiner);
+                trapKnowladgeView = Instantiate(_knowladgeView as TrapKnowledgeView, conteiner);
                 trapKnowladgeView.Initialize(data);
                 knowladgeViews.Add(trapKnowladgeView);
             }

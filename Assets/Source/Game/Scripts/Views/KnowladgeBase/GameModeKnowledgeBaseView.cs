@@ -1,10 +1,11 @@
+using Assets.Source.Game.Scripts.ScriptableObjects;
 using Lean.Localization;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Assets.Source.Game.Scripts.Views
 {
-    public class GameModeKnowledgeBaseView : KnowladgeView
+    public class GameModeKnowledgeBaseView : KnowledgeView
     {
         [SerializeField] private Image _icon;
         [SerializeField] private LeanLocalizedText _name;

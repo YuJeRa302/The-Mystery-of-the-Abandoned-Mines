@@ -11347,7 +11347,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &922671170
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11390,7 +11390,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: bbace51df70a5204eb024cb99fb0f11e, type: 2}
   - {fileID: 11400000, guid: 443a12eb8334cd24380eafbd7710991d, type: 2}
   _backButton: {fileID: 837182381}
-  _parametrPanel: {fileID: 770879789}
+  _parameterPanel: {fileID: 770879789}
 --- !u!224 &922671171
 RectTransform:
   m_ObjectHideFlags: 0
@@ -15801,7 +15801,7 @@ MonoBehaviour:
   _defaultSprite: {fileID: 21300000, guid: 6a3ba55e82a9e2347a97d621ed805c20, type: 3}
   _abilityClassContainer: {fileID: 2090543012}
   _classContainer: {fileID: 25123218}
-  _classAbilityStatsConteiner: {fileID: 227369276}
+  _classAbilityStatsContainer: {fileID: 0}
   _currentPrice: {fileID: 314536288}
   _playerClassDatas:
   - {fileID: 11400000, guid: 58bf0b437f5b06247864638406b4198e, type: 2}
@@ -19129,8 +19129,8 @@ MonoBehaviour:
   _defaultSprite: {fileID: 21300000, guid: 6a3ba55e82a9e2347a97d621ed805c20, type: 3}
   _upgradeDataView: {fileID: 4575521317633889204, guid: 321821a2d73b9034ebd392503d6b7277, type: 3}
   _upgradesContainer: {fileID: 1960137272}
-  _statsConteiner: {fileID: 860794377}
-  _statsViewPrafab: {fileID: 4902519013037659786, guid: c82c055bb9b2f0345a15bfc30fde49d3, type: 3}
+  _statsContainer: {fileID: 860794377}
+  _statsViewPrefab: {fileID: 4902519013037659786, guid: c82c055bb9b2f0345a15bfc30fde49d3, type: 3}
   _currentPrice: {fileID: 1822158046}
   _defaultUpgradeData:
   - {fileID: 11400000, guid: f43426caaab786c46811cba6838a534e, type: 2}
@@ -19144,7 +19144,7 @@ MonoBehaviour:
   _upgradeButton: {fileID: 44612803}
   _resetButton: {fileID: 153578021}
   _closeButton: {fileID: 1486335023}
-  _parametrPanel: {fileID: 1203673791}
+  _parameterPanel: {fileID: 1203673791}
 --- !u!1 &1510094620
 GameObject:
   m_ObjectHideFlags: 0
@@ -24581,7 +24581,7 @@ MonoBehaviour:
   _openWeaponsButton: {fileID: 400336087}
   _openClassAbilityButton: {fileID: 731715393}
   _openLeaderboardButton: {fileID: 300224331}
-  _opneKnowledgeBaseButton: {fileID: 1210540397}
+  _openKnowledgeBaseButton: {fileID: 1210540397}
   _tipsDatas:
   - {fileID: 11400000, guid: 128668caf94e52f4db3d2c423497c0a3, type: 2}
   - {fileID: 11400000, guid: 3d2332dd7ede3454bb8557eb1fcfdf6c, type: 2}

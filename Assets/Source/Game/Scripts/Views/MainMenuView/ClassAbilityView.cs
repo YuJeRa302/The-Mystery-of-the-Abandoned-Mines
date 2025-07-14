@@ -35,7 +35,7 @@ namespace Assets.Source.Game.Scripts.Views
         [SerializeField] private Sprite _defaultSprite;
         [SerializeField] private Transform _abilityClassContainer;
         [SerializeField] private Transform _classContainer;
-        [SerializeField] private Transform _classAbilityStatsConteiner;
+        [SerializeField] private Transform _classAbilityStatsContainer;
         [SerializeField] private Text _currentPrice;
         [Space(20)]
         [SerializeField] private List<PlayerClassData> _playerClassDatas;
@@ -249,7 +249,7 @@ namespace Assets.Source.Game.Scripts.Views
             for (int i = 0; i < currentParams.Count; i++)
             {
                 var stat = currentParams[i];
-                if (CantDisplayParametr(stat.TypeParameter)) continue;
+                if (CantDisplayParameter(stat.TypeParameter)) continue;
 
                 string nextValue = string.Empty;
 
@@ -273,12 +273,12 @@ namespace Assets.Source.Game.Scripts.Views
 
         private void CreateStatView(string parameterName, string currentValue, string nextValue)
         {
-            ClassAbilityStatsView statsView = Instantiate(_classAbilityStatsViewPrefab, _classAbilityStatsConteiner);
+            ClassAbilityStatsView statsView = Instantiate(_classAbilityStatsViewPrefab, _classAbilityStatsContainer);
             statsView.Initialize(parameterName, currentValue, nextValue);
             _classAbilityStatsViews.Add(statsView);
         }
 
-        private bool CantDisplayParametr(TypeParameter typeParameter)
+        private bool CantDisplayParameter(TypeParameter typeParameter)
         {
             if (typeParameter == TypeParameter.AbilityValue || typeParameter == TypeParameter.TargetMoveSpeed)
                 return true;

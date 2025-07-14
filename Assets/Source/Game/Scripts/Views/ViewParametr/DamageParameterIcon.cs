@@ -5,12 +5,12 @@ using UnityEngine;
 namespace Assets.Source.Game.Scripts.Views
 {
     [Serializable]
-    public class DamageSupportivePatametrIcon
+    public class DamageParameterIcon
     {
-        [SerializeField] private TypeDamageParameter _typeDamage;
+        [SerializeField] private TypeDamage _typeDamage;
         [SerializeField] private Sprite _icon;
 
-        public TypeDamageParameter TypeDamage => _typeDamage;
+        public TypeDamage TypeDamage => _typeDamage;
         public Sprite Icon => _icon;
     }
 }

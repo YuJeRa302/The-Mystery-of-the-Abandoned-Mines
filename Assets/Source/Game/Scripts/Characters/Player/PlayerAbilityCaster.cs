@@ -251,7 +251,6 @@ namespace Assets.Source.Game.Scripts.Characters
                         particleSystem, (abilityAttributeData as LegendaryAbilityData).LegendarySpell);
                     break;
                 case TypeUpgradeAbility.ElectricTrap:
-                    ElectricGuardPresenter electricGuardPresenter =
                         _abilityPresenterFactory.CreateElectricGuardPresenter(
                         newAbility,
                         abilityView,

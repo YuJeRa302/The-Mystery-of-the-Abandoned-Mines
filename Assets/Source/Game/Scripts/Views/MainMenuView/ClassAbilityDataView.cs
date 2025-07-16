@@ -63,7 +63,7 @@ namespace Assets.Source.Game.Scripts.Views
             if (ClassAbilityState == null)
                 return;
 
-            ClassAbilityState.CurrentLevel = _minValue;
+            ClassAbilityState.ChangeCurrentLevel(_minValue);
         }
 
         private void OnAbilityUpgraded(ClassAbilityState classAbilityState)

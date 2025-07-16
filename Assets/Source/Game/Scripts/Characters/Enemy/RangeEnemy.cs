@@ -14,7 +14,7 @@ namespace Assets.Source.Game.Scripts.Characters
 
         public override void Initialize(Player player, int lvlRoom, EnemyData data, int tire)
         {
-            _bulletSpawner = new BulletSpawner(_bullet, Pool, _shootPoint, this);
+            _bulletSpawner = new BulletSpawner(_bullet, EnemyBulletPool, _shootPoint, this);
             base.Initialize(player, lvlRoom, data, tire);
         }
     }

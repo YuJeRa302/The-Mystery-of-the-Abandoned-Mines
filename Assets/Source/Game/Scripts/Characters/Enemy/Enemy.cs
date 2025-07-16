@@ -11,10 +11,9 @@ namespace Assets.Source.Game.Scripts.Characters
 {
     public class Enemy : PoolObject
     {
-        [SerializeField] protected Pool Pool;
-
         private readonly System.Random _rnd = new();
 
+        [SerializeField] private Pool _pool;
         [SerializeField] private EnemyStateMachineExample _stateMachine;
         [SerializeField] private EnemyAnimation _animationController;
         [SerializeField] private Transform _damageEffectContainer;
@@ -55,7 +54,7 @@ namespace Assets.Source.Game.Scripts.Characters
         public float CurrentHealth => _currentHealth;
         public EnemyAnimation AnimationStateController => _animationController;
         public AudioClip DeathAudio => _deathAudio;
-        public Pool EnemyBulletPool => Pool;
+        public Pool EnemyBulletPool => _pool;
 
         public event Action<Enemy> Died;
         public event Action Stuned;
@@ -261,7 +260,7 @@ namespace Assets.Source.Game.Scripts.Characters
         {
             PoolParticle particle;
 
-            if (Pool.TryPoolObject(poolParticle.gameObject, out PoolObject poolObject))
+            if (_pool.TryPoolObject(poolParticle.gameObject, out PoolObject poolObject))
             {
                 particle = poolObject as PoolParticle;
                 particle.transform.position = _damageEffectContainer.position;
@@ -270,7 +269,7 @@ namespace Assets.Source.Game.Scripts.Characters
             else
             {
                 particle = Instantiate(poolParticle, _damageEffectContainer);
-                Pool.InstantiatePoolObject(particle, poolObject.name);
+                _pool.InstantiatePoolObject(particle, poolObject.name);
                 _spawnedEffects.Add(particle);
             }
         }

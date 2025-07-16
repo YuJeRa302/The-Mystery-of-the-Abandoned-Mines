@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00819538e5834e34c993ed6c444ea643, type: 3}
   m_Name: StandartEnemy
   m_EditorClassIdentifier: 
-  _knowladgeView: {fileID: 7148986872088056388, guid: 18d4611d002d1ce4784bb4cf91116b8f, type: 3}
+  _knowledgeView: {fileID: 7148986872088056388, guid: 18d4611d002d1ce4784bb4cf91116b8f, type: 3}
   _enemyDatas:
   - {fileID: 11400000, guid: c92657e7a2ab3794487c73c56292055c, type: 2}
   - {fileID: 11400000, guid: 10b34a6b7f44c6b4e93d2d18cc0ccd1c, type: 2}

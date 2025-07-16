@@ -11,8 +11,6 @@ namespace Assets.Source.Game.Scripts.Characters
         public AditionalAttackGoldDragon(StateMachine stateMachine, Player target, Enemy enemy)
             : base(stateMachine, target, enemy)
         {
-            Target = target;
-            Enemy = enemy;
             _animationController = Enemy.AnimationStateController;
             Boss boss = Enemy as Boss;
             GoldDragon goldDragon = boss as GoldDragon;

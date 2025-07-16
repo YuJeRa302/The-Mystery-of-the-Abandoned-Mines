@@ -2,37 +2,43 @@ using Assets.Source.Game.Scripts.Items;
 using Assets.Source.Game.Scripts.ScriptableObjects;
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Assets.Source.Game.Scripts.Services
 {
     [Serializable]
     public class WeaponService
     {
-        public int CurrentWeaponId;
-        public List<WeaponState> WeaponStates = new();
+        [SerializeField] private int _currentWeaponId;
+        [SerializeField] private List<WeaponState> _weaponStates = new();
+
+        public int CurrentWeaponId => _currentWeaponId;
+        public List<WeaponState> WeaponStates => _weaponStates;
+
+        public void SetWeaponId(int id) => _currentWeaponId = id;
 
         public void SetWeaponStates(WeaponState[] weaponStates)
         {
             for (int index = 0; index < weaponStates.Length; index++)
             {
-                WeaponStates.Add(weaponStates[index]);
+                _weaponStates.Add(weaponStates[index]);
             }
         }
 
         public void UnlockWeaponByData(WeaponData weaponData)
         {
-            if (WeaponStates == null)
+            if (_weaponStates == null)
                 return;
 
             bool found = false;
 
-            for (int i = 0; i < WeaponStates.Count; i++)
+            for (int i = 0; i < _weaponStates.Count; i++)
             {
-                WeaponState weaponState = WeaponStates[i];
+                WeaponState weaponState = _weaponStates[i];
 
                 if (weaponState.Id == weaponData.Id)
                 {
-                    weaponState.IsUnlock = true;
+                    weaponState.UnlockWeapon();
                     found = true;
                     break;
                 }
@@ -41,7 +47,7 @@ namespace Assets.Source.Game.Scripts.Services
             if (!found)
             {
                 WeaponState newWeaponState = InitWeaponState(weaponData);
-                WeaponStates.Add(new(newWeaponState.Id, newWeaponState.IsEquip, newWeaponState.IsUnlock == true));
+                _weaponStates.Add(new(newWeaponState.Id, newWeaponState.IsEquip, newWeaponState.IsUnlock == true));
             }
         }
 
@@ -57,9 +63,9 @@ namespace Assets.Source.Game.Scripts.Services
 
         private WeaponState FindWeaponState(int id)
         {
-            if (WeaponStates != null)
+            if (_weaponStates != null)
             {
-                foreach (WeaponState weaponState in WeaponStates)
+                foreach (WeaponState weaponState in _weaponStates)
                 {
                     if (weaponState.Id == id)
                         return weaponState;
@@ -72,7 +78,7 @@ namespace Assets.Source.Game.Scripts.Services
         private WeaponState InitWeaponState(WeaponData weaponData)
         {
             WeaponState weaponState = new(weaponData.Id, false, false);
-            WeaponStates.Add(weaponState);
+            _weaponStates.Add(weaponState);
             return weaponState;
         }
     }

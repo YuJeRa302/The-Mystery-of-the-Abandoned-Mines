@@ -13,7 +13,7 @@ namespace Assets.Source.Game.Scripts.Characters
         {
             if (_target != null)
             {
-                StateMashine.SetState<EnemyMoveState>();
+                StateMachine.SetState<EnemyMoveState>();
             }
         }
     }

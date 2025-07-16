@@ -6,7 +6,7 @@ namespace Assets.Source.Game.Scripts.Traps
     {
         protected override void ApplyDamage(Player player)
         {
-            player.TakeDamage(_damage);
+            player.TakeDamage(Damage);
         }
     }
 }

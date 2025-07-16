@@ -4,13 +4,13 @@ namespace Assets.Source.Game.Scripts.Characters
 {
     public class SummonAttackState : State
     {
-        protected float LastAttackTime = 0;
-        protected float AttackDelay;
-        protected float AttackRange;
-        protected Vector3 DirectionToTarget;
-        protected float DistanceToTarget;
-        protected DamageSource Damage;
-        protected SummonAnimation AnimationController;
+        private float _lastAttackTime = 0;
+        private float _attackDelay;
+        private float _attackRange;
+        private Vector3 _directionToTarget;
+        private float _distanceToTarget;
+        private DamageSource _damage;
+        private SummonAnimation _animationController;
 
         private Summon _summon;
         private Enemy _target;
@@ -18,17 +18,17 @@ namespace Assets.Source.Game.Scripts.Characters
         public SummonAttackState(StateMachine stateMachine, Summon summon) : base(stateMachine)
         {
             _summon = summon;
-            AttackDelay = _summon.AttackDelay;
-            AttackRange = _summon.DistanceToTarget;
-            Damage = _summon.DamageSource;
-            AnimationController = _summon.Animation;
-            AnimationController.Attacked += ApplyDamage;
+            _attackDelay = _summon.AttackDelay;
+            _attackRange = _summon.DistanceToTarget;
+            _damage = _summon.DamageSource;
+            _animationController = _summon.Animation;
+            _animationController.Attacked += ApplyDamage;
         }
 
         public override void EnterState()
         {
             base.EnterState();
-            CanTransit = true;
+            SetTransitStatus(true);
 
             if (_summon.Target != null)
             {
@@ -36,7 +36,7 @@ namespace Assets.Source.Game.Scripts.Characters
             }
             else
             {
-                StateMashine.SetState<SummonIdleState>();
+                StateMachine.SetState<SummonIdleState>();
             }
         }
 
@@ -47,14 +47,14 @@ namespace Assets.Source.Game.Scripts.Characters
                 if (_target == null || _target.isActiveAndEnabled == false)
                 {
                     _summon.DisableTarget();
-                    StateMashine.SetState<SummonIdleState>();
+                    StateMachine.SetState<SummonIdleState>();
                 }
 
-                DirectionToTarget = _summon.transform.position - _target.transform.position;
-                DistanceToTarget = DirectionToTarget.magnitude;
+                _directionToTarget = _summon.transform.position - _target.transform.position;
+                _distanceToTarget = _directionToTarget.magnitude;
 
-                if (DistanceToTarget > AttackRange)
-                    StateMashine.SetState<SummonIdleState>();
+                if (_distanceToTarget > _attackRange)
+                    StateMachine.SetState<SummonIdleState>();
 
                 if (Attack())
                 {
@@ -65,19 +65,19 @@ namespace Assets.Source.Game.Scripts.Characters
 
         protected bool Attack()
         {
-            if (DistanceToTarget <= AttackRange)
+            if (_distanceToTarget <= _attackRange)
             {
                 _summon.transform.LookAt(_target.transform.position);
 
-                if (LastAttackTime <= 0)
+                if (_lastAttackTime <= 0)
                 {
-                    LastAttackTime = AttackDelay;
-                    CanTransit = false;
+                    _lastAttackTime = _attackDelay;
+                    SetTransitStatus(false);
                     return true;
                 }
             }
 
-            LastAttackTime -= Time.deltaTime;
+            _lastAttackTime -= Time.deltaTime;
             return false;
         }
 
@@ -88,11 +88,11 @@ namespace Assets.Source.Game.Scripts.Characters
                 Vector3 directionToTarget = _summon.transform.position - _target.transform.position;
                 float distance = directionToTarget.magnitude;
 
-                if (distance <= AttackRange)
-                    _target.TakeDamage(Damage);
+                if (distance <= _attackRange)
+                    _target.TakeDamage(_damage);
             }
 
-            CanTransit = true;
+            SetTransitStatus(true);
         }
     }
 }

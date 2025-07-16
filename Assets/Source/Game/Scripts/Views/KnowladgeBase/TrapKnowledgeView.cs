@@ -7,7 +7,7 @@ namespace Assets.Source.Game.Scripts.Views
 {
     public class TrapKnowledgeView : KnowledgeView
     {
-        [SerializeField] Image _icon;
+        [SerializeField] private Image _icon;
         [SerializeField] private LeanLocalizedText _name;
         [SerializeField] private LeanLocalizedText _description;
 

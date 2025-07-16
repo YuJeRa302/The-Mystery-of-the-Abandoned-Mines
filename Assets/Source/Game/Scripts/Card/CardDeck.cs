@@ -110,7 +110,7 @@ namespace Assets.Source.Game.Scripts.Card
         {
             foreach (var card in _cardState)
             {
-                card.IsTaked = false;
+                card.SetCardLocked(false);
             }
         }
 
@@ -118,22 +118,20 @@ namespace Assets.Source.Game.Scripts.Card
         {
             foreach (var card in _cardState)
             {
-                card.Weight++;
+                card.AddWeight();
             }
         }
 
         public CardState InitState(CardData cardData)
         {
-            CardState cardState = new();
-            cardState.Id = cardData.Id;
-            cardState.CurrentLevel = _defaultStateLevel;
+            bool isLocked;
 
             if (cardData.TypeCardParameter == TypeCardParameter.LegendaryAbility)
-                cardState.IsLocked = true;
+                isLocked = true;
             else
-                cardState.IsLocked = false;
+                isLocked = false;
 
-            cardState.Weight = _defaultStateWeight;
+            CardState cardState = new(cardData.Id, isLocked, _defaultStateLevel);
             _cardState.Add(cardState);
             return cardState;
         }

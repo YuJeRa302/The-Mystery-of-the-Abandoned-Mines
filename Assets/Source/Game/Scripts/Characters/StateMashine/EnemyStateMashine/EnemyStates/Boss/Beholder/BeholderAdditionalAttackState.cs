@@ -13,8 +13,6 @@ namespace Assets.Source.Game.Scripts.Characters
 
         public BeholderAdditionalAttackState(StateMachine stateMachine, Player target, Enemy enemy) : base(stateMachine, target, enemy)
         {
-            Target = target;
-            Enemy = enemy;
             _animationController = Enemy.AnimationStateController;
             Beholder boss = Enemy as Beholder;
 

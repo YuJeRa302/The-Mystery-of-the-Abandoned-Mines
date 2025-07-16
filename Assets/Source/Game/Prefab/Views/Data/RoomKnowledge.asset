@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f248d45e62deb394688fc9dbbc848185, type: 3}
   m_Name: RoomKnowledge
   m_EditorClassIdentifier: 
-  _knowladgeView: {fileID: 7327658221104836142, guid: 0391a6040d8231c4fb40455eef98bf22, type: 3}
+  _knowledgeView: {fileID: 7327658221104836142, guid: 0391a6040d8231c4fb40455eef98bf22, type: 3}
   _roomDatas:
   - {fileID: 11400000, guid: 2d83b6126194a8e439e26db136e20ac1, type: 2}
   - {fileID: 11400000, guid: 66da06b1247ebf74bb4954ab561ddb24, type: 2}

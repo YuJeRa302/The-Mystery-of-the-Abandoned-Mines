@@ -114,6 +114,18 @@ namespace Assets.Source.Game.Scripts.Characters
             return _currentHealth;
         }
 
+        public void Dispose()
+        {
+            if (_regeneration != null)
+                _coroutineRunner.StopCoroutine(_regeneration);
+
+            if (_timeReduce != null)
+                _coroutineRunner.StopCoroutine(_timeReduce);
+
+            RemoveListeners();
+            GC.SuppressFinalize(this);
+        }
+
         private void AddListeners()
         {
             _gamePauseService.GamePaused += OnPauseGame;
@@ -172,18 +184,6 @@ namespace Assets.Source.Game.Scripts.Characters
         private void SetPlayerDie()
         {
             PlayerDied?.Invoke();
-        }
-
-        public void Dispose()
-        {
-            if (_regeneration != null)
-                _coroutineRunner.StopCoroutine(_regeneration);
-
-            if (_timeReduce != null)
-                _coroutineRunner.StopCoroutine(_timeReduce);
-
-            RemoveListeners();
-            GC.SuppressFinalize(this);
         }
     }
 }

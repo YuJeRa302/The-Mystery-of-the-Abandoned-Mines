@@ -16,7 +16,7 @@ namespace Assets.Source.Game.Scripts.ScriptableObjects
 
             foreach (CardData cardData in _cardDatas)
             {
-                cardKnowladgeView = Instantiate(_knowladgeView as CardKnowledgebaseView, conteiner);
+                cardKnowladgeView = Instantiate(KnowledgeView as CardKnowledgebaseView, conteiner);
                 cardKnowladgeView.Initialize(cardData);
                 knowladgeViews.Add(cardKnowladgeView);
             }

@@ -16,7 +16,7 @@ namespace Assets.Source.Game.Scripts.ScriptableObjects
 
             foreach (TrapData data in _trapDatas)
             {
-                trapKnowladgeView = Instantiate(_knowladgeView as TrapKnowledgeView, conteiner);
+                trapKnowladgeView = Instantiate(KnowledgeView as TrapKnowledgeView, conteiner);
                 trapKnowladgeView.Initialize(data);
                 knowladgeViews.Add(trapKnowladgeView);
             }

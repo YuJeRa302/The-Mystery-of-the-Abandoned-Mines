@@ -54,7 +54,10 @@ namespace Assets.Source.Game.Scripts.Models
                     _currentUpgradeData.UpgradeParameters[_currentStats.CurrentLevel].Cost);
 
                 if (_currentStats.CurrentLevel < _maxStatsLevel)
-                    _currentStats.CurrentLevel++;
+                {
+                    int nextLevel = _currentStats.CurrentLevel + 1;
+                    _currentStats.ChangeCurrentLevel(nextLevel);
+                }
 
                 InvokedStatsUpgraded?.Invoke(_currentStats);
                 _persistentDataService.PlayerProgress.UpgradeService.SetUpgradeState(_currentStats);

@@ -4,14 +4,17 @@ namespace Assets.Source.Game.Scripts.Characters
 {
     public abstract class State
     {
-        protected readonly StateMachine StateMashine;
+        private readonly StateMachine _stateMachine;
 
-        protected bool CanTransit = true;
+        private bool _canTransit = true;
 
         public State(StateMachine stateMashine)
         {
-            StateMashine = stateMashine;
+            _stateMachine = stateMashine;
         }
+
+        protected StateMachine StateMachine => _stateMachine;
+        protected bool CanTransit => _canTransit;
 
         public event Action Attacking;
         public event Action AdditionalAttacking;
@@ -35,6 +38,8 @@ namespace Assets.Source.Game.Scripts.Characters
 
         protected void SetIdleState() => SetedIdle?.Invoke();
 
-        protected void OnAllowTransition() => CanTransit = true;
+        protected void OnAllowTransition() => _canTransit = true;
+
+        protected void SetTransitStatus(bool staus) => _canTransit = staus;
     }
 }

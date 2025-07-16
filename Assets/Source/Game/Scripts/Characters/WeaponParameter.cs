@@ -1,4 +1,5 @@
 using Assets.Source.Game.Scripts.Enums;
+using UnityEngine;
 
 namespace Assets.Source.Game.Scripts.Characters
 {
@@ -6,7 +7,10 @@ namespace Assets.Source.Game.Scripts.Characters
 
     public class WeaponParameter
     {
-        public float Value;
-        public TypeWeaponSupportiveParameter SupportiveParameter;
+        [SerializeField] private float _value;
+        [SerializeField] private TypeWeaponSupportiveParameter _supportiveParameter;
+
+        public float Value => _value;
+        public TypeWeaponSupportiveParameter SupportiveParameter => _supportiveParameter;
     }
 }

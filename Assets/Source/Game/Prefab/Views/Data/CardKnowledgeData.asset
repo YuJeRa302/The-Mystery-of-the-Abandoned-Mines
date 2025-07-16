@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56f56c6ecbff8bd428da68c929b2ad58, type: 3}
   m_Name: CardKnowledgeData
   m_EditorClassIdentifier: 
-  _knowladgeView: {fileID: 5915123172520590108, guid: 49141b197e8eeab46a0c63f8ca8a86d6, type: 3}
+  _knowledgeView: {fileID: 5915123172520590108, guid: 49141b197e8eeab46a0c63f8ca8a86d6, type: 3}
   _cardDatas:
   - {fileID: 11400000, guid: 0896557a102653c4c85fcdf422d4c7b7, type: 2}
   - {fileID: 11400000, guid: 3c68c34c6cc44fd49a10d039e6a455e1, type: 2}

@@ -5,9 +5,9 @@ namespace Assets.Source.Game.Scripts.Traps
 {
     public abstract class Trap : MonoBehaviour
     {
-        [SerializeField] protected int _damage;
+        [SerializeField] private int _damage;
 
-        public int Damage => _damage;
+        protected int Damage => _damage;
 
         protected abstract void ApplyDamage(Player player);
 

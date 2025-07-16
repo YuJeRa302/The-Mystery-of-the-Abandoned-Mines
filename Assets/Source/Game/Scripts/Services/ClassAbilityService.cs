@@ -1,29 +1,32 @@
 using Assets.Source.Game.Scripts.States;
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Assets.Source.Game.Scripts.Services
 {
     [Serializable]
     public class ClassAbilityService
     {
-        public List<ClassAbilityState> ClassAbilityStates = new();
+        [SerializeField] private List<ClassAbilityState> _classAbilityStates = new();
+
+        public List<ClassAbilityState> ClassAbilityStates => _classAbilityStates;
 
         public void SetClassAbilityStates(List<ClassAbilityState> classAbilityStates)
         {
-            ClassAbilityStates = classAbilityStates;
+            _classAbilityStates = classAbilityStates;
         }
 
         public void SetClassAbilityState(ClassAbilityState newClassAbilityState)
         {
-            if (ClassAbilityStates != null)
+            if (_classAbilityStates != null)
             {
-                for (int index = 0; index < ClassAbilityStates.Count; index++)
+                for (int index = 0; index < _classAbilityStates.Count; index++)
                 {
-                    if (ClassAbilityStates[index].Id == newClassAbilityState.Id)
-                        ClassAbilityStates[index].CurrentLevel = newClassAbilityState.CurrentLevel;
+                    if (_classAbilityStates[index].Id == newClassAbilityState.Id)
+                        _classAbilityStates[index].ChangeCurrentLevel(newClassAbilityState.CurrentLevel);
                     else
-                        ClassAbilityStates.Add(new(newClassAbilityState.Id, newClassAbilityState.CurrentLevel));
+                        _classAbilityStates.Add(new(newClassAbilityState.Id, newClassAbilityState.CurrentLevel));
                 }
             }
         }
@@ -40,9 +43,9 @@ namespace Assets.Source.Game.Scripts.Services
 
         private ClassAbilityState FindClassAbilityStateById(int id)
         {
-            if (ClassAbilityStates != null)
+            if (_classAbilityStates != null)
             {
-                foreach (ClassAbilityState classAbilityState in ClassAbilityStates)
+                foreach (ClassAbilityState classAbilityState in _classAbilityStates)
                 {
                     if (classAbilityState.Id == id)
                         return classAbilityState;
@@ -55,7 +58,7 @@ namespace Assets.Source.Game.Scripts.Services
         private ClassAbilityState InitState(int id)
         {
             ClassAbilityState classAbilityState = new(id, 0);
-            ClassAbilityStates.Add(classAbilityState);
+            _classAbilityStates.Add(classAbilityState);
             return classAbilityState;
         }
     }

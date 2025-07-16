@@ -64,6 +64,7 @@ namespace Assets.Source.Game.Scripts.Characters
 
             _coroutine = StartCoroutine(LifeTimeCounter());
         }
+
         private IEnumerator LifeTimeCounter()
         {
             yield return new WaitForSeconds(_bulletLifetime);

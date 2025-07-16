@@ -7,9 +7,6 @@ namespace Assets.Source.Game.Scripts.Characters
 
         public SpecialAttackGoldDragon(StateMachine stateMachine, Enemy enemy) : base(stateMachine, enemy)
         {
-            Enemy = enemy;
-            AnimationController = Enemy.AnimationStateController;
-
             AnimationController.AnimationCompleted += SpetialAttackCounter;
         }
 
@@ -34,7 +31,7 @@ namespace Assets.Source.Game.Scripts.Characters
             _countWave++;
 
             if (_countWave >= _maxCountWave)
-                CanTransit = true;
+                SetTransitStatus(true);
         }
     }
 }

@@ -8,13 +8,14 @@ namespace Assets.Source.Game.Scripts.Characters
     {
         private readonly float _lifeTimeBullet = 6f;
 
-        protected float Damage;
-
+        private float _damage;
         private Coroutine _coroutine;
+
+        protected float Damage => _damage;
 
         public void Initialaze(int damage)
         {
-            Damage = damage;
+            _damage = damage;
 
             if (_coroutine != null)
                 StopCoroutine(_coroutine);

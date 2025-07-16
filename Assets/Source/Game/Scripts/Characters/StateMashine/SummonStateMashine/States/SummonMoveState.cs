@@ -54,12 +54,12 @@ namespace Assets.Source.Game.Scripts.Characters
                 {
                     if (_summon.Target.isActiveAndEnabled != false)
                     {
-                        StateMashine.SetState<SummonAttackState>();
+                        StateMachine.SetState<SummonAttackState>();
                     }
                 }
                 else
                 {
-                    StateMashine.SetState<SummonIdleState>();
+                    StateMachine.SetState<SummonIdleState>();
                 }
             }
 

@@ -5,7 +5,28 @@ namespace Assets.Source.Game.Scripts.Characters
 {
     public class EnemyAttackState : State
     {
-        protected float LastAttackTime = 0;
+        private float _lastAttackTime = 0;
+        private float _attackDelay;
+        private float _attackRange;
+        private Vector3 _directionToTarget;
+        private float _distanceToTarget;
+        private float _damage;
+        private Player _target;
+        private Enemy _enemy;
+        private EnemyAnimation _animationController;
+
+        public EnemyAttackState(StateMachine stateMachine, Player target, Enemy enemy) : base(stateMachine)
+        {
+            _enemy = enemy;
+            _target = target;
+            _attackRange = _enemy.AttackDistance;
+            _damage = _enemy.Damage;
+            _attackDelay = _enemy.AttackDelay;
+            _animationController = _enemy.AnimationStateController;
+            SubscrabeIvent();
+        }
+
+        protected float LastAttackTime;
         protected float AttackDelay;
         protected float AttackRange;
         protected Vector3 DirectionToTarget;
@@ -15,37 +36,26 @@ namespace Assets.Source.Game.Scripts.Characters
         protected Enemy Enemy;
         protected EnemyAnimation AnimationController;
 
-        public EnemyAttackState(StateMachine stateMachine, Player target, Enemy enemy) : base(stateMachine)
-        {
-            Enemy = enemy;
-            Target = target;
-            AttackRange = Enemy.AttackDistance;
-            Damage = Enemy.Damage;
-            AttackDelay = Enemy.AttackDelay;
-            AnimationController = Enemy.AnimationStateController;
-            SubscrabeIvent();
-        }
-
         public override void EnterState()
         {
             base.EnterState();
-            CanTransit = true;
+            SetTransitStatus(true);
         }
 
         public virtual void SubscrabeIvent()
         {
-            AnimationController.Attacked += ApplyDamage;
+            _animationController.Attacked += ApplyDamage;
         }
 
         public override void UpdateState()
         {
             if (CanTransit)
             {
-                DirectionToTarget = Enemy.transform.position - Target.transform.position;
-                DistanceToTarget = DirectionToTarget.magnitude;
+                _directionToTarget = _enemy.transform.position - _target.transform.position;
+                _distanceToTarget = _directionToTarget.magnitude;
 
-                if (DistanceToTarget > AttackRange)
-                    StateMashine.SetState<EnemyMoveState>();
+                if (_distanceToTarget > _attackRange)
+                    StateMachine.SetState<EnemyMoveState>();
 
                 if (Attack())
                 {
@@ -56,31 +66,31 @@ namespace Assets.Source.Game.Scripts.Characters
 
         protected virtual bool Attack()
         {
-            if (DistanceToTarget <= AttackRange)
+            if (_distanceToTarget <= _attackRange)
             {
-                Enemy.transform.LookAt(Target.transform.position);
+                _enemy.transform.LookAt(_target.transform.position);
 
-                if (LastAttackTime <= 0)
+                if (_lastAttackTime <= 0)
                 {
-                    LastAttackTime = AttackDelay;
-                    CanTransit = false;
+                    _lastAttackTime = _attackDelay;
+                    SetTransitStatus(false);
                     return true;
                 }
             }
 
-            LastAttackTime -= Time.deltaTime;
+            _lastAttackTime -= Time.deltaTime;
             return false;
         }
 
         protected void ApplyDamage()
         {
-            Vector3 directionToTarget = Enemy.transform.position - Target.transform.position;
+            Vector3 directionToTarget = _enemy.transform.position - _target.transform.position;
             float distance = directionToTarget.magnitude;
 
-            if (distance <= AttackRange)
-                Target.TakeDamage(Convert.ToInt32(Damage));
+            if (distance <= _attackRange)
+                _target.TakeDamage(Convert.ToInt32(_damage));
 
-            CanTransit = true;
+            SetTransitStatus(true);
         }
     }
 }

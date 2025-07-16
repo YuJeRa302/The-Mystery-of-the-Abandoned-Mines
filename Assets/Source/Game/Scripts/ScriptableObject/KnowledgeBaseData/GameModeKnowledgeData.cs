@@ -16,7 +16,7 @@ namespace Assets.Source.Game.Scripts.ScriptableObjects
 
             foreach (GameModData gameMode in _gameModeData)
             {
-                gameModeKnowladgeView = Instantiate(_knowladgeView as GameModeKnowledgeBaseView, conteiner);
+                gameModeKnowladgeView = Instantiate(KnowledgeView as GameModeKnowledgeBaseView, conteiner);
                 gameModeKnowladgeView.Initialize(gameMode);
                 knowladgeViews.Add(gameModeKnowladgeView);
             }

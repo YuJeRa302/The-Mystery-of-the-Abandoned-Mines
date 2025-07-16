@@ -12,13 +12,13 @@ namespace Assets.Source.Game.Scripts.ScriptableObjects
         public override void GetView(Transform conteiner, out List<KnowledgeView> knowladgeViews)
         {
             knowladgeViews = new();
-            PlayerClassKnowledgeView playerClassKnowladgeView;
+            PlayerClassKnowledgeView playerClassKnowledgeView;
 
             foreach (PlayerClassData classData in _playerClassDatas)
             {
-                playerClassKnowladgeView = Instantiate(_knowladgeView as PlayerClassKnowledgeView, conteiner);
-                playerClassKnowladgeView.Initialize(classData);
-                knowladgeViews.Add(playerClassKnowladgeView);
+                playerClassKnowledgeView = Instantiate(KnowledgeView as PlayerClassKnowledgeView, conteiner);
+                playerClassKnowledgeView.Initialize(classData);
+                knowladgeViews.Add(playerClassKnowledgeView);
             }
         }
     }

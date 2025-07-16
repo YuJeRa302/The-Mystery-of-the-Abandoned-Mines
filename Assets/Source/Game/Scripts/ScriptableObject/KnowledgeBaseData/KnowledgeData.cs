@@ -6,8 +6,10 @@ namespace Assets.Source.Game.Scripts.ScriptableObjects
 {
     public abstract class KnowledgeData : ScriptableObject
     {
-        [SerializeField] protected KnowledgeView _knowladgeView;
+        [SerializeField] private KnowledgeView _knowledgeView;
 
-        public abstract void GetView(Transform conteiner, out List<KnowledgeView> knowladgeViews);
+        protected KnowledgeView KnowledgeView => _knowledgeView;
+
+        public abstract void GetView(Transform conteiner, out List<KnowledgeView> knowledgeViews);
     }
 }

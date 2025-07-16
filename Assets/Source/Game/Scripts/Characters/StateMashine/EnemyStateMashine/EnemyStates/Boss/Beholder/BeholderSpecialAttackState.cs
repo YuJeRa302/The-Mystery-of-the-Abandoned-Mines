@@ -56,7 +56,7 @@ namespace Assets.Source.Game.Scripts.Characters
             _currentTimeCastSpel += Time.deltaTime;
 
             if (_currentTimeCastSpel >= _maxTimeCastSpel)
-                CanTransit = true;
+                SetTransitStatus(true);
         }
     }
 }

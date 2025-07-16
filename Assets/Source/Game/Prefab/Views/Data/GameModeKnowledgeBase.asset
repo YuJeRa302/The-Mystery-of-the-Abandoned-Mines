@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97b72d0bc89d7da44bc287c0b2a222a9, type: 3}
   m_Name: GameModeKnowledgeBase
   m_EditorClassIdentifier: 
-  _knowladgeView: {fileID: 4720266978804331229, guid: 06f7b7e2fc4e4c144aade9696fa2dd16, type: 3}
+  _knowledgeView: {fileID: 4720266978804331229, guid: 06f7b7e2fc4e4c144aade9696fa2dd16, type: 3}
   _gameModeData:
   - {fileID: 11400000, guid: 0a5d4ddc330c57b46899d42dea19ea49, type: 2}
   - {fileID: 11400000, guid: 6b685994628cca54cbaf85738a5596fe, type: 2}

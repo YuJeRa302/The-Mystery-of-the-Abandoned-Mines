@@ -6,6 +6,8 @@ namespace Assets.Source.Game.Scripts.Traps
 {
     public class Mine : Trap
     {
+        private const float DamageRadius = 4f;
+
         [SerializeField] private GameObject _explosionEffect;
 
         private Coroutine _coroutine;
@@ -24,8 +26,8 @@ namespace Assets.Source.Game.Scripts.Traps
             Vector3 directionToTarget = transform.position - player.transform.position;
             float distance = directionToTarget.magnitude;
 
-            if (distance <= 4f)
-                player.TakeDamage(_damage);
+            if (distance <= DamageRadius)
+                player.TakeDamage(Damage);
 
             Instantiate(_explosionEffect, new Vector3(
                 transform.position.x,

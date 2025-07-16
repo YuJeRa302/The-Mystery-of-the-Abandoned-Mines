@@ -67,7 +67,7 @@ namespace Assets.Source.Game.Scripts.Models
 
         public void SelectLevel(LevelDataView levelDataView)
         {
-            _persistentDataService.PlayerProgress.LevelService.CurrentLevelId = levelDataView.LevelData.Id;
+            _persistentDataService.PlayerProgress.LevelService.SetLevelId(levelDataView.LevelData.Id);
         }
 
         public void SelectClass(PlayerClassDataView playerClassDataView)
@@ -77,7 +77,7 @@ namespace Assets.Source.Game.Scripts.Models
 
         public void SelectWeapon(WeaponDataView weaponDataView)
         {
-            _persistentDataService.PlayerProgress.WeaponService.CurrentWeaponId = weaponDataView.WeaponData.Id;
+            _persistentDataService.PlayerProgress.WeaponService.SetWeaponId(weaponDataView.WeaponData.Id);
         }
 
         public void LoadScene()

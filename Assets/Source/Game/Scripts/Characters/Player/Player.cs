@@ -489,30 +489,30 @@ namespace Assets.Source.Game.Scripts.Characters
         private void OnSetNewAbility(CardView cardView)
         {
             _playerAbilityCaster.TakeAbility(cardView);
-            cardView.CardState.CurrentLevel++;
-            cardView.CardState.Weight++;
+            cardView.CardState.AddCurrentLevel();
+            cardView.CardState.AddWeight();
         }
 
         private void OnUpdateRerollPoints(CardView cardView)
         {
             _playerStats.UpdateRerollPoints(cardView);
-            cardView.CardState.Weight++;
+            cardView.CardState.AddWeight();
         }
 
         private void OnTakenPassiveAbility(CardView cardView)
         {
             _playerStats.UpdatePlayerStats(cardView);
             _playerAbilityCaster.TakeAbility(cardView);
-            cardView.CardState.CurrentLevel++;
-            cardView.CardState.Weight++;
-            cardView.CardState.IsLocked = true;
-            cardView.CardState.IsCardUpgraded = true;
+            cardView.CardState.AddCurrentLevel();
+            cardView.CardState.AddWeight();
+            cardView.CardState.LockedCard();
+            cardView.CardState.SetUpgradedStatus(true);
         }
 
         private void OnStatsUpdate(CardView cardView)
         {
             _playerStats.UpdatePlayerStats(cardView);
-            cardView.CardState.Weight++;
+            cardView.CardState.AddWeight();
         }
 
         private void TryAttackEnemy()

@@ -36,11 +36,11 @@ namespace Assets.Source.Game.Scripts.Characters
             if (distance <= _distanceToTransition)
             {
                 if (_enemy.TryGetComponent(out Boss boss))
-                    StateMashine.SetState<BossAttackState>();
+                    StateMachine.SetState<BossAttackState>();
                 else if (_enemy.TryGetComponent(out RangeEnemy rangeEnemy))
-                    StateMashine.SetState<EnemyRangeAttackState>();
+                    StateMachine.SetState<EnemyRangeAttackState>();
                 else
-                    StateMashine.SetState<EnemyAttackState>();
+                    StateMachine.SetState<EnemyAttackState>();
             }
 
             Move();

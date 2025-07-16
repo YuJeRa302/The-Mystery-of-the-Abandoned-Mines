@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00819538e5834e34c993ed6c444ea643, type: 3}
   m_Name: BossEnemy
   m_EditorClassIdentifier: 
-  _knowladgeView: {fileID: 7148986872088056388, guid: 18d4611d002d1ce4784bb4cf91116b8f, type: 3}
+  _knowledgeView: {fileID: 7148986872088056388, guid: 18d4611d002d1ce4784bb4cf91116b8f, type: 3}
   _enemyDatas:
   - {fileID: 11400000, guid: 52a391ff5abb1484dacfaca3a35118e9, type: 2}
   - {fileID: 11400000, guid: 5aa97bc60d24f1449ad8435eefea666d, type: 2}

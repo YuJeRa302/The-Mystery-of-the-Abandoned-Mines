@@ -17,7 +17,7 @@ namespace Assets.Source.Game.Scripts.ScriptableObjects
 
             foreach (RoomData roomData in _roomDatas)
             {
-                roomKnowladgeView = Instantiate(_knowladgeView as RoomKnowledgeView, conteiner);
+                roomKnowladgeView = Instantiate(KnowledgeView as RoomKnowledgeView, conteiner);
                 roomKnowladgeView.Initialize(roomData);
                 knowladgeViews.Add(roomKnowladgeView);
             }

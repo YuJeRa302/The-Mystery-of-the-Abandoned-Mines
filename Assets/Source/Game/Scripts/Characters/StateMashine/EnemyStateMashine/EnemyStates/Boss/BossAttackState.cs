@@ -45,7 +45,7 @@ namespace Assets.Source.Game.Scripts.Characters
                 DistanceToTarget = DirectionToTarget.magnitude;
 
                 if (DistanceToTarget > AttackRange)
-                    StateMashine.SetState<EnemyMoveState>();
+                    StateMachine.SetState<EnemyMoveState>();
 
                 if (Attack())
                     AttackEvent();
@@ -53,19 +53,19 @@ namespace Assets.Source.Game.Scripts.Characters
                 if (AdditionalAttack())
                 {
                     if (Enemy.TryGetComponent(out GoldDragon goldDragon))
-                        StateMashine.SetState<AditionalAttackGoldDragon>();
+                        StateMachine.SetState<AditionalAttackGoldDragon>();
 
                     if (Enemy.TryGetComponent(out Beholder beholder))
-                        StateMashine.SetState<BeholderAdditionalAttackState>();
+                        StateMachine.SetState<BeholderAdditionalAttackState>();
                 }
 
                 if (SpecialAttack())
                 {
                     if (Enemy.TryGetComponent(out GoldDragon goldDragon))
-                        StateMashine.SetState<SpecialAttackGoldDragon>();
+                        StateMachine.SetState<SpecialAttackGoldDragon>();
 
                     if (Enemy.TryGetComponent(out Beholder beholder))
-                        StateMashine.SetState<BeholderSpecialAttackState>();
+                        StateMachine.SetState<BeholderSpecialAttackState>();
                 }
             }
         }
@@ -75,7 +75,7 @@ namespace Assets.Source.Game.Scripts.Characters
             if (LastSpecialAttackTime <= 0)
             {
                 LastSpecialAttackTime = _specialAttackDelay;
-                CanTransit = false;
+                SetTransitStatus(false);
                 return true;
             }
 
@@ -90,7 +90,7 @@ namespace Assets.Source.Game.Scripts.Characters
                 if (LastAdditionalAttackTime <= 0)
                 {
                     LastAdditionalAttackTime = _additionalAttackDelay;
-                    CanTransit = false;
+                    SetTransitStatus(false);
                     return true;
                 }
             }
@@ -103,7 +103,7 @@ namespace Assets.Source.Game.Scripts.Characters
         {
             Enemy.transform.LookAt(Target.transform.position);
             _bulletSpawner.SpawnBullet();
-            CanTransit = true;
+            SetTransitStatus(true);
         }
     }
 }

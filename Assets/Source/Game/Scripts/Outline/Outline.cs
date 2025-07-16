@@ -103,7 +103,7 @@ namespace Assets.Source.Game.Scripts.Outlines
 
                 var smoothNormals = SmoothNormals(meshFilter.sharedMesh);
                 _bakeKeys.Add(meshFilter.sharedMesh);
-                _bakeValues.Add(new ListVector3() { data = smoothNormals });
+                _bakeValues.Add(new ListVector3(smoothNormals));
             }
         }
 
@@ -115,7 +115,7 @@ namespace Assets.Source.Game.Scripts.Outlines
                     continue;
 
                 var index = _bakeKeys.IndexOf(meshFilter.sharedMesh);
-                var smoothNormals = index >= 0 ? _bakeValues[index].data : SmoothNormals(meshFilter.sharedMesh);
+                var smoothNormals = index >= 0 ? _bakeValues[index].Data : SmoothNormals(meshFilter.sharedMesh);
                 meshFilter.sharedMesh.SetUVs(3, smoothNormals);
                 var renderer = meshFilter.GetComponent<Renderer>();
 

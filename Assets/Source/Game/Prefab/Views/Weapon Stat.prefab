@@ -94,19 +94,9 @@ MonoBehaviour:
   _valueLeanLocalizedText: {fileID: 7943194505016134427}
   _valueText: {fileID: 801139820474646812}
   _nameStats: {fileID: 8101017380236869592}
-  _imagePatametr: {fileID: 3947073561702423243}
+  _imageParameter: {fileID: 3947073561702423243}
   _damageIcon: {fileID: 21300000, guid: a7399c43c3bdfc946b4c6470428ea113, type: 3}
-  _damageParametrIcons:
-  - _typeDamage: 0
-    _icon: {fileID: 21300000, guid: c899b73e684c85b479fc6c19e21fa5a9, type: 3}
-  - _typeDamage: 1
-    _icon: {fileID: 21300000, guid: 55adfce65a101884cb094a14ad56fd9f, type: 3}
-  - _typeDamage: 2
-    _icon: {fileID: 21300000, guid: c91273659f1b74148b208481aa5b23d7, type: 3}
-  - _typeDamage: 3
-    _icon: {fileID: 21300000, guid: 66e971ee3f12db14cab55bf19c7c2aa4, type: 3}
-  - _typeDamage: 4
-    _icon: {fileID: 21300000, guid: 3045362fca2a50d4c9c478bf727c06bd, type: 3}
+  _damageParameterIcons: []
   _weaponSupportiveParameterIcons:
   - _typeDamage: 0
     _icon: {fileID: 21300000, guid: 26ec545e4996fba4c946cd51b84258b9, type: 3}

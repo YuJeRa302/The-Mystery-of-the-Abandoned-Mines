@@ -17,7 +17,7 @@ namespace Assets.Source.Game.Scripts.ScriptableObjects
 
             foreach (EnemyData EnemyData in _enemyDatas)
             {
-                enemyKnowladgeView = Instantiate(_knowladgeView as EnemyKnowledgeView, conteiner);
+                enemyKnowladgeView = Instantiate(KnowledgeView as EnemyKnowledgeView, conteiner);
                 enemyKnowladgeView.Initialize(EnemyData);
                 knowladgeViews.Add(enemyKnowladgeView);
             }

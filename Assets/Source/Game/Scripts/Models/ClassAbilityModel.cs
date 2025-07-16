@@ -62,7 +62,10 @@ namespace Assets.Source.Game.Scripts.Models
                     _currentClassAbilityData.AbilityClassParameters[_currentClassAbilityState.CurrentLevel].Cost);
 
                 if (_currentClassAbilityState.CurrentLevel < _maxAbilityLevel)
-                    _currentClassAbilityState.CurrentLevel++;
+                {
+                    int nextLevel = _currentClassAbilityState.CurrentLevel + 1;
+                    _currentClassAbilityState.ChangeCurrentLevel(nextLevel);
+                }
 
                 InvokedAbilityUpgraded?.Invoke(_currentClassAbilityState);
                 _persistentDataService.PlayerProgress.

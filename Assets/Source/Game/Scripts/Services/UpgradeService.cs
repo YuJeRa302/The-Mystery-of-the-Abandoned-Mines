@@ -2,29 +2,32 @@ using Assets.Source.Game.Scripts.ScriptableObjects;
 using Assets.Source.Game.Scripts.Upgrades;
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Assets.Source.Game.Scripts.Services
 {
     [Serializable]
     public class UpgradeService
     {
-        public List<UpgradeState> UpgradeStates = new();
+        [SerializeField] private List<UpgradeState> _upgradeStates = new();
+
+        public List<UpgradeState> UpgradeStates => _upgradeStates;
 
         public void SetUpgradeStates(List<UpgradeState> upgradeStates)
         {
-            UpgradeStates = upgradeStates;
+            _upgradeStates = upgradeStates;
         }
 
         public void SetUpgradeState(UpgradeState newUpgradeState)
         {
-            if (UpgradeStates != null)
+            if (_upgradeStates != null)
             {
-                UpgradeState upgradeState = UpgradeStates.Find(state => state.Id == newUpgradeState.Id);
+                UpgradeState upgradeState = _upgradeStates.Find(state => state.Id == newUpgradeState.Id);
 
                 if (upgradeState != null)
-                    upgradeState.CurrentLevel = newUpgradeState.CurrentLevel;
+                    upgradeState.ChangeCurrentLevel(newUpgradeState.CurrentLevel);
                 else
-                    UpgradeStates.Add(new(newUpgradeState.Id, newUpgradeState.CurrentLevel));
+                    _upgradeStates.Add(new(newUpgradeState.Id, newUpgradeState.CurrentLevel));
             }
         }
 
@@ -40,9 +43,9 @@ namespace Assets.Source.Game.Scripts.Services
 
         private UpgradeState FindUpgradeState(int id)
         {
-            if (UpgradeStates != null)
+            if (_upgradeStates != null)
             {
-                foreach (UpgradeState upgradeState in UpgradeStates)
+                foreach (UpgradeState upgradeState in _upgradeStates)
                 {
                     if (upgradeState.Id == id)
                         return upgradeState;
@@ -55,7 +58,7 @@ namespace Assets.Source.Game.Scripts.Services
         private UpgradeState InitState(UpgradeData upgradeData)
         {
             UpgradeState upgradeState = new(upgradeData.Id, 0);
-            UpgradeStates.Add(upgradeState);
+            _upgradeStates.Add(upgradeState);
             return upgradeState;
         }
     }

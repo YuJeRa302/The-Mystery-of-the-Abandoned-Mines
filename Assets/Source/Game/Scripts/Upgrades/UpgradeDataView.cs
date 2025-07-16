@@ -64,7 +64,7 @@ namespace Assets.Source.Game.Scripts.Upgrades
             if (_upgradeState == null)
                 return;
 
-            _upgradeState.CurrentLevel = _minValue;
+            _upgradeState.ChangeCurrentLevel(_minValue);
         }
 
         private void OnStateUpgraded(UpgradeState upgradeState)

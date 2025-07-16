@@ -28,7 +28,7 @@ namespace Assets.Source.Game.Scripts.Characters
             if (FindEnemy(out Enemy target))
             {
                 _summon.SetTarget(target);
-                StateMashine.SetState<SummonMoveState>();
+                StateMachine.SetState<SummonMoveState>();
             }
 
             Vector3 directionToPlayer = _summon.transform.position - _player.transform.position;
@@ -36,7 +36,7 @@ namespace Assets.Source.Game.Scripts.Characters
 
             if (distance > _summon.DistanceToTarget)
             {
-                StateMashine.SetState<SummonMoveState>();
+                StateMachine.SetState<SummonMoveState>();
             }
         }
 

@@ -85,7 +85,7 @@ namespace Assets.Source.Game.Scripts.Card
 
                         if (currentWeightCards >= controlWeight)
                         {
-                            cardState.IsTaked = true;
+                            cardState.SetCardLocked(true);
                             currentWeightCards = 0;
                             return card;
                         }
@@ -179,14 +179,14 @@ namespace Assets.Source.Game.Scripts.Card
 
             if (!canTakeCard)
             {
-                cardState.IsLocked = true;
+                cardState.SetCardLocked(true);
                 return;
             }
 
             if (card.AttributeData.Parameters.Count > cardState.CurrentLevel)
                 return;
 
-            cardState.IsLocked = true;
+            cardState.SetCardLocked(true);
 
             if (card.AttributeData is ActiveAbilityData activeAbility)
             {
@@ -194,7 +194,7 @@ namespace Assets.Source.Game.Scripts.Card
                 {
                     if (FindLegendaryCard(allCards, activeAbility.UpgradeType, out CardData legendaryCard))
                     {
-                        _player.GetCardStateByData(legendaryCard).IsLocked = false;
+                        _player.GetCardStateByData(legendaryCard).SetCardLocked(false);
                     }
                 }
             }
@@ -205,8 +205,8 @@ namespace Assets.Source.Game.Scripts.Card
             if (card.AttributeData is LegendaryAbilityData legendaryData &&
                 legendaryData.Parameters.Count <= cardState.CurrentLevel)
             {
-                cardState.IsLocked = true;
-                cardState.IsCardUpgraded = true;
+                cardState.SetCardLocked(true);
+                cardState.SetUpgradedStatus(true);
             }
         }
 

@@ -7,7 +7,9 @@ namespace Assets.Source.Game.Scripts.GamePanels
 {
     public abstract class GamePanelsView : MonoBehaviour
     {
-        protected GamePanelsViewModel GamePanelsViewModel;
+        private GamePanelsViewModel _gamePanelsViewModel;
+
+        protected GamePanelsViewModel GamePanelsViewModel => _gamePanelsViewModel;
 
         public event Action PanelOpened;
         public event Action PanelClosed;
@@ -19,7 +21,7 @@ namespace Assets.Source.Game.Scripts.GamePanels
 
         public virtual void Initialize(GamePanelsViewModel gamePanelsViewModel)
         {
-            GamePanelsViewModel = gamePanelsViewModel;
+            _gamePanelsViewModel = gamePanelsViewModel;
             gameObject.SetActive(false);
         }
 

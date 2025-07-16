@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e328fa5c7d34c7c408fa680f21d1ddd0, type: 3}
   m_Name: TrapKnowledgeBaseData
   m_EditorClassIdentifier: 
-  _knowladgeView: {fileID: 8739030581733408938, guid: 2e9d840750f934b4485ed1f1394b89ba, type: 3}
+  _knowledgeView: {fileID: 8739030581733408938, guid: 2e9d840750f934b4485ed1f1394b89ba, type: 3}
   _trapDatas:
   - {fileID: 11400000, guid: 6c48eba7b4b4981409bb9211752c1f6f, type: 2}
   - {fileID: 11400000, guid: f287b946857f32c4f93267275f5bc375, type: 2}

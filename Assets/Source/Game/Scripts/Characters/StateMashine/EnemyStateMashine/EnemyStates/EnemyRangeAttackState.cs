@@ -14,11 +14,6 @@ namespace Assets.Source.Game.Scripts.Characters
             : base(stateMachine, target, enemy)
         {
             Enemy = enemy;
-            Target = target;
-            AttackRange = Enemy.AttackDistance;
-            Damage = Enemy.Damage;
-            AttackDelay = Enemy.AttackDelay;
-            AnimationController = Enemy.AnimationStateController;
             _bulletSpawner = bulletSpawner;
         }
 
@@ -35,7 +30,7 @@ namespace Assets.Source.Game.Scripts.Characters
                 DistanceToTarget = DirectionToTarget.magnitude;
 
                 if (DistanceToTarget > AttackRange)
-                    StateMashine.SetState<EnemyMoveState>();
+                    StateMachine.SetState<EnemyMoveState>();
 
                 if (Attack())
                     AttackEvent();
@@ -51,7 +46,7 @@ namespace Assets.Source.Game.Scripts.Characters
                 if (LastAttackTime <= 0)
                 {
                     LastAttackTime = AttackDelay;
-                    CanTransit = false;
+                    SetTransitStatus(false);
                     return true;
                 }
             }
@@ -63,7 +58,7 @@ namespace Assets.Source.Game.Scripts.Characters
         private void LaunchBullet()
         {
             _bulletSpawner.SpawnBullet();
-            CanTransit = true;
+            SetTransitStatus(true);
         }
     }
 }

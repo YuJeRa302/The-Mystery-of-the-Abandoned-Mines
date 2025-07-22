@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _parameterView: {fileID: 1961483584371832456, guid: 6d57f6325ba58d6478a1fd35f1ba2831, type: 3}
   _parameters:
-  - CardParameters:
-    - Value: 3
-      TypeParameter: 1
+  - _cardParameters:
+    - _value: 5
+      _typeParameter: 1
   _name: IcePassive
   _description: IcePassiveDescription
   _icon: {fileID: -1634183232, guid: dc2e3af32fff16a4fa28920cc9449371, type: 3}

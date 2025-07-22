@@ -9683,13 +9683,14 @@ GameObject:
   - component: {fileID: 780589264}
   - component: {fileID: 780589263}
   - component: {fileID: 780589262}
+  - component: {fileID: 780589265}
   m_Layer: 5
   m_Name: CLEARSAVE
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &780589260
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9792,6 +9793,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 780589259}
   m_CullTransparentMesh: 1
+--- !u!114 &780589265
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 780589259}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4f1b91f1be100443b2e29610496037b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  main: {fileID: 1148391662}
 --- !u!1 &798843771
 GameObject:
   m_ObjectHideFlags: 0
@@ -15801,7 +15815,7 @@ MonoBehaviour:
   _defaultSprite: {fileID: 21300000, guid: 6a3ba55e82a9e2347a97d621ed805c20, type: 3}
   _abilityClassContainer: {fileID: 2090543012}
   _classContainer: {fileID: 25123218}
-  _classAbilityStatsContainer: {fileID: 0}
+  _classAbilityStatsContainer: {fileID: 227369276}
   _currentPrice: {fileID: 314536288}
   _playerClassDatas:
   - {fileID: 11400000, guid: 58bf0b437f5b06247864638406b4198e, type: 2}

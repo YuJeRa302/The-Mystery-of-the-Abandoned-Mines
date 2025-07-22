@@ -12,56 +12,58 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b3d16deb986f8f43b7fd8096545d78d, type: 3}
   m_Name: SoulExplosion
   m_EditorClassIdentifier: 
-  _id: 15
+  _parameterView: {fileID: 0}
+  _parameters:
+  - _cardParameters:
+    - _value: 10
+      _typeParameter: 11
+    - _value: 50
+      _typeParameter: 12
+    - _value: 15
+      _typeParameter: 6
+    - _value: 1
+      _typeParameter: 4
+  - _cardParameters:
+    - _value: 15
+      _typeParameter: 11
+    - _value: 40
+      _typeParameter: 12
+    - _value: 15
+      _typeParameter: 6
+    - _value: 1
+      _typeParameter: 4
+  - _cardParameters:
+    - _value: 25
+      _typeParameter: 11
+    - _value: 35
+      _typeParameter: 12
+    - _value: 12
+      _typeParameter: 6
+    - _value: 1
+      _typeParameter: 4
   _name: SoulExplosion
-  _icon: {fileID: 1869640326, guid: 855001a07e231344b97e76392f4d2449, type: 3}
   _description: SoulExplosionDescription
+  _icon: {fileID: 1869640326, guid: 855001a07e231344b97e76392f4d2449, type: 3}
+  _typeMagic: 3
+  _id: 15
   _buttonView: {fileID: 7547704264931708372, guid: 226be77f080a72f41b3a154b64b3d4ae, type: 3}
   _abilityClassParameters:
-  - CurrentLevel: 0
-    Cost: 1000
-    Value: 0
-  - CurrentLevel: 0
-    Cost: 2500
-    Value: 0
-  - CurrentLevel: 0
-    Cost: 5500
-    Value: 0
-  _parameters:
-  - CardParameters:
-    - Value: 10
-      TypeParameter: 6
-    - Value: 1
-      TypeParameter: 5
-    - Value: 30
-      TypeParameter: 11
-    - Value: 50
-      TypeParameter: 12
-  - CardParameters:
-    - Value: 10
-      TypeParameter: 6
-    - Value: 1
-      TypeParameter: 5
-    - Value: 40
-      TypeParameter: 11
-    - Value: 50
-      TypeParameter: 12
-  - CardParameters:
-    - Value: 8
-      TypeParameter: 6
-    - Value: 1
-      TypeParameter: 5
-    - Value: 40
-      TypeParameter: 11
-    - Value: 40
-      TypeParameter: 12
+  - _currentLevel: 1
+    _cost: 1500
+    _value: 0
+  - _currentLevel: 2
+    _cost: 3000
+    _value: 0
+  - _currentLevel: 3
+    _cost: 5000
+    _value: 0
   _abilityType: 13
-  _damageParametr:
+  _damageParameter:
     _typeDamage: 4
-    _damage: 40
+    _damage: 0
     _damageParameters:
-    - _value: 2
-      _typeDamageParameter: 2
+    - _value: 0
+      _typeDamageParameter: 4
     _particle: {fileID: 0}
   _spell: {fileID: 1654424239186438959, guid: 081f8bf11483ab544842add8457b3c62, type: 3}
   _damageParticle: {fileID: 6150129795701918722, guid: c2d6d10a71d2fc742a1041abfd34b88a, type: 3}

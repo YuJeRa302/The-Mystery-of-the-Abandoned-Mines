@@ -20,6 +20,6 @@ MonoBehaviour:
   - {r: 0.7368477, g: 0.1372549, b: 1, a: 0}
   _typeCardParameter: 3
   _attributeData: {fileID: 11400000, guid: 6ccca0c66e13c884e90f15263a0bc5f3, type: 2}
-  _suppurtivData:
-  - {fileID: 11400000, guid: a169a7c48d0dbc845964d38fb3b4241d, type: 2}
+  _suppurtiveData:
   - {fileID: 11400000, guid: ec4a367a617f74b4dac2eb9d4589467b, type: 2}
+  - {fileID: 11400000, guid: a169a7c48d0dbc845964d38fb3b4241d, type: 2}

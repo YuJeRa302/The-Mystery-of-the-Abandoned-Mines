@@ -21,8 +21,7 @@ MonoBehaviour:
   - {r: 0.10980393, g: 0.6784314, b: 0.9333334, a: 0}
   _typeCardParameter: 4
   _attributeData: {fileID: 11400000, guid: ec4a367a617f74b4dac2eb9d4589467b, type: 2}
-  _legendaryAbilityData: {fileID: 0}
-  _suppurtivData:
+  _suppurtiveData:
   - {fileID: 11400000, guid: 64d0be9ef25fd264e823f76d63a944a5, type: 2}
-  - {fileID: 11400000, guid: 0eea1264a940c974eaf7f1795d7279c9, type: 2}
   - {fileID: 11400000, guid: a169a7c48d0dbc845964d38fb3b4241d, type: 2}
+  - {fileID: 11400000, guid: 0eea1264a940c974eaf7f1795d7279c9, type: 2}

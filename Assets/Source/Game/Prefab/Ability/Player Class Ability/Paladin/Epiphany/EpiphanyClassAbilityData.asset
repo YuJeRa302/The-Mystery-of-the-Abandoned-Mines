@@ -12,51 +12,53 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa20b6302ddbbc34aa1f5a740c4cdc70, type: 3}
   m_Name: EpiphanyClassAbilityData
   m_EditorClassIdentifier: 
-  _id: 13
+  _parameterView: {fileID: 0}
+  _parameters:
+  - _cardParameters:
+    - _value: 15
+      _typeParameter: 10
+    - _value: 5
+      _typeParameter: 11
+    - _value: 15
+      _typeParameter: 6
+    - _value: 1
+      _typeParameter: 5
+  - _cardParameters:
+    - _value: 20
+      _typeParameter: 10
+    - _value: 10
+      _typeParameter: 11
+    - _value: 12
+      _typeParameter: 6
+    - _value: 1
+      _typeParameter: 5
+  - _cardParameters:
+    - _value: 20
+      _typeParameter: 10
+    - _value: 10
+      _typeParameter: 11
+    - _value: 10
+      _typeParameter: 6
+    - _value: 1
+      _typeParameter: 5
   _name: Epiphany
-  _icon: {fileID: 1619018144, guid: 855001a07e231344b97e76392f4d2449, type: 3}
   _description: EpiphanyDescription
+  _icon: {fileID: 1619018144, guid: 855001a07e231344b97e76392f4d2449, type: 3}
+  _typeMagic: 3
+  _id: 13
   _buttonView: {fileID: 7547704264931708372, guid: 226be77f080a72f41b3a154b64b3d4ae, type: 3}
   _abilityClassParameters:
-  - CurrentLevel: 0
-    Cost: 1000
-    Value: 0
-  - CurrentLevel: 0
-    Cost: 3000
-    Value: 0
-  - CurrentLevel: 0
-    Cost: 7000
-    Value: 0
-  _parameters:
-  - CardParameters:
-    - Value: 14
-      TypeParameter: 6
-    - Value: 1
-      TypeParameter: 5
-    - Value: 12
-      TypeParameter: 11
-    - Value: 22
-      TypeParameter: 10
-  - CardParameters:
-    - Value: 12
-      TypeParameter: 6
-    - Value: 1
-      TypeParameter: 5
-    - Value: 15
-      TypeParameter: 11
-    - Value: 25
-      TypeParameter: 10
-  - CardParameters:
-    - Value: 10
-      TypeParameter: 6
-    - Value: 1
-      TypeParameter: 5
-    - Value: 20
-      TypeParameter: 11
-    - Value: 30
-      TypeParameter: 10
+  - _currentLevel: 1
+    _cost: 2000
+    _value: 0
+  - _currentLevel: 2
+    _cost: 4000
+    _value: 0
+  - _currentLevel: 3
+    _cost: 6500
+    _value: 0
   _abilityType: 11
-  _damageParametr:
+  _damageParameter:
     _typeDamage: 0
     _damage: 0
     _damageParameters: []

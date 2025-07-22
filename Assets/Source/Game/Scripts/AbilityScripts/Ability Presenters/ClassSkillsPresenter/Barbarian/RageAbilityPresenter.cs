@@ -106,10 +106,10 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
             }
             else
             {
-                foreach (var particle  in _spawnedEffects)
+                foreach (var particle in _spawnedEffects)
                 {
-                    if (particle .isActiveAndEnabled)
-                        particle .ReturnObjectPool();
+                    if (particle.isActiveAndEnabled)
+                        particle.ReturnObjectPool();
                 }
             }
         }

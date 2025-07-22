@@ -14,27 +14,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _parameterView: {fileID: 1961483584371832456, guid: 6d57f6325ba58d6478a1fd35f1ba2831, type: 3}
   _parameters:
-  - CardParameters:
-    - Value: 7
-      TypeParameter: 4
-    - Value: 4
-      TypeParameter: 5
-    - Value: 10
-      TypeParameter: 6
-  - CardParameters:
-    - Value: 10
-      TypeParameter: 4
-    - Value: 5
-      TypeParameter: 5
-    - Value: 10
-      TypeParameter: 6
-  - CardParameters:
-    - Value: 12
-      TypeParameter: 4
-    - Value: 5
-      TypeParameter: 5
-    - Value: 10
-      TypeParameter: 6
+  - _cardParameters:
+    - _value: 7
+      _typeParameter: 4
+    - _value: 4
+      _typeParameter: 5
+    - _value: 10
+      _typeParameter: 6
+  - _cardParameters:
+    - _value: 10
+      _typeParameter: 4
+    - _value: 3
+      _typeParameter: 5
+    - _value: 10
+      _typeParameter: 6
+  - _cardParameters:
+    - _value: 12
+      _typeParameter: 4
+    - _value: 4
+      _typeParameter: 5
+    - _value: 10
+      _typeParameter: 6
   _name: FireCircle
   _description: FireCircleDescription
   _icon: {fileID: -1975047563, guid: dc2e3af32fff16a4fa28920cc9449371, type: 3}

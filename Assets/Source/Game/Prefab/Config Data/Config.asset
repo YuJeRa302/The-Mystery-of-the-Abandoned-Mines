@@ -19,63 +19,53 @@ MonoBehaviour:
   _isMuted: 0
   _defaultLanguage: ru
   _upgradeStates:
-  - Id: 1
-    CurrentLevel: 0
-  - Id: 0
-    CurrentLevel: 0
-  - Id: 3
-    CurrentLevel: 0
-  - Id: 2
-    CurrentLevel: 0
-  - Id: 7
-    CurrentLevel: 0
+  - _id: 0
+    _currentLevel: 0
+  - _id: 0
+    _currentLevel: 0
+  - _id: 0
+    _currentLevel: 0
+  - _id: 0
+    _currentLevel: 0
+  - _id: 0
+    _currentLevel: 0
   _classAbilityStates:
-  - Id: 12
-    CurrentLevel: 0
-  - Id: 11
-    CurrentLevel: 0
-  - Id: 10
-    CurrentLevel: 0
-  - Id: 13
-    CurrentLevel: 0
-  - Id: 14
-    CurrentLevel: 0
-  - Id: 9
-    CurrentLevel: 0
-  - Id: 15
-    CurrentLevel: 0
-  - Id: 16
-    CurrentLevel: 0
-  - Id: 17
-    CurrentLevel: 0
+  - _id: 0
+    _currentLevel: 0
+  - _id: 0
+    _currentLevel: 0
+  - _id: 0
+    _currentLevel: 0
+  - _id: 0
+    _currentLevel: 0
+  - _id: 0
+    _currentLevel: 0
+  - _id: 0
+    _currentLevel: 0
+  - _id: 0
+    _currentLevel: 0
+  - _id: 0
+    _currentLevel: 0
+  - _id: 0
+    _currentLevel: 0
   _defaultWeaponState:
-  - Id: 0
-    IsEquip: 0
-    IsUnlock: 1
-  - Id: 1
-    IsEquip: 0
-    IsUnlock: 1
-  - Id: 2
-    IsEquip: 0
-    IsUnlock: 1
+  - _id: 0
+    _isEquip: 0
+    _isUnlock: 1
+  - _id: 1
+    _isEquip: 0
+    _isUnlock: 1
+  - _id: 2
+    _isEquip: 0
+    _isUnlock: 1
   _defaultLevelState:
-  - Id: 0
-    IsComplete: 0
-    CurrentCompleteStages: 0
-    Tier: 0
-  - Id: 1
-    IsComplete: 0
-    CurrentCompleteStages: 0
-    Tier: 1
-  - Id: 2
-    IsComplete: 0
-    CurrentCompleteStages: 0
-    Tier: 2
-  - Id: 3
-    IsComplete: 0
-    CurrentCompleteStages: 0
-    Tier: 3
-  - Id: 4
-    IsComplete: 0
-    CurrentCompleteStages: 0
-    Tier: 4
+  - _id: 0
+    _isComplete: 0
+  - _id: 0
+    _isComplete: 0
+  - _id: 0
+    _isComplete: 0
+  - _id: 0
+    _isComplete: 0
+  - _id: 0
+    _isComplete: 0

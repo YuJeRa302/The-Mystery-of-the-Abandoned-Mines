@@ -12,51 +12,55 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe920ce3c3623b144b96787d22c0c2cd, type: 3}
   m_Name: ShielUpAbilityData
   m_EditorClassIdentifier: 
-  _id: 14
+  _parameterView: {fileID: 0}
+  _parameters:
+  - _cardParameters:
+    - _value: 3
+      _typeParameter: 1
+    - _value: 3
+      _typeParameter: 5
+    - _value: 8
+      _typeParameter: 6
+    - _value: -2
+      _typeParameter: 9
+  - _cardParameters:
+    - _value: 5
+      _typeParameter: 1
+    - _value: 3
+      _typeParameter: 5
+    - _value: 7
+      _typeParameter: 6
+    - _value: -2
+      _typeParameter: 9
+  - _cardParameters:
+    - _value: 8
+      _typeParameter: 1
+    - _value: 4
+      _typeParameter: 5
+    - _value: 7
+      _typeParameter: 6
+    - _value: -2
+      _typeParameter: 9
   _name: ShielUp
-  _icon: {fileID: 1680454516, guid: 855001a07e231344b97e76392f4d2449, type: 3}
   _description: ShielUpDescription
+  _icon: {fileID: 1680454516, guid: 855001a07e231344b97e76392f4d2449, type: 3}
+  _typeMagic: 3
+  _id: 14
   _buttonView: {fileID: 7547704264931708372, guid: 226be77f080a72f41b3a154b64b3d4ae, type: 3}
   _abilityClassParameters:
-  - Cost: 1000
-    Value: 0
-  - Cost: 2500
-    Value: 0
-  - Cost: 5000
-    Value: 0
-  _parameters:
-  - CardParameters:
-    - Value: 15
-      TypeParameter: 6
-    - Value: 5
-      TypeParameter: 5
-    - Value: 6
-      TypeParameter: 1
-    - Value: -1
-      TypeParameter: 9
-  - CardParameters:
-    - Value: 12
-      TypeParameter: 6
-    - Value: 5
-      TypeParameter: 5
-    - Value: 7
-      TypeParameter: 1
-    - Value: -1
-      TypeParameter: 9
-  - CardParameters:
-    - Value: 10
-      TypeParameter: 6
-    - Value: 5
-      TypeParameter: 5
-    - Value: 8
-      TypeParameter: 1
-    - Value: -1
-      TypeParameter: 9
+  - _currentLevel: 1
+    _cost: 1500
+    _value: 0
+  - _currentLevel: 2
+    _cost: 2500
+    _value: 0
+  - _currentLevel: 3
+    _cost: 4000
+    _value: 0
   _abilityType: 12
-  _damageParametr:
+  _damageParameter:
     _typeDamage: 0
-    _damageSupportivePatametrs:
-    - _value: 0
-      _supportivePatametr: 0
+    _damage: 0
+    _damageParameters: []
     _particle: {fileID: 0}
   _poolParticle: {fileID: 6218049840532234276, guid: c3e43636e62735442b8f24f10242594e, type: 3}

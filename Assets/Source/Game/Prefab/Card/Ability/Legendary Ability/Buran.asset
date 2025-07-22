@@ -14,13 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _parameterView: {fileID: 1961483584371832456, guid: 6d57f6325ba58d6478a1fd35f1ba2831, type: 3}
   _parameters:
-  - CardParameters:
-    - Value: 20
-      TypeParameter: 4
-    - Value: 5
-      TypeParameter: 5
-    - Value: 10
-      TypeParameter: 6
+  - _cardParameters:
+    - _value: 20
+      _typeParameter: 4
+    - _value: 5
+      _typeParameter: 5
+    - _value: 10
+      _typeParameter: 6
   _name: Buran
   _description: BuranDescription
   _icon: {fileID: 626723095, guid: dc2e3af32fff16a4fa28920cc9449371, type: 3}

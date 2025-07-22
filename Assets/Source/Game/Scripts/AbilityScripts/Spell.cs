@@ -36,9 +36,9 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
 
         public bool TryFindEnemy(out Enemy enemy)
         {
-            Collider[] coliderEnemy = Physics.OverlapSphere(transform.position, _findEnemyRange);
+            Collider[] colliderEnemies = Physics.OverlapSphere(transform.position, _findEnemyRange);
 
-            foreach (Collider collider in coliderEnemy)
+            foreach (Collider collider in colliderEnemies)
             {
                 if (collider.TryGetComponent(out enemy))
                     return true;
@@ -52,9 +52,9 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
         {
             Enemies.Clear();
             enemies = new List<Enemy>();
-            Collider[] colliderEnem = Physics.OverlapSphere(transform.position, _findEnemyRange);
+            Collider[] colliderEnemies = Physics.OverlapSphere(transform.position, _findEnemyRange);
 
-            foreach (Collider collider in colliderEnem)
+            foreach (Collider collider in colliderEnemies)
             {
                 if (collider.TryGetComponent(out Enemy enemy))
                 {

@@ -369,8 +369,8 @@ MonoBehaviour:
   _cardName: {fileID: 3150708014576717024}
   _description: {fileID: 327234470653411526}
   _cardParameterContainer: {fileID: 5756413955237670831}
-  _supportiParametrContainer: {fileID: 5316796028019609507}
-  _supportivParametrsView: {fileID: 5162853099617017417, guid: 8d8bd8ac367bc764687c63055f73ce20, type: 3}
+  _supportiveParameterContainer: {fileID: 5316796028019609507}
+  _supportiveParametersView: {fileID: 5162853099617017417, guid: 8d8bd8ac367bc764687c63055f73ce20, type: 3}
 --- !u!114 &8441404386302240911
 MonoBehaviour:
   m_ObjectHideFlags: 0

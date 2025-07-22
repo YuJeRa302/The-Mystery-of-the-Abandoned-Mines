@@ -42,6 +42,8 @@ namespace Assets.Source.Game.Scripts.Views
             {
                 wall.SetActive(false);
             }
+
+            _labyrinth.Clear();
         }
     }
 }

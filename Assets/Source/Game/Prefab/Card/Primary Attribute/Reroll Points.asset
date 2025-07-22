@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _parameterView: {fileID: 1961483584371832456, guid: 6d57f6325ba58d6478a1fd35f1ba2831, type: 3}
   _parameters:
-  - CardParameters:
-    - Value: 1
-      TypeParameter: 7
+  - _cardParameters:
+    - _value: 1
+      _typeParameter: 7
   _name: Reroll
   _description: RerollDescription
   _icon: {fileID: 21300000, guid: 5876dd65b80b595499a8c8dd22e03db2, type: 3}

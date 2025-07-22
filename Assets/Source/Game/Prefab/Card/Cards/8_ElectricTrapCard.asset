@@ -19,4 +19,5 @@ MonoBehaviour:
   - {r: 1, g: 0.69671583, b: 0.13679248, a: 0}
   _typeCardParameter: 1
   _attributeData: {fileID: 11400000, guid: 19a9064b2aa203041bb34ec8d0c53c7d, type: 2}
-  _suppurtiveData: []
+  _suppurtiveData:
+  - {fileID: 11400000, guid: 35a14793d4d067143842fcf0ad7ea985, type: 2}

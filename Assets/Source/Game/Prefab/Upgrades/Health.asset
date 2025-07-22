@@ -15,15 +15,15 @@ MonoBehaviour:
   _id: 3
   _typeParameter: 3
   _upgradeParameters:
-  - CurrentLevel: 1
-    Cost: 1
-    Value: 110
-  - CurrentLevel: 2
-    Cost: 2
-    Value: 130
-  - CurrentLevel: 3
-    Cost: 3
-    Value: 150
+  - _currentLevel: 1
+    _cost: 1
+    _value: 30
+  - _currentLevel: 2
+    _cost: 1
+    _value: 50
+  - _currentLevel: 3
+    _cost: 1
+    _value: 80
   _name: Health
   _icon: {fileID: 21300000, guid: 30cc97803bf82eb45b3085da6315fb8b, type: 3}
   _description: HealthDescription

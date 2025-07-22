@@ -41,8 +41,10 @@ namespace Assets.Source.Game.Scripts.Characters
         {
             if (CanTransit)
             {
-                DirectionToTarget = Enemy.transform.position - Target.transform.position;
-                DistanceToTarget = DirectionToTarget.magnitude;
+                Vector3 directionToTarget = Enemy.transform.position - Target.transform.position;
+                float distanceToTarget = DirectionToTarget.magnitude;
+
+                SetDirectionToTarget(directionToTarget, distanceToTarget);
 
                 if (DistanceToTarget > AttackRange)
                     StateMachine.SetState<EnemyMoveState>();

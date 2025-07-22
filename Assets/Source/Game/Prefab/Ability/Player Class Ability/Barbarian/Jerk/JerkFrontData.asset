@@ -12,55 +12,55 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c1d9133cdd323b48aea9ea69ec53c20, type: 3}
   m_Name: JerkFrontData
   m_EditorClassIdentifier: 
-  _id: 11
+  _parameterView: {fileID: 0}
+  _parameters:
+  - _cardParameters:
+    - _value: 10
+      _typeParameter: 11
+    - _value: 10
+      _typeParameter: 6
+    - _value: 2
+      _typeParameter: 5
+    - _value: 1
+      _typeParameter: 4
+  - _cardParameters:
+    - _value: 12
+      _typeParameter: 11
+    - _value: 8
+      _typeParameter: 6
+    - _value: 2
+      _typeParameter: 5
+    - _value: 1
+      _typeParameter: 4
+  - _cardParameters:
+    - _value: 15
+      _typeParameter: 11
+    - _value: 6
+      _typeParameter: 6
+    - _value: 2
+      _typeParameter: 5
+    - _value: 1
+      _typeParameter: 4
   _name: JerkFront
-  _icon: {fileID: -854058769, guid: 855001a07e231344b97e76392f4d2449, type: 3}
   _description: JerkFrontDescription
+  _icon: {fileID: -854058769, guid: 855001a07e231344b97e76392f4d2449, type: 3}
+  _typeMagic: 3
+  _id: 11
   _buttonView: {fileID: 7547704264931708372, guid: 226be77f080a72f41b3a154b64b3d4ae, type: 3}
   _abilityClassParameters:
-  - CurrentLevel: 0
-    Cost: 1000
-    Value: 0
-  - CurrentLevel: 0
-    Cost: 2500
-    Value: 0
-  - CurrentLevel: 0
-    Cost: 5000
-    Value: 0
-  _parameters:
-  - CardParameters:
-    - Value: 10
-      TypeParameter: 11
-    - Value: 9
-      TypeParameter: 6
-    - Value: 3
-      TypeParameter: 4
-    - Value: 2
-      TypeParameter: 5
-  - CardParameters:
-    - Value: 15
-      TypeParameter: 11
-    - Value: 8
-      TypeParameter: 6
-    - Value: 3
-      TypeParameter: 4
-    - Value: 2
-      TypeParameter: 5
-  - CardParameters:
-    - Value: 20
-      TypeParameter: 11
-    - Value: 6
-      TypeParameter: 6
-    - Value: 3
-      TypeParameter: 4
-    - Value: 2
-      TypeParameter: 5
+  - _currentLevel: 1
+    _cost: 2000
+    _value: 0
+  - _currentLevel: 2
+    _cost: 4000
+    _value: 0
+  - _currentLevel: 3
+    _cost: 6000
+    _value: 0
   _abilityType: 9
-  _damageParametr:
-    _typeDamage: 4
-    _damage: 10
-    _damageParameters:
-    - _value: 1
-      _typeDamageParameter: 2
+  _damageParameter:
+    _typeDamage: 0
+    _damage: 0
+    _damageParameters: []
     _particle: {fileID: 0}
   _poolParticle: {fileID: 8376752317659841032, guid: e11bc8fcee5f0604ebdb25d119704cf4, type: 3}

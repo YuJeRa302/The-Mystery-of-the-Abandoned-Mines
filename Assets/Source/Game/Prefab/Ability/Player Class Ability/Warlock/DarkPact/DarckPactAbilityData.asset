@@ -12,49 +12,55 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fa205f893cf3e2448f6e584bb9b017d, type: 3}
   m_Name: DarckPactAbilityData
   m_EditorClassIdentifier: 
-  _id: 16
+  _parameterView: {fileID: 0}
+  _parameters:
+  - _cardParameters:
+    - _value: 2
+      _typeParameter: 2
+    - _value: 6
+      _typeParameter: 5
+    - _value: 15
+      _typeParameter: 6
+    - _value: 0
+      _typeParameter: 13
+  - _cardParameters:
+    - _value: 3
+      _typeParameter: 2
+    - _value: 6
+      _typeParameter: 5
+    - _value: 10
+      _typeParameter: 6
+    - _value: 0
+      _typeParameter: 13
+  - _cardParameters:
+    - _value: 3
+      _typeParameter: 2
+    - _value: 6
+      _typeParameter: 5
+    - _value: 8
+      _typeParameter: 6
+    - _value: 0
+      _typeParameter: 13
   _name: DarkPact
-  _icon: {fileID: -923664100, guid: 855001a07e231344b97e76392f4d2449, type: 3}
   _description: DarkPactDescription
+  _icon: {fileID: -923664100, guid: 855001a07e231344b97e76392f4d2449, type: 3}
+  _typeMagic: 3
+  _id: 16
   _buttonView: {fileID: 7547704264931708372, guid: 226be77f080a72f41b3a154b64b3d4ae, type: 3}
   _abilityClassParameters:
-  - Cost: 1000
-    Value: 0
-  - Cost: 2500
-    Value: 0
-  - Cost: 5000
-    Value: 0
-  _parameters:
-  - CardParameters:
-    - Value: 10
-      TypeParameter: 6
-    - Value: 5
-      TypeParameter: 5
-    - Value: 3
-      TypeParameter: 2
-    - Value: 0
-      TypeParameter: 13
-  - CardParameters:
-    - Value: 9
-      TypeParameter: 6
-    - Value: 5
-      TypeParameter: 5
-    - Value: 4
-      TypeParameter: 2
-    - Value: 0
-      TypeParameter: 13
-  - CardParameters:
-    - Value: 8
-      TypeParameter: 6
-    - Value: 6
-      TypeParameter: 5
-    - Value: 5
-      TypeParameter: 2
-    - Value: 0
-      TypeParameter: 13
+  - _currentLevel: 1
+    _cost: 1500
+    _value: 0
+  - _currentLevel: 2
+    _cost: 2500
+    _value: 0
+  - _currentLevel: 3
+    _cost: 4000
+    _value: 0
   _abilityType: 14
-  _damageParametr:
+  _damageParameter:
     _typeDamage: 0
-    _damageSupportivePatametrs: []
+    _damage: 0
+    _damageParameters: []
     _particle: {fileID: 0}
   _poolParticle: {fileID: 7425594545007167068, guid: d2fb527ba5068ff469ce64c846a41a5f, type: 3}

@@ -8,7 +8,7 @@ namespace Assets.Source.Game.Scripts.ScriptableObjects
     [CreateAssetMenu(fileName = "New Attribute", menuName = "Create Attribute/Attribute  ", order = 51)]
     public abstract class AttributeData : ScriptableObject
     {
-        [SerializeField] protected CardParameterView _parameterView;
+        [SerializeField] protected CardParameterView _parameterView;//вынести
         [SerializeField] protected List<Parameters> _parameters;
         [SerializeField] protected string _name;
         [SerializeField] protected string _description;

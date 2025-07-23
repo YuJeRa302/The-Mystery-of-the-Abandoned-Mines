@@ -98,12 +98,6 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
             }
         }
 
-        protected override void OnGameResumed(bool state)
-        {
-            if (_isAbilityUse || Ability.IsAbilityUsed)
-                base.OnGameResumed(state);
-        }
-
         protected override void OnCooldownValueReset(float value)
         {
             base.OnCooldownValueReset(value);

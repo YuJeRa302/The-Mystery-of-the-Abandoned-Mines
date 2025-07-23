@@ -56,12 +56,6 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
             (AbilityView as ClassSkillButtonView).SetInteractableButton(true);
         }
 
-        protected override void OnGameResumed(bool state)
-        {
-            if (_isAbilityUse || Ability.IsAbilityUsed)
-                base.OnGameResumed(state);
-        }
-
         protected override void OnAbilityUsed(Ability ability)
         {
             _isAbilityUse = true;

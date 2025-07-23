@@ -96,7 +96,7 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
         public event Action<float> CooldownValueReseted;
 
         public List<CardParameter> AmplifierParameters { get; private set; } = new List<CardParameter>();
-        public bool IsAbilityEnded { get; private set; } = false;
+        public bool IsAbilityEnded { get; private set; } = true;
         public bool IsAutoCast => _isAutoCast;
         public float CurrentDuration => _currentDuration;
         public int CurrentAbilityValue => _currentAbilityValue;
@@ -274,6 +274,8 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
 
         private IEnumerator DurationAbility()
         {
+            Debug.Log(_currentDuration);
+            Debug.Log(IsAbilityEnded);
             while (_currentDuration > _minValue)
             {
                 _currentDuration -= Time.deltaTime;

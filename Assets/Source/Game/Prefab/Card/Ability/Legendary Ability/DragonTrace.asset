@@ -30,14 +30,14 @@ MonoBehaviour:
   _audioClip: {fileID: 8300000, guid: 5ab3fed341228244eb5d59b62ab21593, type: 3}
   _damage:
     _typeDamage: 2
-    _damage: 0
+    _damage: 12
     _damageParameters:
     - _value: 1
       _typeDamageParameter: 4
-    - _value: 5
+    - _value: 8
       _typeDamageParameter: 1
     _particle: {fileID: 1461602671872348846, guid: 0b5e7793d4d1e854385c5ce9b1e79f47, type: 3}
   _upgradeType: 6
   _type: 5
   _typeAttack: 0
-  _legendarySpell: {fileID: 6994994147005088559, guid: d3608195da37cab488fd2e315672de3e, type: 3}
+  _legendarySpell: {fileID: 5494780557648723383, guid: d3608195da37cab488fd2e315672de3e, type: 3}

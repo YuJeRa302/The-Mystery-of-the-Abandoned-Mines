@@ -497,6 +497,7 @@ namespace Assets.Source.Game.Scripts.Characters
         {
             _playerStats.UpdateRerollPoints(cardView);
             cardView.CardState.AddWeight();
+            cardView.CardState.ResetWeight();
         }
 
         private void OnTakenPassiveAbility(CardView cardView)
@@ -505,7 +506,7 @@ namespace Assets.Source.Game.Scripts.Characters
             _playerAbilityCaster.TakeAbility(cardView);
             cardView.CardState.AddCurrentLevel();
             cardView.CardState.AddWeight();
-            cardView.CardState.LockedCard();
+            cardView.CardState.SetCardLocked(true);
             cardView.CardState.SetUpgradedStatus(true);
         }
 
@@ -513,6 +514,7 @@ namespace Assets.Source.Game.Scripts.Characters
         {
             _playerStats.UpdatePlayerStats(cardView);
             cardView.CardState.AddWeight();
+            cardView.CardState.ResetWeight();
         }
 
         private void TryAttackEnemy()

@@ -114,7 +114,9 @@ namespace Assets.Source.Game.Scripts.Card
                     case TypeCardParameter.Ability:
                         ProcessAbilityCard(card, cardState, cards);
                         break;
-
+                    case TypeCardParameter.PassiveAbility:
+                        ProcessPassiveCard(card, cardState);
+                        break;
                     case TypeCardParameter.LegendaryAbility:
                         ProcessLegendaryCard(card, cardState);
                         break;
@@ -122,60 +124,17 @@ namespace Assets.Source.Game.Scripts.Card
             }
         }
 
-        private bool FindLegendaryCard(List<CardData> cards,
-            TypeUpgradeAbility upgradeType,
-            out CardData legendaryCard)
+        private void ProcessPassiveCard(CardData card, CardState cardState)
         {
-            for (int i = 0; i < cards.Count; i++)
+            if (cardState.CurrentLevel >= card.AttributeData.Parameters.Count)
             {
-                var card = cards[i];
-
-                if (card.AttributeData as LegendaryAbilityData)
-                {
-                    var cardState = _player.GetCardStateByData(card);
-                    if (cardState.IsLocked)
-                    {
-                        if ((card.AttributeData as LegendaryAbilityData).UpgradeType == upgradeType)
-                        {
-                            if (cardState.CurrentLevel <=
-                                (card.AttributeData as LegendaryAbilityData).Parameters.Count)
-                            {
-                                if (!cardState.IsCardUpgraded)
-                                {
-                                    legendaryCard = card;
-                                    return true;
-                                }
-                            }
-                        }
-                    }
-                }
+                cardState.SetCardLocked(true);
             }
-
-            legendaryCard = null;
-            return false;
-        }
-
-        private bool TryFindPassiveCard(List<CardData> cards, TypeMagic magicType)
-        {
-            for (int i = 0; i < cards.Count; i++)
-            {
-                var card = cards[i];
-
-                if (card.AttributeData is PassiveAttributeData passiveData &&
-                    passiveData.MagicType == magicType &&
-                    _player.GetCardStateByData(card).IsLocked)
-                {
-                    return true;
-                }
-            }
-
-            return false;
         }
 
         private void ProcessAbilityCard(CardData card, CardState cardState, List<CardData> allCards)
         {
-            bool isPassive = card.AttributeData is PassiveAttributeData;
-            bool canTakeCard = _player.TryTakeAbilityCard(card.Id) || isPassive;
+            bool canTakeCard = _player.TryTakeAbilityCard(card.Id);
 
             if (!canTakeCard)
             {
@@ -190,7 +149,7 @@ namespace Assets.Source.Game.Scripts.Card
 
             if (card.AttributeData is ActiveAbilityData activeAbility)
             {
-                if (TryFindPassiveCard(allCards, activeAbility.MagicType))
+                if (TryFindPassivCard(allCards, activeAbility.MagicType))
                 {
                     if (FindLegendaryCard(allCards, activeAbility.UpgradeType, out CardData legendaryCard))
                     {
@@ -202,12 +161,61 @@ namespace Assets.Source.Game.Scripts.Card
 
         private void ProcessLegendaryCard(CardData card, CardState cardState)
         {
-            if (card.AttributeData is LegendaryAbilityData legendaryData &&
-                legendaryData.Parameters.Count <= cardState.CurrentLevel)
+            if (cardState.CurrentLevel >= card.AttributeData.Parameters.Count)
             {
                 cardState.SetCardLocked(true);
                 cardState.SetUpgradedStatus(true);
             }
+        }
+
+
+        private bool FindLegendaryCard(List<CardData> cards, TypeUpgradeAbility typeMagic, out CardData legendaryCard)
+        {
+            legendaryCard = null;
+            CardState cardState;
+
+            foreach (var card in cards)
+            {
+                cardState = _player.GetCardStateByData(card);
+
+                if (card.AttributeData as LegendaryAbilityData)
+                {
+                    if (cardState.IsLocked)
+                    {
+                        if (typeMagic == (card.AttributeData as LegendaryAbilityData).UpgradeType)
+                        {
+                            if (cardState.CurrentLevel <= card.AttributeData.Parameters.Count)
+                            {
+                                if (cardState.IsCardUpgraded == false)
+                                    legendaryCard = card;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return legendaryCard != null;
+        }
+
+        private bool TryFindPassivCard(List<CardData> cards, TypeMagic typeMagic)
+        {
+            CardData passivCard = null;
+
+            foreach (var data in cards)
+            {
+                if (data.AttributeData as PassiveAttributeData)
+                {
+                    if ((data.AttributeData as PassiveAttributeData).MagicType == typeMagic)
+                    {
+                        if (_player.GetCardStateByData(data).IsCardUpgraded == true)
+                        {
+                            passivCard = data;
+                        }
+                    }
+                }
+            }
+
+            return passivCard != null;
         }
 
         private void Shuffle(List<CardData> cards)

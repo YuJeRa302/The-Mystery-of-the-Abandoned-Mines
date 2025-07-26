@@ -10,8 +10,8 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
     {
         private readonly float _delayAttack = 0.3f;
 
-        private LegendaryThunderAbilitySpell _spellPrefab;
-        private LegendaryThunderAbilitySpell _spell;
+        private LegendarySpell _spellPrefab;
+        private LegendarySpell _spell;
         private Coroutine _blastThrowingCoroutine;
         private Coroutine _damageDealCoroutine;
         private ParticleSystem _particleSystem;
@@ -24,7 +24,7 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
             GameLoopService gameLoopService,
             ICoroutineRunner coroutineRunner,
             ParticleSystem particleSystem,
-            LegendaryThunderAbilitySpell spellPrefab) : base(ability, abilityView, player,
+            LegendarySpell spellPrefab) : base(ability, abilityView, player,
                 gamePauseService, gameLoopService, coroutineRunner)
         {
             _particleSystem = particleSystem;

@@ -60,6 +60,7 @@ namespace Assets.Source.Game.Scripts.Characters
         {
             _currentLevel = currentLevel;
             _rerollPoints = rerollPoints;
+            _rerollPoints = 100;
             _armor = armor;
             _moveSpeed = moveSpeed;
             _maxMoveSpeed = _moveSpeed * _moveSpeedAmplifier;

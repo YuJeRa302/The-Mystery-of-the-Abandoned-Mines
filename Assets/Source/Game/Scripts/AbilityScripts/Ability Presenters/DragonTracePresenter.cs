@@ -11,13 +11,13 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
         private readonly float _delayAttack = 0.3f;
         private readonly float _delaySpawnSpell = 0.5f;
 
-        private LegendaryThunderAbilitySpell _spellPrefab;
-        private LegendaryThunderAbilitySpell _spell;
+        private LegendarySpell _spellPrefab;
+        private LegendarySpell _spell;
         private Coroutine _blastThrowingCoroutine;
         private Coroutine _damageDealCoroutine;
         private Coroutine _spawnedSpellCoroutine;
         private ParticleSystem _particleSystem;
-        private List<LegendaryThunderAbilitySpell> _spells = new();
+        private List<LegendarySpell> _spells = new();
 
         public DragonTracePresenter(
             Ability ability,
@@ -27,7 +27,7 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
             GameLoopService gameLoopService,
             ICoroutineRunner coroutineRunner,
             ParticleSystem particleSystem,
-            LegendaryThunderAbilitySpell spellPrefab) : base(ability, abilityView, player,
+            LegendarySpell spellPrefab) : base(ability, abilityView, player,
                 gamePauseService, gameLoopService, coroutineRunner)
         {
             _particleSystem = particleSystem;

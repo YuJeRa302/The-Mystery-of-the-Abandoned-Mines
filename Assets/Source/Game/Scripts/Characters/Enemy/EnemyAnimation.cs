@@ -38,15 +38,11 @@ namespace Assets.Source.Game.Scripts.Characters
             }
         }
 
-        private void TryAttackPlayer()
-        {
-            Attacked?.Invoke();
-        }
+        private void TryAttackPlayer() => Attacked?.Invoke();
 
-        private void TryAdditionAtacked()
-        {
-            AdditionalAttacked?.Invoke();
-        }
+        private void TryAdditionAtacked() => AdditionalAttacked?.Invoke();
+
+        private void EndAnimation() => AnimationCompleted?.Invoke();
 
         private void AddAnimationAction()
         {

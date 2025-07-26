@@ -30,7 +30,7 @@ MonoBehaviour:
   _audioClip: {fileID: 8300000, guid: 14b16ff40093aba47bc467e148746cab, type: 3}
   _damage:
     _typeDamage: 2
-    _damage: 0
+    _damage: 8
     _damageParameters:
     - _value: 1
       _typeDamageParameter: 4
@@ -40,4 +40,4 @@ MonoBehaviour:
   _upgradeType: 2
   _type: 5
   _typeAttack: 1
-  _legendarySpell: {fileID: 3443178031204434909, guid: a29f834c9e1cf5547a4f7bbe575371f4, type: 3}
+  _legendarySpell: {fileID: 4508839276867569350, guid: a29f834c9e1cf5547a4f7bbe575371f4, type: 3}

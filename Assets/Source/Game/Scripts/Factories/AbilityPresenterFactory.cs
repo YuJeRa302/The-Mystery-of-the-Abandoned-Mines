@@ -223,7 +223,7 @@ namespace Assets.Source.Game.Scripts.Factories
             AbilityView abilityView,
             Player player,
             ParticleSystem particleSystem,
-            LegendaryThunderAbilitySpell spell)
+            LegendarySpell spell)
         {
             GlobularLightningPresenter globularLightningPresenter = new(
                 ability,
@@ -243,7 +243,7 @@ namespace Assets.Source.Game.Scripts.Factories
             AbilityView abilityView,
             Player player,
             ParticleSystem particleSystem,
-            LegendaryThunderAbilitySpell spell)
+            LegendarySpell spell)
         {
             FirestormPresenter firestormPresenter = new FirestormPresenter(
                 ability,
@@ -263,7 +263,7 @@ namespace Assets.Source.Game.Scripts.Factories
             AbilityView abilityView,
             Player player,
             ParticleSystem particleSystem,
-            LegendaryThunderAbilitySpell spell)
+            LegendarySpell spell)
         {
             MeteorShowerPresenter metiorSower = new MeteorShowerPresenter(
                 ability,
@@ -283,7 +283,7 @@ namespace Assets.Source.Game.Scripts.Factories
             AbilityView abilityView,
             Player player,
             ParticleSystem particleSystem,
-            LegendaryThunderAbilitySpell spell)
+            LegendarySpell spell)
         {
             ElectricGuardPresenter electricGuardPresenter = new ElectricGuardPresenter(
                 ability,
@@ -303,7 +303,7 @@ namespace Assets.Source.Game.Scripts.Factories
             AbilityView abilityView,
             Player player,
             ParticleSystem particleSystem,
-            LegendaryThunderAbilitySpell spell)
+            LegendarySpell spell)
         {
             ThunderPresenter thunderPresenter = new ThunderPresenter(
                 ability,
@@ -323,7 +323,7 @@ namespace Assets.Source.Game.Scripts.Factories
             AbilityView abilityView,
             Player player,
             ParticleSystem particleSystem,
-            LegendaryThunderAbilitySpell spell)
+            LegendarySpell spell)
         {
             DragonTracePresenter dragonTracePresenter = new DragonTracePresenter(
                 ability,
@@ -343,7 +343,7 @@ namespace Assets.Source.Game.Scripts.Factories
             AbilityView abilityView,
             Player player,
             ParticleSystem particleSystem,
-            LegendaryThunderAbilitySpell spell)
+            LegendarySpell spell)
         {
             SnowfallPresenter snowfallPresenter = new SnowfallPresenter(
                 ability,
@@ -363,7 +363,7 @@ namespace Assets.Source.Game.Scripts.Factories
             AbilityView abilityView,
             Player player,
             ParticleSystem particleSystem,
-            LegendaryThunderAbilitySpell spell)
+            LegendarySpell spell)
         {
             IciAvalanchePresenter iciAvalanchePresenter = new IciAvalanchePresenter(
                 ability,
@@ -382,7 +382,7 @@ namespace Assets.Source.Game.Scripts.Factories
             Ability ability,
             AbilityView abilityView,
             Player player, ParticleSystem particleSystem,
-            LegendaryThunderAbilitySpell spell)
+            LegendarySpell spell)
         {
             BuranPresenter buranPresenter = new BuranPresenter(
                 ability,

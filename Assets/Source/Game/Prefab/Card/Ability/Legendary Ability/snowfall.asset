@@ -34,8 +34,8 @@ MonoBehaviour:
     _damageParameters:
     - _value: 1
       _typeDamageParameter: 2
-    _particle: {fileID: 0}
+    _particle: {fileID: 550930723136525005, guid: 0e61f2a8c521ff844bffcc24bda7480e, type: 3}
   _upgradeType: 7
   _type: 5
   _typeAttack: 1
-  _legendarySpell: {fileID: 3443178031204434909, guid: bcd32f6824b151946bebed9aadfe6a5e, type: 3}
+  _legendarySpell: {fileID: 7126863147273196609, guid: bcd32f6824b151946bebed9aadfe6a5e, type: 3}

@@ -36,4 +36,4 @@ MonoBehaviour:
   _upgradeType: 0
   _type: 5
   _typeAttack: 3
-  _legendarySpell: {fileID: 3443178031204434909, guid: 05def5971c92e754289c752393ffa96b, type: 3}
+  _legendarySpell: {fileID: 5332783102440773417, guid: 05def5971c92e754289c752393ffa96b, type: 3}

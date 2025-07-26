@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Assets.Source.Game.Scripts.AbilityScripts
 {
-    public class LegendaryThunderAbilitySpell : MonoBehaviour
+    public class LegendarySpell : MonoBehaviour
     {
         [SerializeField] protected AbilityEnemyFinder[] AbilityEnemyFinders;
 

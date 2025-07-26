@@ -13255,11 +13255,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1676609100239073865, guid: 0d780173c250d334f80c9061373c8e4f, type: 3}
   m_PrefabInstance: {fileID: 964151453}
   m_PrefabAsset: {fileID: 0}
---- !u!64 &964151457 stripped
-MeshCollider:
-  m_CorrespondingSourceObject: {fileID: 4551713866318324650, guid: 0d780173c250d334f80c9061373c8e4f, type: 3}
-  m_PrefabInstance: {fileID: 964151453}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &964675363
 GameObject:
   m_ObjectHideFlags: 0
@@ -13654,32 +13649,32 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _cardData:
-  - {fileID: 11400000, guid: 9e5eed429ad9ba242b7a7ca13b594889, type: 2}
-  - {fileID: 11400000, guid: 0205374aaebca724195dfeb8e50ba53d, type: 2}
-  - {fileID: 11400000, guid: d108df8686310d44c9ab6494a7808513, type: 2}
-  - {fileID: 11400000, guid: 9584733de0dae7b4ebff38808e241971, type: 2}
-  - {fileID: 11400000, guid: 57167af65a31e814dbb7e0a824a849a0, type: 2}
-  - {fileID: 11400000, guid: ab2fe1a3cbd303b499f5c559436a8542, type: 2}
-  - {fileID: 11400000, guid: fa30d807fe980fc428b8efd1f0c6d194, type: 2}
-  - {fileID: 11400000, guid: 0896557a102653c4c85fcdf422d4c7b7, type: 2}
   - {fileID: 11400000, guid: 3c68c34c6cc44fd49a10d039e6a455e1, type: 2}
+  - {fileID: 11400000, guid: 0896557a102653c4c85fcdf422d4c7b7, type: 2}
+  - {fileID: 11400000, guid: 0205374aaebca724195dfeb8e50ba53d, type: 2}
+  - {fileID: 11400000, guid: 9e5eed429ad9ba242b7a7ca13b594889, type: 2}
+  - {fileID: 11400000, guid: 9584733de0dae7b4ebff38808e241971, type: 2}
   - {fileID: 11400000, guid: 9dfd2e8a1450af5438f304e0b87c8a07, type: 2}
   - {fileID: 11400000, guid: 6c4d93f2e4940f6489a52b355d477c78, type: 2}
-  - {fileID: 11400000, guid: 5c838f5e97afb5b4daaf8137269e232e, type: 2}
-  - {fileID: 11400000, guid: 0ccac49fb7341b34e8d2d6f0555bf179, type: 2}
+  - {fileID: 11400000, guid: ab2fe1a3cbd303b499f5c559436a8542, type: 2}
   - {fileID: 11400000, guid: ac67829db4f1b1345bb66831bebb5639, type: 2}
-  - {fileID: 11400000, guid: adab56faa7ef9514a82c7f203e03ca8c, type: 2}
+  - {fileID: 11400000, guid: 0ccac49fb7341b34e8d2d6f0555bf179, type: 2}
   - {fileID: 11400000, guid: 2d546424ad3417e418aadced6ff0a416, type: 2}
-  - {fileID: 11400000, guid: 443007225b53b5c4084dc2220c1e69fa, type: 2}
   - {fileID: 11400000, guid: 7c2e51e8f09a4ad45a821a59a154317f, type: 2}
+  - {fileID: 11400000, guid: 57167af65a31e814dbb7e0a824a849a0, type: 2}
+  - {fileID: 11400000, guid: d108df8686310d44c9ab6494a7808513, type: 2}
+  - {fileID: 11400000, guid: 5c838f5e97afb5b4daaf8137269e232e, type: 2}
+  - {fileID: 11400000, guid: fa30d807fe980fc428b8efd1f0c6d194, type: 2}
+  - {fileID: 11400000, guid: adab56faa7ef9514a82c7f203e03ca8c, type: 2}
+  - {fileID: 11400000, guid: 443007225b53b5c4084dc2220c1e69fa, type: 2}
   - {fileID: 11400000, guid: efa72679fc61a20459ca637c65fc5d56, type: 2}
   - {fileID: 11400000, guid: 79d9a1c580d5d2b4eb634d8587512532, type: 2}
   - {fileID: 11400000, guid: 6688c62c5c45280499e5d04574be5c5d, type: 2}
   _defaultCardData:
-  - {fileID: 11400000, guid: eb9aaf45cb122ec4aa979529c8c37a9f, type: 2}
-  - {fileID: 11400000, guid: 12142c2dabaac72469275e174353f967, type: 2}
-  - {fileID: 11400000, guid: ef8d9b1e5c03960438d3990374a83809, type: 2}
   - {fileID: 11400000, guid: b6bff4a0df13a724ba8e3aea4724b392, type: 2}
+  - {fileID: 11400000, guid: 12142c2dabaac72469275e174353f967, type: 2}
+  - {fileID: 11400000, guid: eb9aaf45cb122ec4aa979529c8c37a9f, type: 2}
+  - {fileID: 11400000, guid: ef8d9b1e5c03960438d3990374a83809, type: 2}
 --- !u!114 &987033773
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26256,7 +26251,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ConfineMode: 1
-  m_BoundingVolume: {fileID: 964151457}
+  m_BoundingVolume: {fileID: 0}
   m_BoundingShape2D: {fileID: 0}
   m_ConfineScreenEdges: 1
   m_Damping: 0

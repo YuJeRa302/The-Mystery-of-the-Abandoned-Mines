@@ -30,10 +30,10 @@ MonoBehaviour:
   _audioClip: {fileID: 8300000, guid: c55ece7306cfa8e4e97c27957628ed3a, type: 3}
   _damage:
     _typeDamage: 0
-    _damage: 0
+    _damage: 20
     _damageParameters: []
     _particle: {fileID: 0}
   _upgradeType: 1
   _type: 5
   _typeAttack: 0
-  _legendarySpell: {fileID: 0}
+  _legendarySpell: {fileID: 1006294080632233457, guid: 022848a3e9738f24d84efb0780c65671, type: 3}

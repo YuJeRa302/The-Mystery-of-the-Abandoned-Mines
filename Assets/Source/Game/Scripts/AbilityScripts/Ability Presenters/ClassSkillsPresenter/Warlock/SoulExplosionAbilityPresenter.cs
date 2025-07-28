@@ -37,7 +37,6 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
 
         public void UsedAbility(Ability ability)
         {
-            _isAbilityUse = true;
             CreateParticle();
 
             if (_damageDealingCoroutine != null)

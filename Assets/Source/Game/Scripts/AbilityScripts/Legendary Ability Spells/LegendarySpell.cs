@@ -8,8 +8,8 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
     {
         [SerializeField] protected AbilityEnemyFinder[] AbilityEnemyFinders;
 
-        protected List<Enemy> Enemies = new();
-        protected List<ParticleSystem> AbilityEffects = new();
+        protected List<Enemy> Enemies = new ();
+        protected List<ParticleSystem> AbilityEffects = new ();
         protected float SpellLifeTime;
 
         public virtual void Initialize(ParticleSystem particleSystem, float currentDuration)

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Assets.Source.Game.Scripts.AbilityScripts
 {
-    public class LegendadatyTunderAbilitySpell : LegendarySpell
+    public class LegendaryThunderAbilitySpell : LegendarySpell
     {
         protected ParticleSystem Effect;
 

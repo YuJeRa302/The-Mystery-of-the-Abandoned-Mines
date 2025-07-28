@@ -31,7 +31,6 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
 
         public void UsedAbility(Ability ability)
         {
-            _isAbilityUse = true;
             ChangeAbilityEffect(_isAbilityUse);
         }
 
@@ -88,8 +87,11 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
             {
                 foreach (var particle in _spawnedEffects)
                 {
-                    if (particle.isActiveAndEnabled)
-                        particle.ReturnObjectPool();
+                    if (particle != null)
+                    {
+                        if (particle.isActiveAndEnabled)
+                            particle.ReturnObjectPool();
+                    }
                 }
             }
         }

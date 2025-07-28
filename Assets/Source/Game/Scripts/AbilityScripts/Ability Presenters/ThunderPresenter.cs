@@ -27,7 +27,7 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
             _ability = abilityEntitiesHolder.Ability;
             _player = abilityEntitiesHolder.Player;
             _particleSystem = abilityEntitiesHolder.ParticleSystem;
-            _spellPrefab = legendaryAbilityData.LegendarySpell;
+            _spellPrefab = legendaryAbilityData.LegendarySpell as LegendaryThunderAbilitySpell;
             var container = SceneManager.GetActiveScene().GetSceneContainer();
             _coroutineRunner = container.Resolve<ICoroutineRunner>();
         }
@@ -70,7 +70,7 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
                         _player.transform.position.z),
                     Quaternion.identity);
 
-            (_spell as LegendadatyTunderAbilitySpell).Initialize(_particleSystem, _ability.CurrentDuration);
+            _spell.Initialize(_particleSystem, _ability.CurrentDuration);
         }
 
         private IEnumerator DealDamage()
@@ -81,7 +81,7 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
 
                 if (_spell != null)
                 {
-                    if ((_spell as LegendadatyTunderAbilitySpell).TryFindEnemies(out List<Enemy> enemies))
+                    if (_spell.TryFindEnemies(out List<Enemy> enemies))
                     {
                         foreach (var enemy in enemies)
                         {

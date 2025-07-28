@@ -16,7 +16,7 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
         private ParticleSystem _poolParticle;
         private Spell _spell;
         private Spell _spellPrefab;
-        private bool _isAbilityUse;
+        private bool _isAbilityUse = false;
         private float _spellRadius = 8f;
         private float _delayDamage = 1f;
         private Ability _ability;
@@ -30,6 +30,7 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
             _abilityView = abilityEntitiesHolder.AbilityView;
             _player = abilityEntitiesHolder.Player;
             _poolParticle = epiphanyClassData.EpiphanyParticle;
+            _spellPrefab = epiphanyClassData.Spell;
             var container = SceneManager.GetActiveScene().GetSceneContainer();
             _coroutineRunner = container.Resolve<ICoroutineRunner>();
         }

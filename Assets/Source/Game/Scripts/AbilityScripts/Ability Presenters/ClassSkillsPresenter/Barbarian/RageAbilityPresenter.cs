@@ -13,7 +13,7 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
         private List<PoolObject> _spawnedEffects = new ();
         private Pool _pool;
         private PoolParticle _particleEffectPrefab;
-        private bool _isAbilityUse;
+        private bool _isAbilityUse = false;
         private Ability _ability;
         private AbilityView _abilityView;
         private Player _player;
@@ -96,8 +96,11 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
             {
                 foreach (var particle in _spawnedEffects)
                 {
-                    if (particle.isActiveAndEnabled)
-                        particle.ReturnObjectPool();
+                    if (particle != null)
+                    {
+                        if (particle.isActiveAndEnabled)
+                            particle.ReturnObjectPool();
+                    }
                 }
             }
         }

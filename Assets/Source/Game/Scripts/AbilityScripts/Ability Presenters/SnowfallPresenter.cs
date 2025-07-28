@@ -18,9 +18,9 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
         private readonly int _countSpell = 3;
 
         private ICoroutineRunner _coroutineRunner;
-        private LegendaryThunderAbilitySpell _spellPrefab;
-        private LegendaryThunderAbilitySpell _spell;
-        private List<LegendaryThunderAbilitySpell> _spawnedSpell = new ();
+        private LegendarySpell _spellPrefab;
+        private LegendarySpell _spell;
+        private List<LegendarySpell> _spawnedSpell = new ();
         private Vector3 _direction;
         private Coroutine _blastThrowingCoroutine;
         private Coroutine _damageDealCoroutine;

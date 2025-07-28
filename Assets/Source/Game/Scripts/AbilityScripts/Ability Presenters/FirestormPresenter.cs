@@ -15,8 +15,8 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
         private readonly float _searchRadius = 20f;
 
         private ICoroutineRunner _coroutineRunner;
-        private LegendaryThunderAbilitySpell _spellPrefab;
-        private LegendaryThunderAbilitySpell _spell;
+        private LegendarySpell _spellPrefab;
+        private LegendarySpell _spell;
         private Vector3 _direction;
         private Coroutine _blastThrowingCoroutine;
         private Coroutine _damageDealCoroutine;

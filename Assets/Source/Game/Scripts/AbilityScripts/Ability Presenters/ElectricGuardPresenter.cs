@@ -14,8 +14,8 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
         private readonly float _rotationSpeed = 100f;
 
         private ICoroutineRunner _coroutineRunner;
-        private LegendaryThunderAbilitySpell _spellPrefab;
-        private LegendaryThunderAbilitySpell _spell;
+        private LegendarySpell _spellPrefab;
+        private LegendarySpell _spell;
         private Vector3 _rotationVector = new Vector3(0, 1, 0);
         private Coroutine _rotationCoroutine;
         private Coroutine _damageDealCoroutine;

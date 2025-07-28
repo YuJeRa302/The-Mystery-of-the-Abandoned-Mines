@@ -90,8 +90,11 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
             {
                 foreach (var particle in _spawnedEffects)
                 {
-                    if (particle.isActiveAndEnabled)
-                        particle.ReturnObjectPool();
+                    if (particle != null)
+                    {
+                        if (particle.isActiveAndEnabled)
+                            particle.ReturnObjectPool();
+                    }
                 }
             }
         }

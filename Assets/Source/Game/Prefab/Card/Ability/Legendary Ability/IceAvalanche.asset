@@ -42,7 +42,7 @@ MonoBehaviour:
   _typeAttack: 0
   _abilityStrategy:
     rid: 7260333119341592597
-  _legendarySpell: {fileID: 3443178031204434909, guid: 68adff4030c94ef40870ead0c5ed1745, type: 3}
+  _legendarySpell: {fileID: 3025569755371615153, guid: 6276db9b4ca61b342852fdf1b488cfda, type: 3}
   references:
     version: 2
     RefIds:

@@ -14,8 +14,8 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
         private readonly float _delayAttack = 0.3f;
 
         private ICoroutineRunner _coroutineRunner;
-        private LegendaryThunderAbilitySpell _spellPrefab;
-        private LegendaryThunderAbilitySpell _spell;
+        private LegendarySpell _spellPrefab;
+        private LegendarySpell _spell;
         private Coroutine _damageDealCoroutine;
         private ParticleSystem _particleSystem;
         private Ability _ability;

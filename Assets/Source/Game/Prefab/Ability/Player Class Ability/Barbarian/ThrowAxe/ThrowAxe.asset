@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62e3a24455c3a1140a17dccc8ee2b257, type: 3}
   m_Name: ThrowAxe
   m_EditorClassIdentifier: 
-  _parameterView: {fileID: 0}
+  _parameterView: {fileID: 1961483584371832456, guid: 6d57f6325ba58d6478a1fd35f1ba2831, type: 3}
   _parameters:
   - _cardParameters:
     - _value: 3
@@ -57,4 +57,11 @@ MonoBehaviour:
     _damage: 0
     _damageParameters: []
     _particle: {fileID: 0}
+  _abilityStrategy:
+    rid: 7260333119341592578
   _axemMssile: {fileID: 943455661545071742, guid: 2b72f1a7a98694a47b2b0e7e19d8a7d2, type: 3}
+  references:
+    version: 2
+    RefIds:
+    - rid: 7260333119341592578
+      type: {class: ThrowAxeAbilityPresenter, ns: Assets.Source.Game.Scripts.AbilityScripts, asm: Assembly-CSharp}

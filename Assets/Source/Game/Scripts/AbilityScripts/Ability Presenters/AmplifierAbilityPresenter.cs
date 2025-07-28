@@ -1,37 +1,36 @@
-using Assets.Source.Game.Scripts.Characters;
 using Assets.Source.Game.Scripts.Services;
 using UnityEngine;
 
 namespace Assets.Source.Game.Scripts.AbilityScripts
 {
-    public class AmplifierAbilityPresenter : AbilityPresenter
+    public class AmplifierAbilityPresenter : IAbilityStrategy, IAbilityPauseStrategy
     {
-        private readonly IGameLoopService _gameLoopService;
-
+        private Ability _ability;
         private ParticleSystem _particleSystem;
 
-        public AmplifierAbilityPresenter(Ability ability,
-            AbilityView abilityView,
-            Player player,
-            GamePauseService gamePauseService,
-            GameLoopService gameLoopService,
-            ICoroutineRunner coroutineRunner, ParticleSystem particleSystem) :
-            base(ability, abilityView, 
-                player, gamePauseService, 
-                gameLoopService, coroutineRunner)
+        public void Construct(AbilityEntitiesHolder abilityEntitiesHolder)
         {
-            _particleSystem = particleSystem;
-            AddListener();
+            _ability = abilityEntitiesHolder.Ability;
+            _particleSystem = abilityEntitiesHolder.ParticleSystem;
         }
 
-        protected override void OnAbilityUsed(Ability ability)
+        public void UsedAbility(Ability ability)
         {
             _particleSystem.Play();
         }
 
-        protected override void OnAbilityEnded(Ability ability)
+        public void EndedAbility(Ability ability)
         {
             _particleSystem.Stop();
+        }
+
+        public void PausedGame(bool state)
+        {
+        }
+
+        public void ResumedGame(bool state)
+        {
+            _ability.Use();
         }
     }
 }

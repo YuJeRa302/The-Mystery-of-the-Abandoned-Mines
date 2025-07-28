@@ -17,17 +17,21 @@ namespace Assets.Source.Game.Scripts.Characters
     {
         private readonly PlayerClassData _playerClassData;
         private readonly PersistentDataService _persistentDataService;
+        private readonly AbilityEntitiesHolder _abilityEntitiesHolder;
         private readonly int _shiftIndex = 1;
 
+        private IAbilityStrategy _abilityStrategy;
         private Player _player;
-        private List<Ability> _abilities = new();
-        private List<Ability> _classAbilities = new();
-        private List<Ability> _legendaryAbilities = new();
-        private List<PassiveAbilityView> _passiveAbilityViews = new();
+        private List<Ability> _abilities = new ();
+        private List<Ability> _classAbilities = new ();
+        private List<Ability> _legendaryAbilities = new ();
+        private List<PassiveAbilityView> _passiveAbilityViews = new ();
         private AttributeData _abilityAttributeData;
-        private AbilityPresenterFactory _abilityPresenterFactory;
         private AudioPlayer _audioPlayer;
         private AbilityFactory _abilityFactory;
+        private AbilityView _abilityView;
+        private Ability _ability;
+        private ParticleSystem _particleSystem;
         private int _abilityDuration = 0;
         private int _abilityDamage = 0;
         private int _abilityCooldownReduction = 0;
@@ -35,18 +39,17 @@ namespace Assets.Source.Game.Scripts.Characters
 
         public PlayerAbilityCaster(
             AbilityFactory abilityFactory,
-            AbilityPresenterFactory abilityPresenterFactory,
             Player player,
             PersistentDataService persistentDataService,
             PlayerClassData playerClassData,
             AudioPlayer audioPlayer)
         {
             _abilityFactory = abilityFactory;
-            _abilityPresenterFactory = abilityPresenterFactory;
             _player = player;
             _persistentDataService = persistentDataService;
             _playerClassData = playerClassData;
             _audioPlayer = audioPlayer;
+            _abilityEntitiesHolder = new AbilityEntitiesHolder(this);
         }
 
         public event Action<ClassAbilityData, int> ClassAbilityTaked;
@@ -56,6 +59,13 @@ namespace Assets.Source.Game.Scripts.Characters
         public event Action<Ability> AbilityRemoved;
         public event Action<Ability> AbilityUsed;
         public event Action<Ability> AbilityEnded;
+
+        public Player Player => _player;
+        public Ability Ability => _ability;
+        public AbilityView AbilityView => _abilityView;
+        public AttributeData AttributeData => _abilityAttributeData;
+        public ParticleSystem ParticleSystem => _particleSystem;
+        public IAbilityStrategy IAbilityStrategy => _abilityStrategy;
 
         public void Initialize()
         {
@@ -120,111 +130,40 @@ namespace Assets.Source.Game.Scripts.Characters
             _abilityCooldownReduction = value;
         }
 
-        public void CreateClassAbilityView(ClassAbilityData classAbilityData,
-            ClassSkillButtonView classSkillButtonView, int currentLevel)
+        public void CreateClassAbilityView(
+            ClassAbilityData classAbilityData,
+            ClassSkillButtonView classSkillButtonView,
+            int currentLevel)
         {
-            Ability newAbility;
-            newAbility = _abilityFactory.CreateClassSkill(classAbilityData, false, currentLevel - 1);
-
-            switch (classAbilityData.AbilityType)
-            {
-                case TypeAbility.Summon:
-                    _abilityPresenterFactory.CreateSummonAbilityPresenter(
-                        newAbility,
-                        classSkillButtonView,
-                        _player,
-                        (classAbilityData as SummonAbilityData).Summon.Summon);
-                    break;
-                case TypeAbility.ThrowAxe:
-                    _abilityPresenterFactory.CreateThrowAxePresenter(
-                        newAbility,
-                        classSkillButtonView,
-                        _player,
-                        (classAbilityData as ThrowAxeClassAbility).AxeMissile);
-                    break;
-                case TypeAbility.JerkFront:
-                    _abilityPresenterFactory.CreateJerkFrontAbilityPresenter(
-                        newAbility,
-                        classSkillButtonView,
-                        _player,
-                        (classAbilityData as JerkFrontAbilityData).PoolParticle);
-                    break;
-                case TypeAbility.Rage:
-                    _abilityPresenterFactory.CreateRageAbilityPresenter(
-                        newAbility,
-                        classSkillButtonView,
-                        _player,
-                        (classAbilityData as RageClassAbilityData).RageEffect);
-                    break;
-                case TypeAbility.Epiphany:
-                    _abilityPresenterFactory.CreateEpiphanyAbilityPresenter(
-                        newAbility,
-                        classSkillButtonView,
-                        _player,
-                        (classAbilityData as EpiphanyClassAbilityData).EpiphanyParticle,
-                        (classAbilityData as EpiphanyClassAbilityData).Spell);
-                    break;
-                case TypeAbility.ShieldUp:
-                    _abilityPresenterFactory.CreateShieldUpAbility(
-                        newAbility,
-                        classSkillButtonView,
-                        _player,
-                        (classAbilityData as ShieldUpAbility).PoolParticle);
-                    break;
-                case TypeAbility.SoulExplosion:
-                    _abilityPresenterFactory.CreateSoulExplosionAbilityPresenter(
-                        newAbility,
-                        classSkillButtonView,
-                        _player,
-                        (classAbilityData as SoulExplosionAbilityData).DamageParticle,
-                        (classAbilityData as SoulExplosionAbilityData).Spell);
-                    break;
-                case TypeAbility.DarkPact:
-                    _abilityPresenterFactory.CreateDarkPactAbilityPresenter(
-                        newAbility,
-                        classSkillButtonView,
-                        _player, (classAbilityData as DarkPactAbilityData).PoolParticle);
-                    break;
-                case TypeAbility.StunningBlow:
-                    _abilityPresenterFactory.CreateStunningBlowAbilityPresenter(
-                        newAbility,
-                        classSkillButtonView,
-                        _player,
-                        (classAbilityData as StunningBlowClassAbilityData).PoolParticle);
-                    break;
-            }
-
-            newAbility.AbilityUsed += OnAbilityUsed;
-            newAbility.AbilityEnded += OnAbilityEnded;
-            _classAbilities.Add(newAbility);
+            _ability = _abilityFactory.CreateClassSkill(classAbilityData, false, currentLevel - _shiftIndex);
+            _abilityView = classSkillButtonView;
+            _abilityAttributeData = classAbilityData;
+            _abilityStrategy = classAbilityData.IAbilityStrategy;
+            _abilityStrategy.Construct(_abilityEntitiesHolder);
+            AbilityPresenter abilityPresenter = new(_abilityEntitiesHolder);
+            _ability.AbilityUsed += OnAbilityUsed;
+            _ability.AbilityEnded += OnAbilityEnded;
+            _classAbilities.Add(_ability);
         }
 
         public void CreateAbilityView(AbilityView abilityView, ParticleSystem particleSystem, Transform throwPoint)
         {
-            Ability newAbility = _abilityFactory.CreateAbility(_abilityAttributeData as ActiveAbilityData,
+            _particleSystem = particleSystem;
+            _abilityView = abilityView;
+
+            _ability = _abilityFactory.CreateAbility(_abilityAttributeData as ActiveAbilityData,
                 _currentAbilityLevel,
                 _abilityCooldownReduction,
                 _abilityDuration,
                 _abilityDamage,
                 true);
 
-            if ((_abilityAttributeData as ActiveAbilityData).TypeAbility != TypeAbility.AttackAbility)
-            {
-                _abilityPresenterFactory.CreateAmplifierAbilityPresenter(newAbility, abilityView, particleSystem);
-            }
-            else
-                _abilityPresenterFactory.CreateAttackAbilityPresenter(
-                    newAbility,
-                    abilityView,
-                    _player,
-                    throwPoint,
-                    particleSystem,
-                    (_abilityAttributeData as AttackAbilityData).Spell);
-
-
-            newAbility.AbilityUsed += OnAbilityUsed;
-            newAbility.AbilityEnded += OnAbilityEnded;
-            _abilities.Add(newAbility);
+            _abilityStrategy = (_abilityAttributeData as ActiveAbilityData).IAbilityStrategy;
+            _abilityStrategy.Construct(_abilityEntitiesHolder);
+            AbilityPresenter abilityPresenter = new(_abilityEntitiesHolder);
+            _ability.AbilityUsed += OnAbilityUsed;
+            _ability.AbilityEnded += OnAbilityEnded;
+            _abilities.Add(_ability);
         }
 
         public void CreateLegendaryAbilityView(
@@ -233,7 +172,11 @@ namespace Assets.Source.Game.Scripts.Characters
             Transform throwPoint,
             ActiveAbilityData abilityAttributeData)
         {
-            Ability newAbility = _abilityFactory.CreateLegendaryAbility(
+            _particleSystem = particleSystem;
+            _abilityView = abilityView;
+            _abilityAttributeData = abilityAttributeData;
+
+            _ability = _abilityFactory.CreateLegendaryAbility(
                 abilityAttributeData as LegendaryAbilityData,
                 abilityAttributeData,
                 _abilityCooldownReduction,
@@ -241,84 +184,12 @@ namespace Assets.Source.Game.Scripts.Characters
                 _abilityDamage,
                 true);
 
-            switch (abilityAttributeData.UpgradeType)
-            {
-                case TypeUpgradeAbility.ElectricSphere:
-                    _abilityPresenterFactory.CreateGlobularLightningPresenter(
-                        newAbility,
-                        abilityView,
-                        _player,
-                        particleSystem, (abilityAttributeData as LegendaryAbilityData).LegendarySpell);
-                    break;
-                case TypeUpgradeAbility.ElectricTrap:
-                        _abilityPresenterFactory.CreateElectricGuardPresenter(
-                        newAbility,
-                        abilityView,
-                        _player,
-                        particleSystem,
-                        (abilityAttributeData as LegendaryAbilityData).LegendarySpell);
-                    break;
-                case TypeUpgradeAbility.LightningBolt:
-                    ThunderPresenter thunderPresenter =
-                        _abilityPresenterFactory.CreateThunderPresenter(
-                        newAbility,
-                        abilityView,
-                        _player,
-                        particleSystem,
-                        (abilityAttributeData as LegendaryAbilityData).LegendarySpell);
-                    break;
-                case TypeUpgradeAbility.Meteor:
-                    _abilityPresenterFactory.CreateMeteorShowerPresenter(
-                        newAbility,
-                        abilityView,
-                        _player,
-                        abilityAttributeData.Particle,
-                        (abilityAttributeData as LegendaryAbilityData).LegendarySpell);
-                    break;
-                case TypeUpgradeAbility.FireBall:
-                    _abilityPresenterFactory.CreateFirestormPresenter(
-                        newAbility,
-                        abilityView,
-                        _player,
-                        particleSystem, (abilityAttributeData as LegendaryAbilityData).LegendarySpell);
-                    break;
-                case TypeUpgradeAbility.FireCircle:
-                    _abilityPresenterFactory.CreateDragonTracePresenter(
-                        newAbility,
-                        abilityView,
-                        _player,
-                        particleSystem,
-                        (abilityAttributeData as LegendaryAbilityData).LegendarySpell);
-                    break;
-                case TypeUpgradeAbility.SnowBall:
-                    _abilityPresenterFactory.CreateSnowfallPresenter(
-                        newAbility,
-                        abilityView,
-                        _player,
-                        particleSystem,
-                        (abilityAttributeData as LegendaryAbilityData).LegendarySpell);
-                    break;
-                case TypeUpgradeAbility.IceBolt:
-                    _abilityPresenterFactory.CreateIciAvalanchePresenter(
-                        newAbility,
-                        abilityView,
-                        _player,
-                        abilityAttributeData.Particle,
-                        (abilityAttributeData as LegendaryAbilityData).LegendarySpell);
-                    break;
-                case TypeUpgradeAbility.FrostNova:
-                    _abilityPresenterFactory.CreateBuranPresenter(
-                        newAbility,
-                         abilityView,
-                        _player,
-                        abilityAttributeData.Particle,
-                        (abilityAttributeData as LegendaryAbilityData).LegendarySpell);
-                    break;
-            }
-
-            newAbility.AbilityUsed += OnAbilityUsed;
-            newAbility.AbilityEnded += OnAbilityEnded;
-            _legendaryAbilities.Add(newAbility);
+            _abilityStrategy = (abilityAttributeData as LegendaryAbilityData).IAbilityStrategy;
+            _abilityStrategy.Construct(_abilityEntitiesHolder);
+            AbilityPresenter abilityPresenter = new(_abilityEntitiesHolder);
+            _ability.AbilityUsed += OnAbilityUsed;
+            _ability.AbilityEnded += OnAbilityEnded;
+            _legendaryAbilities.Add(_ability);
         }
 
         public void CreatePassiveAbilityView(PassiveAbilityView passiveAbilityView)

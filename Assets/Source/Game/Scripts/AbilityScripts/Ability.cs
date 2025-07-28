@@ -274,8 +274,6 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
 
         private IEnumerator DurationAbility()
         {
-            Debug.Log(_currentDuration);
-            Debug.Log(IsAbilityEnded);
             while (_currentDuration > _minValue)
             {
                 _currentDuration -= Time.deltaTime;

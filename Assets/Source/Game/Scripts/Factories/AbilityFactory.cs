@@ -13,21 +13,29 @@ namespace Assets.Source.Game.Scripts.Factories
             _coroutineRunner = coroutineRunner;
         }
 
-        public Ability CreateAbility(ActiveAbilityData abilityAttributeData,
-            int currentLevel, float abilityCooldownReduction,
-            float abilityDuration, int abilityValue,
+        public Ability CreateAbility(
+            ActiveAbilityData abilityAttributeData,
+            int currentLevel,
+            float abilityCooldownReduction,
+            float abilityDuration,
+            int abilityValue,
             bool isAutoCast)
         {
-            Ability ability = new(abilityAttributeData,
-                currentLevel, abilityCooldownReduction,
-                abilityDuration, abilityValue,
-                isAutoCast, _coroutineRunner);
+            Ability ability = new(
+                abilityAttributeData,
+                currentLevel,
+                abilityCooldownReduction,
+                abilityDuration,
+                abilityValue,
+                isAutoCast,
+                _coroutineRunner);
+
             return ability;
         }
 
         public Ability CreateClassSkill(ClassAbilityData classAbilityData, bool isAutoCast, int currentLvl)
         {
-            Ability ability = new Ability(classAbilityData, isAutoCast, currentLvl, _coroutineRunner);
+            Ability ability = new (classAbilityData, isAutoCast, currentLvl, _coroutineRunner);
             return ability;
         }
 
@@ -39,11 +47,15 @@ namespace Assets.Source.Game.Scripts.Factories
             int abilityValue,
             bool isAutoCast)
         {
-            Ability ability = new(legendaryAbilityData,
+            Ability ability = new(
+                legendaryAbilityData,
                 abilityAttributeData,
                 abilityCooldownReduction,
-                abilityDuration, abilityValue,
-                isAutoCast, _coroutineRunner);
+                abilityDuration,
+                abilityValue,
+                isAutoCast,
+                _coroutineRunner);
+
             return ability;
         }
     }

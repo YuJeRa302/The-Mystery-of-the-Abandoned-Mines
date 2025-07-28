@@ -9,7 +9,7 @@ namespace Assets.Source.Game.Scripts.Card
 {
     public class CardLoader : MonoBehaviour
     {
-        private readonly System.Random _rnd = new();
+        private readonly System.Random _rnd = new ();
         private readonly int _minValue = 0;
         private readonly int _shiftIndex = 1;
         private readonly int _maxCardsPool = 3;
@@ -18,7 +18,7 @@ namespace Assets.Source.Game.Scripts.Card
         [SerializeField] private List<CardData> _defaultCardData;
 
         private Player _player;
-        private List<CardData> _mainCardsPool = new();
+        private List<CardData> _mainCardsPool = new ();
 
         public event Action CardPoolCreated;
 
@@ -122,7 +122,8 @@ namespace Assets.Source.Game.Scripts.Card
             }
         }
 
-        private bool FindLegendaryCard(List<CardData> cards,
+        private bool FindLegendaryCard(
+            List<CardData> cards,
             TypeUpgradeAbility upgradeType,
             out CardData legendaryCard)
         {
@@ -133,6 +134,7 @@ namespace Assets.Source.Game.Scripts.Card
                 if (card.AttributeData as LegendaryAbilityData)
                 {
                     var cardState = _player.GetCardStateByData(card);
+
                     if (cardState.IsLocked)
                     {
                         if ((card.AttributeData as LegendaryAbilityData).UpgradeType == upgradeType)

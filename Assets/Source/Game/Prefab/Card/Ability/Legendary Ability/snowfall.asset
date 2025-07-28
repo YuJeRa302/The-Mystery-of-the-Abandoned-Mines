@@ -38,4 +38,11 @@ MonoBehaviour:
   _upgradeType: 7
   _type: 5
   _typeAttack: 1
-  _legendarySpell: {fileID: 3443178031204434909, guid: bcd32f6824b151946bebed9aadfe6a5e, type: 3}
+  _abilityStrategy:
+    rid: 7260333119341592598
+  _legendarySpell: {fileID: 8248643083605145641, guid: bcd32f6824b151946bebed9aadfe6a5e, type: 3}
+  references:
+    version: 2
+    RefIds:
+    - rid: 7260333119341592598
+      type: {class: SnowfallPresenter, ns: Assets.Source.Game.Scripts.AbilityScripts, asm: Assembly-CSharp}

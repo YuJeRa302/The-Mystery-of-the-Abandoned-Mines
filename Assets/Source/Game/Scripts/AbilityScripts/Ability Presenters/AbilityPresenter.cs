@@ -1,102 +1,128 @@
-using Assets.Source.Game.Scripts.Characters;
 using Assets.Source.Game.Scripts.Services;
+using Reflex.Extensions;
 using System;
+using UnityEngine.SceneManagement;
 
 namespace Assets.Source.Game.Scripts.AbilityScripts
 {
-    public abstract class AbilityPresenter : IDisposable
+    public sealed class AbilityPresenter
     {
-        protected readonly ICoroutineRunner CoroutineRunner;
-        protected readonly GamePauseService GamePauseService;
-        protected readonly GameLoopService GameLoopService;
+        private readonly AbilityEntitiesHolder _abilityEntitiesHolder;
+        private readonly GamePauseService _gamePauseService;
+        private readonly GameLoopService _gameLoopService;
+        private readonly Ability _ability;
+        private readonly AbilityView _abilityView;
+        private readonly IAbilityStrategy _iAbilityStrategy;
+        private readonly IClassAbilityStrategy _iClassAbilityStrategy;
+        private readonly IAbilityPauseStrategy _iAbilityPauseStrategy;
 
-        protected Ability Ability;
-        protected AbilityView AbilityView;
-        protected Player Player;
-
-        public AbilityPresenter(
-            Ability ability,
-            AbilityView abilityView,
-            Player player,
-            GamePauseService gamePauseService,
-            GameLoopService gameLoopService,
-            ICoroutineRunner coroutineRunner)
+        public AbilityPresenter(AbilityEntitiesHolder abilityEntitiesHolder)
         {
-            Ability = ability;
-            AbilityView = abilityView;
-            Player = player;
-            CoroutineRunner = coroutineRunner;
-            GamePauseService = gamePauseService;
-            GameLoopService = gameLoopService;
+            _abilityEntitiesHolder = abilityEntitiesHolder;
+            _ability = _abilityEntitiesHolder.Ability;
+            _abilityView = _abilityEntitiesHolder.AbilityView;
+            _iAbilityStrategy = _abilityEntitiesHolder.IAbilityStrategy;
+
+            _iClassAbilityStrategy = _abilityEntitiesHolder.IAbilityStrategy is IClassAbilityStrategy ?
+            _abilityEntitiesHolder.IAbilityStrategy as IClassAbilityStrategy : null;
+
+            _iAbilityPauseStrategy = _abilityEntitiesHolder.IAbilityStrategy is IAbilityPauseStrategy ?
+            _abilityEntitiesHolder.IAbilityStrategy as IAbilityPauseStrategy : null;
+
+            var container = SceneManager.GetActiveScene().GetSceneContainer();
+            _gamePauseService = container.Resolve<GamePauseService>();
+            _gameLoopService = container.Resolve<GameLoopService>();
+            AddListener();
         }
 
         public void Dispose()
         {
-            if (AbilityView != null)
-                AbilityView.ViewDestroy();
+            if (_abilityView != null)
+                _abilityView.ViewDestroy();
 
             RemoveListener();
             GC.SuppressFinalize(this);
         }
 
-        protected virtual void AddListener()
+        private void AddListener()
         {
-            Ability.AbilityUsed += OnAbilityUsed;
-            Ability.AbilityEnded += OnAbilityEnded;
-            Ability.AbilityUpgraded += OnAbilityUpgraded;
-            Ability.CooldownValueChanged += OnCooldownValueChanged;
-            Ability.CooldownValueReseted += OnCooldownValueReset;
-            Ability.AbilityRemoved += Dispose;
-            GamePauseService.GamePaused += OnGamePaused;
-            GamePauseService.GameResumed += OnGameResumed;
-            GameLoopService.GameClosed += OnGameClosed;
+            _ability.AbilityUsed += OnAbilityUsed;
+            _ability.AbilityEnded += OnAbilityEnded;
+            _ability.AbilityUpgraded += OnAbilityUpgraded;
+            _ability.CooldownValueChanged += OnCooldownValueChanged;
+            _ability.CooldownValueReseted += OnCooldownValueReset;
+            _ability.AbilityRemoved += Dispose;
+            _gamePauseService.GamePaused += OnGamePaused;
+            _gamePauseService.GameResumed += OnGameResumed;
+            _gameLoopService.GameClosed += OnGameClosed;
+
+            if (_iClassAbilityStrategy != null)
+                _iClassAbilityStrategy.AddListener();
         }
 
-        protected virtual void RemoveListener()
+        private void RemoveListener()
         {
-            Ability.AbilityUsed -= OnAbilityUsed;
-            Ability.AbilityEnded -= OnAbilityEnded;
-            Ability.AbilityUpgraded -= OnAbilityUpgraded;
-            Ability.CooldownValueChanged -= OnCooldownValueChanged;
-            Ability.CooldownValueReseted -= OnCooldownValueReset;
-            Ability.AbilityRemoved -= Dispose;
-            GamePauseService.GamePaused -= OnGamePaused;
-            GamePauseService.GameResumed -= OnGameResumed;
-            GameLoopService.GameClosed -= OnGameClosed;
+            _ability.AbilityUsed -= OnAbilityUsed;
+            _ability.AbilityEnded -= OnAbilityEnded;
+            _ability.AbilityUpgraded -= OnAbilityUpgraded;
+            _ability.CooldownValueChanged -= OnCooldownValueChanged;
+            _ability.CooldownValueReseted -= OnCooldownValueReset;
+            _ability.AbilityRemoved -= Dispose;
+            _gamePauseService.GamePaused -= OnGamePaused;
+            _gamePauseService.GameResumed -= OnGameResumed;
+            _gameLoopService.GameClosed -= OnGameClosed;
+
+            if (_iClassAbilityStrategy != null)
+                _iClassAbilityStrategy.RemoveListener();
         }
 
-        protected abstract void OnAbilityUsed(Ability ability);
-
-        protected abstract void OnAbilityEnded(Ability ability);
-
-        protected virtual void OnCooldownValueChanged(float value)
+        private void OnAbilityUsed(Ability ability)
         {
-            AbilityView.ChangeCooldownValue(value);
+            _iAbilityStrategy.UsedAbility(_ability);
         }
 
-        protected virtual void OnCooldownValueReset(float value)
+        private void OnAbilityEnded(Ability ability)
         {
-            AbilityView.ResetCooldownValue(value);
+            _iAbilityStrategy.EndedAbility(_ability);
         }
 
-        protected virtual void OnGamePaused(bool state)
+        private void OnCooldownValueChanged(float value)
         {
-            Ability.StopCoroutine();
+            _abilityView.ChangeCooldownValue(value);
         }
 
-        protected virtual void OnGameResumed(bool state)
+        private void OnCooldownValueReset(float value)
         {
-            Ability.ResumeCoroutine();
+            _abilityView.ResetCooldownValue(value);
+
+            if (_iClassAbilityStrategy != null)
+                _iClassAbilityStrategy.SetInteractableButton();
         }
 
-        protected virtual void OnGameClosed()
+        private void OnGamePaused(bool state)
+        {
+            _ability.StopCoroutine();
+
+            if (_iAbilityPauseStrategy != null)
+                _iAbilityPauseStrategy.PausedGame(state);
+        }
+
+        private void OnGameResumed(bool state)
+        {
+            _ability.ResumeCoroutine();
+
+            if (_iAbilityPauseStrategy != null)
+                _iAbilityPauseStrategy.ResumedGame(state);
+        }
+
+        private void OnGameClosed()
         {
             Dispose();
         }
 
-        protected virtual void OnAbilityUpgraded(float delay)
+        private void OnAbilityUpgraded(float delay)
         {
-            AbilityView.Upgrade(delay);
+            _abilityView.Upgrade(delay);
         }
     }
 }

@@ -1,55 +1,89 @@
 using Assets.Source.Game.Scripts.Characters;
 using Assets.Source.Game.Scripts.PoolSystem;
+using Assets.Source.Game.Scripts.ScriptableObjects;
 using Assets.Source.Game.Scripts.Services;
+using Reflex.Extensions;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Assets.Source.Game.Scripts.AbilityScripts
 {
-    public class ThrowAxeAbilityPresenter : AbilityPresenter
+    public class ThrowAxeAbilityPresenter : IAbilityStrategy, IClassAbilityStrategy, IAbilityPauseStrategy
     {
+        private readonly float _delayThrowAxe = 0.3f;
+
+        private ICoroutineRunner _coroutineRunner;
         private Transform _throwPoint;
         private Pool _pool;
         private AxeMissile _axeMissilePrefab;
         private AxeMissile _axeMissile;
-        private bool _isAbilityUse;
+        private bool _isAbilityUse = false;
         private Coroutine _damageDealCoroutine;
+        private Ability _ability;
+        private AbilityView _abilityView;
+        private Player _player;
 
-        public ThrowAxeAbilityPresenter(
-            Ability ability,
-            AbilityView abilityView,
-            Player player,
-            GamePauseService gamePauseService,
-            GameLoopService gameLoopService,
-            ICoroutineRunner coroutineRunner,
-            AxeMissile axeMissile) : base(ability, abilityView, player,
-                gamePauseService, gameLoopService, coroutineRunner)
+        public void Construct(AbilityEntitiesHolder abilityEntitiesHolder)
         {
-            _throwPoint = Player.ThrowAbilityPoint;
-            _pool = Player.Pool;
-            _axeMissilePrefab = axeMissile;
-            AddListener();
+            ThrowAxeClassAbility throwAxeClass = abilityEntitiesHolder.AttributeData as ThrowAxeClassAbility;
+            _ability = abilityEntitiesHolder.Ability;
+            _abilityView = abilityEntitiesHolder.AbilityView;
+            _player = abilityEntitiesHolder.Player;
+            _pool = _player.Pool;
+            _axeMissilePrefab = throwAxeClass.AxeMissile;
+            _throwPoint = _player.ThrowAbilityPoint;
+            var container = SceneManager.GetActiveScene().GetSceneContainer();
+            _coroutineRunner = container.Resolve<ICoroutineRunner>();
         }
 
-        protected override void AddListener()
+        public void UsedAbility(Ability ability)
         {
-            base.AddListener();
-            (AbilityView as ClassSkillButtonView).AbilityUsed += OnButtonSkillClick;
+            if (_isAbilityUse == false)
+                return;
+
+            Spawn();
+
+            if (_damageDealCoroutine != null)
+                _coroutineRunner.StopCoroutine(_damageDealCoroutine);
+
+            _damageDealCoroutine = _coroutineRunner.StartCoroutine(DealDamage());
         }
 
-        protected override void RemoveListener()
-        {
-            base.RemoveListener();
-            (AbilityView as ClassSkillButtonView).AbilityUsed -= OnButtonSkillClick;
-        }
-
-        protected override void OnAbilityEnded(Ability ability)
+        public void EndedAbility(Ability ability)
         {
             _isAbilityUse = false;
 
             if (_damageDealCoroutine != null)
-                CoroutineRunner.StopCoroutine(_damageDealCoroutine);
+                _coroutineRunner.StopCoroutine(_damageDealCoroutine);
+        }
+
+        public void AddListener()
+        {
+            (_abilityView as ClassSkillButtonView).AbilityUsed += OnButtonSkillClick;
+        }
+
+        public void RemoveListener()
+        {
+            (_abilityView as ClassSkillButtonView).AbilityUsed -= OnButtonSkillClick;
+        }
+
+        public void SetInteractableButton()
+        {
+            (_abilityView as ClassSkillButtonView).SetInteractableButton(true);
+        }
+
+        public void PausedGame(bool state)
+        {
+            if (_damageDealCoroutine != null)
+                _coroutineRunner.StopCoroutine(_damageDealCoroutine);
+        }
+
+        public void ResumedGame(bool state)
+        {
+            if (_damageDealCoroutine != null)
+                _damageDealCoroutine = _coroutineRunner.StartCoroutine(DealDamage());
         }
 
         private void OnButtonSkillClick()
@@ -58,33 +92,8 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
                 return;
 
             _isAbilityUse = true;
-            Ability.Use();
-            (AbilityView as ClassSkillButtonView).SetInteractableButton(false);
-        }
-
-        protected override void OnAbilityUsed(Ability ability)
-        {
-            _isAbilityUse = true;
-            Spawn();
-
-            if (_damageDealCoroutine != null)
-                CoroutineRunner.StopCoroutine(_damageDealCoroutine);
-
-            _damageDealCoroutine = CoroutineRunner.StartCoroutine(DealDamage());
-        }
-
-        protected override void OnGameResumed(bool state)
-        {
-            base.OnGameResumed(state);
-
-            if (_damageDealCoroutine != null)
-                _damageDealCoroutine = CoroutineRunner.StartCoroutine(DealDamage());
-        }
-
-        protected override void OnCooldownValueReset(float value)
-        {
-            base.OnCooldownValueReset(value);
-            (AbilityView as ClassSkillButtonView).SetInteractableButton(true);
+            _ability.Use();
+            (_abilityView as ClassSkillButtonView).SetInteractableButton(false);
         }
 
         private void Spawn()
@@ -101,10 +110,11 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
                 _axeMissile = GameObject.Instantiate(_axeMissilePrefab, _throwPoint.position, Quaternion.identity);
 
                 _pool.InstantiatePoolObject(_axeMissile, _axeMissilePrefab.name);
-                _axeMissile.Initialize(Player, Player.DamageSource, Player.MoveSpeed, Ability.CurrentDuration);
+                _axeMissile.Initialize(_player, _player.DamageSource, _player.MoveSpeed, _ability.CurrentDuration);
             }
 
-            _axeMissile.GetComponent<Rigidbody>().AddForce(_throwPoint.forward * Ability.CurrentDuration,
+            _axeMissile.GetComponent<Rigidbody>().AddForce(
+                _throwPoint.forward * _ability.CurrentDuration,
                 ForceMode.Impulse);
         }
 
@@ -122,7 +132,7 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
 
         private IEnumerator DealDamage()
         {
-            while (Ability.IsAbilityEnded == false)
+            while (_ability.IsAbilityEnded == false)
             {
                 if (_axeMissile != null)
                 {
@@ -130,12 +140,12 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
                     {
                         foreach (var enemy in enemies)
                         {
-                            enemy.TakeDamage(Player.DamageSource);
+                            enemy.TakeDamage(_player.DamageSource);
                         }
                     }
                 }
 
-                yield return new WaitForSeconds(0.3f);
+                yield return new WaitForSeconds(_delayThrowAxe);
             }
         }
     }

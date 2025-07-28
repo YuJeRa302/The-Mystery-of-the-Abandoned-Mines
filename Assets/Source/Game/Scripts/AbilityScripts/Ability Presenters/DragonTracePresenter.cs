@@ -1,103 +1,95 @@
 using Assets.Source.Game.Scripts.Characters;
+using Assets.Source.Game.Scripts.ScriptableObjects;
 using Assets.Source.Game.Scripts.Services;
+using Reflex.Extensions;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Assets.Source.Game.Scripts.AbilityScripts
 {
-    public class DragonTracePresenter : AbilityPresenter
+    public class DragonTracePresenter : IAbilityStrategy, IAbilityPauseStrategy
     {
         private readonly float _delayAttack = 0.3f;
         private readonly float _delaySpawnSpell = 0.5f;
 
+        private ICoroutineRunner _coroutineRunner;
         private LegendaryThunderAbilitySpell _spellPrefab;
         private LegendaryThunderAbilitySpell _spell;
-        private Coroutine _blastThrowingCoroutine;
         private Coroutine _damageDealCoroutine;
         private Coroutine _spawnedSpellCoroutine;
         private ParticleSystem _particleSystem;
-        private List<LegendaryThunderAbilitySpell> _spells = new();
+        private List<LegendaryThunderAbilitySpell> _spells = new ();
+        private Ability _ability;
+        private Player _player;
 
-        public DragonTracePresenter(
-            Ability ability,
-            AbilityView abilityView,
-            Player player,
-            GamePauseService gamePauseService,
-            GameLoopService gameLoopService,
-            ICoroutineRunner coroutineRunner,
-            ParticleSystem particleSystem,
-            LegendaryThunderAbilitySpell spellPrefab) : base(ability, abilityView, player,
-                gamePauseService, gameLoopService, coroutineRunner)
+        public void Construct(AbilityEntitiesHolder abilityEntitiesHolder)
         {
-            _particleSystem = particleSystem;
-            _spellPrefab = spellPrefab;
-            AddListener();
+            LegendaryAbilityData legendaryAbilityData = abilityEntitiesHolder.AttributeData as LegendaryAbilityData;
+            _ability = abilityEntitiesHolder.Ability;
+            _player = abilityEntitiesHolder.Player;
+            _particleSystem = abilityEntitiesHolder.ParticleSystem;
+            _spellPrefab = legendaryAbilityData.LegendarySpell;
+            var container = SceneManager.GetActiveScene().GetSceneContainer();
+            _coroutineRunner = container.Resolve<ICoroutineRunner>();
         }
 
-        protected override void OnGamePaused(bool state)
+        public void UsedAbility(Ability ability)
         {
-            base.OnGamePaused(state);
-
             if (_spawnedSpellCoroutine != null)
-                CoroutineRunner.StopCoroutine(_spawnedSpellCoroutine);
+                _coroutineRunner.StopCoroutine(_spawnedSpellCoroutine);
 
-            if (_blastThrowingCoroutine != null)
-                CoroutineRunner.StopCoroutine(_blastThrowingCoroutine);
+            _spawnedSpellCoroutine = _coroutineRunner.StartCoroutine(SpawnSpell());
 
             if (_damageDealCoroutine != null)
-                CoroutineRunner.StopCoroutine(_damageDealCoroutine);
+                _coroutineRunner.StopCoroutine(_damageDealCoroutine);
+
+            _damageDealCoroutine = _coroutineRunner.StartCoroutine(DealDamage());
         }
 
-        protected override void OnGameResumed(bool state)
+        public void EndedAbility(Ability ability)
         {
-            base.OnGameResumed(state);
-
             if (_spawnedSpellCoroutine != null)
-                _spawnedSpellCoroutine = CoroutineRunner.StartCoroutine(SpawnSpell());
+                _coroutineRunner.StopCoroutine(_spawnedSpellCoroutine);
 
             if (_damageDealCoroutine != null)
-                _damageDealCoroutine = CoroutineRunner.StartCoroutine(DealDamage());
+                _coroutineRunner.StopCoroutine(_damageDealCoroutine);
         }
 
-        protected override void OnAbilityUsed(Ability ability)
+        public void PausedGame(bool state)
         {
             if (_spawnedSpellCoroutine != null)
-                CoroutineRunner.StopCoroutine(_spawnedSpellCoroutine);
-
-            _spawnedSpellCoroutine = CoroutineRunner.StartCoroutine(SpawnSpell());
+                _coroutineRunner.StopCoroutine(_spawnedSpellCoroutine);
 
             if (_damageDealCoroutine != null)
-                CoroutineRunner.StopCoroutine(_damageDealCoroutine);
-
-            _damageDealCoroutine = CoroutineRunner.StartCoroutine(DealDamage());
+                _coroutineRunner.StopCoroutine(_damageDealCoroutine);
         }
 
-        protected override void OnAbilityEnded(Ability ability)
+        public void ResumedGame(bool state)
         {
             if (_spawnedSpellCoroutine != null)
-                CoroutineRunner.StopCoroutine(_spawnedSpellCoroutine);
-
-            if (_blastThrowingCoroutine != null)
-                CoroutineRunner.StopCoroutine(_blastThrowingCoroutine);
+                _spawnedSpellCoroutine = _coroutineRunner.StartCoroutine(SpawnSpell());
 
             if (_damageDealCoroutine != null)
-                CoroutineRunner.StopCoroutine(_damageDealCoroutine);
+                _damageDealCoroutine = _coroutineRunner.StartCoroutine(DealDamage());
         }
 
         private IEnumerator SpawnSpell()
         {
             float lastTime = 0;
 
-            while (lastTime < Ability.CurrentDuration)
+            while (lastTime < _ability.CurrentDuration)
             {
                 _spell = Object.Instantiate(
                     _spellPrefab,
-                    new Vector3(Player.transform.position.x, Player.transform.position.y,
-                    Player.transform.position.z),
+                    new Vector3(
+                        _player.transform.position.x, 
+                        _player.transform.position.y,
+                        _player.transform.position.z),
                     Quaternion.identity);
 
-                _spell.Initialize(_particleSystem, Ability.CurrentDuration);
+                _spell.Initialize(_particleSystem, _ability.CurrentDuration);
                 _spells.Add(_spell);
 
                 yield return new WaitForSeconds(_delaySpawnSpell);
@@ -107,7 +99,7 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
 
         private IEnumerator DealDamage()
         {
-            while (Ability.IsAbilityEnded == false)
+            while (_ability.IsAbilityEnded == false)
             {
                 yield return new WaitForSeconds(_delayAttack);
 
@@ -121,7 +113,7 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
                             {
                                 foreach (var enemy in enemies)
                                 {
-                                    enemy.TakeDamage(Ability.DamageSource);
+                                    enemy.TakeDamage(_ability.DamageSource);
                                 }
                             }
                         }

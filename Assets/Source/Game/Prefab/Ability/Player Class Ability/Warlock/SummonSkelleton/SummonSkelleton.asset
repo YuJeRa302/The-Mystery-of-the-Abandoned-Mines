@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5fce96a399569d4ab38602e40a7eb47, type: 3}
   m_Name: SummonSkelleton
   m_EditorClassIdentifier: 
-  _parameterView: {fileID: 0}
+  _parameterView: {fileID: 1961483584371832456, guid: 6d57f6325ba58d6478a1fd35f1ba2831, type: 3}
   _parameters:
   - _cardParameters:
     - _value: 1
@@ -57,4 +57,11 @@ MonoBehaviour:
     _damage: 0
     _damageParameters: []
     _particle: {fileID: 0}
+  _abilityStrategy:
+    rid: 7260332982047342592
   _summonData: {fileID: 11400000, guid: 26e4bd4476e87af49b6012ade3e6eaf3, type: 2}
+  references:
+    version: 2
+    RefIds:
+    - rid: 7260332982047342592
+      type: {class: SummonAbilityPresenter, ns: Assets.Source.Game.Scripts.AbilityScripts, asm: Assembly-CSharp}

@@ -1,48 +1,58 @@
 using Assets.Source.Game.Scripts.Characters;
 using Assets.Source.Game.Scripts.PoolSystem;
+using Assets.Source.Game.Scripts.ScriptableObjects;
 using Assets.Source.Game.Scripts.Services;
 using UnityEngine;
 
 namespace Assets.Source.Game.Scripts.AbilityScripts
 {
-    public class SummonAbilityPresenter : AbilityPresenter
+    public class SummonAbilityPresenter : IAbilityStrategy, IClassAbilityStrategy
     {
         private Summon _summonPrefab;
         private Transform _spawnPoint;
         private Pool _pool;
         private bool _isAbilityUse;
+        private Ability _ability;
+        private AbilityView _abilityView;
+        private Player _player;
 
-        public SummonAbilityPresenter(
-            Ability ability,
-            AbilityView abilityView,
-            Player player,
-            GamePauseService gamePauseService,
-            GameLoopService gameLoopService,
-            ICoroutineRunner coroutineRunner,
-            Summon summonPrefab) : base(ability, abilityView, player,
-                gamePauseService, gameLoopService, coroutineRunner)
+        public void Construct(AbilityEntitiesHolder abilityEntitiesHolder)
         {
-            _pool = Player.Pool;
-            _summonPrefab = summonPrefab;
-            _spawnPoint = Player.ShotPoint;
-            AddListener();
+            SummonAbilityData summonAbilityData = abilityEntitiesHolder.AttributeData as SummonAbilityData;
+            _ability = abilityEntitiesHolder.Ability;
+            _abilityView = abilityEntitiesHolder.AbilityView;
+            _player = abilityEntitiesHolder.Player;
+            _pool = abilityEntitiesHolder.Player.Pool;
+            _spawnPoint = abilityEntitiesHolder.Player.ShotPoint;
+            _summonPrefab = summonAbilityData.Summon.Summon;
         }
 
-        protected override void AddListener()
+        public void UsedAbility(Ability ability)
         {
-            base.AddListener();
-            (AbilityView as ClassSkillButtonView).AbilityUsed += OnButtonSkillClick;
+            for (int i = 0; i < ability.Quantity; i++)
+            {
+                Spawn();
+            }
         }
 
-        protected override void RemoveListener()
-        {
-            base.RemoveListener();
-            (AbilityView as ClassSkillButtonView).AbilityUsed -= OnButtonSkillClick;
-        }
-
-        protected override void OnAbilityEnded(Ability ability)
+        public void EndedAbility(Ability ability)
         {
             _isAbilityUse = false;
+        }
+
+        public void SetInteractableButton()
+        {
+            (_abilityView as ClassSkillButtonView).SetInteractableButton(true);
+        }
+
+        public void AddListener()
+        {
+            (_abilityView as ClassSkillButtonView).AbilityUsed += OnButtonSkillClick;
+        }
+
+        public void RemoveListener()
+        {
+            (_abilityView as ClassSkillButtonView).AbilityUsed -= OnButtonSkillClick;
         }
 
         private void OnButtonSkillClick()
@@ -51,21 +61,13 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
                 return;
 
             _isAbilityUse = true;
-            Ability.Use();
-            (AbilityView as ClassSkillButtonView).SetInteractableButton(false);
-        }
-
-        protected override void OnAbilityUsed(Ability ability)
-        {
-            for (int i = 0; i < Ability.Quantity; i++)
-            {
-                Spawn();
-            }
+            _ability.Use();
+            (_abilityView as ClassSkillButtonView).SetInteractableButton(false);
         }
 
         private void Spawn()
         {
-            Summon summon = null;
+            Summon summon;
 
             if (TryFindSummon(_summonPrefab.gameObject, out Summon poolSummon))
             {
@@ -76,10 +78,10 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
             }
             else
             {
-                summon = Object.Instantiate(_summonPrefab, _spawnPoint.position, _spawnPoint.rotation);
+                summon = GameObject.Instantiate(_summonPrefab, _spawnPoint.position, _spawnPoint.rotation);
 
                 _pool.InstantiatePoolObject(summon, _summonPrefab.name);
-                summon.Initialize(Player, Player.DamageSource, Ability.CurrentDuration);
+                summon.Initialize(_player, _player.DamageSource, _ability.CurrentDuration);
             }
         }
 
@@ -93,12 +95,6 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
             }
 
             return poolSummon != null;
-        }
-
-        protected override void OnCooldownValueReset(float value)
-        {
-            base.OnCooldownValueReset(value);
-            (AbilityView as ClassSkillButtonView).SetInteractableButton(true);
         }
     }
 }

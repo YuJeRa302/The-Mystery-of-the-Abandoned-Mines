@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 840a534f1bd072048a5a6e2073d05d14, type: 3}
   m_Name: StunningBlowAbilityData
   m_EditorClassIdentifier: 
-  _parameterView: {fileID: 0}
+  _parameterView: {fileID: 1961483584371832456, guid: 6d57f6325ba58d6478a1fd35f1ba2831, type: 3}
   _parameters:
   - _cardParameters:
     - _value: 3
@@ -67,4 +67,11 @@ MonoBehaviour:
     - _value: 0
       _typeDamageParameter: 1
     _particle: {fileID: 0}
+  _abilityStrategy:
+    rid: 7260333119341592581
   _poolParticle: {fileID: 2488866898889339437, guid: 1a78f5ed4c5a86543a38af1e9c5773db, type: 3}
+  references:
+    version: 2
+    RefIds:
+    - rid: 7260333119341592581
+      type: {class: StunningBlowAbilityPresenter, ns: Assets.Source.Game.Scripts.AbilityScripts, asm: Assembly-CSharp}

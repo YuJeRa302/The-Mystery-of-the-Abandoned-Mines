@@ -1,6 +1,7 @@
 using Assets.Source.Game.Scripts.AbilityScripts;
 using Assets.Source.Game.Scripts.Characters;
 using Assets.Source.Game.Scripts.Enums;
+using Assets.Source.Game.Scripts.Services;
 using UnityEngine;
 
 namespace Assets.Source.Game.Scripts.ScriptableObjects
@@ -15,6 +16,7 @@ namespace Assets.Source.Game.Scripts.ScriptableObjects
         [SerializeField] private TypeUpgradeAbility _upgradeType;
         [SerializeField] private TypeAbility _type;
         [SerializeField] private TypeAttackAbility _typeAttack;
+        [SerializeReference] private IAbilityStrategy _abilityStrategy;
 
         public AbilityView AbilityView => _abilityView;
         public ParticleSystem Particle => _particle;
@@ -22,6 +24,7 @@ namespace Assets.Source.Game.Scripts.ScriptableObjects
         public TypeUpgradeAbility UpgradeType => _upgradeType;
         public TypeAbility TypeAbility => _type;
         public TypeAttackAbility TypeAttackAbility => _typeAttack;
+        public IAbilityStrategy IAbilityStrategy => _abilityStrategy;
         public DamageSource Damage => _damage;
     }
 }

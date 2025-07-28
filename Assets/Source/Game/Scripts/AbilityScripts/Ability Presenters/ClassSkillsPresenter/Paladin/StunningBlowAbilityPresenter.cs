@@ -1,54 +1,58 @@
 using Assets.Source.Game.Scripts.Characters;
 using Assets.Source.Game.Scripts.PoolSystem;
+using Assets.Source.Game.Scripts.ScriptableObjects;
 using Assets.Source.Game.Scripts.Services;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.Source.Game.Scripts.AbilityScripts
 {
-    public class StunningBlowAbilityPresenter : AbilityPresenter
+    public class StunningBlowAbilityPresenter : IAbilityStrategy, IClassAbilityStrategy
     {
-        private Coroutine _coroutine;
         private Transform _effectContainer;
         private Pool _pool;
         private PoolParticle _poolParticle;
         private bool _isAbilityUse;
         private float _searchRadius = 4f;
+        private Ability _ability;
+        private AbilityView _abilityView;
+        private Player _player;
 
-        public StunningBlowAbilityPresenter(
-            Ability ability,
-            AbilityView abilityView,
-            Player player,
-            GamePauseService gamePauseService,
-            GameLoopService gameLoopService,
-            ICoroutineRunner coroutineRunner,
-            PoolParticle abilityEffect) : base(ability, abilityView, player,
-                gamePauseService, gameLoopService, coroutineRunner)
+        public void Construct(AbilityEntitiesHolder abilityEntitiesHolder)
         {
-            _pool = Player.Pool;
-            _poolParticle = abilityEffect;
-            _effectContainer = Player.PlayerAbilityContainer;
-            AddListener();
+            StunningBlowClassAbilityData stunningBlow = abilityEntitiesHolder.AttributeData as StunningBlowClassAbilityData;
+            _ability = abilityEntitiesHolder.Ability;
+            _abilityView = abilityEntitiesHolder.AbilityView;
+            _player = abilityEntitiesHolder.Player;
+            _poolParticle = stunningBlow.PoolParticle;
+            _pool = abilityEntitiesHolder.Player.Pool;
+            _effectContainer = abilityEntitiesHolder.Player.PlayerAbilityContainer;
         }
 
-        protected override void AddListener()
+        public void UsedAbility(Ability ability)
         {
-            base.AddListener();
-            (AbilityView as ClassSkillButtonView).AbilityUsed += OnButtonSkillClick;
+            _isAbilityUse = true;
+            CastBlow();
         }
 
-        protected override void RemoveListener()
+        public void EndedAbility(Ability ability)
         {
-            base.RemoveListener();
-            (AbilityView as ClassSkillButtonView).AbilityUsed -= OnButtonSkillClick;
-        }
-
-        protected override void OnAbilityEnded(Ability ability)
-        {
-            if (_coroutine != null)
-                CoroutineRunner.StopCoroutine(_coroutine);
-
             _isAbilityUse = false;
+        }
+
+        public void AddListener()
+        {
+            (_abilityView as ClassSkillButtonView).AbilityUsed += OnButtonSkillClick;
+        }
+
+        public void RemoveListener()
+        {
+            (_abilityView as ClassSkillButtonView).AbilityUsed -= OnButtonSkillClick;
+        }
+
+        public void SetInteractableButton()
+        {
+            (_abilityView as ClassSkillButtonView).SetInteractableButton(true);
         }
 
         private void OnButtonSkillClick()
@@ -57,25 +61,8 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
                 return;
 
             _isAbilityUse = true;
-            Ability.Use();
-            (AbilityView as ClassSkillButtonView).SetInteractableButton(false);
-        }
-
-        protected override void OnAbilityUsed(Ability ability)
-        {
-            _isAbilityUse = true;
-            CastBlow();
-        }
-
-        protected override void OnGameResumed(bool state)
-        {
-            base.OnGameResumed(state);
-        }
-
-        protected override void OnCooldownValueReset(float value)
-        {
-            base.OnCooldownValueReset(value);
-            (AbilityView as ClassSkillButtonView).SetInteractableButton(true);
+            _ability.Use();
+            (_abilityView as ClassSkillButtonView).SetInteractableButton(false);
         }
 
         private void CastBlow()
@@ -107,14 +94,14 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
             {
                 foreach (var enemy in foundEnemies)
                 {
-                    enemy.TakeDamage(Ability.DamageSource);
+                    enemy.TakeDamage(_ability.DamageSource);
                 }
             }
         }
 
         private bool TryFindEnemy(out List<Enemy> foundEnemies)
         {
-            Collider[] colliderEnemy = Physics.OverlapSphere(Player.transform.position, _searchRadius);
+            Collider[] colliderEnemy = Physics.OverlapSphere(_player.transform.position, _searchRadius);
             List<Enemy> enemies = new();
 
             foreach (Collider collider in colliderEnemy)

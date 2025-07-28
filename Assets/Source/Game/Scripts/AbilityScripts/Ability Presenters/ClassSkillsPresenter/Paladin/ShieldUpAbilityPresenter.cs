@@ -1,56 +1,61 @@
 using Assets.Source.Game.Scripts.Characters;
 using Assets.Source.Game.Scripts.PoolSystem;
+using Assets.Source.Game.Scripts.ScriptableObjects;
 using Assets.Source.Game.Scripts.Services;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.Source.Game.Scripts.AbilityScripts
 {
-    public class ShieldUpAbilityPresenter : AbilityPresenter
+    public class ShieldUpAbilityPresenter : IAbilityStrategy, IClassAbilityStrategy
     {
-        private Coroutine _coroutine;
         private Transform _effectContainer;
         private Pool _pool;
         private PoolParticle _poolParticle;
-        private List<PoolObject> _spawnedEffects = new();
+        private List<PoolObject> _spawnedEffects = new ();
         private bool _isAbilityUse;
+        private Ability _ability;
+        private AbilityView _abilityView;
+        private Player _player;
 
-        public ShieldUpAbilityPresenter(
-            Ability ability,
-            AbilityView abilityView,
-            Player player,
-            GamePauseService gamePauseService,
-            GameLoopService gameLoopService,
-            ICoroutineRunner coroutineRunner,
-            PoolParticle abilityEffect) : base(ability, abilityView, player,
-                gamePauseService, gameLoopService, coroutineRunner)
+        public void Construct(AbilityEntitiesHolder abilityEntitiesHolder)
         {
-            _pool = Player.Pool;
-            _poolParticle = abilityEffect;
-            _effectContainer = Player.PlayerAbilityContainer;
-            AddListener();
+            ShieldUpAbility shieldUpAbility = abilityEntitiesHolder.AttributeData as ShieldUpAbility;
+            _ability = abilityEntitiesHolder.Ability;
+            _abilityView = abilityEntitiesHolder.AbilityView;
+            _player = abilityEntitiesHolder.Player;
+            _poolParticle = shieldUpAbility.PoolParticle;
+            _pool = _player.Pool;
+            _effectContainer = _player.PlayerAbilityContainer;
         }
 
-        protected override void AddListener()
+        public void UsedAbility(Ability ability)
         {
-            base.AddListener();
-            (AbilityView as ClassSkillButtonView).AbilityUsed += OnButtonSkillClick;
+            _isAbilityUse = true;
+            ActivateShield();
+            ChangeAbilityEffect(_isAbilityUse);
         }
 
-        protected override void RemoveListener()
+        public void EndedAbility(Ability ability)
         {
-            base.RemoveListener();
-            (AbilityView as ClassSkillButtonView).AbilityUsed -= OnButtonSkillClick;
-        }
-
-        protected override void OnAbilityEnded(Ability ability)
-        {
-            if (_coroutine != null)
-                CoroutineRunner.StopCoroutine(_coroutine);
-
             _isAbilityUse = false;
             ChangeAbilityEffect(_isAbilityUse);
-            Player.PlayerAnimation.UsedAbilityEnd();
+            _player.PlayerAnimation.UsedAbilityEnd();
+        }
+
+        public void AddListener()
+        {
+            (_abilityView as ClassSkillButtonView).AbilityUsed += OnButtonSkillClick;
+        }
+
+        public void RemoveListener()
+        {
+            (_abilityView as ClassSkillButtonView).AbilityUsed -= OnButtonSkillClick;
+        }
+
+        public void SetInteractableButton()
+        {
+            (_abilityView as ClassSkillButtonView).SetInteractableButton(true);
         }
 
         private void OnButtonSkillClick()
@@ -59,15 +64,8 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
                 return;
 
             _isAbilityUse = true;
-            Ability.Use();
-            (AbilityView as ClassSkillButtonView).SetInteractableButton(false);
-        }
-
-        protected override void OnAbilityUsed(Ability ability)
-        {
-            _isAbilityUse = true;
-            ActivateShield();
-            ChangeAbilityEffect(_isAbilityUse);
+            _ability.Use();
+            (_abilityView as ClassSkillButtonView).SetInteractableButton(false);
         }
 
         private void ChangeAbilityEffect(bool isAbilityEnded)
@@ -98,15 +96,9 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
             }
         }
 
-        protected override void OnCooldownValueReset(float value)
-        {
-            base.OnCooldownValueReset(value);
-            (AbilityView as ClassSkillButtonView).SetInteractableButton(true);
-        }
-
         private void ActivateShield()
         {
-            Player.PlayerAnimation.UseCoverAbility();
+            _player.PlayerAnimation.UseCoverAbility();
         }
     }
 }

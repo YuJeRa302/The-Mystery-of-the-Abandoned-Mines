@@ -1,14 +1,17 @@
 using Assets.Source.Game.Scripts.Characters;
+using Assets.Source.Game.Scripts.ScriptableObjects;
 using Assets.Source.Game.Scripts.Services;
+using Reflex.Extensions;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Assets.Source.Game.Scripts.AbilityScripts
 {
-    public class EpiphanyAbilityPresenter : AbilityPresenter
+    public class EpiphanyAbilityPresenter : IAbilityStrategy, IClassAbilityStrategy
     {
-        private Coroutine _coroutine;
+        private ICoroutineRunner _coroutineRunner;
         private Coroutine _damageDealCoroutine;
         private ParticleSystem _poolParticle;
         private Spell _spell;
@@ -16,44 +19,52 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
         private bool _isAbilityUse;
         private float _spellRadius = 8f;
         private float _delayDamage = 1f;
+        private Ability _ability;
+        private AbilityView _abilityView;
+        private Player _player;
 
-        public EpiphanyAbilityPresenter(
-            Ability ability,
-            AbilityView abilityView,
-            Player player,
-            GamePauseService gamePauseService,
-            GameLoopService gameLoopService,
-            ICoroutineRunner coroutineRunner,
-            ParticleSystem abilityEffect,
-            Spell spell) : base(ability, abilityView, player, gamePauseService,
-                gameLoopService, coroutineRunner)
+        public void Construct(AbilityEntitiesHolder abilityEntitiesHolder)
         {
-            _poolParticle = abilityEffect;
-            _spellPrefab = spell;
-            AddListener();
+            EpiphanyClassAbilityData epiphanyClassData = abilityEntitiesHolder.AttributeData as EpiphanyClassAbilityData;
+            _ability = abilityEntitiesHolder.Ability;
+            _abilityView = abilityEntitiesHolder.AbilityView;
+            _player = abilityEntitiesHolder.Player;
+            _poolParticle = epiphanyClassData.EpiphanyParticle;
+            var container = SceneManager.GetActiveScene().GetSceneContainer();
+            _coroutineRunner = container.Resolve<ICoroutineRunner>();
         }
 
-        protected override void AddListener()
+        public void UsedAbility(Ability ability)
         {
-            base.AddListener();
-            (AbilityView as ClassSkillButtonView).AbilityUsed += OnButtonSkillClick;
-        }
-
-        protected override void RemoveListener()
-        {
-            base.RemoveListener();
-            (AbilityView as ClassSkillButtonView).AbilityUsed -= OnButtonSkillClick;
-        }
-
-        protected override void OnAbilityEnded(Ability ability)
-        {
-            if (_coroutine != null)
-                CoroutineRunner.StopCoroutine(_coroutine);
+            CreateSpell();
 
             if (_damageDealCoroutine != null)
-                CoroutineRunner.StopCoroutine(_damageDealCoroutine);
+                _coroutineRunner.StopCoroutine(_damageDealCoroutine);
+
+            _damageDealCoroutine = _coroutineRunner.StartCoroutine(DealDamage());
+        }
+
+        public void EndedAbility(Ability ability)
+        {
+            if (_damageDealCoroutine != null)
+                _coroutineRunner.StopCoroutine(_damageDealCoroutine);
 
             _isAbilityUse = false;
+        }
+
+        public void AddListener()
+        {
+            (_abilityView as ClassSkillButtonView).AbilityUsed += OnButtonSkillClick;
+        }
+
+        public void RemoveListener()
+        {
+            (_abilityView as ClassSkillButtonView).AbilityUsed -= OnButtonSkillClick;
+        }
+
+        public void SetInteractableButton()
+        {
+            (_abilityView as ClassSkillButtonView).SetInteractableButton(true);
         }
 
         private void OnButtonSkillClick()
@@ -62,46 +73,26 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
                 return;
 
             _isAbilityUse = true;
-            Ability.Use();
-            (AbilityView as ClassSkillButtonView).SetInteractableButton(false);
+            _ability.Use();
+            (_abilityView as ClassSkillButtonView).SetInteractableButton(false);
         }
 
-        protected override void OnAbilityUsed(Ability ability)
-        {
-            _isAbilityUse = true;
-            CastEpiphany();
-
-            if (_damageDealCoroutine != null)
-                CoroutineRunner.StopCoroutine(_damageDealCoroutine);
-
-            _damageDealCoroutine = CoroutineRunner.StartCoroutine(DealDamage());
-        }
-
-        protected override void OnCooldownValueReset(float value)
-        {
-            base.OnCooldownValueReset(value);
-            (AbilityView as ClassSkillButtonView).SetInteractableButton(true);
-        }
-
-        private void CastEpiphany()
-        {
-            CreateParticle();
-        }
-
-        private void CreateParticle()
+        private void CreateSpell()
         {
             _spell = Object.Instantiate(
                     _spellPrefab,
-                    new Vector3(Player.transform.position.x, Player.transform.position.y,
-                    Player.transform.position.z),
+                    new Vector3(
+                        _player.transform.position.x,
+                        _player.transform.position.y,
+                        _player.transform.position.z),
                     Quaternion.identity);
 
-            _spell.Initialize(_poolParticle, Ability.CurrentDuration, _spellRadius);
+            _spell.Initialize(_poolParticle, _ability.CurrentDuration, _spellRadius);
         }
 
         private IEnumerator DealDamage()
         {
-            while (Ability.IsAbilityEnded == false)
+            while (_ability.IsAbilityEnded == false)
             {
                 if (_spell != null)
                 {
@@ -109,7 +100,7 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
                     {
                         foreach (var enemy in enemies)
                         {
-                            enemy.TakeDamage(Ability.DamageSource);
+                            enemy.TakeDamage(_ability.DamageSource);
                         }
                     }
                 }

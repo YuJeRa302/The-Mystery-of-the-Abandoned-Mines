@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fa205f893cf3e2448f6e584bb9b017d, type: 3}
   m_Name: DarckPactAbilityData
   m_EditorClassIdentifier: 
-  _parameterView: {fileID: 0}
+  _parameterView: {fileID: 1961483584371832456, guid: 6d57f6325ba58d6478a1fd35f1ba2831, type: 3}
   _parameters:
   - _cardParameters:
     - _value: 2
@@ -48,14 +48,14 @@ MonoBehaviour:
   _id: 16
   _buttonView: {fileID: 7547704264931708372, guid: 226be77f080a72f41b3a154b64b3d4ae, type: 3}
   _abilityClassParameters:
-  - _currentLevel: 1
-    _cost: 1500
+  - _currentLevel: 0
+    _cost: 0
     _value: 0
-  - _currentLevel: 2
-    _cost: 2500
+  - _currentLevel: 0
+    _cost: 0
     _value: 0
-  - _currentLevel: 3
-    _cost: 4000
+  - _currentLevel: 0
+    _cost: 0
     _value: 0
   _abilityType: 14
   _damageParameter:
@@ -63,4 +63,11 @@ MonoBehaviour:
     _damage: 0
     _damageParameters: []
     _particle: {fileID: 0}
+  _abilityStrategy:
+    rid: 7260333074196725761
   _poolParticle: {fileID: 7425594545007167068, guid: d2fb527ba5068ff469ce64c846a41a5f, type: 3}
+  references:
+    version: 2
+    RefIds:
+    - rid: 7260333074196725761
+      type: {class: DarkPactAbilityPresenter, ns: Assets.Source.Game.Scripts.AbilityScripts, asm: Assembly-CSharp}

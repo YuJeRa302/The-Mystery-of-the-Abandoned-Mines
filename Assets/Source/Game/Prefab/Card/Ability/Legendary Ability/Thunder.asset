@@ -36,4 +36,11 @@ MonoBehaviour:
   _upgradeType: 5
   _type: 5
   _typeAttack: 0
+  _abilityStrategy:
+    rid: 7260333119341592599
   _legendarySpell: {fileID: -5401896953832697201, guid: 9b9e8820c5928684da3b9d1c2cb4f945, type: 3}
+  references:
+    version: 2
+    RefIds:
+    - rid: 7260333119341592599
+      type: {class: ThunderPresenter, ns: Assets.Source.Game.Scripts.AbilityScripts, asm: Assembly-CSharp}

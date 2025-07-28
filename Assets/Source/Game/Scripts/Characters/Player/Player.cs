@@ -85,7 +85,6 @@ namespace Assets.Source.Game.Scripts.Characters
 
         public void CreatePlayerEntities(
             AbilityFactory abilityFactory,
-            AbilityPresenterFactory abilityPresenterFactory,
             PersistentDataService persistentDataService,
             GamePauseService gamePauseService,
             GameConfig gameConfig,
@@ -100,9 +99,14 @@ namespace Assets.Source.Game.Scripts.Characters
             _audioPlayer = audioPlayer;
             _miniMapIcon.sprite = playerClassData.Icon;
             _playerHealth = new PlayerHealth(this, this, gamePauseService, _currentHealth);
-            _playerAnimation = new PlayerAnimation(_animator,
+
+            _playerAnimation = new PlayerAnimation(
+                _animator,
                 _rigidbody,
-                _moveSpeed, playerClassData, this, this, gamePauseService);
+                _moveSpeed, playerClassData,
+                this,
+                this,
+                gamePauseService);
 
             _playerWeapons = new PlayerWeapons(
                 this,
@@ -139,18 +143,22 @@ namespace Assets.Source.Game.Scripts.Characters
                 _poolBullet);
 
             _wallet = new PlayerWallet();
+
             _cardDeck = new CardDeck(
                 gameConfig.GetLevelData(
                     persistentDataService.PlayerProgress.LevelService.CurrentLevelId).IsContractLevel);
+            
             _playerAbilityCaster = new PlayerAbilityCaster(
                 abilityFactory,
-                abilityPresenterFactory, this,
-                persistentDataService, playerClassData, _audioPlayer);
+                this,
+                persistentDataService,
+                playerClassData,
+                _audioPlayer);
+
             _playerView.Initialize(playerClassData.Icon, _throwAbilityPoint);
             SetPlayerStats();
             AddListeners();
             _playerStats.SetPlayerUpgrades(gameConfig, persistentDataService);
-            _playerAbilityCaster.Initialize();
         }
 
         public void Remove()
@@ -166,6 +174,11 @@ namespace Assets.Source.Game.Scripts.Characters
             {
                 _cardDeck.InitState(data);
             }
+        }
+
+        public void InitClassAbility() 
+        {
+            _playerAbilityCaster.Initialize();
         }
 
         public void UpdateDeck()
@@ -320,14 +333,20 @@ namespace Assets.Source.Game.Scripts.Characters
 
         private void SetPlayerStats()
         {
-            _playerView.ChangeUpgradeLevel(_currentUpgradeLevel,
+            _playerView.ChangeUpgradeLevel(
+                _currentUpgradeLevel,
                 _playerStats.GetMaxUpgradeExperienceValue(_currentUpgradeLevel),
                 _currentUpgradeExperience);
-            _playerView.ChangePlayerLevel(_currentLevel,
+
+            _playerView.ChangePlayerLevel(
+                _currentLevel,
                 _playerStats.GetMaxExperienceValue(_currentLevel),
                 _currentExperience);
+
             _playerView.ChangeKillCount(_countKillEnemy);
-            _playerView.ChangeMaxHealthValue(_playerHealth.GetMaxHealth(),
+
+            _playerView.ChangeMaxHealthValue(
+                _playerHealth.GetMaxHealth(),
                 _playerHealth.GetCurrentHealth());
         }
 
@@ -338,19 +357,25 @@ namespace Assets.Source.Game.Scripts.Characters
             PlayerDied?.Invoke();
         }
 
-        private void OnClassAbilityViewCreated(ClassAbilityData classAbilityData,
+        private void OnClassAbilityViewCreated(
+            ClassAbilityData classAbilityData,
             ClassSkillButtonView classSkillButtonView,
             int currentLevel)
         {
             _playerAbilityCaster.CreateClassAbilityView(classAbilityData, classSkillButtonView, currentLevel);
         }
 
-        private void OnLegendaryAbilityViewCreated(AbilityView abilityView,
+        private void OnLegendaryAbilityViewCreated(
+            AbilityView abilityView,
             ParticleSystem particleSystem,
-            Transform throwPoint, ActiveAbilityData abilityAttributeData)
+            Transform throwPoint,
+            ActiveAbilityData abilityAttributeData)
         {
-            _playerAbilityCaster.CreateLegendaryAbilityView(abilityView,
-                particleSystem, throwPoint, abilityAttributeData);
+            _playerAbilityCaster.CreateLegendaryAbilityView(
+                abilityView,
+                particleSystem,
+                throwPoint,
+                abilityAttributeData);
         }
 
         private void OnPassiveAbilityViewCreated(PassiveAbilityView passiveAbilityView)
@@ -358,7 +383,8 @@ namespace Assets.Source.Game.Scripts.Characters
             _playerAbilityCaster.CreatePassiveAbilityView(passiveAbilityView);
         }
 
-        private void OnAbilityViewCreated(AbilityView abilityView,
+        private void OnAbilityViewCreated(
+            AbilityView abilityView,
             ParticleSystem particleSystem,
             Transform throwPoint)
         {
@@ -385,8 +411,10 @@ namespace Assets.Source.Game.Scripts.Characters
             _playerView.TakeAbility(abilityAttributeData, currentLevel);
         }
 
-        private void OnPlayerUpgradeLevelChanged(int currenLevel,
-            int maxExperienceValue, int currentExperience)
+        private void OnPlayerUpgradeLevelChanged(
+            int currenLevel,
+            int maxExperienceValue,
+            int currentExperience)
         {
             _playerView.ChangeUpgradeLevel(currenLevel, maxExperienceValue, currentExperience);
         }

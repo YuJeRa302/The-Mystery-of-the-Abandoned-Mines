@@ -1,113 +1,113 @@
 using Assets.Source.Game.Scripts.Characters;
+using Assets.Source.Game.Scripts.ScriptableObjects;
 using Assets.Source.Game.Scripts.Services;
+using Reflex.Extensions;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Assets.Source.Game.Scripts.AbilityScripts
 {
-    public class ElectricGuardPresenter : AbilityPresenter
+    public class ElectricGuardPresenter : IAbilityStrategy, IAbilityPauseStrategy
     {
         private readonly float _delayAttack = 0.3f;
         private readonly float _rotationSpeed = 100f;
 
+        private ICoroutineRunner _coroutineRunner;
         private LegendaryThunderAbilitySpell _spellPrefab;
         private LegendaryThunderAbilitySpell _spell;
         private Vector3 _rotationVector = new Vector3(0, 1, 0);
         private Coroutine _rotationCoroutine;
         private Coroutine _damageDealCoroutine;
         private ParticleSystem _particleSystem;
+        private Ability _ability;
+        private Player _player;
 
-        public ElectricGuardPresenter(
-            Ability ability,
-            AbilityView abilityView,
-            Player player,
-            GamePauseService gamePauseService,
-            GameLoopService gameLoopService,
-            ICoroutineRunner coroutineRunner,
-            ParticleSystem particleSystem,
-            LegendaryThunderAbilitySpell spellPrefab) : base(ability, abilityView, player,
-                gamePauseService, gameLoopService, coroutineRunner)
+        public void Construct(AbilityEntitiesHolder abilityEntitiesHolder)
         {
-            _particleSystem = particleSystem;
-            _spellPrefab = spellPrefab;
-            AddListener();
+            LegendaryAbilityData legendaryAbilityData = abilityEntitiesHolder.AttributeData as LegendaryAbilityData;
+            _ability = abilityEntitiesHolder.Ability;
+            _player = abilityEntitiesHolder.Player;
+            _particleSystem = abilityEntitiesHolder.ParticleSystem;
+            _spellPrefab = legendaryAbilityData.LegendarySpell;
+            var container = SceneManager.GetActiveScene().GetSceneContainer();
+            _coroutineRunner = container.Resolve<ICoroutineRunner>();
         }
 
-        protected override void OnGamePaused(bool state)
-        {
-            base.OnGamePaused(state);
-
-            if (_rotationCoroutine != null)
-                CoroutineRunner.StopCoroutine(_rotationCoroutine);
-
-            if (_damageDealCoroutine != null)
-                CoroutineRunner.StopCoroutine(_damageDealCoroutine);
-        }
-
-        protected override void OnGameResumed(bool state)
-        {
-            base.OnGameResumed(state);
-
-            if (_rotationCoroutine != null)
-                _rotationCoroutine = CoroutineRunner.StartCoroutine(RotateSpell());
-
-            if (_damageDealCoroutine != null)
-                _damageDealCoroutine = CoroutineRunner.StartCoroutine(DealDamage());
-        }
-
-        protected override void OnAbilityUsed(Ability ability)
+        public void UsedAbility(Ability ability)
         {
             ThrowBlast();
 
             if (_damageDealCoroutine != null)
-                CoroutineRunner.StopCoroutine(_damageDealCoroutine);
+                _coroutineRunner.StopCoroutine(_damageDealCoroutine);
 
-            _damageDealCoroutine = CoroutineRunner.StartCoroutine(DealDamage());
+            _damageDealCoroutine = _coroutineRunner.StartCoroutine(DealDamage());
         }
 
-        protected override void OnAbilityEnded(Ability ability)
+        public void EndedAbility(Ability ability)
         {
             if (_rotationCoroutine != null)
-                CoroutineRunner.StopCoroutine(_rotationCoroutine);
+                _coroutineRunner.StopCoroutine(_rotationCoroutine);
 
             if (_damageDealCoroutine != null)
-                CoroutineRunner.StopCoroutine(_damageDealCoroutine);
+                _coroutineRunner.StopCoroutine(_damageDealCoroutine);
+        }
+
+        public void PausedGame(bool state)
+        {
+            if (_rotationCoroutine != null)
+                _coroutineRunner.StopCoroutine(_rotationCoroutine);
+
+            if (_damageDealCoroutine != null)
+                _coroutineRunner.StopCoroutine(_damageDealCoroutine);
+        }
+
+        public void ResumedGame(bool state)
+        {
+            if (_rotationCoroutine != null)
+                _rotationCoroutine = _coroutineRunner.StartCoroutine(RotateSpell());
+
+            if (_damageDealCoroutine != null)
+                _damageDealCoroutine = _coroutineRunner.StartCoroutine(DealDamage());
         }
 
         private void ThrowBlast()
         {
             _spell = Object.Instantiate(
                     _spellPrefab,
-                    new Vector3(Player.transform.position.x, Player.transform.position.y,
-                    Player.transform.position.z),
+                    new Vector3(
+                        _player.transform.position.x, 
+                        _player.transform.position.y,
+                        _player.transform.position.z),
                     Quaternion.identity);
 
-            _spell.Initialize(_particleSystem, Ability.CurrentDuration);
+            _spell.Initialize(_particleSystem, _ability.CurrentDuration);
         }
 
         private IEnumerator DealDamage()
         {
-            while (Ability.IsAbilityEnded == false)
+            while (_ability.IsAbilityEnded == false)
             {
                 yield return new WaitForSeconds(_delayAttack);
 
                 if (_spell != null)
                     if (_spell.TryFindEnemy(out Enemy enemy))
-                        enemy.TakeDamage(Ability.DamageSource);
+                        enemy.TakeDamage(_ability.DamageSource);
             }
         }
 
         private IEnumerator RotateSpell()
         {
-            while (Ability.IsAbilityEnded == false)
+            while (_ability.IsAbilityEnded == false)
             {
                 if (_spell != null)
                 {
                     _spell.transform.Rotate(_rotationVector * _rotationSpeed * Time.deltaTime);
+
                     _spell.transform.position = new Vector3(
-                        Player.transform.localPosition.x,
-                        Player.PlayerAbilityContainer.localPosition.y,
-                        Player.transform.localPosition.z);
+                        _player.transform.localPosition.x,
+                        _player.PlayerAbilityContainer.localPosition.y,
+                        _player.transform.localPosition.z);
                 }
                 else
                 {

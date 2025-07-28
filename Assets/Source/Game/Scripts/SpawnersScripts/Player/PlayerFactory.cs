@@ -15,7 +15,6 @@ namespace Assets.Source.Game.Scripts.SpawnersScripts
 
         public PlayerFactory(
             AbilityFactory abilityFactory,
-            AbilityPresenterFactory abilityPresenterFactory,
             PersistentDataService persistentDataService,
             GamePauseService gamePauseService,
             GameConfig gameConfig,
@@ -27,14 +26,15 @@ namespace Assets.Source.Game.Scripts.SpawnersScripts
             out Player spawnedPlayer)
         {
             _spawnPoint = spawnPoint;
+
             _playerClassData = gameConfig.GetPlayerClassDataById(
                 persistentDataService.PlayerProgress.CurrentPlayerClassId);
+
             _playerPrefab = playerPrefab;
             spawnedPlayer = Object.Instantiate(_playerPrefab, _spawnPoint.position, Quaternion.identity);
 
             spawnedPlayer.CreatePlayerEntities(
                 abilityFactory,
-                abilityPresenterFactory,
                 persistentDataService,
                 gamePauseService,
                 gameConfig,

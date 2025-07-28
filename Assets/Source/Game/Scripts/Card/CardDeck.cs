@@ -13,9 +13,9 @@ namespace Assets.Source.Game.Scripts.Card
         private readonly int _defaultLevelCardCount = 3;
         private readonly int _contractLevelCardCount = 2;
 
-        private List<CardData> _cardDataAbility = new();
-        private List<CardData> _activeCardAbility = new();
-        private List<CardState> _cardState = new();
+        private List<CardData> _cardDataAbility = new ();
+        private List<CardData> _activeCardAbility = new ();
+        private List<CardState> _cardState = new ();
         private int _currentMaxCardCount;
 
         public event Action<CardView> SetNewAbility;

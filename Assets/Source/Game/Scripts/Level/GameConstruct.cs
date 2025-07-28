@@ -13,12 +13,13 @@ using Assets.Source.Game.Scripts.SpawnersScripts;
 using Assets.Source.Game.Scripts.Utility;
 using Assets.Source.Game.Scripts.ViewModels;
 using Lean.Localization;
+using Reflex.Core;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.Source.Game.Scripts.Levels
 {
-    public class GameConstruct : MonoBehaviour, ICoroutineRunner
+    public class GameConstruct : MonoBehaviour, ICoroutineRunner, IInstaller
     {
         [SerializeField] private RoomPlacer _roomPlacer;
         [SerializeField] private Pool _enemuPool;
@@ -36,6 +37,7 @@ namespace Assets.Source.Game.Scripts.Levels
         [SerializeField] private GameObject _canvasLoader;
         [SerializeField] private LeanLocalization _leanLocalization;
 
+        private LevelData _levelData;
         private TrapsSpawner _trapsSpawner;
         private EnemySpawner _enemySpawner;
         private SaveAndLoader _saveAndLoader;
@@ -48,41 +50,42 @@ namespace Assets.Source.Game.Scripts.Levels
         private GamePanelsModel _gamePanelsModel;
         private Player _player;
         private AbilityFactory _abilityFactory;
-        private AbilityPresenterFactory _abilityPresenterFactory;
         private GameConfig _gameConfig;
 
         private void Awake()
         {
             _canvasLoader.gameObject.SetActive(false);
-            ConstructGameEntities();
+        }
+
+        private void Start()
+        {
+            InitGameEntities();
         }
 
         private void OnDestroy()
         {
-            _enemySpawner.Dispose();
-            _trapsSpawner.Dispose();
-            _roomService.Dispose();
-            _gameLoopService.Dispose();
-            _player.Remove();
+            RemoveGameEntities();
         }
 
-        private void ConstructGameEntities()
+        public void InstallBindings(ContainerBuilder containerBuilder)
         {
-            _gameConfig = Resources.Load<GameConfig>(DataPath.GameConfigDataPath);
-            _persistentDataService = new PersistentDataService();
-            _saveAndLoader = new SaveAndLoader(_persistentDataService);
-            _saveAndLoader.LoadDataFromPrefs();
-            _trapsSpawner = new TrapsSpawner();
-            var levelData = _gameConfig.GetLevelData(
-                _persistentDataService.PlayerProgress.LevelService.CurrentLevelId);
-            _enemySpawner = new EnemySpawner(_enemuPool, this, _audioPlayerService, levelData.Tier);
+            LoadData();
+            CreateGameEntities(containerBuilder);
+        }
+
+        private void CreateGameEntities(ContainerBuilder containerBuilder)
+        {
+            _enemySpawner = new EnemySpawner(_enemuPool, this, _audioPlayerService, _levelData.Tier);
             _gamePanelsService = new GamePanelsService(_gamePanelsViews);
             _gamePauseService = new GamePauseService(_gamePanelsService, _persistentDataService);
             _abilityFactory = new AbilityFactory(this);
-            _gameLoopService = new GameLoopService(this,
-                _saveAndLoader, _gamePanelsService,
-                _persistentDataService, _canvasLoader);
-            _abilityPresenterFactory = new AbilityPresenterFactory(_gameLoopService, _gamePauseService, this);
+
+            _gameLoopService = new GameLoopService(
+                this,
+                _saveAndLoader,
+                _gamePanelsService,
+                _persistentDataService,
+                _canvasLoader);
 
             _roomService = new RoomService(
                 _gamePanelsService,
@@ -90,12 +93,16 @@ namespace Assets.Source.Game.Scripts.Levels
                 _cameraControiler,
                 _enemySpawner,
                 _trapsSpawner,
-                levelData.CountRooms,
-                levelData.CountStages);
+                _levelData.CountRooms,
+                _levelData.CountStages);
+
+            containerBuilder
+                .AddSingleton(_gamePauseService)
+                .AddSingleton(_gameLoopService)
+                .AddSingleton(this, typeof(ICoroutineRunner));
 
             PlayerFactory playerFactory = new PlayerFactory(
                 _abilityFactory,
-                _abilityPresenterFactory,
                 _persistentDataService,
                 _gamePauseService,
                 _gameConfig,
@@ -115,15 +122,38 @@ namespace Assets.Source.Game.Scripts.Levels
                 _persistentDataService,
                 _cardLoader,
                 _player,
-                levelData,
+                _levelData,
                 _audioPlayerService,
                 _leanLocalization);
 
             _gamePanelsViewModel = new GamePanelsViewModel(_gamePanelsModel);
+        }
+
+        private void InitGameEntities()
+        {
             _enemySpawner.InitPlayerInstance(_player);
             _roomService.InitPlayerInstance(_player);
             _gameLoopService.InitGameEntities(_player, _roomService);
             _gamePanelsService.InitGamePanels(_gamePanelsViewModel);
+            _player.InitClassAbility();
+        }
+
+        private void RemoveGameEntities()
+        {
+            _enemySpawner.Dispose();
+            _trapsSpawner.Dispose();
+            _roomService.Dispose();
+            _gameLoopService.Dispose();
+            _player.Remove();
+        }
+
+        private void LoadData()
+        {
+            _gameConfig = Resources.Load<GameConfig>(DataPath.GameConfigDataPath);
+            _persistentDataService = new PersistentDataService();
+            _saveAndLoader = new SaveAndLoader(_persistentDataService);
+            _saveAndLoader.LoadDataFromPrefs();
+            _levelData = _gameConfig.GetLevelData(_persistentDataService.PlayerProgress.LevelService.CurrentLevelId);
         }
     }
 }

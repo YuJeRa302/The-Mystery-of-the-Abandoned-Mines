@@ -54,6 +54,13 @@ MonoBehaviour:
   _upgradeType: 2
   _type: 5
   _typeAttack: 1
+  _abilityStrategy:
+    rid: 7260333119341592589
   _spell: {fileID: 1654424239186438959, guid: 081f8bf11483ab544842add8457b3c62, type: 3}
   _radius: 2
   _legendaryAbilityData: {fileID: 11400000, guid: 8567e61c92159eb4fbd5aef185c27421, type: 2}
+  references:
+    version: 2
+    RefIds:
+    - rid: 7260333119341592589
+      type: {class: AttackAbilityPresenter, ns: Assets.Source.Game.Scripts.AbilityScripts, asm: Assembly-CSharp}

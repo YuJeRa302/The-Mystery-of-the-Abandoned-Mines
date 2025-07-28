@@ -40,4 +40,11 @@ MonoBehaviour:
   _upgradeType: 2
   _type: 5
   _typeAttack: 1
+  _abilityStrategy:
+    rid: 7260333119341592595
   _legendarySpell: {fileID: 3443178031204434909, guid: a29f834c9e1cf5547a4f7bbe575371f4, type: 3}
+  references:
+    version: 2
+    RefIds:
+    - rid: 7260333119341592595
+      type: {class: FirestormPresenter, ns: Assets.Source.Game.Scripts.AbilityScripts, asm: Assembly-CSharp}

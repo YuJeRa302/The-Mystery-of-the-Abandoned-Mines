@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43e4ad26222f4c140abe81a8475644f4, type: 3}
   m_Name: Rage
   m_EditorClassIdentifier: 
-  _parameterView: {fileID: 0}
+  _parameterView: {fileID: 1961483584371832456, guid: 6d57f6325ba58d6478a1fd35f1ba2831, type: 3}
   _parameters:
   - _cardParameters:
     - _value: -8
@@ -69,4 +69,11 @@ MonoBehaviour:
     _damage: 0
     _damageParameters: []
     _particle: {fileID: 0}
+  _abilityStrategy:
+    rid: 7260333119341592577
   _rageEffect: {fileID: 1869056104995865337, guid: 12aa6d89f37fe0b41ab0da8adc26824b, type: 3}
+  references:
+    version: 2
+    RefIds:
+    - rid: 7260333119341592577
+      type: {class: RageAbilityPresenter, ns: Assets.Source.Game.Scripts.AbilityScripts, asm: Assembly-CSharp}

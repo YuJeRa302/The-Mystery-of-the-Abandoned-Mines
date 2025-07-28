@@ -1,16 +1,20 @@
 using Assets.Source.Game.Scripts.Characters;
+using Assets.Source.Game.Scripts.ScriptableObjects;
 using Assets.Source.Game.Scripts.Services;
+using Reflex.Extensions;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Assets.Source.Game.Scripts.AbilityScripts
 {
-    public class FirestormPresenter : AbilityPresenter
+    public class FirestormPresenter : IAbilityStrategy, IAbilityPauseStrategy
     {
         private readonly float _delayAttack = 0.3f;
         private readonly float _blastSpeed = 12f;
         private readonly float _searchRadius = 20f;
 
+        private ICoroutineRunner _coroutineRunner;
         private LegendaryThunderAbilitySpell _spellPrefab;
         private LegendaryThunderAbilitySpell _spell;
         private Vector3 _direction;
@@ -18,90 +22,86 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
         private Coroutine _damageDealCoroutine;
         private Transform _throwPoint;
         private ParticleSystem _particleSystem;
+        private Ability _ability;
+        private Player _player;
 
-        public FirestormPresenter(
-            Ability ability,
-            AbilityView abilityView,
-            Player player,
-            GamePauseService gamePauseService,
-            GameLoopService gameLoopService,
-            ICoroutineRunner coroutineRunner,
-            ParticleSystem particleSystem,
-            LegendaryThunderAbilitySpell spellPrefab) : base(ability, abilityView, player,
-                gamePauseService, gameLoopService, coroutineRunner)
+        public void Construct(AbilityEntitiesHolder abilityEntitiesHolder)
         {
-            _particleSystem = particleSystem;
-            _throwPoint = Player.ThrowAbilityPoint;
-            _spellPrefab = spellPrefab;
-            AddListener();
+            LegendaryAbilityData legendaryAbilityData = abilityEntitiesHolder.AttributeData as LegendaryAbilityData;
+            _ability = abilityEntitiesHolder.Ability;
+            _player = abilityEntitiesHolder.Player;
+            _particleSystem = abilityEntitiesHolder.ParticleSystem;
+            _spellPrefab = legendaryAbilityData.LegendarySpell;
+            _throwPoint = _player.ThrowAbilityPoint;
+            var container = SceneManager.GetActiveScene().GetSceneContainer();
+            _coroutineRunner = container.Resolve<ICoroutineRunner>();
         }
 
-        protected override void OnGamePaused(bool state)
-        {
-            base.OnGamePaused(state);
-
-            if (_blastThrowingCoroutine != null)
-                CoroutineRunner.StopCoroutine(_blastThrowingCoroutine);
-
-            if (_damageDealCoroutine != null)
-                CoroutineRunner.StopCoroutine(_damageDealCoroutine);
-        }
-
-        protected override void OnGameResumed(bool state)
-        {
-            base.OnGameResumed(state);
-
-            if (_blastThrowingCoroutine != null)
-                _blastThrowingCoroutine = CoroutineRunner.StartCoroutine(ThrowingBlast());
-
-            if (_damageDealCoroutine != null)
-                _damageDealCoroutine = CoroutineRunner.StartCoroutine(DealDamage());
-        }
-
-        protected override void OnAbilityUsed(Ability ability)
+        public void UsedAbility(Ability ability)
         {
             ThrowBlast();
 
             if (_damageDealCoroutine != null)
-                CoroutineRunner.StopCoroutine(_damageDealCoroutine);
+                _coroutineRunner.StopCoroutine(_damageDealCoroutine);
 
-            _damageDealCoroutine = CoroutineRunner.StartCoroutine(DealDamage());
+            _damageDealCoroutine = _coroutineRunner.StartCoroutine(DealDamage());
         }
 
-        protected override void OnAbilityEnded(Ability ability)
+        public void EndedAbility(Ability ability)
         {
             if (_blastThrowingCoroutine != null)
-                CoroutineRunner.StopCoroutine(_blastThrowingCoroutine);
+                _coroutineRunner.StopCoroutine(_blastThrowingCoroutine);
 
             if (_damageDealCoroutine != null)
-                CoroutineRunner.StopCoroutine(_damageDealCoroutine);
+                _coroutineRunner.StopCoroutine(_damageDealCoroutine);
+        }
+
+        public void PausedGame(bool state)
+        {
+            if (_blastThrowingCoroutine != null)
+                _coroutineRunner.StopCoroutine(_blastThrowingCoroutine);
+
+            if (_damageDealCoroutine != null)
+                _coroutineRunner.StopCoroutine(_damageDealCoroutine);
+        }
+
+        public void ResumedGame(bool state)
+        {
+            if (_blastThrowingCoroutine != null)
+                _blastThrowingCoroutine = _coroutineRunner.StartCoroutine(ThrowingBlast());
+
+            if (_damageDealCoroutine != null)
+                _damageDealCoroutine = _coroutineRunner.StartCoroutine(DealDamage());
         }
 
         private void ThrowBlast()
         {
             _spell = Object.Instantiate(
                 _spellPrefab,
-                new Vector3(_throwPoint.transform.position.x, _throwPoint.transform.position.y,
-                _throwPoint.transform.position.z),
+                new Vector3(
+                    _throwPoint.transform.position.x, 
+                    _throwPoint.transform.position.y,
+                    _throwPoint.transform.position.z),
                 Quaternion.identity);
 
             if (TryFindEnemy(out Enemy enemy))
             {
                 Transform currentTarget = enemy.transform;
-                _direction = (currentTarget.position - Player.transform.position).normalized;
+                _direction = (currentTarget.position - _player.transform.position).normalized;
             }
             else
             {
                 _direction = _throwPoint.forward;
             }
 
-            _spell.Initialize(_particleSystem, Ability.CurrentDuration);
-            _blastThrowingCoroutine = CoroutineRunner.StartCoroutine(ThrowingBlast());
+            _spell.Initialize(_particleSystem, _ability.CurrentDuration);
+            _blastThrowingCoroutine = _coroutineRunner.StartCoroutine(ThrowingBlast());
         }
 
-        public bool TryFindEnemy(out Enemy enemy)
+        private bool TryFindEnemy(out Enemy enemy)
         {
-            Collider[] colliderEnemy = Physics.OverlapSphere(Player.transform.position,
+            Collider[] colliderEnemy = Physics.OverlapSphere(
+                _player.transform.position,
                 _searchRadius);
 
             foreach (Collider collider in colliderEnemy)
@@ -116,19 +116,19 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
 
         private IEnumerator DealDamage()
         {
-            while (Ability.IsAbilityEnded == false)
+            while (_ability.IsAbilityEnded == false)
             {
                 yield return new WaitForSeconds(_delayAttack);
 
                 if (_spell != null)
                     if (_spell.TryFindEnemy(out Enemy enemy))
-                        enemy.TakeDamage(Ability.DamageSource);
+                        enemy.TakeDamage(_ability.DamageSource);
             }
         }
 
         private IEnumerator ThrowingBlast()
         {
-            while (Ability.IsAbilityEnded == false)
+            while (_ability.IsAbilityEnded == false)
             {
                 if (_spell != null)
                     _spell.transform.Translate(_direction * _blastSpeed * Time.deltaTime);

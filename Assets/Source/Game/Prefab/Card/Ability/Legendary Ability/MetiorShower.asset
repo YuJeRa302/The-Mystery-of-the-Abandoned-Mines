@@ -36,4 +36,11 @@ MonoBehaviour:
   _upgradeType: 1
   _type: 5
   _typeAttack: 0
-  _legendarySpell: {fileID: 0}
+  _abilityStrategy:
+    rid: 7260333119341592582
+  _legendarySpell: {fileID: -392632859620525427, guid: 022848a3e9738f24d84efb0780c65671, type: 3}
+  references:
+    version: 2
+    RefIds:
+    - rid: 7260333119341592582
+      type: {class: MeteorShowerPresenter, ns: Assets.Source.Game.Scripts.AbilityScripts, asm: Assembly-CSharp}

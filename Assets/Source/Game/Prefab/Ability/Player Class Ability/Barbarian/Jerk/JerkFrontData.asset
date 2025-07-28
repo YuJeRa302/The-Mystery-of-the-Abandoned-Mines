@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c1d9133cdd323b48aea9ea69ec53c20, type: 3}
   m_Name: JerkFrontData
   m_EditorClassIdentifier: 
-  _parameterView: {fileID: 0}
+  _parameterView: {fileID: 1961483584371832456, guid: 6d57f6325ba58d6478a1fd35f1ba2831, type: 3}
   _parameters:
   - _cardParameters:
     - _value: 10
@@ -63,4 +63,11 @@ MonoBehaviour:
     _damage: 0
     _damageParameters: []
     _particle: {fileID: 0}
+  _abilityStrategy:
+    rid: 7260333119341592576
   _poolParticle: {fileID: 8376752317659841032, guid: e11bc8fcee5f0604ebdb25d119704cf4, type: 3}
+  references:
+    version: 2
+    RefIds:
+    - rid: 7260333119341592576
+      type: {class: JerkFrontAbilityPresenter, ns: Assets.Source.Game.Scripts.AbilityScripts, asm: Assembly-CSharp}

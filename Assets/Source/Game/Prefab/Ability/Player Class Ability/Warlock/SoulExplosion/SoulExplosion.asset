@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b3d16deb986f8f43b7fd8096545d78d, type: 3}
   m_Name: SoulExplosion
   m_EditorClassIdentifier: 
-  _parameterView: {fileID: 0}
+  _parameterView: {fileID: 1961483584371832456, guid: 6d57f6325ba58d6478a1fd35f1ba2831, type: 3}
   _parameters:
   - _cardParameters:
     - _value: 10
@@ -65,5 +65,12 @@ MonoBehaviour:
     - _value: 0
       _typeDamageParameter: 4
     _particle: {fileID: 0}
+  _abilityStrategy:
+    rid: 7260333074196725760
   _spell: {fileID: 1654424239186438959, guid: 081f8bf11483ab544842add8457b3c62, type: 3}
   _damageParticle: {fileID: 6150129795701918722, guid: c2d6d10a71d2fc742a1041abfd34b88a, type: 3}
+  references:
+    version: 2
+    RefIds:
+    - rid: 7260333074196725760
+      type: {class: SoulExplosionAbilityPresenter, ns: Assets.Source.Game.Scripts.AbilityScripts, asm: Assembly-CSharp}

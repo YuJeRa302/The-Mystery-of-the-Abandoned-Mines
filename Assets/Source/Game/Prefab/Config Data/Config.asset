@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Config
   m_EditorClassIdentifier: 
   _upgradePoints: 3
-  _coins: 3000
+  _coins: 10000
   _ambientVolume: 40
   _sfxVolumeVolume: 40
   _isMuted: 0
@@ -48,6 +48,742 @@ MonoBehaviour:
     _currentLevel: 0
   - _id: 0
     _currentLevel: 0
+  - _id: 10
+    _currentLevel: 1
+  - _id: 11
+    _currentLevel: 1
+  - _id: 12
+    _currentLevel: 1
+  - _id: 10
+    _currentLevel: 1
+  - _id: 10
+    _currentLevel: 1
+  - _id: 10
+    _currentLevel: 1
+  - _id: 10
+    _currentLevel: 1
+  - _id: 10
+    _currentLevel: 1
+  - _id: 10
+    _currentLevel: 1
+  - _id: 10
+    _currentLevel: 1
+  - _id: 10
+    _currentLevel: 1
+  - _id: 10
+    _currentLevel: 1
+  - _id: 10
+    _currentLevel: 1
+  - _id: 10
+    _currentLevel: 1
+  - _id: 11
+    _currentLevel: 1
+  - _id: 11
+    _currentLevel: 1
+  - _id: 11
+    _currentLevel: 1
+  - _id: 11
+    _currentLevel: 1
+  - _id: 11
+    _currentLevel: 1
+  - _id: 11
+    _currentLevel: 1
+  - _id: 11
+    _currentLevel: 1
+  - _id: 11
+    _currentLevel: 1
+  - _id: 11
+    _currentLevel: 1
+  - _id: 11
+    _currentLevel: 1
+  - _id: 11
+    _currentLevel: 1
+  - _id: 11
+    _currentLevel: 1
+  - _id: 11
+    _currentLevel: 1
+  - _id: 11
+    _currentLevel: 1
+  - _id: 11
+    _currentLevel: 1
+  - _id: 11
+    _currentLevel: 1
+  - _id: 11
+    _currentLevel: 1
+  - _id: 11
+    _currentLevel: 1
+  - _id: 11
+    _currentLevel: 1
+  - _id: 11
+    _currentLevel: 1
+  - _id: 11
+    _currentLevel: 1
+  - _id: 11
+    _currentLevel: 1
+  - _id: 12
+    _currentLevel: 1
+  - _id: 12
+    _currentLevel: 1
+  - _id: 12
+    _currentLevel: 1
+  - _id: 12
+    _currentLevel: 1
+  - _id: 12
+    _currentLevel: 1
+  - _id: 12
+    _currentLevel: 1
+  - _id: 12
+    _currentLevel: 1
+  - _id: 12
+    _currentLevel: 1
+  - _id: 12
+    _currentLevel: 1
+  - _id: 12
+    _currentLevel: 1
+  - _id: 12
+    _currentLevel: 1
+  - _id: 12
+    _currentLevel: 1
+  - _id: 12
+    _currentLevel: 1
+  - _id: 12
+    _currentLevel: 1
+  - _id: 12
+    _currentLevel: 1
+  - _id: 12
+    _currentLevel: 1
+  - _id: 12
+    _currentLevel: 1
+  - _id: 12
+    _currentLevel: 1
+  - _id: 12
+    _currentLevel: 1
+  - _id: 12
+    _currentLevel: 1
+  - _id: 12
+    _currentLevel: 1
+  - _id: 12
+    _currentLevel: 1
+  - _id: 12
+    _currentLevel: 1
+  - _id: 12
+    _currentLevel: 1
+  - _id: 12
+    _currentLevel: 1
+  - _id: 12
+    _currentLevel: 1
+  - _id: 12
+    _currentLevel: 1
+  - _id: 12
+    _currentLevel: 1
+  - _id: 12
+    _currentLevel: 1
+  - _id: 12
+    _currentLevel: 1
+  - _id: 12
+    _currentLevel: 1
+  - _id: 12
+    _currentLevel: 1
+  - _id: 12
+    _currentLevel: 1
+  - _id: 12
+    _currentLevel: 1
+  - _id: 12
+    _currentLevel: 1
+  - _id: 12
+    _currentLevel: 1
+  - _id: 12
+    _currentLevel: 1
+  - _id: 12
+    _currentLevel: 1
+  - _id: 12
+    _currentLevel: 1
+  - _id: 12
+    _currentLevel: 1
+  - _id: 12
+    _currentLevel: 1
+  - _id: 12
+    _currentLevel: 1
+  - _id: 12
+    _currentLevel: 1
+  - _id: 12
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 14
+    _currentLevel: 0
+  - _id: 17
+    _currentLevel: 0
+  - _id: 9
+    _currentLevel: 1
+  - _id: 15
+    _currentLevel: 0
+  - _id: 16
+    _currentLevel: 0
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 13
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
+  - _id: 9
+    _currentLevel: 1
   _defaultWeaponState:
   - _id: 0
     _isEquip: 0

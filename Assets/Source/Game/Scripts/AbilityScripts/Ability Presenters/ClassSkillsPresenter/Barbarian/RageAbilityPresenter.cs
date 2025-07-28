@@ -1,65 +1,59 @@
 using Assets.Source.Game.Scripts.Characters;
 using Assets.Source.Game.Scripts.PoolSystem;
+using Assets.Source.Game.Scripts.ScriptableObjects;
 using Assets.Source.Game.Scripts.Services;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.Source.Game.Scripts.AbilityScripts
 {
-    public class RageAbilityPresenter : AbilityPresenter
+    public class RageAbilityPresenter : IAbilityStrategy, IClassAbilityStrategy
     {
-        private List<Transform> _effectContainer = new List<Transform>();
-        private List<PoolObject> _spawnedEffects = new();
+        private List<Transform> _effectContainer = new ();
+        private List<PoolObject> _spawnedEffects = new ();
         private Pool _pool;
         private PoolParticle _particleEffectPrefab;
         private bool _isAbilityUse;
+        private Ability _ability;
+        private AbilityView _abilityView;
+        private Player _player;
 
-        public RageAbilityPresenter(
-            Ability ability,
-            AbilityView abilityView,
-            Player player,
-            GamePauseService gamePauseService,
-            GameLoopService gameLoopService,
-            ICoroutineRunner coroutineRunner,
-            PoolParticle abilityEffect) : base(ability, abilityView, player,
-                gamePauseService, gameLoopService, coroutineRunner)
+        public void Construct(AbilityEntitiesHolder abilityEntitiesHolder)
         {
-            _pool = Player.Pool;
-            _particleEffectPrefab = abilityEffect;
-            _effectContainer.Add(Player.WeaponPoint);
-            _effectContainer.Add(Player.AdditionalWeaponPoint);
-
-            AddListener();
+            RageClassAbilityData rageClassAbilityData = abilityEntitiesHolder.AttributeData as RageClassAbilityData;
+            _ability = abilityEntitiesHolder.Ability;
+            _abilityView = abilityEntitiesHolder.AbilityView;
+            _player = abilityEntitiesHolder.Player;
+            _pool = _player.Pool;
+            _particleEffectPrefab = rageClassAbilityData.RageEffect;
+            _effectContainer.Add(_player.WeaponPoint);
+            _effectContainer.Add(_player.AdditionalWeaponPoint);
         }
 
-        protected override void AddListener()
+        public void UsedAbility(Ability ability)
         {
-            base.AddListener();
-            (AbilityView as ClassSkillButtonView).AbilityUsed += OnButtonSkillClick;
+            BoostPlayer(_isAbilityUse);
         }
 
-        protected override void RemoveListener()
-        {
-            base.RemoveListener();
-            (AbilityView as ClassSkillButtonView).AbilityUsed -= OnButtonSkillClick;
-        }
-
-        protected override void OnAbilityEnded(Ability ability)
+        public void EndedAbility(Ability ability)
         {
             _isAbilityUse = false;
             BoostPlayer(_isAbilityUse);
         }
 
-        protected override void OnCooldownValueReset(float value)
+        public void AddListener()
         {
-            base.OnCooldownValueReset(value);
-            (AbilityView as ClassSkillButtonView).SetInteractableButton(true);
+            (_abilityView as ClassSkillButtonView).AbilityUsed += OnButtonSkillClick;
         }
 
-        protected override void OnAbilityUsed(Ability ability)
+        public void RemoveListener()
         {
-            _isAbilityUse = true;
-            BoostPlayer(_isAbilityUse);
+            (_abilityView as ClassSkillButtonView).AbilityUsed -= OnButtonSkillClick;
+        }
+
+        public void SetInteractableButton()
+        {
+            (_abilityView as ClassSkillButtonView).SetInteractableButton(true);
         }
 
         private void OnButtonSkillClick()
@@ -68,8 +62,8 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
                 return;
 
             _isAbilityUse = true;
-            Ability.Use();
-            (AbilityView as ClassSkillButtonView).SetInteractableButton(false);
+            _ability.Use();
+            (_abilityView as ClassSkillButtonView).SetInteractableButton(false);
         }
 
         private void BoostPlayer(bool isAbilityEnded)

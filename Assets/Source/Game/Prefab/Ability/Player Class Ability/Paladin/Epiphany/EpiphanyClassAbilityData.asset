@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa20b6302ddbbc34aa1f5a740c4cdc70, type: 3}
   m_Name: EpiphanyClassAbilityData
   m_EditorClassIdentifier: 
-  _parameterView: {fileID: 0}
+  _parameterView: {fileID: 1961483584371832456, guid: 6d57f6325ba58d6478a1fd35f1ba2831, type: 3}
   _parameters:
   - _cardParameters:
     - _value: 15
@@ -63,5 +63,12 @@ MonoBehaviour:
     _damage: 0
     _damageParameters: []
     _particle: {fileID: 0}
+  _abilityStrategy:
+    rid: 7260333119341592579
   _epiphanyParticle: {fileID: 1578323655634280301, guid: d7d41c1b15d706e4e9e4da984db392b3, type: 3}
   _spell: {fileID: 1654424239186438959, guid: 081f8bf11483ab544842add8457b3c62, type: 3}
+  references:
+    version: 2
+    RefIds:
+    - rid: 7260333119341592579
+      type: {class: EpiphanyAbilityPresenter, ns: Assets.Source.Game.Scripts.AbilityScripts, asm: Assembly-CSharp}

@@ -183,8 +183,8 @@ PlayerSettings:
   tvOSSdkVersion: 0
   tvOSRequireExtendedGameController: 0
   tvOSTargetOSVersionString: 12.0
-  VisionOSSdkVersion: 0
-  VisionOSTargetOSVersionString: 1.0
+  bratwurstSdkVersion: 0
+  bratwurstTargetOSVersionString: 16.4
   uIPrerenderedIcon: 0
   uIRequiresPersistentWiFi: 0
   uIRequiresFullScreen: 1
@@ -232,10 +232,10 @@ PlayerSettings:
   appleDeveloperTeamID: 
   iOSManualSigningProvisioningProfileID: 
   tvOSManualSigningProvisioningProfileID: 
-  VisionOSManualSigningProvisioningProfileID: 
+  bratwurstManualSigningProvisioningProfileID: 
   iOSManualSigningProvisioningProfileType: 0
   tvOSManualSigningProvisioningProfileType: 0
-  VisionOSManualSigningProvisioningProfileType: 0
+  bratwurstManualSigningProvisioningProfileType: 0
   appleEnableAutomaticSigning: 0
   iOSRequireARKit: 0
   iOSAutomaticallyDetectAndAddCapabilities: 1
@@ -667,7 +667,7 @@ PlayerSettings:
     Stadia: DOTWEEN;UNITY_POST_PROCESSING_STACK_V2
     Standalone: YG_PLUGIN_YANDEX_GAME;DOTWEEN;UNITY_POST_PROCESSING_STACK_V2
     VisionOS: DOTWEEN;UNITY_POST_PROCESSING_STACK_V2
-    WebGL: DOTWEEN;YG_PLUGIN_YANDEX_GAME;UNITY_POST_PROCESSING_STACK_V2;YandexGamesPlatform_yg;PLUGIN_YG_2;TMP_YG2;RU_YG2;Authorization_yg;RewardedAdv_yg;Leaderboards_yg;InterstitialAdv_yg;EnvirData_yg;Storage_yg
+    WebGL: DOTWEEN;YG_PLUGIN_YANDEX_GAME;UNITY_POST_PROCESSING_STACK_V2;YandexGamesPlatform_yg;PLUGIN_YG_2;TMP_YG2;RU_YG2;Authorization_yg;RewardedAdv_yg;Leaderboards_yg;InterstitialAdv_yg;EnvirData_yg;Storage_yg;ODIN_INSPECTOR;ODIN_INSPECTOR_3;ODIN_INSPECTOR_3_1;ODIN_INSPECTOR_3_2;ODIN_INSPECTOR_3_3
     Windows Store Apps: DOTWEEN
     XboxOne: DOTWEEN;UNITY_POST_PROCESSING_STACK_V2
     iPhone: DOTWEEN

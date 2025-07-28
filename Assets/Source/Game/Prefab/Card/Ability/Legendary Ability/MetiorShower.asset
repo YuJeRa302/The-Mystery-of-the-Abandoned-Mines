@@ -30,7 +30,7 @@ MonoBehaviour:
   _audioClip: {fileID: 8300000, guid: c55ece7306cfa8e4e97c27957628ed3a, type: 3}
   _damage:
     _typeDamage: 0
-    _damage: 0
+    _damage: 20
     _damageParameters: []
     _particle: {fileID: 0}
   _upgradeType: 1

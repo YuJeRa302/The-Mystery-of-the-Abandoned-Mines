@@ -2,21 +2,23 @@ using Assets.Source.Game.Scripts.Enums;
 using Assets.Source.Game.Scripts.ScriptableObjects;
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Assets.Source.Game.Scripts.Card
 {
     public class CardDeck
     {
-        private readonly Random _rnd = new();
+        private readonly System.Random _rnd = new();
         private readonly int _defaultStateLevel = 0;
-        private readonly int _defaultStateWeight = 1;
         private readonly int _defaultLevelCardCount = 3;
         private readonly int _contractLevelCardCount = 2;
+        private readonly int _weightControl = 100;
 
         private List<CardData> _cardDataAbility = new ();
         private List<CardData> _activeCardAbility = new ();
         private List<CardState> _cardState = new ();
         private int _currentMaxCardCount;
+        private bool _isReserWeight = false;
 
         public event Action<CardView> SetNewAbility;
         public event Action<CardView> RerollPointsUpdated;
@@ -90,6 +92,9 @@ namespace Assets.Source.Game.Scripts.Card
                 }
             }
 
+            if (maxWeight > _weightControl)
+                _isReserWeight = true;
+
             return _rnd.Next(minWeight, maxWeight);
         }
 
@@ -110,8 +115,16 @@ namespace Assets.Source.Game.Scripts.Card
         {
             foreach (var card in _cardState)
             {
-                card.SetCardLocked(false);
+                if (card.IsLegendariCard == false)
+                    card.SetCardLocked(false);
+
+                if (_isReserWeight)
+                {
+                    card.ResetWeight();
+                }
             }
+
+            _isReserWeight = false;
         }
 
         public void UpdateDeck()
@@ -125,13 +138,21 @@ namespace Assets.Source.Game.Scripts.Card
         public CardState InitState(CardData cardData)
         {
             bool isLocked;
+            bool isLegendariCard;
 
             if (cardData.TypeCardParameter == TypeCardParameter.LegendaryAbility)
+            {
+                isLegendariCard = true;
                 isLocked = true;
+            }
             else
+            {
                 isLocked = false;
+                isLegendariCard = false;
+            }
 
-            CardState cardState = new(cardData.Id, isLocked, _defaultStateLevel);
+
+            CardState cardState = new(cardData.Id, isLocked, _defaultStateLevel, isLegendariCard);
             _cardState.Add(cardState);
             return cardState;
         }

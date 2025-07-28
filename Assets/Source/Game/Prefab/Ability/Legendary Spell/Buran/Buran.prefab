@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7524282136489732923}
-  - component: {fileID: 3443178031204434909}
+  - component: {fileID: 7974601554420302391}
   m_Layer: 5
   m_Name: Buran
   m_TagString: Untagged
@@ -33,7 +33,7 @@ Transform:
   - {fileID: 5131075792309121317}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3443178031204434909
+--- !u!114 &7974601554420302391
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -42,7 +42,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 400272859378541322}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 794e35b873c558b4c99273eb59d5f202, type: 3}
+  m_Script: {fileID: 11500000, guid: 77c07e94dcf516f4f9ff2ebeb8579f74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   AbilityEnemyFinders:

@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46298075006e7674bb48a2417b651218, type: 3}
   m_Name: IceElemental
   m_EditorClassIdentifier: 
-  _id: 6
   _level: 0
   _enemyStats:
   - _damage: 12

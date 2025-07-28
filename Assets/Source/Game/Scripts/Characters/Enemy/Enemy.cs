@@ -260,16 +260,16 @@ namespace Assets.Source.Game.Scripts.Characters
         {
             PoolParticle particle;
 
-            if (_pool.TryPoolObject(poolParticle.gameObject, out PoolObject poolObject))
+            if (_pool.TryPoolObject(poolParticle.gameObject, out PoolObject pollParticle))
             {
-                particle = poolObject as PoolParticle;
+                particle = pollParticle as PoolParticle;
                 particle.transform.position = _damageEffectContainer.position;
                 particle.gameObject.SetActive(true);
             }
             else
             {
                 particle = Instantiate(poolParticle, _damageEffectContainer);
-                _pool.InstantiatePoolObject(particle, poolObject.name);
+                _pool.InstantiatePoolObject(particle, poolParticle.name);
                 _spawnedEffects.Add(particle);
             }
         }

@@ -6,7 +6,9 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
 {
     public class LegendaryThunderAbilitySpell : LegendarySpell
     {
-        protected ParticleSystem Effect;
+        private ParticleSystem _effect;
+
+        protected ParticleSystem Effect => _effect;
 
         public override void Initialize(ParticleSystem particleSystem, float currentDuration)
         {
@@ -19,8 +21,8 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
                 }
             }
 
-            Effect = particleSystem;
-            SpellLifeTime = currentDuration;
+            _effect = particleSystem;
+            SetSpellLifeTime(currentDuration);
             Destroy(gameObject, SpellLifeTime);
         }
 

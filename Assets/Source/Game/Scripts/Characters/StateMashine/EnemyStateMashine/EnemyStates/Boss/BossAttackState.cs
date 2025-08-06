@@ -5,9 +5,8 @@ namespace Assets.Source.Game.Scripts.Characters
 {
     public class BossAttackState : EnemyAttackState
     {
-        protected float LastAdditionalAttackTime = 8;
-        protected float LastSpecialAttackTime = 0;
-
+        private float _lastAdditionalAttackTime = 8;
+        private float _lastSpecialAttackTime = 0;
         private BulletSpawner _bulletSpawner;
         private float _additionalAttackDelay = 7f;
         private float _specialAttackDelay = 7f;
@@ -25,7 +24,7 @@ namespace Assets.Source.Game.Scripts.Characters
             if (Enemy.TryGetComponent(out Beholder beholder))
             {
                 _bulletSpawner = new BulletSpawner(beholder.Bullet,
-                    beholder.EnemyBulletPool,
+                    beholder.EnemyPool,
                     beholder.BaseShotPoint, Enemy);
                 AnimationController.Attacked += LaunchBullet;
             }
@@ -74,14 +73,14 @@ namespace Assets.Source.Game.Scripts.Characters
 
         private bool SpecialAttack()
         {
-            if (LastSpecialAttackTime <= 0)
+            if (_lastSpecialAttackTime <= 0)
             {
-                LastSpecialAttackTime = _specialAttackDelay;
+                _lastSpecialAttackTime = _specialAttackDelay;
                 SetTransitStatus(false);
                 return true;
             }
 
-            LastSpecialAttackTime -= Time.deltaTime;
+            _lastSpecialAttackTime -= Time.deltaTime;
             return false;
         }
 
@@ -89,15 +88,15 @@ namespace Assets.Source.Game.Scripts.Characters
         {
             if (DistanceToTarget <= AttackRange)
             {
-                if (LastAdditionalAttackTime <= 0)
+                if (_lastAdditionalAttackTime <= 0)
                 {
-                    LastAdditionalAttackTime = _additionalAttackDelay;
+                    _lastAdditionalAttackTime = _additionalAttackDelay;
                     SetTransitStatus(false);
                     return true;
                 }
             }
 
-            LastAdditionalAttackTime -= Time.deltaTime;
+            _lastAdditionalAttackTime -= Time.deltaTime;
             return false;
         }
 

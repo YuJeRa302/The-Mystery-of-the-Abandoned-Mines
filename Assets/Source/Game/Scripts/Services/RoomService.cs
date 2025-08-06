@@ -57,7 +57,6 @@ namespace Assets.Source.Game.Scripts.Services
         {
             RemoveListener();
             RemoveRoomListener();
-            GC.SuppressFinalize(this);
         }
 
         public void InitPlayerInstance(Player player)
@@ -201,7 +200,7 @@ namespace Assets.Source.Game.Scripts.Services
 
         private void OnEnemyDied(Enemy enemy)
         {
-            _player.GetReward(enemy);
+            _player.PlayerStats.EnemyDied(enemy);
         }
 
         private void OnLootRoomCompleted(int reward)

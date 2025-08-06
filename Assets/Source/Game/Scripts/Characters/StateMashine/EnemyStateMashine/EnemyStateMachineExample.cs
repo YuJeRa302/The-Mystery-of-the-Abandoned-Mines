@@ -26,16 +26,16 @@ namespace Assets.Source.Game.Scripts.Characters
 
         private void OnDestroy()
         {
-            _enemy.Stuned -= OnEnemyStuned;
-            _enemy.StunEnded -= OnEnemyEndedStun;
+            _enemy.EnemyStuned -= OnEnemyStuned;
+            _enemy.EnemyStunEnded -= OnEnemyEndedStun;
         }
 
         public void InitializeStateMachine(Player target)
         {
             _meshAgent = GetComponent<NavMeshAgent>();
             _enemy = GetComponent<Enemy>();
-            _enemy.Stuned += OnEnemyStuned;
-            _enemy.StunEnded += OnEnemyEndedStun;
+            _enemy.EnemyStuned += OnEnemyStuned;
+            _enemy.EnemyStunEnded += OnEnemyEndedStun;
             _target = target;
             _stateMashine = new StateMachine();
 

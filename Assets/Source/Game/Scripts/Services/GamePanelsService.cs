@@ -25,7 +25,6 @@ namespace Assets.Source.Game.Scripts.Services
         public void Dispose()
         {
             RemoveListener();
-            GC.SuppressFinalize(this);
         }
 
         public void ClosePanels()
@@ -49,13 +48,13 @@ namespace Assets.Source.Game.Scripts.Services
         {
             foreach (var panel in _gamePanelsViews)
             {
-                panel.PanelOpened += () => ByMenuPaused?.Invoke();
-                panel.PanelClosed += () => ByMenuResumed?.Invoke();
-                panel.GameClosed += () => GameClosed?.Invoke();
-                panel.RewardAdOpened += () => PauseByRewarded.Invoke();
-                panel.RewardAdClosed += () => ResumeByRewarded.Invoke();
-                panel.FullscreenAdOpened += () => ByFullscreenAdPaused.Invoke();
-                panel.FullscreenAdClosed += () => ByFullscreenAdResumed.Invoke();
+                panel.PanelOpened += OnPanelOpened;
+                panel.PanelClosed += OnPanelClosed;
+                panel.GameClosed += OnGameClosed;
+                panel.RewardAdOpened += OnRewardAdOpened;
+                panel.RewardAdClosed += OnRewardAdClosed;
+                panel.FullscreenAdOpened += OnFullscreenAdOpened;
+                panel.FullscreenAdClosed += OnFullscreenAdClosed;
             }
         }
 
@@ -66,14 +65,22 @@ namespace Assets.Source.Game.Scripts.Services
                 if (panel == null)
                     continue;
 
-                panel.PanelOpened -= () => ByMenuPaused?.Invoke();
-                panel.PanelClosed -= () => ByMenuResumed?.Invoke();
-                panel.GameClosed -= () => GameClosed?.Invoke();
-                panel.RewardAdOpened -= () => PauseByRewarded.Invoke();
-                panel.RewardAdClosed -= () => ResumeByRewarded.Invoke();
-                panel.FullscreenAdOpened -= () => ByFullscreenAdPaused.Invoke();
-                panel.FullscreenAdClosed -= () => ByFullscreenAdResumed.Invoke();
+                panel.PanelOpened -= OnPanelOpened;
+                panel.PanelClosed -= OnPanelClosed;
+                panel.GameClosed -= OnGameClosed;
+                panel.RewardAdOpened -= OnRewardAdOpened;
+                panel.RewardAdClosed -= OnRewardAdClosed;
+                panel.FullscreenAdOpened -= OnFullscreenAdOpened;
+                panel.FullscreenAdClosed -= OnFullscreenAdClosed;
             }
         }
+
+        private void OnPanelOpened() => ByMenuPaused?.Invoke();
+        private void OnPanelClosed() => ByMenuResumed?.Invoke();
+        private void OnGameClosed() => GameClosed?.Invoke();
+        private void OnRewardAdOpened() => PauseByRewarded.Invoke();
+        private void OnRewardAdClosed() => ResumeByRewarded.Invoke();
+        private void OnFullscreenAdOpened() => ByFullscreenAdPaused.Invoke();
+        private void OnFullscreenAdClosed() => ByFullscreenAdResumed.Invoke();
     }
 }

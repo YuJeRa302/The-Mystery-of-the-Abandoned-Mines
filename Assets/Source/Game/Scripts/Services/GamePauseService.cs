@@ -24,7 +24,6 @@ namespace Assets.Source.Game.Scripts.Services
         public void Dispose()
         {
             RemoveListener();
-            GC.SuppressFinalize(this);
         }
 
         private void AddListener()

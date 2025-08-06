@@ -15,7 +15,6 @@ namespace Assets.Source.Game.Scripts.Characters
         private Rigidbody _rigidbody;
         private Coroutine _moveCorontine;
         private Player _player;
-        private AnimationPlayerName _animationPlayer = new();
         private float _maxSpeed;
 
         public PlayerAnimation(
@@ -44,22 +43,21 @@ namespace Assets.Source.Game.Scripts.Characters
                 _coroutineRunner.StopCoroutine(_moveCorontine);
 
             RemoveListeners();
-            GC.SuppressFinalize(this);
         }
 
         public void AttackAnimation()
         {
-            _animator.SetTrigger(_animationPlayer.AttackAnimation);
+            _animator.SetTrigger(AnimationPlayerName.ATTACK_ANIMATION);
         }
 
         public void UseCoverAbility()
         {
-            _animator.SetTrigger(_animationPlayer.CoverAnimation);
+            _animator.SetTrigger(AnimationPlayerName.COVERT_ANIMATION);
         }
 
         public void UsedAbilityEnd()
         {
-            _animator.SetTrigger(_animationPlayer.EndAnimation);
+            _animator.SetTrigger(AnimationPlayerName.END_ANIMATION);
         }
 
         private void AddListeners()
@@ -95,7 +93,7 @@ namespace Assets.Source.Game.Scripts.Characters
         {
             while (_player.isActiveAndEnabled)
             {
-                _animator.SetFloat(_animationPlayer.MoveAnimation, _rigidbody.velocity.magnitude / _maxSpeed);
+                _animator.SetFloat(AnimationPlayerName.MOVE_ANIMATION, _rigidbody.velocity.magnitude / _maxSpeed);
                 yield return null;
             }
         }

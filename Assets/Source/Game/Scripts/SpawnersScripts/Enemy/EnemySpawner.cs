@@ -63,8 +63,6 @@ namespace Assets.Source.Game.Scripts.SpawnersScripts
                 enemy.Died -= OnEnemyDead;
                 enemy.PlayerAttacked -= OnEnemyAttack;
             }
-
-            GC.SuppressFinalize(this);
         }
 
         public void InitPlayerInstance(Player player)

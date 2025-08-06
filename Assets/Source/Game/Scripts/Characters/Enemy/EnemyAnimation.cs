@@ -9,7 +9,6 @@ namespace Assets.Source.Game.Scripts.Characters
         [SerializeField] private EnemyStateMachineExample _enemyStateMachine;
 
         private Animator _animator;
-        private AnimationMobName _animationEnemy = new AnimationMobName();
 
         public event Action Attacked;
         public event Action AdditionalAttacked;
@@ -55,12 +54,12 @@ namespace Assets.Source.Game.Scripts.Characters
             }
         }
 
-        private void OnMove() => _animator.SetTrigger(_animationEnemy.MoveAnimation);
+        private void OnMove() => _animator.SetTrigger(AnimationMobName.MOVE_ANIMATION);
 
-        private void OnAttack() => _animator.SetTrigger(_animationEnemy.AttackAnimation);
+        private void OnAttack() => _animator.SetTrigger(AnimationMobName.ATTACK_ANIMATION);
 
-        private void OnAdditionalAttack() => _animator.SetTrigger(_animationEnemy.AdditionalAttackAnimation);
+        private void OnAdditionalAttack() => _animator.SetTrigger(AnimationMobName.ADDITIONAL_ATTACK_ANIMATION);
 
-        private void OnSpetialAttack() => _animator.SetTrigger(_animationEnemy.SpecialAttackAnimation);
+        private void OnSpetialAttack() => _animator.SetTrigger(AnimationMobName.SPECIAL_ATTACK_ANIMATION);
     }
 }

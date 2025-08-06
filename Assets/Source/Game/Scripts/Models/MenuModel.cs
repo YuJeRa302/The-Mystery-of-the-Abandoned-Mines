@@ -40,7 +40,6 @@ namespace Assets.Source.Game.Scripts.Models
         public void Dispose()
         {
             YG2.onFocusWindowGame -= OnVisibilityWindowGame;
-            GC.SuppressFinalize(this);
         }
 
         private void OnVisibilityWindowGame(bool state)

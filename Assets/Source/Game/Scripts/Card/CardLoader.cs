@@ -17,17 +17,21 @@ namespace Assets.Source.Game.Scripts.Card
         [SerializeField] private List<CardData> _cardData;
         [SerializeField] private List<CardData> _defaultCardData;
 
-        private Player _player;
+        private CardDeck _deck;
         private List<CardData> _mainCardsPool = new ();
 
         public event Action CardPoolCreated;
 
         public List<CardData> MainCardsPool => _mainCardsPool;
 
-        public void Initialize(Player player)
+        public void Initialize(CardDeck cardDeck)
         {
-            _player = player;
-            _player.InitStateCardDeck(_cardData);
+            _deck = cardDeck;
+
+            foreach (var data in _cardData)
+            {
+                _deck.InitState(data);
+            }
         }
 
         public void CreateCardPool()
@@ -46,8 +50,8 @@ namespace Assets.Source.Game.Scripts.Card
             {
                 int maxCardsPool;
 
-                int controlWeight = _player.GetMinWeightCards();
-                int currentCountCards = _player.GetCountUnlockedCards();
+                int controlWeight = _deck.GetMinWeightCards();
+                int currentCountCards = _deck.GetCountUnlockedCards();
 
                 if (currentCountCards < _maxCardsPool)
                     maxCardsPool = currentCountCards;
@@ -64,7 +68,7 @@ namespace Assets.Source.Game.Scripts.Card
                         _mainCardsPool.Add(AddDefaultCard());
                 }
 
-                _player.ResetCardState();
+                _deck.ResetCardState();
                 CardPoolCreated?.Invoke();
             }
         }
@@ -75,7 +79,7 @@ namespace Assets.Source.Game.Scripts.Card
 
             foreach (var card in cardsData)
             {
-                CardState cardState = _player.GetCardStateByData(card);
+                CardState cardState = _deck.GetCardStateByData(card);
 
                 if (cardState.IsLocked == false)
                 {
@@ -105,7 +109,7 @@ namespace Assets.Source.Game.Scripts.Card
         {
             foreach (var card in cards)
             {
-                CardState cardState = _player.GetCardStateByData(card);
+                CardState cardState = _deck.GetCardStateByData(card);
 
                 if (card.Id != cardState.Id) continue;
 
@@ -134,7 +138,7 @@ namespace Assets.Source.Game.Scripts.Card
 
         private void ProcessAbilityCard(CardData card, CardState cardState, List<CardData> allCards)
         {
-            bool canTakeCard = _player.TryTakeAbilityCard(card.Id);
+            bool canTakeCard = _deck.CanTakeAbilityCard(card.Id);
 
             if (!canTakeCard)
             {
@@ -153,7 +157,7 @@ namespace Assets.Source.Game.Scripts.Card
                 {
                     if (FindLegendaryCard(allCards, activeAbility.UpgradeType, out CardData legendaryCard))
                     {
-                        _player.GetCardStateByData(legendaryCard).SetCardLocked(false);
+                        _deck.GetCardStateByData(legendaryCard).SetCardLocked(false);
                     }
                 }
             }
@@ -176,7 +180,7 @@ namespace Assets.Source.Game.Scripts.Card
 
             foreach (var card in cards)
             {
-                cardState = _player.GetCardStateByData(card);
+                cardState = _deck.GetCardStateByData(card);
 
                 if (card.AttributeData as LegendaryAbilityData)
                 {
@@ -207,7 +211,7 @@ namespace Assets.Source.Game.Scripts.Card
                 {
                     if ((data.AttributeData as PassiveAttributeData).MagicType == typeMagic)
                     {
-                        if (_player.GetCardStateByData(data).IsCardUpgraded == true)
+                        if (_deck.GetCardStateByData(data).IsCardUpgraded == true)
                         {
                             passivCard = data;
                         }

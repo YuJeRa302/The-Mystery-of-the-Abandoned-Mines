@@ -7,6 +7,8 @@ namespace Assets.Source.Game.Scripts.Characters
         [SerializeField] private float _findPlayer = 4f;
         [SerializeField] private ParticleSystem _effect;
 
+        private Collider[] _foundColliders = new Collider[50];
+
         private void OnDrawGizmosSelected()
         {
             Gizmos.DrawWireSphere(transform.position, _findPlayer);
@@ -15,12 +17,20 @@ namespace Assets.Source.Game.Scripts.Characters
         public bool TryFindPlayer(out Player player)
         {
             _effect.Play();
-            Collider[] colliders = Physics.OverlapSphere(transform.position, _findPlayer);
+            int count = Physics.OverlapSphereNonAlloc(
+                transform.position,
+                _findPlayer,
+                _foundColliders
+            );
 
-            foreach (Collider collider in colliders)
+            for (int i = 0; i < count; i++)
             {
-                if (collider.TryGetComponent(out player))
+                if (_foundColliders[i] != null &&
+                    _foundColliders[i].TryGetComponent(out player))
+                {
                     return true;
+                }
+
             }
 
             player = null;

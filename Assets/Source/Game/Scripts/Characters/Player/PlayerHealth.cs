@@ -123,7 +123,6 @@ namespace Assets.Source.Game.Scripts.Characters
                 _coroutineRunner.StopCoroutine(_timeReduce);
 
             RemoveListeners();
-            GC.SuppressFinalize(this);
         }
 
         private void AddListeners()

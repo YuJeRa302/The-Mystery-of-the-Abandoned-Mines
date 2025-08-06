@@ -55,7 +55,6 @@ namespace Assets.Source.Game.Scripts.Views
         private void OnDestroy()
         {
             RemoveListener();
-            _upgradeViewModel.Dispose();
         }
 
         private void OnEnable()

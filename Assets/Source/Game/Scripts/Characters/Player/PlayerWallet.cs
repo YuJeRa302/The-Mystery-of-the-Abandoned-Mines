@@ -1,8 +1,6 @@
-using System;
-
 namespace Assets.Source.Game.Scripts.Characters
 {
-    public class PlayerWallet : IDisposable
+    public class PlayerWallet
     {
         private int _currentCoins;
 
@@ -14,11 +12,6 @@ namespace Assets.Source.Game.Scripts.Characters
                 return;
 
             _currentCoins += reward;
-        }
-
-        public void Dispose()
-        {
-            GC.SuppressFinalize(this);
         }
     }
 }

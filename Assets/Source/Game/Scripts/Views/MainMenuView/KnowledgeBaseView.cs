@@ -38,7 +38,6 @@ namespace Assets.Source.Game.Scripts.Views
         private void OnDestroy()
         {
             RemoveListener();
-            _knowledgeBaseViewModel.Dispose();
         }
 
         public void Initialize(KnowledgeBaseViewModel knowledgeBaseViewModel, IAudioPlayerService audioPlayerService)

@@ -31,6 +31,7 @@ namespace Assets.Source.Game.Scripts.Characters
         private Coroutine _coolDownAttack;
         private Enemy _currentTarget;
         private Dictionary<float, Enemy> _enemies = new Dictionary<float, Enemy>();
+        private Collider[] _foundEnemyColliders = new Collider[50];
         private TypeAttackRange _typeAttackRange;
 
         public PlayerAttacker(
@@ -69,7 +70,6 @@ namespace Assets.Source.Game.Scripts.Characters
                 _coroutineRunner.StopCoroutine(_coolDownAttack);
 
             RemoveListeners();
-            GC.SuppressFinalize(this);
         }
 
         public void AttackEnemy()
@@ -145,11 +145,15 @@ namespace Assets.Source.Game.Scripts.Characters
 
             while (_currentTarget == null)
             {
-                var colliders = Physics.OverlapSphere(_player.transform.position, _player.SearchRadius);
+                var colliders = Physics.OverlapSphereNonAlloc(
+                _player.transform.position,
+                _player.SearchRadius,
+                _foundEnemyColliders
+            ); ;
 
-                for (int i = 0; i < colliders.Length; i++)
+                for (int i = 0; i < colliders; i++)
                 {
-                    if (colliders[i].TryGetComponent(out Enemy enemy))
+                    if (_foundEnemyColliders[i].TryGetComponent(out Enemy enemy))
                     {
                         float distanceToTarget =
                             Vector3.Distance(enemy.transform.position, _player.transform.position);

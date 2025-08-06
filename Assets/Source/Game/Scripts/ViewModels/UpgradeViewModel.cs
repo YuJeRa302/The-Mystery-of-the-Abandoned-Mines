@@ -5,7 +5,7 @@ using System;
 
 namespace Assets.Source.Game.Scripts.ViewModels
 {
-    public class UpgradeViewModel : IDisposable
+    public class UpgradeViewModel
     {
         private readonly UpgradeModel _upgradeModel;
         private readonly MenuModel _menuModel;
@@ -31,11 +31,5 @@ namespace Assets.Source.Game.Scripts.ViewModels
         public void ResetUpgrades(int value) => _upgradeModel.ResetUpgrade(value);
         public void SelectStats(UpgradeDataView upgradeDataView) => _upgradeModel.SelectStats(upgradeDataView);
         public void UpgradeStats() => _upgradeModel.UpgradeStats();
-
-        public void Dispose()
-        {
-            _upgradeModel.Dispose();
-            GC.SuppressFinalize(this);
-        }
     }
 }

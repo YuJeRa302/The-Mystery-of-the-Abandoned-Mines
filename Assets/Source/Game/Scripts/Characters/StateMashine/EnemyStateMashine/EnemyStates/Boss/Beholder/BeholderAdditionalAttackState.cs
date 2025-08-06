@@ -19,7 +19,7 @@ namespace Assets.Source.Game.Scripts.Characters
             _shotPoints = boss.ShotPoints;
             _maxShotPointIndex = _shotPoints.Length;
             _currentShotPointIndex = 0;
-            _bulletSpawner = new BulletSpawner(boss.Bullet, enemy.EnemyBulletPool, _shotPoints[_currentShotPointIndex], Enemy);
+            _bulletSpawner = new BulletSpawner(boss.Bullet, enemy.EnemyPool, _shotPoints[_currentShotPointIndex], Enemy);
 
             _animationController.AdditionalAttacked += AditionalAttackAppalyDamage;
             _animationController.AnimationCompleted += OnAllowTransition;

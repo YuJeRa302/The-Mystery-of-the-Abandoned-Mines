@@ -1,6 +1,5 @@
 using Assets.Source.Game.Scripts.Services;
 using Reflex.Extensions;
-using System;
 using UnityEngine.SceneManagement;
 
 namespace Assets.Source.Game.Scripts.AbilityScripts
@@ -41,7 +40,6 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
                 _abilityView.ViewDestroy();
 
             RemoveListener();
-            GC.SuppressFinalize(this);
         }
 
         private void AddListener()

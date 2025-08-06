@@ -116,7 +116,6 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
         public void Dispose()
         {
             ReleaseUnmanagedResources();
-            GC.SuppressFinalize(this);
             AbilityRemoved?.Invoke();
         }
 

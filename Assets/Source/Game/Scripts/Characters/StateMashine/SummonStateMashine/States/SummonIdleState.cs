@@ -9,6 +9,7 @@ namespace Assets.Source.Game.Scripts.Characters
         private Player _player;
         private Summon _summon;
         private Dictionary<float, Enemy> _enemies = new Dictionary<float, Enemy>();
+        private Collider[] _foundColliders = new Collider[50];
 
         public SummonIdleState(StateMachine stateMachine, Player player, Summon summon) : base(stateMachine)
         {
@@ -43,11 +44,15 @@ namespace Assets.Source.Game.Scripts.Characters
         private bool FindEnemy(out Enemy target)
         {
             _enemies.Clear();
-            var colliders = Physics.OverlapSphere(_summon.transform.position, _summon.SearchRadius);
+            var colliders = Physics.OverlapSphereNonAlloc(
+                _summon.transform.position,
+                _summon.SearchRadius,
+                _foundColliders
+            );
 
-            for (int i = 0; i < colliders.Length; i++)
+            for (int i = 0; i < colliders; i++)
             {
-                if (colliders[i].TryGetComponent(out Enemy enemy))
+                if (_foundColliders[i].TryGetComponent(out Enemy enemy))
                 {
                     float distanceToTarget = Vector3.Distance(enemy.transform.position, _summon.transform.position);
 

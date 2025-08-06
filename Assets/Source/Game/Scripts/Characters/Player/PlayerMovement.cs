@@ -62,7 +62,6 @@ namespace Assets.Source.Game.Scripts.Characters
                 _coroutineRunner.StopCoroutine(_movement);
 
             RemoveListeners();
-            GC.SuppressFinalize(this);
         }
 
         public void DisableMovement()

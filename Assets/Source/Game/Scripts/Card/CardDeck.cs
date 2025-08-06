@@ -2,7 +2,6 @@ using Assets.Source.Game.Scripts.Enums;
 using Assets.Source.Game.Scripts.ScriptableObjects;
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace Assets.Source.Game.Scripts.Card
 {

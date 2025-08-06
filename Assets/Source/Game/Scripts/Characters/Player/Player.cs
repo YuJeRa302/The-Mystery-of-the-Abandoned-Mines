@@ -8,7 +8,6 @@ using Assets.Source.Game.Scripts.ScriptableObjects;
 using Assets.Source.Game.Scripts.Services;
 using Assets.Source.Game.Scripts.Views;
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.Source.Game.Scripts.Characters
@@ -66,6 +65,9 @@ namespace Assets.Source.Game.Scripts.Characters
         public PlayerAnimation PlayerAnimation => _playerAnimation;
         public WeaponData WeaponData => _playerWeapons.GetWeaponData();
         public DamageSource DamageSource => _playerStats.DamageSource;
+        public CardDeck CardDeck => _cardDeck;
+        public PlayerAbilityCaster PlayerAbilityCaster => _playerAbilityCaster;
+        public PlayerStats PlayerStats => _playerStats;
         public int CurrentHealth => _playerHealth.GetCurrentHealth();
         public int Regeneration => _playerStats.Regeneration;
         public float MoveSpeed => _playerStats.MoveSpeed;
@@ -168,75 +170,12 @@ namespace Assets.Source.Game.Scripts.Characters
             Destroy(this);
         }
 
-        public void InitStateCardDeck(List<CardData> cardDatas)
-        {
-            foreach (var data in cardDatas)
-            {
-                _cardDeck.InitState(data);
-            }
-        }
-
-        public void InitClassAbility() 
-        {
-            _playerAbilityCaster.Initialize();
-        }
-
-        public void UpdateDeck()
-        {
-            _cardDeck.UpdateDeck();
-        }
-
-        public void TakeCard(CardView cardView)
-        {
-            _cardDeck.TakeCard(cardView);
-        }
-
         public void ResetPosition()
         {
             transform.position = _spawnPoint.transform.position;
         }
 
-        public void ResetCardState()
-        {
-            _cardDeck.ResetCardState();
-        }
-
-        public void UpdateCardPanelByRerollPoints()
-        {
-            _playerStats.UpdateCardPanelByRerollPoints();
-        }
-
-        public CardState GetCardStateByData(CardData cardData)
-        {
-            return _cardDeck.GetCardStateByData(cardData);
-        }
-
-        public bool TryTakeAbilityCard(int id)
-        {
-            return _cardDeck.CanTakeAbilityCard(id);
-        }
-
-        public bool TryGetRerollPoints()
-        {
-            return _playerStats.TryGetRerollPoints();
-        }
-
-        public int GetMinWeightCards()
-        {
-            return _cardDeck.GetMinWeightCards();
-        }
-
-        public int GetCountUnlockedCards()
-        {
-            return _cardDeck.GetCountUnlockedCards();
-        }
-
-        public void GetRerollPointsReward(int reward)
-        {
-            _playerStats.GetReward(reward);
-        }
-
-        public void GetEndGameReward()
+        public void TakeEndGameReward()
         {
             _wallet.AddCoins(Coins);
             _playerStats.GetReward(UpgradePoints);
@@ -245,16 +184,6 @@ namespace Assets.Source.Game.Scripts.Characters
         public void TakeDamage(int value)
         {
             _playerHealth.TakeDamage(value);
-        }
-
-        public void GetReward(Enemy enemy)
-        {
-            _playerStats.EnemyDied(enemy);
-        }
-
-        public void GetLootRoomReward(int reward)
-        {
-            _playerStats.TakeLootRoomReward(reward);
         }
 
         private void AddListeners()
@@ -568,10 +497,8 @@ namespace Assets.Source.Game.Scripts.Characters
             _playerAnimation.Dispose();
             _playerAttacker.Dispose();
             _playerAbilityCaster.Dispose();
-            _playerWeapons.Dispose();
             _playerMovement.Dispose();
             _playerStats.Dispose();
-            _wallet.Dispose();
         }
     }
 }

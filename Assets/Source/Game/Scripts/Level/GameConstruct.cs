@@ -114,7 +114,7 @@ namespace Assets.Source.Game.Scripts.Levels
                 out Player player);
 
             _player = player;
-            _cardLoader.Initialize(_player);
+            _cardLoader.Initialize(_player.CardDeck);
 
             _gamePanelsModel = new GamePanelsModel(
                 _roomService,
@@ -135,7 +135,7 @@ namespace Assets.Source.Game.Scripts.Levels
             _roomService.InitPlayerInstance(_player);
             _gameLoopService.InitGameEntities(_player, _roomService);
             _gamePanelsService.InitGamePanels(_gamePanelsViewModel);
-            _player.InitClassAbility();
+            _player.PlayerAbilityCaster.Initialize();
         }
 
         private void RemoveGameEntities()

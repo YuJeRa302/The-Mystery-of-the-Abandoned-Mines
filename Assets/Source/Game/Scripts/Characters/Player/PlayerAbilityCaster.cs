@@ -112,7 +112,6 @@ namespace Assets.Source.Game.Scripts.Characters
         public void Dispose()
         {
             DestroyAbilities();
-            GC.SuppressFinalize(this);
         }
 
         public void AbilityDurationChanged(int value)

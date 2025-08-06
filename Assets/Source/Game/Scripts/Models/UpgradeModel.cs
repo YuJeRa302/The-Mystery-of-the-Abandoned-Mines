@@ -5,7 +5,7 @@ using System;
 
 namespace Assets.Source.Game.Scripts.Models
 {
-    public class UpgradeModel : IDisposable
+    public class UpgradeModel
     {
         private readonly PersistentDataService _persistentDataService;
         private readonly int _maxStatsLevel = 3;
@@ -66,11 +66,6 @@ namespace Assets.Source.Game.Scripts.Models
             {
                 return;
             }
-        }
-
-        public void Dispose()
-        {
-            GC.SuppressFinalize(this);
         }
     }
 }

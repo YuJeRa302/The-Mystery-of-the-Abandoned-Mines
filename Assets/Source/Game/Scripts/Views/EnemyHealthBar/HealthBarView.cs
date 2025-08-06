@@ -12,7 +12,7 @@ namespace Assets.Source.Game.Scripts.Views
         [SerializeField] private DamagePopup _damagePopupPrefab;
         [SerializeField] private Pool _pool;
 
-        private Enemy _enemy;
+        private EnemyHealth _enemy;
 
         private void OnEnable()
         {
@@ -31,7 +31,7 @@ namespace Assets.Source.Game.Scripts.Views
 
         public void Initialize(Enemy enemy)
         {
-            _enemy = enemy;
+            _enemy = enemy.EnemyHealth;
             _enemy.DamageTaked += OnTakeDamage;
             _enemy.HealthChanged += OnChangeHealthValue;
         }

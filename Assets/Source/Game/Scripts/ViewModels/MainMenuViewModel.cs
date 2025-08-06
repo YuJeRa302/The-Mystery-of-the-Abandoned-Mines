@@ -30,7 +30,6 @@ namespace Assets.Source.Game.Scripts.ViewModels
         public void Dispose()
         {
             _menuModel.Dispose();
-            GC.SuppressFinalize(this);
         }
     }
 }

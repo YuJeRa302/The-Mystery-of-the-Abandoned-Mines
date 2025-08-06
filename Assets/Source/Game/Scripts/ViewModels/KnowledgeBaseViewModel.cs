@@ -3,7 +3,7 @@ using System;
 
 namespace Assets.Source.Game.Scripts.ViewModels
 {
-    public class KnowledgeBaseViewModel : IDisposable
+    public class KnowledgeBaseViewModel
     {
         private KnowledgeBaseModel _knowledgeBaseModel;
         private MenuModel _menuModel;
@@ -20,11 +20,5 @@ namespace Assets.Source.Game.Scripts.ViewModels
         public event Action Hiding;
 
         public void Hide() => _menuModel.InvokeKnowledgeBaseHide();
-
-        public void Dispose()
-        {
-            _knowledgeBaseModel.Dispose();
-            GC.SuppressFinalize(this);
-        }
     }
 }

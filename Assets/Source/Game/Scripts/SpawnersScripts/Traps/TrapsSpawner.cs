@@ -39,8 +39,6 @@ namespace Assets.Source.Game.Scripts.SpawnersScripts
         {
             if (_currentRoom != null)
                 _currentRoom.RoomCompleted -= OnDisableTraps;
-
-            GC.SuppressFinalize(this);
         }
 
         private void SpawnTraps()

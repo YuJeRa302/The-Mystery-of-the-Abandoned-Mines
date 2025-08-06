@@ -17,6 +17,7 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
         private Ability _ability;
         private AbilityView _abilityView;
         private Player _player;
+        private Collider[] _foundEnemyColliders = new Collider[50];
 
         public void Construct(AbilityEntitiesHolder abilityEntitiesHolder)
         {
@@ -101,17 +102,23 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
 
         private bool TryFindEnemy(out List<Enemy> foundEnemies)
         {
-            Collider[] colliderEnemy = Physics.OverlapSphere(_player.transform.position, _searchRadius);
-            List<Enemy> enemies = new();
+            foundEnemies = new List<Enemy>();
+            int count = Physics.OverlapSphereNonAlloc(
+                _player.transform.position,
+                _searchRadius,
+                _foundEnemyColliders
+            );
 
-            foreach (Collider collider in colliderEnemy)
+            for (int i = 0; i < count; i++)
             {
-                if (collider.TryGetComponent(out Enemy enemy))
-                    enemies.Add(enemy);
+                if (_foundEnemyColliders[i] != null &&
+                    _foundEnemyColliders[i].TryGetComponent(out Enemy enemy))
+                {
+                    foundEnemies.Add(enemy);
+                }
             }
 
-            foundEnemies = enemies;
-            return foundEnemies != null;
+            return foundEnemies.Count > 0;
         }
     }
 }

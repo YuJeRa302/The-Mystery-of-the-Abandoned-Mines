@@ -40,7 +40,6 @@ namespace Assets.Source.Game.Scripts.Services
         public void Dispose()
         {
             _gamePanelsService.GameClosed -= OnGameClosed;
-            GC.SuppressFinalize(this);
         }
 
         public void InitGameEntities(Player player, RoomService roomService)

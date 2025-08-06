@@ -6,13 +6,12 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
 {
     public class Spell : MonoBehaviour
     {
-        protected List<Enemy> Enemies = new();
-
         [SerializeField] private Transform _effectContainer;
         [SerializeField] private float _findEnemyRange = 4f;
 
         private ParticleSystem _abilityEffect;
         private float _spellLifeTime;
+        private Collider[] _foundEnemyColliders = new Collider[50];
 
         private void OnDrawGizmosSelected()
         {
@@ -36,12 +35,21 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
 
         public bool TryFindEnemy(out Enemy enemy)
         {
-            Collider[] colliderEnemies = Physics.OverlapSphere(transform.position, _findEnemyRange);
+            int count = Physics.OverlapSphereNonAlloc(
+                transform.position,
+                _findEnemyRange,
+                _foundEnemyColliders
+            );
 
-            foreach (Collider collider in colliderEnemies)
+            for (int i = 0; i < count; i++)
             {
-                if (collider.TryGetComponent(out enemy))
+                if (_foundEnemyColliders[i] != null &&
+                    _foundEnemyColliders[i].TryGetComponent(out Enemy findedEnemy))
+                {
+                    enemy = findedEnemy;
                     return true;
+                }
+
             }
 
             enemy = null;
@@ -50,19 +58,22 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
 
         public virtual bool TryFindEnemies(out List<Enemy> enemies)
         {
-            Enemies.Clear();
             enemies = new List<Enemy>();
-            Collider[] colliderEnemies = Physics.OverlapSphere(transform.position, _findEnemyRange);
+            int count = Physics.OverlapSphereNonAlloc(
+                transform.position,
+                _findEnemyRange,
+                _foundEnemyColliders
+            );
 
-            foreach (Collider collider in colliderEnemies)
+            for (int i = 0; i < count; i++)
             {
-                if (collider.TryGetComponent(out Enemy enemy))
+                if (_foundEnemyColliders[i] != null &&
+                    _foundEnemyColliders[i].TryGetComponent(out Enemy enemy))
                 {
-                    Enemies.Add(enemy);
+                    enemies.Add(enemy);
                 }
             }
 
-            enemies.AddRange(Enemies);
             return enemies.Count > 0;
         }
 

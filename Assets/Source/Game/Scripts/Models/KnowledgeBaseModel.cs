@@ -1,12 +1,6 @@
-using System;
-
 namespace Assets.Source.Game.Scripts.Models
 {
-    public class KnowledgeBaseModel : IDisposable
+    public class KnowledgeBaseModel
     {
-        public void Dispose()
-        {
-            GC.SuppressFinalize(this);
-        }
     }
 }

@@ -105,7 +105,6 @@ namespace Assets.Source.Game.Scripts.Characters
 
         public void Dispose()
         {
-            GC.SuppressFinalize(this);
         }
 
         public void EnemyDied(Enemy enemy)

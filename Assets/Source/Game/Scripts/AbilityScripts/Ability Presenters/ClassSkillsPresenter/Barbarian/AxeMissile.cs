@@ -10,6 +10,12 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
 {
     public class AxeMissile : PoolObject
     {
+        private readonly float _searchRadius = 2f;
+        private readonly float _returnTime = 2f;
+        private readonly float _distanceBackPlayer = 1f;
+        private readonly float _durationRotation = 1f;
+        private readonly Vector3 _rotationVector = new Vector3(0, 360f, 0);
+
         [SerializeField] private Transform _viewContainer;
 
         private Rigidbody _rigidbody;
@@ -21,12 +27,13 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
         private float _moveSpeedBoost = 2f;
         private float _throwDuration;
         private bool _isReturn = false;
+        private Collider[] _foundEnemyColliders = new Collider[50];
         private List<Enemy> _enemies = new List<Enemy>();
 
         private void OnEnable()
         {
             _rigidbody = GetComponent<Rigidbody>();
-            transform.DORotate(new Vector3(0, 360f, 0), 1f, 
+            transform.DORotate(_rotationVector, _durationRotation, 
                 RotateMode.FastBeyond360).SetLoops(-1, LoopType.Restart).SetRelative().SetEase(Ease.Linear);
         }
 
@@ -59,7 +66,7 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
             _player = player;
             _weaponPrefab = _player.WeaponData.WeaponPrefab;
             _moveSpeedBoost = moveSpeedBoost;
-            _throwDuration = duration - 2f;
+            _throwDuration = duration - _returnTime;
 
             List<DamageParameter> damageSupportiveParameters = 
                 new List<DamageParameter>(damageParameter.DamageParameters);
@@ -84,19 +91,22 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
 
         public bool TryFindEnemies(out List<Enemy> enemies)
         {
-            _enemies.Clear();
             enemies = new List<Enemy>();
-            Collider[] colliderEnemy = Physics.OverlapSphere(transform.position, 2f);
+            int count = Physics.OverlapSphereNonAlloc(
+                transform.position,
+                _searchRadius,
+                _foundEnemyColliders
+            );
 
-            foreach (Collider collider in colliderEnemy)
+            for (int i = 0; i < count; i++)
             {
-                if (collider.TryGetComponent(out Enemy enemy))
+                if (_foundEnemyColliders[i] != null &&
+                    _foundEnemyColliders[i].TryGetComponent(out Enemy enemy))
                 {
-                    _enemies.Add(enemy);
+                    enemies.Add(enemy);
                 }
             }
 
-            enemies.AddRange(_enemies);
             return enemies.Count > 0;
         }
 
@@ -118,7 +128,8 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
         {
             _isReturn = true;
 
-            while (Vector3.Magnitude(transform.position - _player.transform.position) >= 1f)
+            while (Vector3.Magnitude(transform.position - _player.transform.position) 
+                >= _distanceBackPlayer)
             {
                 yield return null;
             }

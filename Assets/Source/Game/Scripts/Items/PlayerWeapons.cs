@@ -6,7 +6,7 @@ using System;
 
 namespace Assets.Source.Game.Scripts.Items
 {
-    public class PlayerWeapons : IDisposable
+    public class PlayerWeapons
     {
         private Player _player;
         private WeaponData _weapon;
@@ -25,11 +25,6 @@ namespace Assets.Source.Game.Scripts.Items
             _vampirismParticle = vampiticmParticle;
 
             CreateWeaponView();
-        }
-
-        public void Dispose()
-        {
-            GC.SuppressFinalize(this);
         }
 
         public WeaponData GetWeaponData()

@@ -8,6 +8,8 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
     {
         [SerializeField] private float _findEnemyRange = 2f;
 
+        private Collider[] _foundEnemyColliders = new Collider[50];
+
         private void OnDrawGizmosSelected()
         {
             Gizmos.DrawWireSphere(transform.position, _findEnemyRange);
@@ -15,12 +17,20 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
 
         public bool TryFindEnemy(out Enemy enemy)
         {
-            Collider[] coliderEnemy = Physics.OverlapSphere(transform.position, _findEnemyRange);
+            int count = Physics.OverlapSphereNonAlloc(
+                transform.position,
+                _findEnemyRange,
+                _foundEnemyColliders
+            );
 
-            foreach (Collider collider in coliderEnemy)
+            for (int i = 0; i < count; i++)
             {
-                if (collider.TryGetComponent(out enemy))
+                if (_foundEnemyColliders[i] != null &&
+                    _foundEnemyColliders[i].TryGetComponent(out Enemy findedEnemy))
+                {
+                    enemy = findedEnemy;
                     return true;
+                }
 
             }
 
@@ -28,18 +38,25 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
             return false;
         }
 
-        public bool TryFindEnemys(out List<Enemy> enemys)
+        public bool TryFindEnemys(out List<Enemy> enemies)
         {
-            enemys = new List<Enemy>();
-            Collider[] coliderEnemy = Physics.OverlapSphere(transform.position, _findEnemyRange);
+            enemies = new List<Enemy>();
+            int count = Physics.OverlapSphereNonAlloc(
+                transform.position,
+                _findEnemyRange,
+                _foundEnemyColliders
+            );
 
-            foreach (Collider collider in coliderEnemy)
+            for (int i = 0; i < count; i++)
             {
-                if (collider.TryGetComponent(out Enemy enemy))
-                    enemys.Add(enemy);
+                if (_foundEnemyColliders[i] != null &&
+                    _foundEnemyColliders[i].TryGetComponent(out Enemy enemy))
+                {
+                    enemies.Add(enemy);
+                }
             }
 
-            return enemys.Count > 0;
+            return enemies.Count > 0;
         }
     }
 }

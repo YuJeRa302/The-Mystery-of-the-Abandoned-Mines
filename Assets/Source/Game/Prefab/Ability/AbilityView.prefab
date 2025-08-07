@@ -33,7 +33,6 @@ RectTransform:
   m_Children:
   - {fileID: 6042075626351740611}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -90,8 +89,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cba14064a435cf408d9c1c4b7e32c6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ReloadingImage: {fileID: 2948791920113364489}
-  AbilityIcon: {fileID: 6619201395980672741}
+  _reloadingImage: {fileID: 2948791920113364489}
+  _abilityIcon: {fileID: 6619201395980672741}
 --- !u!1 &5786861139560848837
 GameObject:
   m_ObjectHideFlags: 0
@@ -123,7 +122,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7524282136489732923}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}

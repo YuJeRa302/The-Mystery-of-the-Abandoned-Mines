@@ -93,9 +93,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77c07e94dcf516f4f9ff2ebeb8579f74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AbilityEnemyFinders:
-  - {fileID: 6706032288084009720}
+  _abilityEnemyFinders:
   - {fileID: 7013458842269882523}
+  - {fileID: 6706032288084009720}
   - {fileID: 4160456962149319002}
   - {fileID: 4655742779295474840}
 --- !u!1 &811626286740694166

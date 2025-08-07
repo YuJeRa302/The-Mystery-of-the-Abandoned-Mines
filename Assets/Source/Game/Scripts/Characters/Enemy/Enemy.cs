@@ -1,4 +1,5 @@
 using Assets.Source.Game.Scripts.PoolSystem;
+using Assets.Source.Game.Scripts.Services;
 using Assets.Source.Game.Scripts.Utility;
 using Assets.Source.Game.Scripts.Views;
 using System;
@@ -6,7 +7,7 @@ using UnityEngine;
 
 namespace Assets.Source.Game.Scripts.Characters
 {
-    public class Enemy : PoolObject
+    public class Enemy : PoolObject, ICoroutineRunner
     {
         [SerializeField] private Pool _pool;
         [SerializeField] private EnemyStateMachineExample _stateMachine;
@@ -72,7 +73,7 @@ namespace Assets.Source.Game.Scripts.Characters
             Fill(data);
             _stateMachine.InitializeStateMachine(player);
             _healthView.Initialize(this);
-            _animationController.Attacked += OnEnemyAttack;
+            _health.ResetHealth();
         }
 
         public virtual void ResetEnemy(int lvlRoom)
@@ -124,6 +125,7 @@ namespace Assets.Source.Game.Scripts.Characters
             _damageHandler.StunEnded += OnStanEnded;
             _damageHandler.MoveSpeedReduced += OnMoveSpeedReduced;
             _damageHandler.MoveSpeedReseted += OnMoveSpeedReset;
+            _animationController.Attacked += OnEnemyAttack;
 
             _damage = data.EnemyStats[_tier].Damage;
             _speed = data.EnemyStats[_tier].MoveSpeed;

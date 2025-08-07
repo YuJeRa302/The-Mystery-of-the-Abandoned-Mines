@@ -7,7 +7,7 @@ namespace Assets.Source.Game.Scripts.Card
 {
     public class CardDeck
     {
-        private readonly System.Random _rnd = new();
+        private readonly System.Random _rnd = new ();
         private readonly int _defaultStateLevel = 0;
         private readonly int _defaultLevelCardCount = 3;
         private readonly int _contractLevelCardCount = 2;

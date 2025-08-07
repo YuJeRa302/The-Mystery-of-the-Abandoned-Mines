@@ -1,11 +1,12 @@
 using Assets.Source.Game.Scripts.Enums;
+using Assets.Source.Game.Scripts.Services;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.Source.Game.Scripts.ScriptableObjects
 {
     [CreateAssetMenu(fileName = "New Class", menuName = "Create Player Class", order = 51)]
-    public class PlayerClassData : ScriptableObject
+    public class PlayerClassData : ScriptableObject, IIdData
     {
         [SerializeField] private int _id;
         [SerializeField] private Sprite _icon;

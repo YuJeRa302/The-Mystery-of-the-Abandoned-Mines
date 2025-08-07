@@ -7,11 +7,11 @@ namespace Assets.Source.Game.Scripts.SpawnersScripts
 {
     public class TrapsSpawner : IDisposable
     {
-        private readonly System.Random _rnd = new();
+        private readonly System.Random _rnd = new ();
 
         private Transform[] _spawnPoints;
         private GameObject[] _traps;
-        private List<GameObject> _spawnedTraps = new();
+        private List<GameObject> _spawnedTraps = new ();
         private LootRoomView _currentRoom;
 
         public TrapsSpawner()

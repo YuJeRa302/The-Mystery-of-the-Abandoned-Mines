@@ -9,34 +9,34 @@ using UnityEngine.SceneManagement;
 
 namespace Assets.Source.Game.Scripts.AbilityScripts
 {
-    public class EpiphanyAbilityPresenter : IAbilityStrategy, IClassAbilityStrategy
+    public class EpiphanyAbilityPresenter : ClassAbilityPresenter
     {
         private ICoroutineRunner _coroutineRunner;
         private Coroutine _damageDealCoroutine;
         private ParticleSystem _poolParticle;
         private Spell _spell;
         private Spell _spellPrefab;
-        private bool _isAbilityUse = false;
         private float _spellRadius = 8f;
-        private float _delayDamage = 1f;
+        private float _damageDelay;
         private Ability _ability;
-        private AbilityView _abilityView;
         private Player _player;
 
-        public void Construct(AbilityEntitiesHolder abilityEntitiesHolder)
+        public override void Construct(AbilityEntitiesHolder abilityEntitiesHolder)
         {
+            base.Construct(abilityEntitiesHolder);
             EpiphanyClassAbilityData epiphanyClassData = abilityEntitiesHolder.AttributeData as EpiphanyClassAbilityData;
             _ability = abilityEntitiesHolder.Ability;
-            _abilityView = abilityEntitiesHolder.AbilityView;
             _player = abilityEntitiesHolder.Player;
             _poolParticle = epiphanyClassData.EpiphanyParticle;
             _spellPrefab = epiphanyClassData.Spell;
+            _damageDelay = epiphanyClassData.DamageSource.DamageDelay;
             var container = SceneManager.GetActiveScene().GetSceneContainer();
             _coroutineRunner = container.Resolve<ICoroutineRunner>();
         }
 
-        public void UsedAbility(Ability ability)
+        public override void UsedAbility(Ability ability)
         {
+            base.UsedAbility(ability);
             CreateSpell();
 
             if (_damageDealCoroutine != null)
@@ -45,37 +45,12 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
             _damageDealCoroutine = _coroutineRunner.StartCoroutine(DealDamage());
         }
 
-        public void EndedAbility(Ability ability)
+        public override void EndedAbility(Ability ability)
         {
+            base.EndedAbility(ability);
+
             if (_damageDealCoroutine != null)
                 _coroutineRunner.StopCoroutine(_damageDealCoroutine);
-
-            _isAbilityUse = false;
-        }
-
-        public void AddListener()
-        {
-            (_abilityView as ClassSkillButtonView).AbilityUsed += OnButtonSkillClick;
-        }
-
-        public void RemoveListener()
-        {
-            (_abilityView as ClassSkillButtonView).AbilityUsed -= OnButtonSkillClick;
-        }
-
-        public void SetInteractableButton()
-        {
-            (_abilityView as ClassSkillButtonView).SetInteractableButton(true);
-        }
-
-        private void OnButtonSkillClick()
-        {
-            if (_isAbilityUse)
-                return;
-
-            _isAbilityUse = true;
-            _ability.Use();
-            (_abilityView as ClassSkillButtonView).SetInteractableButton(false);
         }
 
         private void CreateSpell()
@@ -106,7 +81,7 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
                     }
                 }
 
-                yield return new WaitForSeconds(_delayDamage);
+                yield return new WaitForSeconds(_damageDelay);
             }
         }
     }

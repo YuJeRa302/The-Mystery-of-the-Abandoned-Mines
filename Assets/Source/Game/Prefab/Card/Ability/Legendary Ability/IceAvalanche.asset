@@ -31,6 +31,7 @@ MonoBehaviour:
   _damage:
     _typeDamage: 1
     _damage: 15
+    _damageDelay: 0.3
     _damageParameters:
     - _value: 0
       _typeDamageParameter: 0

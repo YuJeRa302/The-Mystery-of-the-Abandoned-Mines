@@ -45,7 +45,6 @@ namespace Assets.Source.Game.Scripts.Levels
         private RoomService _roomService;
         private GamePauseService _gamePauseService;
         private GameLoopService _gameLoopService;
-        private GamePanelsService _gamePanelsService;
         private GamePanelsViewModel _gamePanelsViewModel;
         private GamePanelsModel _gamePanelsModel;
         private Player _player;
@@ -60,6 +59,7 @@ namespace Assets.Source.Game.Scripts.Levels
         private void Start()
         {
             InitGameEntities();
+            _gamePanelsViewModel.OpenCardPanel();
         }
 
         private void OnDestroy()
@@ -76,19 +76,17 @@ namespace Assets.Source.Game.Scripts.Levels
         private void CreateGameEntities(ContainerBuilder containerBuilder)
         {
             _enemySpawner = new EnemySpawner(_enemuPool, this, _audioPlayerService, _levelData.Tier);
-            _gamePanelsService = new GamePanelsService(_gamePanelsViews);
-            _gamePauseService = new GamePauseService(_gamePanelsService, _persistentDataService);
+            _gamePauseService = new GamePauseService(_persistentDataService);
             _abilityFactory = new AbilityFactory(this);
+            _trapsSpawner = new TrapsSpawner();
 
             _gameLoopService = new GameLoopService(
                 this,
                 _saveAndLoader,
-                _gamePanelsService,
                 _persistentDataService,
                 _canvasLoader);
 
             _roomService = new RoomService(
-                _gamePanelsService,
                 _roomPlacer,
                 _cameraControiler,
                 _enemySpawner,
@@ -134,8 +132,12 @@ namespace Assets.Source.Game.Scripts.Levels
             _enemySpawner.InitPlayerInstance(_player);
             _roomService.InitPlayerInstance(_player);
             _gameLoopService.InitGameEntities(_player, _roomService);
-            _gamePanelsService.InitGamePanels(_gamePanelsViewModel);
             _player.PlayerAbilityCaster.Initialize();
+
+            foreach (var panel in _gamePanelsViews)
+            {
+                panel.Initialize(_gamePanelsViewModel);
+            }
         }
 
         private void RemoveGameEntities()
@@ -144,6 +146,7 @@ namespace Assets.Source.Game.Scripts.Levels
             _trapsSpawner.Dispose();
             _roomService.Dispose();
             _gameLoopService.Dispose();
+            _gamePauseService.Dispose();
             _player.Remove();
         }
 

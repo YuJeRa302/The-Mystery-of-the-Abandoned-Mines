@@ -1,5 +1,6 @@
+using Assets.Source.Game.Scripts.Services;
 using Assets.Source.Game.Scripts.ViewModels;
-using System;
+using UniRx;
 using UnityEngine;
 using YG;
 
@@ -7,40 +8,34 @@ namespace Assets.Source.Game.Scripts.GamePanels
 {
     public abstract class GamePanelsView : MonoBehaviour
     {
-        private GamePanelsViewModel _gamePanelsViewModel;
-
         protected GamePanelsViewModel GamePanelsViewModel => _gamePanelsViewModel;
 
-        public event Action PanelOpened;
-        public event Action PanelClosed;
-        public event Action RewardAdOpened;
-        public event Action RewardAdClosed;
-        public event Action FullscreenAdOpened;
-        public event Action FullscreenAdClosed;
-        public event Action GameClosed;
+        private GamePanelsViewModel _gamePanelsViewModel;
+        private CompositeDisposable _disposables = new ();
 
         public virtual void Initialize(GamePanelsViewModel gamePanelsViewModel)
         {
             _gamePanelsViewModel = gamePanelsViewModel;
             gameObject.SetActive(false);
+            MessageBroker.Default.Receive<M_ClosePanels>().Subscribe(m => OnPanelsClosed()).AddTo(_disposables);
         }
 
         protected virtual void Open()
         {
             gameObject.SetActive(true);
-            PanelOpened?.Invoke();
+            MessageBroker.Default.Publish(new M_OpenPanel());
         }
 
         protected virtual void Close()
         {
             gameObject.SetActive(false);
-            PanelClosed?.Invoke();
+            MessageBroker.Default.Publish(new M_ClosePanel());
         }
 
         protected virtual void CloseGame()
         {
 #if UNITY_EDITOR
-            GameClosed?.Invoke();
+            MessageBroker.Default.Publish(new M_CloseGame());
 #else
             YG2.InterstitialAdvShow();
 #endif
@@ -48,22 +43,27 @@ namespace Assets.Source.Game.Scripts.GamePanels
 
         protected virtual void OpenRewardAds()
         {
-            RewardAdOpened?.Invoke();
+            MessageBroker.Default.Publish(new M_OpenAdReward());
         }
 
         protected virtual void CloseRewardAds()
         {
-            RewardAdClosed?.Invoke();
+            MessageBroker.Default.Publish(new M_CloseAdReward());
         }
 
         protected virtual void OpenFullscreenAds()
         {
-            FullscreenAdOpened?.Invoke();
+            MessageBroker.Default.Publish(new M_OpenFullscreenAd());
         }
 
         protected virtual void CloseFullscreenAds()
         {
-            FullscreenAdClosed?.Invoke();
+            MessageBroker.Default.Publish(new M_CloseFullscreenAd());
+        }
+
+        private void OnPanelsClosed() 
+        {
+            gameObject.SetActive(false);
         }
     }
 }

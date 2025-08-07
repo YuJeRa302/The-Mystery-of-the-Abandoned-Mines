@@ -10,13 +10,13 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
 {
     public class ElectricGuardPresenter : IAbilityStrategy, IAbilityPauseStrategy
     {
-        private readonly float _delayAttack = 0.3f;
         private readonly float _rotationSpeed = 100f;
 
+        private float _damageDelay;
         private ICoroutineRunner _coroutineRunner;
         private LegendarySpell _spellPrefab;
         private LegendarySpell _spell;
-        private Vector3 _rotationVector = new Vector3(0, 1, 0);
+        private Vector3 _rotationVector = new (0, 1, 0);
         private Coroutine _rotationCoroutine;
         private Coroutine _damageDealCoroutine;
         private ParticleSystem _particleSystem;
@@ -30,6 +30,7 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
             _player = abilityEntitiesHolder.Player;
             _particleSystem = abilityEntitiesHolder.ParticleSystem;
             _spellPrefab = legendaryAbilityData.LegendarySpell;
+            _damageDelay = legendaryAbilityData.DamageSource.DamageDelay;
             var container = SceneManager.GetActiveScene().GetSceneContainer();
             _coroutineRunner = container.Resolve<ICoroutineRunner>();
         }
@@ -88,7 +89,7 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
         {
             while (_ability.IsAbilityEnded == false)
             {
-                yield return new WaitForSeconds(_delayAttack);
+                yield return new WaitForSeconds(_damageDelay);
 
                 if (_spell != null)
                     if (_spell.TryFindEnemy(out Enemy enemy))

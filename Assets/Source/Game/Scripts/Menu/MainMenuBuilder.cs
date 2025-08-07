@@ -63,24 +63,33 @@ namespace Assets.Source.Game.Scripts.Menu
         private void CreateMenuEntities()
         {
             SettingsModel settingsModel = new SettingsModel(
-                _persistentDataService, _leanLocalization, _audioPlayer);
+                _persistentDataService,
+                _leanLocalization,
+                _audioPlayer);
+
             LevelsModel levelsModel = new LevelsModel(
-                _persistentDataService, this, _saveAndLoad, _canvasLoader);
+                _persistentDataService,
+                this,
+                _saveAndLoad, 
+                _canvasLoader);
+
             UpgradeModel upgradeModel = new UpgradeModel(_persistentDataService);
             MenuModel menuModel = new MenuModel();
             WeaponsModel weaponsModel = new WeaponsModel(_persistentDataService);
             ClassAbilityModel classAbilityModel = new ClassAbilityModel(_persistentDataService);
             KnowledgeBaseModel knowledgeBaseModel = new KnowledgeBaseModel();
             LeaderboardModel leaderboardModel = new LeaderboardModel(_persistentDataService);
-
             MainMenuViewModel mainMenuViewModel = new MainMenuViewModel(menuModel);
             SettingsViewModel settingsViewModel = new SettingsViewModel(settingsModel, menuModel);
             LevelsViewModel levelsViewModel = new LevelsViewModel(levelsModel, menuModel);
             UpgradeViewModel upgradeViewModel = new UpgradeViewModel(upgradeModel, menuModel);
             WeaponsViewModel weaponsViewModel = new WeaponsViewModel(weaponsModel, menuModel);
             ClassAbilityViewModel classAbilityViewModel = new ClassAbilityViewModel(classAbilityModel, menuModel);
+
             KnowledgeBaseViewModel knowledgeBaseViewModel = new KnowledgeBaseViewModel(
-                knowledgeBaseModel, menuModel);
+                knowledgeBaseModel,
+                menuModel);
+
             LeaderboardViewModel leaderboardViewModel = new LeaderboardViewModel(leaderboardModel, menuModel);
 
             _settingsView.Initialize(settingsViewModel, _audioPlayer);

@@ -10,7 +10,7 @@ using UnityEngine.SceneManagement;
 
 namespace Assets.Source.Game.Scripts.AbilityScripts
 {
-    public class ThrowAxeAbilityPresenter : IAbilityStrategy, IClassAbilityStrategy, IAbilityPauseStrategy
+    public class ThrowAxeAbilityPresenter : ClassAbilityPresenter, IAbilityPauseStrategy
     {
         private readonly float _delayThrowAxe = 0.3f;
 
@@ -19,17 +19,15 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
         private Pool _pool;
         private AxeMissile _axeMissilePrefab;
         private AxeMissile _axeMissile;
-        private bool _isAbilityUse = false;
         private Coroutine _damageDealCoroutine;
         private Ability _ability;
-        private AbilityView _abilityView;
         private Player _player;
 
-        public void Construct(AbilityEntitiesHolder abilityEntitiesHolder)
+        public override void Construct(AbilityEntitiesHolder abilityEntitiesHolder)
         {
+            base.Construct(abilityEntitiesHolder);
             ThrowAxeClassAbility throwAxeClass = abilityEntitiesHolder.AttributeData as ThrowAxeClassAbility;
             _ability = abilityEntitiesHolder.Ability;
-            _abilityView = abilityEntitiesHolder.AbilityView;
             _player = abilityEntitiesHolder.Player;
             _pool = _player.Pool;
             _axeMissilePrefab = throwAxeClass.AxeMissile;
@@ -38,11 +36,9 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
             _coroutineRunner = container.Resolve<ICoroutineRunner>();
         }
 
-        public void UsedAbility(Ability ability)
+        public override void UsedAbility(Ability ability)
         {
-            if (_isAbilityUse == false)
-                return;
-
+            base.UsedAbility(ability);
             Spawn();
 
             if (_damageDealCoroutine != null)
@@ -51,27 +47,12 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
             _damageDealCoroutine = _coroutineRunner.StartCoroutine(DealDamage());
         }
 
-        public void EndedAbility(Ability ability)
+        public override void EndedAbility(Ability ability)
         {
-            _isAbilityUse = false;
+            base.EndedAbility(ability);
 
             if (_damageDealCoroutine != null)
                 _coroutineRunner.StopCoroutine(_damageDealCoroutine);
-        }
-
-        public void AddListener()
-        {
-            (_abilityView as ClassSkillButtonView).AbilityUsed += OnButtonSkillClick;
-        }
-
-        public void RemoveListener()
-        {
-            (_abilityView as ClassSkillButtonView).AbilityUsed -= OnButtonSkillClick;
-        }
-
-        public void SetInteractableButton()
-        {
-            (_abilityView as ClassSkillButtonView).SetInteractableButton(true);
         }
 
         public void PausedGame(bool state)
@@ -84,16 +65,6 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
         {
             if (_damageDealCoroutine != null)
                 _damageDealCoroutine = _coroutineRunner.StartCoroutine(DealDamage());
-        }
-
-        private void OnButtonSkillClick()
-        {
-            if (_isAbilityUse)
-                return;
-
-            _isAbilityUse = true;
-            _ability.Use();
-            (_abilityView as ClassSkillButtonView).SetInteractableButton(false);
         }
 
         private void Spawn()

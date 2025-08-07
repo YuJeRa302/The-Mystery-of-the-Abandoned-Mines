@@ -171,7 +171,7 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
             }
 
             if (abilityAttributeData as AttackAbilityData)
-                _damageSource = (abilityAttributeData as AttackAbilityData).Damage;
+                _damageSource = (abilityAttributeData as AttackAbilityData).DamageSource;
         }
 
         private void FillLegendaryAbilityParameters(LegendaryAbilityData legendaryAbilityData)
@@ -186,7 +186,7 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
                     _defaultDuration = parameter.Value;
             }
 
-            _damageSource = legendaryAbilityData.Damage;
+            _damageSource = legendaryAbilityData.DamageSource;
         }
 
         private void FillClassSkillParameter(ClassAbilityData abilityAttributeData, int currentLevel)
@@ -207,7 +207,7 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
                     _quantity = parameter.Value;
             }
 
-            _damageSource = abilityAttributeData.DamageParameter;
+            _damageSource = abilityAttributeData.DamageSource;
 
             if (_damageSource != null)
                 ApplyDamageSource();

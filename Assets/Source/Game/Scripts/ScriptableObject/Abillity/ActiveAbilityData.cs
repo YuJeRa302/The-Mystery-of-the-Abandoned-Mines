@@ -25,6 +25,6 @@ namespace Assets.Source.Game.Scripts.ScriptableObjects
         public TypeAbility TypeAbility => _type;
         public TypeAttackAbility TypeAttackAbility => _typeAttack;
         public IAbilityStrategy IAbilityStrategy => _abilityStrategy;
-        public DamageSource Damage => _damage;
+        public DamageSource DamageSource => _damage;
     }
 }

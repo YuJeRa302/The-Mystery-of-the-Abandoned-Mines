@@ -31,7 +31,6 @@ namespace Assets.Source.Game.Scripts.Models
         public void InvokeWeaponsHide() => InvokedMainMenuShowed?.Invoke();
         public void InvokeClassAbilityShow() => InvokedClassAbilityShowed?.Invoke();
         public void InvokeClassAbilityHide() => InvokedMainMenuShowed?.Invoke();
-        public void InvokeMainMenuShow() => InvokedMainMenuShowed?.Invoke();
         public void InvokeKnowledgeBaseShow() => InvokeKnowBaswShowed?.Invoke();
         public void InvokeKnowledgeBaseHide() => InvokedMainMenuShowed?.Invoke();
         public void InvokeLeaderboardShow() => InvokedLeaderboardShowed?.Invoke();

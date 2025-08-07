@@ -1,3 +1,4 @@
+using Assets.Source.Game.Scripts.Services;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,57 +15,44 @@ namespace Assets.Source.Game.Scripts.ScriptableObjects
 
         public PlayerClassData GetPlayerClassDataById(int id)
         {
-            foreach (PlayerClassData playerClassData in _playerClassDatas)
-            {
-                if (id == playerClassData.Id)
-                    return playerClassData;
-            }
-
-            return null;
+            return GetData(_playerClassDatas, id);
         }
 
         public UpgradeData GetUpgradeDataById(int id)
         {
-            foreach (UpgradeData upgradeData in _upgradeDatas)
-            {
-                if (id == upgradeData.Id)
-                    return upgradeData;
-            }
-
-            return null;
+            return GetData(_upgradeDatas, id);
         }
 
         public WeaponData GetWeaponDataById(int id)
         {
-            foreach (WeaponData weaponData in _weaponDatas)
-            {
-                if (id == weaponData.Id)
-                    return weaponData;
-            }
-
-            return null;
+            return GetData(_weaponDatas, id);
         }
 
         public LevelData GetLevelData(int id)
         {
-            foreach (LevelData levelData in _levelDatas)
-            {
-                if (id == levelData.Id)
-                    return levelData;
-            }
+            var levelData = GetData(_levelDatas, id);
+
+            if (levelData != null)
+                return levelData;
 
             return GetContractLevelData(id);
         }
 
         private LevelData GetContractLevelData(int id)
         {
-            foreach (LevelData levelData in _contractLevelDatas)
+            return GetData(_contractLevelDatas, id);
+        }
+
+        private T GetData<T>(List<T> data, int id)
+            where T : IIdData
+        {
+            foreach (var d in data)
             {
-                if (id == levelData.Id)
-                    return levelData;
+                if (id == d.Id)
+                    return d;
             }
 
-            return null;
+            return default;
         }
     }
 }

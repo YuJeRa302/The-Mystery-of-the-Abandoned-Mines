@@ -45,6 +45,7 @@ MonoBehaviour:
   _damage:
     _typeDamage: 0
     _damage: 20
+    _damageDelay: 1
     _damageParameters: []
     _particle: {fileID: 0}
   _upgradeType: 4
@@ -54,9 +55,13 @@ MonoBehaviour:
     rid: 7260333119341592590
   _spell: {fileID: 1654424239186438959, guid: 081f8bf11483ab544842add8457b3c62, type: 3}
   _radius: 1.55
+  _attackAbilityStrategy:
+    rid: 8041066217683550209
   _legendaryAbilityData: {fileID: 11400000, guid: 97e12e0f872b55742a5ee9d9e9dbe1e5, type: 2}
   references:
     version: 2
     RefIds:
     - rid: 7260333119341592590
       type: {class: AttackAbilityPresenter, ns: Assets.Source.Game.Scripts.AbilityScripts, asm: Assembly-CSharp}
+    - rid: 8041066217683550209
+      type: {class: AoEAbility, ns: Assets.Source.Game.Scripts.AbilityScripts, asm: Assembly-CSharp}

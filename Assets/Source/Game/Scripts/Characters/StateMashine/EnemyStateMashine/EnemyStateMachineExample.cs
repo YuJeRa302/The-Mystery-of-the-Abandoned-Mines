@@ -49,13 +49,13 @@ namespace Assets.Source.Game.Scripts.Characters
 
                 if (_enemy.TryGetComponent(out GoldDragon goldDragon))
                 {
-                    _stateMashine.AddState(new AditionalAttackGoldDragon(_stateMashine, _target, _enemy));
+                    _stateMashine.AddState(new AditionalAttackGoldDragon(_stateMashine, _enemy));
                     _stateMashine.AddState(new SpecialAttackGoldDragon(_stateMashine, _enemy));
                 }
 
                 if (_enemy.TryGetComponent(out Beholder beholder))
                 {
-                    _stateMashine.AddState(new BeholderAdditionalAttackState(_stateMashine, _target, _enemy));
+                    _stateMashine.AddState(new BeholderAdditionalAttackState(_stateMashine, _enemy));
                     _stateMashine.AddState(new BeholderSpecialAttackState(_stateMashine, _enemy));
                 }
             }

@@ -29,11 +29,9 @@ namespace Assets.Source.Game.Scripts.Characters
         [Header("[Default Player Parameters]")]
         [SerializeField] private int _currentLevel = 1;
         [SerializeField] private int _currentUpgradeLevel = 0;
-        [SerializeField] private int _currentUpgradePoints = 0;
         [SerializeField] private int _currentExperience = 0;
         [SerializeField] private int _currentUpgradeExperience = 0;
         [SerializeField] private int _rerollPoints = 2;
-        [SerializeField] private int _score = 0;
         [SerializeField] private int _armor = 2;
         [SerializeField] private int _regeneration = 1;
         [SerializeField] private int _countKillEnemy = 0;

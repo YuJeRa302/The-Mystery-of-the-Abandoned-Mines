@@ -13,5 +13,9 @@ namespace Assets.Source.Game.Scripts.Characters
 
             _currentCoins += reward;
         }
+
+        public void Dispose()
+        {
+        }
     }
 }

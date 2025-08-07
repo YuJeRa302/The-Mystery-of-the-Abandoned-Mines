@@ -1,6 +1,8 @@
 using Assets.Source.Game.Scripts.Characters;
+using Assets.Source.Game.Scripts.GamePanels;
 using System;
 using System.Collections;
+using UniRx;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -10,12 +12,12 @@ namespace Assets.Source.Game.Scripts.Services
     {
         private readonly ICoroutineRunner _coroutineRunner;
         private readonly ISaveAndLoadProgress _saveAndLoadProgress;
-        private readonly GamePanelsService _gamePanelsService;
         private readonly PersistentDataService _persistentDataService;
         private readonly GameObject _canvasLoader;
         private readonly float _loadControlValue = 0.9f;
         private readonly string _menuSceneName = "Menu";
 
+        private CompositeDisposable _disposables = new ();
         private RoomService _roomService;
         private Player _player;
         private AsyncOperation _load;
@@ -23,23 +25,22 @@ namespace Assets.Source.Game.Scripts.Services
         public GameLoopService(
             ICoroutineRunner coroutineRunner,
             ISaveAndLoadProgress saveAndLoadProgress,
-            GamePanelsService gamePanelsService,
             PersistentDataService persistentDataService,
             GameObject canvasLoader)
         {
             _coroutineRunner = coroutineRunner;
             _saveAndLoadProgress = saveAndLoadProgress;
-            _gamePanelsService = gamePanelsService;
             _persistentDataService = persistentDataService;
             _canvasLoader = canvasLoader;
-            _gamePanelsService.GameClosed += OnGameClosed;
+            MessageBroker.Default.Receive<M_CloseGame>().Subscribe(m => OnGameClosed()).AddTo(_disposables);
         }
 
         public event Action GameClosed;
 
         public void Dispose()
         {
-            _gamePanelsService.GameClosed -= OnGameClosed;
+            if (_disposables != null)
+                _disposables.Dispose();
         }
 
         public void InitGameEntities(Player player, RoomService roomService)

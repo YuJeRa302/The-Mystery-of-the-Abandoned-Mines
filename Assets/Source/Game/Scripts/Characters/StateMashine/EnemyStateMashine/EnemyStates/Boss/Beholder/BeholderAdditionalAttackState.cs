@@ -11,7 +11,7 @@ namespace Assets.Source.Game.Scripts.Characters
         private int _maxShotPointIndex;
         private EnemyAnimation _animationController;
 
-        public BeholderAdditionalAttackState(StateMachine stateMachine, Player target, Enemy enemy) : base(stateMachine, target, enemy)
+        public BeholderAdditionalAttackState(StateMachine stateMachine, Enemy enemy) : base(stateMachine, enemy)
         {
             _animationController = Enemy.AnimationStateController;
             Beholder boss = Enemy as Beholder;

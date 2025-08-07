@@ -20,7 +20,8 @@ namespace Assets.Source.Game.Scripts.Characters
         private Coroutine _timeReduce;
         private bool _canHealing = true;
 
-        public PlayerHealth(Player player,
+        public PlayerHealth(
+            Player player,
             ICoroutineRunner coroutineRunner,
             GamePauseService gamePauseService,
             int currentHealth)
@@ -34,7 +35,6 @@ namespace Assets.Source.Game.Scripts.Characters
             _regeneration = _coroutineRunner.StartCoroutine(RegenerationHealth());
         }
 
-        public event Action DamageTaked;
         public event Action<int> HealthChanged;
         public event Action PlayerDied;
 
@@ -51,7 +51,6 @@ namespace Assets.Source.Game.Scripts.Characters
 
             if (_currentHealth > _minHealth)
             {
-                DamageTaked?.Invoke();
                 int currentDamage = damage - _player.Armor;
 
                 if (currentDamage <= 1)

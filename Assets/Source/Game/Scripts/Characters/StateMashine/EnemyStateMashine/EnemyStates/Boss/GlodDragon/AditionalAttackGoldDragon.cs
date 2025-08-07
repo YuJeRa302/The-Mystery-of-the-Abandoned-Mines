@@ -8,8 +8,8 @@ namespace Assets.Source.Game.Scripts.Characters
         private float _damage;
         private EnemyAnimation _animationController;
 
-        public AditionalAttackGoldDragon(StateMachine stateMachine, Player target, Enemy enemy)
-            : base(stateMachine, target, enemy)
+        public AditionalAttackGoldDragon(StateMachine stateMachine, Enemy enemy)
+            : base(stateMachine, enemy)
         {
             _animationController = Enemy.AnimationStateController;
             Boss boss = Enemy as Boss;

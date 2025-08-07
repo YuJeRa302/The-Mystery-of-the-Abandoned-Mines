@@ -16,15 +16,15 @@ namespace Assets.Source.Game.Scripts.ViewModels
             _classAbilityModel = classAbilityModel;
             _menuModel = menuModel;
             _menuModel.InvokedClassAbilityShowed += () => Showing?.Invoke();
-            _menuModel.InvokedMainMenuShowed += () => Hiding?.Invoke();
+
             _classAbilityModel.InvokedAbilityReseted += (playerClassData) =>
             InvokedAbilityReseted?.Invoke(playerClassData);
+
             _classAbilityModel.InvokedAbilityUpgraded += (classAbilityState) =>
             InvokedAbilityUpgraded?.Invoke(classAbilityState);
         }
 
         public event Action Showing;
-        public event Action Hiding;
         public event Action<PlayerClassData> InvokedAbilityReseted;
         public event Action<ClassAbilityState> InvokedAbilityUpgraded;
 

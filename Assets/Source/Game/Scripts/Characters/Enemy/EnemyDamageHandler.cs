@@ -1,23 +1,25 @@
 using Assets.Source.Game.Scripts.Enums;
 using Assets.Source.Game.Scripts.PoolSystem;
 using Assets.Source.Game.Scripts.Services;
+using Reflex.Extensions;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Assets.Source.Game.Scripts.Characters
 {
     public class EnemyDamageHandler
     {
-        private readonly System.Random _rnd = new();
+        private readonly System.Random _rnd = new ();
         private Coroutine _stunDamage;
         private Coroutine _burnDamage;
         private Coroutine _slowDamage;
         private Coroutine _repulsiveDamage;
         private ICoroutineRunner _coroutineRunner;
         private Pool _pool;
-        private List<PoolObject> _spawnedEffects = new();
+        private List<PoolObject> _spawnedEffects = new ();
         private Transform _damageEffectContainer;
         private EnemyHealth _health;
         private Rigidbody _rigidbody;
@@ -33,7 +35,8 @@ namespace Assets.Source.Game.Scripts.Characters
             _damageEffectContainer = effectContainer;
             _health = enemy.EnemyHealth;
             _rigidbody = enemy.Rigidbody;
-            _coroutineRunner = (ICoroutineRunner)enemy;
+            var container = SceneManager.GetActiveScene().GetSceneContainer();
+            _coroutineRunner = container.Resolve<ICoroutineRunner>();
         }
 
         public void CreateDamageEffect(DamageSource damageSource)

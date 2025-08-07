@@ -1,6 +1,5 @@
 using Assets.Source.Game.Scripts.ViewModels;
 using Lean.Localization;
-using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -51,6 +50,7 @@ namespace Assets.Source.Game.Scripts.GamePanels
             _numberStageText.text =
                 GamePanelsViewModel.GetCurrentRoomLevel().ToString() +
                 " / " + GamePanelsViewModel.GetStagesCount().ToString();
+
             _playerHealth.text = GamePanelsViewModel.GetPlayer().CurrentHealth.ToString();
             _playerDamage.text = GamePanelsViewModel.GetPlayer().DamageSource.Damage.ToString();
             _coins.text = GamePanelsViewModel.GetPlayer().Coins.ToString();

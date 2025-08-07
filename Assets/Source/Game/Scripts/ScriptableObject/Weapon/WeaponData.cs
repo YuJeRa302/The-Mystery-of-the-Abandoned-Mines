@@ -1,13 +1,14 @@
 using Assets.Source.Game.Scripts.Characters;
 using Assets.Source.Game.Scripts.Enums;
 using Assets.Source.Game.Scripts.Items;
+using Assets.Source.Game.Scripts.Services;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.Source.Game.Scripts.ScriptableObjects
 {
     [CreateAssetMenu(fileName = "New Weapon", menuName = "Create Weapon/Weapon", order = 51)]
-    public class WeaponData : ScriptableObject
+    public class WeaponData : ScriptableObject, IIdData
     {
         [SerializeField] private int _id;
         [SerializeField] private int _tier;

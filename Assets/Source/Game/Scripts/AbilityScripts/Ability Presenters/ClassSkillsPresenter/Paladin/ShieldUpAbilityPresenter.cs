@@ -1,71 +1,41 @@
 using Assets.Source.Game.Scripts.Characters;
 using Assets.Source.Game.Scripts.PoolSystem;
 using Assets.Source.Game.Scripts.ScriptableObjects;
-using Assets.Source.Game.Scripts.Services;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.Source.Game.Scripts.AbilityScripts
 {
-    public class ShieldUpAbilityPresenter : IAbilityStrategy, IClassAbilityStrategy
+    public class ShieldUpAbilityPresenter : ClassAbilityPresenter
     {
         private Transform _effectContainer;
         private Pool _pool;
         private PoolParticle _poolParticle;
         private List<PoolObject> _spawnedEffects = new ();
-        private bool _isAbilityUse;
-        private Ability _ability;
-        private AbilityView _abilityView;
         private Player _player;
 
-        public void Construct(AbilityEntitiesHolder abilityEntitiesHolder)
+        public override void Construct(AbilityEntitiesHolder abilityEntitiesHolder)
         {
+            base.Construct(abilityEntitiesHolder);
             ShieldUpAbility shieldUpAbility = abilityEntitiesHolder.AttributeData as ShieldUpAbility;
-            _ability = abilityEntitiesHolder.Ability;
-            _abilityView = abilityEntitiesHolder.AbilityView;
             _player = abilityEntitiesHolder.Player;
             _poolParticle = shieldUpAbility.PoolParticle;
             _pool = _player.Pool;
             _effectContainer = _player.PlayerAbilityContainer;
         }
 
-        public void UsedAbility(Ability ability)
+        public override void UsedAbility(Ability ability)
         {
-            _isAbilityUse = true;
+            base.UsedAbility(ability);
             ActivateShield();
-            ChangeAbilityEffect(_isAbilityUse);
+            ChangeAbilityEffect(IsAbilityUse);
         }
 
-        public void EndedAbility(Ability ability)
+        public override void EndedAbility(Ability ability)
         {
-            _isAbilityUse = false;
-            ChangeAbilityEffect(_isAbilityUse);
+            base.EndedAbility(ability);
+            ChangeAbilityEffect(IsAbilityUse);
             _player.PlayerAnimation.UsedAbilityEnd();
-        }
-
-        public void AddListener()
-        {
-            (_abilityView as ClassSkillButtonView).AbilityUsed += OnButtonSkillClick;
-        }
-
-        public void RemoveListener()
-        {
-            (_abilityView as ClassSkillButtonView).AbilityUsed -= OnButtonSkillClick;
-        }
-
-        public void SetInteractableButton()
-        {
-            (_abilityView as ClassSkillButtonView).SetInteractableButton(true);
-        }
-
-        private void OnButtonSkillClick()
-        {
-            if (_isAbilityUse)
-                return;
-
-            _isAbilityUse = true;
-            _ability.Use();
-            (_abilityView as ClassSkillButtonView).SetInteractableButton(false);
         }
 
         private void ChangeAbilityEffect(bool isAbilityEnded)

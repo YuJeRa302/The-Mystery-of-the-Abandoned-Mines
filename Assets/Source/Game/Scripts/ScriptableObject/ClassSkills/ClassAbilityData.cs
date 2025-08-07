@@ -23,6 +23,6 @@ namespace Assets.Source.Game.Scripts.ScriptableObjects
         public ClassSkillButtonView ButtonView => _buttonView;
         public TypeAbility AbilityType => _abilityType;
         public IAbilityStrategy IAbilityStrategy => _abilityStrategy;
-        public DamageSource DamageParameter => _damageParameter;
+        public DamageSource DamageSource => _damageParameter;
     }
 }

@@ -44,7 +44,8 @@ MonoBehaviour:
   _audioClip: {fileID: 8300000, guid: 14b16ff40093aba47bc467e148746cab, type: 3}
   _damage:
     _typeDamage: 2
-    _damage: 0
+    _damage: 4
+    _damageDelay: 0.3
     _damageParameters:
     - _value: 1
       _typeDamageParameter: 4
@@ -58,9 +59,13 @@ MonoBehaviour:
     rid: 7260333119341592589
   _spell: {fileID: 1654424239186438959, guid: 081f8bf11483ab544842add8457b3c62, type: 3}
   _radius: 2
+  _attackAbilityStrategy:
+    rid: 8041066217683550210
   _legendaryAbilityData: {fileID: 11400000, guid: 8567e61c92159eb4fbd5aef185c27421, type: 2}
   references:
     version: 2
     RefIds:
     - rid: 7260333119341592589
       type: {class: AttackAbilityPresenter, ns: Assets.Source.Game.Scripts.AbilityScripts, asm: Assembly-CSharp}
+    - rid: 8041066217683550210
+      type: {class: ProjectileAbility, ns: Assets.Source.Game.Scripts.AbilityScripts, asm: Assembly-CSharp}

@@ -60,7 +60,7 @@ namespace Assets.Source.Game.Scripts.Characters
         {
             _animationController.Attacked -= OnEnemyAttack;
             _damageHandler.Stuned -= OnEnemyStaned;
-            _damageHandler.StunEnded -= OnStanEnded; 
+            _damageHandler.StunEnded -= OnStanEnded;
             _damageHandler.MoveSpeedReduced -= OnMoveSpeedReduced;
             _damageHandler.MoveSpeedReseted -= OnMoveSpeedReset;
         }
@@ -160,9 +160,10 @@ namespace Assets.Source.Game.Scripts.Characters
             _speed = _baseMoveSpeed;
         }
 
-        private void OnMoveSpeedReduced(float valueSlowed) 
+        private void OnMoveSpeedReduced(float valueSlowed)
         {
             _baseMoveSpeed = _speed;
-            _speed = _speed* (1 - valueSlowed / 100);}
+            _speed = _speed * (1 - valueSlowed / 100);
         }
+    }
 }

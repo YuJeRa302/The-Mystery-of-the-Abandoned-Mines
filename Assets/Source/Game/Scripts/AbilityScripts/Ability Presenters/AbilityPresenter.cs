@@ -11,23 +11,18 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
         private readonly GameLoopService _gameLoopService;
         private readonly Ability _ability;
         private readonly AbilityView _abilityView;
-        private readonly IAbilityStrategy _iAbilityStrategy;
-        private readonly IClassAbilityStrategy _iClassAbilityStrategy;
-        private readonly IAbilityPauseStrategy _iAbilityPauseStrategy;
+        private readonly IAbilityStrategy _abilityStrategy;
+        private readonly IClassAbilityStrategy _classAbilityStrategy;
+        private readonly IAbilityPauseStrategy _abilityPauseStrategy;
 
         public AbilityPresenter(AbilityEntitiesHolder abilityEntitiesHolder)
         {
             _abilityEntitiesHolder = abilityEntitiesHolder;
             _ability = _abilityEntitiesHolder.Ability;
             _abilityView = _abilityEntitiesHolder.AbilityView;
-            _iAbilityStrategy = _abilityEntitiesHolder.IAbilityStrategy;
-
-            _iClassAbilityStrategy = _abilityEntitiesHolder.IAbilityStrategy is IClassAbilityStrategy ?
-            _abilityEntitiesHolder.IAbilityStrategy as IClassAbilityStrategy : null;
-
-            _iAbilityPauseStrategy = _abilityEntitiesHolder.IAbilityStrategy is IAbilityPauseStrategy ?
-            _abilityEntitiesHolder.IAbilityStrategy as IAbilityPauseStrategy : null;
-
+            _abilityStrategy = _abilityEntitiesHolder.IAbilityStrategy;
+            _classAbilityStrategy = _abilityEntitiesHolder.IAbilityStrategy as IClassAbilityStrategy;
+            _abilityPauseStrategy = _abilityEntitiesHolder.IAbilityStrategy as IAbilityPauseStrategy;
             var container = SceneManager.GetActiveScene().GetSceneContainer();
             _gamePauseService = container.Resolve<GamePauseService>();
             _gameLoopService = container.Resolve<GameLoopService>();
@@ -54,8 +49,8 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
             _gamePauseService.GameResumed += OnGameResumed;
             _gameLoopService.GameClosed += OnGameClosed;
 
-            if (_iClassAbilityStrategy != null)
-                _iClassAbilityStrategy.AddListener();
+            if (_classAbilityStrategy != null)
+                _classAbilityStrategy.AddListener();
         }
 
         private void RemoveListener()
@@ -70,18 +65,18 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
             _gamePauseService.GameResumed -= OnGameResumed;
             _gameLoopService.GameClosed -= OnGameClosed;
 
-            if (_iClassAbilityStrategy != null)
-                _iClassAbilityStrategy.RemoveListener();
+            if (_classAbilityStrategy != null)
+                _classAbilityStrategy.RemoveListener();
         }
 
         private void OnAbilityUsed(Ability ability)
         {
-            _iAbilityStrategy.UsedAbility(_ability);
+            _abilityStrategy.UsedAbility(_ability);
         }
 
         private void OnAbilityEnded(Ability ability)
         {
-            _iAbilityStrategy.EndedAbility(_ability);
+            _abilityStrategy.EndedAbility(_ability);
         }
 
         private void OnCooldownValueChanged(float value)
@@ -93,24 +88,24 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
         {
             _abilityView.ResetCooldownValue(value);
 
-            if (_iClassAbilityStrategy != null)
-                _iClassAbilityStrategy.SetInteractableButton();
+            if (_classAbilityStrategy != null)
+                _classAbilityStrategy.SetInteractableButton();
         }
 
         private void OnGamePaused(bool state)
         {
             _ability.StopCoroutine();
 
-            if (_iAbilityPauseStrategy != null)
-                _iAbilityPauseStrategy.PausedGame(state);
+            if (_abilityPauseStrategy != null)
+                _abilityPauseStrategy.PausedGame(state);
         }
 
         private void OnGameResumed(bool state)
         {
             _ability.ResumeCoroutine();
 
-            if (_iAbilityPauseStrategy != null)
-                _iAbilityPauseStrategy.ResumedGame(state);
+            if (_abilityPauseStrategy != null)
+                _abilityPauseStrategy.ResumedGame(state);
         }
 
         private void OnGameClosed()

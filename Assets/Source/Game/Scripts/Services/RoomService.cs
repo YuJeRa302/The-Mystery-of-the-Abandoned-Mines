@@ -4,12 +4,12 @@ using Assets.Source.Game.Scripts.SpawnersScripts;
 using Assets.Source.Game.Scripts.Views;
 using System;
 using System.Linq;
+using UniRx;
 
 namespace Assets.Source.Game.Scripts.Services
 {
     public class RoomService : IDisposable
     {
-        private readonly GamePanelsService _gamePanelsService;
         private readonly TrapsSpawner _trapsSpawner;
         private readonly EnemySpawner _enemySpawner;
         private readonly RoomPlacer _roomPlacer;
@@ -24,7 +24,6 @@ namespace Assets.Source.Game.Scripts.Services
         private int _currentStage = 0;
 
         public RoomService(
-            GamePanelsService gamePanelsService,
             RoomPlacer roomPlacer,
             CameraScripts.CameraController cameraControiler,
             EnemySpawner enemySpawner,
@@ -32,7 +31,6 @@ namespace Assets.Source.Game.Scripts.Services
             int countRooms,
             int countStages)
         {
-            _gamePanelsService = gamePanelsService;
             _roomPlacer = roomPlacer;
             _countRooms = countRooms;
             _countStages = countStages;
@@ -183,7 +181,7 @@ namespace Assets.Source.Game.Scripts.Services
 
         private void WinGame()
         {
-            _gamePanelsService.ClosePanels();
+            MessageBroker.Default.Publish(new M_ClosePanels());
             IsWinGame = true;
             IsGameInterrupted = false;
             ClearRooms();
@@ -192,7 +190,7 @@ namespace Assets.Source.Game.Scripts.Services
 
         private void OnPlayerDied()
         {
-            _gamePanelsService.ClosePanels();
+            MessageBroker.Default.Publish(new M_ClosePanels());
             IsGameInterrupted = false;
             ClearRooms();
             GameEnded?.Invoke(IsWinGame);

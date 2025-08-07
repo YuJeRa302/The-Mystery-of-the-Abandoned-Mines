@@ -13,7 +13,7 @@ namespace Assets.Source.Game.Scripts.Characters
 {
     public class PlayerAttacker : IDisposable
     {
-        private readonly System.Random _rnd = new();
+        private readonly System.Random _rnd = new ();
         private readonly GamePauseService _gamePauseService;
         private readonly ICoroutineRunner _coroutineRunner;
         private readonly int _divider = 100;
@@ -59,8 +59,6 @@ namespace Assets.Source.Game.Scripts.Characters
         public event Action<Transform> EnemyFinded;
         public event Action<float> HealedVampirism;
 
-        public Enemy CurrentTarget => _currentTarget;
-
         public void Dispose()
         {
             if (_findTarget != null)
@@ -85,7 +83,9 @@ namespace Assets.Source.Game.Scripts.Characters
             if (_typeAttackRange == TypeAttackRange.Ranged)
                 _bulletSpawner = new ProjectileSpawner(
                     (weaponData as WarlockWeaponData).BulletPrafab,
-                    _poolBullet, _shotPoint, _player.DamageSource);
+                    _poolBullet,
+                    _shotPoint,
+                    _player.DamageSource);
         }
 
         private void AddListeners()

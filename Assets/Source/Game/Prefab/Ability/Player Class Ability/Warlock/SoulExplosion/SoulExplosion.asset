@@ -60,7 +60,8 @@ MonoBehaviour:
   _abilityType: 13
   _damageParameter:
     _typeDamage: 4
-    _damage: 0
+    _damage: 10
+    _damageDelay: 1
     _damageParameters:
     - _value: 0
       _typeDamageParameter: 4

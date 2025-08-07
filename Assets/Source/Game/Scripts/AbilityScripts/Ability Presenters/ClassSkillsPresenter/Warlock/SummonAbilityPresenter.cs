@@ -1,68 +1,37 @@
 using Assets.Source.Game.Scripts.Characters;
 using Assets.Source.Game.Scripts.PoolSystem;
 using Assets.Source.Game.Scripts.ScriptableObjects;
-using Assets.Source.Game.Scripts.Services;
 using UnityEngine;
 
 namespace Assets.Source.Game.Scripts.AbilityScripts
 {
-    public class SummonAbilityPresenter : IAbilityStrategy, IClassAbilityStrategy
+    public class SummonAbilityPresenter : ClassAbilityPresenter
     {
         private Summon _summonPrefab;
         private Transform _spawnPoint;
         private Pool _pool;
-        private bool _isAbilityUse;
         private Ability _ability;
-        private AbilityView _abilityView;
         private Player _player;
 
-        public void Construct(AbilityEntitiesHolder abilityEntitiesHolder)
+        public override void Construct(AbilityEntitiesHolder abilityEntitiesHolder)
         {
+            base.Construct(abilityEntitiesHolder);
             SummonAbilityData summonAbilityData = abilityEntitiesHolder.AttributeData as SummonAbilityData;
             _ability = abilityEntitiesHolder.Ability;
-            _abilityView = abilityEntitiesHolder.AbilityView;
             _player = abilityEntitiesHolder.Player;
             _pool = abilityEntitiesHolder.Player.Pool;
             _spawnPoint = abilityEntitiesHolder.Player.ShotPoint;
             _summonPrefab = summonAbilityData.Summon.Summon;
         }
 
-        public void UsedAbility(Ability ability)
+        public override void UsedAbility(Ability ability)
         {
+            base.UsedAbility(ability);
+
             for (int i = 0; i < ability.Quantity; i++)
             {
                 Spawn();
             }
-        }
-
-        public void EndedAbility(Ability ability)
-        {
-            _isAbilityUse = false;
-        }
-
-        public void SetInteractableButton()
-        {
-            (_abilityView as ClassSkillButtonView).SetInteractableButton(true);
-        }
-
-        public void AddListener()
-        {
-            (_abilityView as ClassSkillButtonView).AbilityUsed += OnButtonSkillClick;
-        }
-
-        public void RemoveListener()
-        {
-            (_abilityView as ClassSkillButtonView).AbilityUsed -= OnButtonSkillClick;
-        }
-
-        private void OnButtonSkillClick()
-        {
-            if (_isAbilityUse)
-                return;
-
-            _isAbilityUse = true;
-            _ability.Use();
-            (_abilityView as ClassSkillButtonView).SetInteractableButton(false);
         }
 
         private void Spawn()

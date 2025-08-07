@@ -13,11 +13,9 @@ namespace Assets.Source.Game.Scripts.ViewModels
             _knowledgeBaseModel = knowledgeBaseModel;
             _menuModel = menuModel;
             _menuModel.InvokeKnowBaswShowed += () => Showing?.Invoke();
-            _menuModel.InvokedMainMenuShowed += () => Hiding?.Invoke();
         }
 
         public event Action Showing;
-        public event Action Hiding;
 
         public void Hide() => _menuModel.InvokeKnowledgeBaseHide();
     }

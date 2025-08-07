@@ -84,9 +84,12 @@ namespace Assets.Source.Game.Scripts.Saves
             }
         }
 
-        public void SaveGameProgerss(int score,
-            int coins, int upgradePoints,
-            int levelId, bool isComplete,
+        public void SaveGameProgerss(
+            int score,
+            int coins,
+            int upgradePoints,
+            int levelId,
+            bool isComplete,
             bool isGameInterrupted)
         {
             if (isGameInterrupted)
@@ -116,14 +119,19 @@ namespace Assets.Source.Game.Scripts.Saves
                 SfxVolumeVolume = _persistentDataService.PlayerProgress.SfxVolume,
                 IsMuted = _persistentDataService.PlayerProgress.IsMuted,
                 UpgradePoints = _persistentDataService.PlayerProgress.UpgradePoints,
+
                 UpgradeStates = new List<UpgradeState>(
                     _persistentDataService.PlayerProgress.UpgradeService.UpgradeStates),
+
                 ClassAbilityStates = new List<ClassAbilityState>(
                     _persistentDataService.PlayerProgress.ClassAbilityService.ClassAbilityStates),
+
                 DefaultWeaponState = new WeaponState[
                 _persistentDataService.PlayerProgress.WeaponService.WeaponStates.Count],
+
                 DefaultLevelState = new LevelState[
                 _persistentDataService.PlayerProgress.LevelService.LevelStates.Count],
+
                 Score = _persistentDataService.PlayerProgress.Score,
                 HasSave = true
             };

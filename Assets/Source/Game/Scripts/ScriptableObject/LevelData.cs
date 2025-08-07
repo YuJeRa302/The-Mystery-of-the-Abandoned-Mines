@@ -1,9 +1,10 @@
+using Assets.Source.Game.Scripts.Services;
 using UnityEngine;
 
 namespace Assets.Source.Game.Scripts.ScriptableObjects
 {
     [CreateAssetMenu(fileName = "New Level Data", menuName = "Create Level Data", order = 51)]
-    public class LevelData : ScriptableObject
+    public class LevelData : ScriptableObject, IIdData
     {
         [SerializeField] private int _id;
         [SerializeField] private int _tier;

@@ -67,5 +67,9 @@ namespace Assets.Source.Game.Scripts.Models
                 return;
             }
         }
+
+        public void Dispose()
+        {
+        }
     }
 }

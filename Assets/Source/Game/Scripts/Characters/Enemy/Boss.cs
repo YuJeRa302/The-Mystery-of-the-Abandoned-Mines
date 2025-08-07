@@ -6,7 +6,6 @@ namespace Assets.Source.Game.Scripts.Characters
     public class Boss : Enemy
     {
         [SerializeField] private float _additionalAttackDelay = 7f;
-        [SerializeField] private float _additionalAttackRange = 7f;
         [SerializeField] private float _specialAttackDelay = 10f;
         [SerializeField] private int _additionalAttackDamage;
         [SerializeField] private int _specialAttackDamage;

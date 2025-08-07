@@ -59,7 +59,7 @@ namespace Assets.Source.Game.Scripts.Characters
         {
             _animationController.Attacked -= OnEnemyAttack;
             _damageHandler.Stuned -= OnEnemyStaned;
-            _damageHandler.StunEnded -= OnStanEnded; 
+            _damageHandler.StunEnded -= OnStanEnded;
             _damageHandler.MoveSpeedReduced -= OnMoveSpeedReduced;
             _damageHandler.MoveSpeedReseted -= OnMoveSpeedReset;
         }
@@ -72,7 +72,7 @@ namespace Assets.Source.Game.Scripts.Characters
             Fill(data);
             _stateMachine.InitializeStateMachine(player);
             _healthView.Initialize(this);
-            _animationController.Attacked += OnEnemyAttack;
+            _health.ResetHealth();
         }
 
         public virtual void ResetEnemy(int lvlRoom)
@@ -124,6 +124,7 @@ namespace Assets.Source.Game.Scripts.Characters
             _damageHandler.StunEnded += OnStanEnded;
             _damageHandler.MoveSpeedReduced += OnMoveSpeedReduced;
             _damageHandler.MoveSpeedReseted += OnMoveSpeedReset;
+            _animationController.Attacked += OnEnemyAttack;
 
             _damage = data.EnemyStats[_tier].Damage;
             _speed = data.EnemyStats[_tier].MoveSpeed;
@@ -158,9 +159,10 @@ namespace Assets.Source.Game.Scripts.Characters
             _speed = _baseMoveSpeed;
         }
 
-        private void OnMoveSpeedReduced(float valueSlowed) 
+        private void OnMoveSpeedReduced(float valueSlowed)
         {
             _baseMoveSpeed = _speed;
-            _speed = _speed* (1 - valueSlowed / 100);}
+            _speed = _speed * (1 - valueSlowed / 100);
         }
+    }
 }

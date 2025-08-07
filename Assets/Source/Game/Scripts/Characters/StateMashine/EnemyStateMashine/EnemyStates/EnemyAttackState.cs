@@ -26,12 +26,9 @@ namespace Assets.Source.Game.Scripts.Characters
             SubscrabeIvent();
         }
 
-        public float LastAttackTime => _lastAttackTime;
-        public float AttackDelay => _attackDelay;
         public float AttackRange => _attackRange;
         public Vector3 DirectionToTarget => _directionToTarget;
         public float DistanceToTarget => _distanceToTarget;
-        public float Damage => _damage;
         public Player Target => _target;
         public Enemy Enemy => _enemy;
         public EnemyAnimation AnimationController => _animationController;

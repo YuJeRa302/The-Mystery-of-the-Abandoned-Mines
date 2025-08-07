@@ -10,7 +10,7 @@ using UnityEngine.SceneManagement;
 
 namespace Assets.Source.Game.Scripts.AbilityScripts
 {
-    public class JerkFrontAbilityPresenter : IAbilityStrategy, IClassAbilityStrategy, IAbilityPauseStrategy
+    public class JerkFrontAbilityPresenter : ClassAbilityPresenter, IAbilityPauseStrategy
     {
         private ICoroutineRunner _coroutineRunner;
         private Coroutine _coroutine;
@@ -19,16 +19,14 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
         private Pool _pool;
         private PoolParticle _poolParticle;
         private List<PoolObject> _spawnedEffects = new ();
-        private bool _isAbilityUse = false;
         private Ability _ability;
-        private AbilityView _abilityView;
         private Player _player;
 
-        public void Construct(AbilityEntitiesHolder abilityEntitiesHolder)
+        public override void Construct(AbilityEntitiesHolder abilityEntitiesHolder)
         {
+            base.Construct(abilityEntitiesHolder);
             JerkFrontAbilityData jerkFrontAbilityData = abilityEntitiesHolder.AttributeData as JerkFrontAbilityData;
             _ability = abilityEntitiesHolder.Ability;
-            _abilityView = abilityEntitiesHolder.AbilityView;
             _player = abilityEntitiesHolder.Player;
             _pool = _player.Pool;
             _poolParticle = jerkFrontAbilityData.PoolParticle;
@@ -38,34 +36,21 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
             _coroutineRunner = container.Resolve<ICoroutineRunner>();
         }
 
-        public void UsedAbility(Ability ability)
+        public override void UsedAbility(Ability ability)
         {
-            ChangeAbilityEffect(_isAbilityUse);
+            base.UsedAbility(ability);
+            ChangeAbilityEffect(IsAbilityUse);
             Jerk();
         }
 
-        public void EndedAbility(Ability ability)
+        public override void EndedAbility(Ability ability)
         {
+            base.EndedAbility(ability);
+
             if (_coroutine != null)
                 _coroutineRunner.StopCoroutine(_coroutine);
 
-            _isAbilityUse = false;
-            ChangeAbilityEffect(_isAbilityUse);
-        }
-
-        public void AddListener()
-        {
-            (_abilityView as ClassSkillButtonView).AbilityUsed += OnButtonSkillClick;
-        }
-
-        public void RemoveListener()
-        {
-            (_abilityView as ClassSkillButtonView).AbilityUsed -= OnButtonSkillClick;
-        }
-
-        public void SetInteractableButton()
-        {
-            (_abilityView as ClassSkillButtonView).SetInteractableButton(true);
+            ChangeAbilityEffect(IsAbilityUse);
         }
 
         public void PausedGame(bool state)
@@ -80,16 +65,6 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
                 _coroutineRunner.StopCoroutine(_coroutine);
 
             _coroutine = _coroutineRunner.StartCoroutine(JerkForward());
-        }
-
-        private void OnButtonSkillClick()
-        {
-            if (_isAbilityUse)
-                return;
-
-            _isAbilityUse = true;
-            _ability.Use();
-            (_abilityView as ClassSkillButtonView).SetInteractableButton(false);
         }
 
         private void Jerk()

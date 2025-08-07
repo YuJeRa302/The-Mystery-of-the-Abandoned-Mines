@@ -31,6 +31,7 @@ MonoBehaviour:
   _damage:
     _typeDamage: 0
     _damage: 0
+    _damageDelay: 0.3
     _damageParameters: []
     _particle: {fileID: 0}
   _upgradeType: 0

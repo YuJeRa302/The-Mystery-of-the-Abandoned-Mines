@@ -1,4 +1,5 @@
 using Assets.Source.Game.Scripts.Enums;
+using Assets.Source.Game.Scripts.Services;
 using Assets.Source.Game.Scripts.Upgrades;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,7 +7,7 @@ using UnityEngine;
 namespace Assets.Source.Game.Scripts.ScriptableObjects
 {
     [CreateAssetMenu(fileName = "New Upgrade", menuName = "Create Stats Upgrade", order = 51)]
-    public class UpgradeData : ScriptableObject
+    public class UpgradeData : ScriptableObject, IIdData
     {
         [SerializeField] private int _id;
         [SerializeField] private TypeParameter _typeParameter;

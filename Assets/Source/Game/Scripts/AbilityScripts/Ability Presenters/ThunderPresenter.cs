@@ -11,8 +11,7 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
 {
     public class ThunderPresenter : IAbilityStrategy, IAbilityPauseStrategy
     {
-        private readonly float _delayAttack = 0.3f;
-
+        private float _damageDelay;
         private ICoroutineRunner _coroutineRunner;
         private LegendaryThunderAbilitySpell _spellPrefab;
         private LegendaryThunderAbilitySpell _spell;
@@ -28,6 +27,7 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
             _player = abilityEntitiesHolder.Player;
             _particleSystem = abilityEntitiesHolder.ParticleSystem;
             _spellPrefab = legendaryAbilityData.LegendarySpell as LegendaryThunderAbilitySpell;
+            _damageDelay = legendaryAbilityData.DamageSource.DamageDelay;
             var container = SceneManager.GetActiveScene().GetSceneContainer();
             _coroutineRunner = container.Resolve<ICoroutineRunner>();
         }
@@ -77,7 +77,7 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
         {
             while (_ability.IsAbilityEnded == false)
             {
-                yield return new WaitForSeconds(_delayAttack);
+                yield return new WaitForSeconds(_damageDelay);
 
                 if (_spell != null)
                 {

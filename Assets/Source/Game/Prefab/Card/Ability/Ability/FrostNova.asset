@@ -45,6 +45,7 @@ MonoBehaviour:
   _damage:
     _typeDamage: 3
     _damage: 15
+    _damageDelay: 1
     _damageParameters:
     - _value: 45
       _typeDamageParameter: 3
@@ -58,9 +59,13 @@ MonoBehaviour:
     rid: 7260333119341592587
   _spell: {fileID: 1654424239186438959, guid: 081f8bf11483ab544842add8457b3c62, type: 3}
   _radius: 7
+  _attackAbilityStrategy:
+    rid: 8041066217683550212
   _legendaryAbilityData: {fileID: 11400000, guid: 124a7573d9cefc546982380bd10d7dc9, type: 2}
   references:
     version: 2
     RefIds:
     - rid: 7260333119341592587
       type: {class: AttackAbilityPresenter, ns: Assets.Source.Game.Scripts.AbilityScripts, asm: Assembly-CSharp}
+    - rid: 8041066217683550212
+      type: {class: AoEAbility, ns: Assets.Source.Game.Scripts.AbilityScripts, asm: Assembly-CSharp}

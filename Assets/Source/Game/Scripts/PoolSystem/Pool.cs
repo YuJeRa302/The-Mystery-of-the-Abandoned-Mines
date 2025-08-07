@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,11 +5,7 @@ namespace Assets.Source.Game.Scripts.PoolSystem
 {
     public class Pool : MonoBehaviour
     {
-        private List<PoolObject> _poolObjects = new List<PoolObject>();
-
-        public event Action GetPoolObject;
-
-        public List<PoolObject> PoolObjects => _poolObjects;
+        private List<PoolObject> _poolObjects = new ();
 
         private void OnDisable()
         {
@@ -29,7 +24,6 @@ namespace Assets.Source.Game.Scripts.PoolSystem
         public void PoolObject(PoolObject poolObject)
         {
             _poolObjects.Add(poolObject);
-            GetPoolObject?.Invoke();
         }
 
         public bool TryPoolObject(GameObject soughtObject, out PoolObject poolObject)

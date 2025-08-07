@@ -9,34 +9,34 @@ using UnityEngine.SceneManagement;
 
 namespace Assets.Source.Game.Scripts.AbilityScripts
 {
-    public class SoulExplosionAbilityPresenter : IAbilityStrategy, IClassAbilityStrategy, IAbilityPauseStrategy
+    public class SoulExplosionAbilityPresenter : ClassAbilityPresenter, IAbilityPauseStrategy
     {
         private ICoroutineRunner _coroutineRunner;
         private ParticleSystem _poolParticle;
         private Spell _spell;
         private Spell _spellPrefab;
-        private bool _isAbilityUse;
         private Coroutine _damageDealingCoroutine;
-        private float _delayDamage = 1f;
+        private float _delayDamage;
         private float _spellRadius = 5f;
         private Ability _ability;
-        private AbilityView _abilityView;
         private Player _player;
 
-        public void Construct(AbilityEntitiesHolder abilityEntitiesHolder)
+        public override void Construct(AbilityEntitiesHolder abilityEntitiesHolder)
         {
+            base.Construct(abilityEntitiesHolder);
             SoulExplosionAbilityData soulExplosionAbilityData = abilityEntitiesHolder.AttributeData as SoulExplosionAbilityData;
             _ability = abilityEntitiesHolder.Ability;
-            _abilityView = abilityEntitiesHolder.AbilityView;
             _player = abilityEntitiesHolder.Player;
             _poolParticle = soulExplosionAbilityData.DamageParticle;
             _spellPrefab = soulExplosionAbilityData.Spell;
+            _delayDamage = soulExplosionAbilityData.DamageSource.DamageDelay;
             var container = SceneManager.GetActiveScene().GetSceneContainer();
             _coroutineRunner = container.Resolve<ICoroutineRunner>();
         }
 
-        public void UsedAbility(Ability ability)
+        public override void UsedAbility(Ability ability)
         {
+            base.UsedAbility(ability);
             CreateParticle();
 
             if (_damageDealingCoroutine != null)
@@ -45,27 +45,12 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
             _damageDealingCoroutine = _coroutineRunner.StartCoroutine(DealDamage());
         }
 
-        public void EndedAbility(Ability ability)
+        public override void EndedAbility(Ability ability)
         {
+            base.EndedAbility(ability);
+
             if (_damageDealingCoroutine != null)
                 _coroutineRunner.StopCoroutine(_damageDealingCoroutine);
-
-            _isAbilityUse = false;
-        }
-
-        public void AddListener()
-        {
-            (_abilityView as ClassSkillButtonView).AbilityUsed += OnButtonSkillClick;
-        }
-
-        public void RemoveListener()
-        {
-            (_abilityView as ClassSkillButtonView).AbilityUsed -= OnButtonSkillClick;
-        }
-
-        public void SetInteractableButton()
-        {
-            (_abilityView as ClassSkillButtonView).SetInteractableButton(true);
         }
 
         public void PausedGame(bool state)
@@ -80,16 +65,6 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
                 _coroutineRunner.StopCoroutine(_damageDealingCoroutine);
 
             _damageDealingCoroutine = _coroutineRunner.StartCoroutine(DealDamage());
-        }
-
-        private void OnButtonSkillClick()
-        {
-            if (_isAbilityUse)
-                return;
-
-            _isAbilityUse = true;
-            _ability.Use();
-            (_abilityView as ClassSkillButtonView).SetInteractableButton(false);
         }
 
         private void CreateParticle()

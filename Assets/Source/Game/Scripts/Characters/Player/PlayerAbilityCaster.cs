@@ -56,7 +56,6 @@ namespace Assets.Source.Game.Scripts.Characters
         public event Action<PassiveAttributeData> PassiveAbilityTaked;
         public event Action<ActiveAbilityData, int> AbilityTaked;
         public event Action<ActiveAbilityData> LegendaryAbilityTaked;
-        public event Action<Ability> AbilityRemoved;
         public event Action<Ability> AbilityUsed;
         public event Action<Ability> AbilityEnded;
 

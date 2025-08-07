@@ -90,8 +90,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cba14064a435cf408d9c1c4b7e32c6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ReloadingImage: {fileID: 2948791920113364489}
-  AbilityIcon: {fileID: 6619201395980672741}
+  _reloadingImage: {fileID: 2948791920113364489}
+  _abilityIcon: {fileID: 6619201395980672741}
 --- !u!1 &5786861139560848837
 GameObject:
   m_ObjectHideFlags: 0

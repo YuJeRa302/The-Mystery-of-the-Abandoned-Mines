@@ -1,4 +1,6 @@
+using Assets.Source.Game.Scripts.GamePanels;
 using System;
+using UniRx;
 using UnityEngine;
 using YG;
 
@@ -7,14 +9,14 @@ namespace Assets.Source.Game.Scripts.Services
     public class GamePauseService : IDisposable
     {
         private readonly PersistentDataService _persistentDataService;
-        private readonly GamePanelsService _gamePanelsService;
         private readonly float _pauseValue = 0;
         private readonly float _resumeValue = 1;
 
-        public GamePauseService(GamePanelsService gamePanelsService, PersistentDataService persistentDataService)
+        private CompositeDisposable _disposables = new ();
+
+        public GamePauseService(PersistentDataService persistentDataService)
         {
             _persistentDataService = persistentDataService;
-            _gamePanelsService = gamePanelsService;
             AddListener();
         }
 
@@ -29,23 +31,30 @@ namespace Assets.Source.Game.Scripts.Services
         private void AddListener()
         {
             YG2.onFocusWindowGame += OnVisibilityWindowGame;
-            _gamePanelsService.ResumeByRewarded += OnResumeByReward;
-            _gamePanelsService.PauseByRewarded += OnPauseByReward;
-            _gamePanelsService.ByMenuResumed += OnResumeByMenu;
-            _gamePanelsService.ByMenuPaused += OnPauseByMenu;
-            _gamePanelsService.ByFullscreenAdResumed += OnResumeByFullscreenAd;
-            _gamePanelsService.ByFullscreenAdPaused += OnPauseByFullscreenAd;
+            MessageBroker.Default.Receive<M_CloseAdReward>().Subscribe(m => OnResumeByReward()).AddTo(_disposables);
+            MessageBroker.Default.Receive<M_OpenAdReward>().Subscribe(m => OnPauseByReward()).AddTo(_disposables);
+            MessageBroker.Default.Receive<M_ClosePanel>().Subscribe(m => OnResumeByMenu()).AddTo(_disposables);
+            MessageBroker.Default.Receive<M_OpenPanel>().Subscribe(m => OnPauseByMenu()).AddTo(_disposables);
+
+            MessageBroker
+                .Default
+                .Receive<M_CloseFullscreenAd>()
+                .Subscribe(m => OnResumeByFullscreenAd())
+                .AddTo(_disposables);
+
+            MessageBroker
+                .Default
+                .Receive<M_OpenFullscreenAd>()
+                .Subscribe(m => OnPauseByFullscreenAd())
+                .AddTo(_disposables);
         }
 
         private void RemoveListener()
         {
             YG2.onFocusWindowGame -= OnVisibilityWindowGame;
-            _gamePanelsService.ResumeByRewarded -= OnResumeByReward;
-            _gamePanelsService.PauseByRewarded -= OnPauseByReward;
-            _gamePanelsService.ByMenuResumed -= OnResumeByMenu;
-            _gamePanelsService.ByMenuPaused -= OnPauseByMenu;
-            _gamePanelsService.ByFullscreenAdResumed -= OnResumeByFullscreenAd;
-            _gamePanelsService.ByFullscreenAdPaused -= OnPauseByFullscreenAd;
+
+            if (_disposables != null)
+                _disposables.Dispose();
         }
 
         private void OnResumeByReward()

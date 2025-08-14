@@ -1,4 +1,5 @@
 using Assets.Source.Game.Scripts.Characters;
+using Assets.Source.Game.Scripts.Enums;
 using Assets.Source.Game.Scripts.PoolSystem;
 using Assets.Source.Game.Scripts.ScriptableObjects;
 using UnityEngine;
@@ -28,7 +29,7 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
         {
             base.UsedAbility(ability);
 
-            for (int i = 0; i < ability.Quantity; i++)
+            for (int i = 0; i < ability.AbilityParameters[TypeParameter.Quantity]; i++)
             {
                 Spawn();
             }

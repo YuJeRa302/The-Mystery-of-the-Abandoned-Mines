@@ -1,17 +1,21 @@
 using Assets.Source.Game.Scripts.Enums;
 using Assets.Source.Game.Scripts.ScriptableObjects;
-using System;
+using Assets.Source.Game.Scripts.Services;
 using System.Collections.Generic;
+using UniRx;
 
 namespace Assets.Source.Game.Scripts.Card
 {
     public class CardDeck
     {
+        public static readonly IMessageBroker MessageBroker = new MessageBroker();
+
         private readonly System.Random _rnd = new ();
         private readonly int _defaultStateLevel = 0;
         private readonly int _defaultLevelCardCount = 3;
         private readonly int _contractLevelCardCount = 2;
         private readonly int _weightControl = 100;
+        private readonly List<ITakeCardStrategy> _takeCardStrategies;
 
         private List<CardData> _cardDataAbility = new ();
         private List<CardData> _activeCardAbility = new ();
@@ -19,40 +23,20 @@ namespace Assets.Source.Game.Scripts.Card
         private int _currentMaxCardCount;
         private bool _isReserWeight = false;
 
-        public event Action<CardView> SetNewAbility;
-        public event Action<CardView> RerollPointsUpdated;
-        public event Action<CardView> PlayerStatsUpdated;
-        public event Action<CardView> TakedPassiveAbility;
-
-        public CardDeck(bool isContractLevel)
+        public CardDeck(bool isContractLevel, List<ITakeCardStrategy> takeCardStrategies)
         {
             if (isContractLevel)
                 _currentMaxCardCount = _contractLevelCardCount;
             else
                 _currentMaxCardCount = _defaultLevelCardCount;
+
+            _takeCardStrategies = takeCardStrategies;
+            _takeCardStrategies.ForEach(s => s.Construct(_cardDataAbility, _activeCardAbility));
         }
 
         public void TakeCard(CardView cardView)
         {
-            switch (cardView.CardData.TypeCardParameter)
-            {
-                case TypeCardParameter.RerollPoints:
-                    RerollPointsUpdated?.Invoke(cardView);
-                    break;
-                case TypeCardParameter.Default:
-                    PlayerStatsUpdated?.Invoke(cardView);
-                    break;
-                case TypeCardParameter.PassiveAbility:
-                    TakePassiveAbility(cardView);
-                    break;
-                case TypeCardParameter.LegendaryAbility:
-                    TakeAbility(cardView);
-                    break;
-                case TypeCardParameter.Ability:
-                    TakeAbility(cardView);
-                    break;
-            }
-
+            _takeCardStrategies.ForEach(s => s.TakeCard(cardView));
             _cardState.Add(cardView.CardState);
         }
 
@@ -118,9 +102,7 @@ namespace Assets.Source.Game.Scripts.Card
                     card.SetCardLocked(false);
 
                 if (_isReserWeight)
-                {
                     card.ResetWeight();
-                }
             }
 
             _isReserWeight = false;
@@ -136,22 +118,12 @@ namespace Assets.Source.Game.Scripts.Card
 
         public CardState InitState(CardData cardData)
         {
-            bool isLocked;
-            bool isLegendariCard;
+            CardState cardState = new(
+                cardData.Id,
+                cardData.TypeCardParameter == TypeCardParameter.LegendaryAbility, 
+                _defaultStateLevel,
+                cardData.TypeCardParameter == TypeCardParameter.LegendaryAbility);
 
-            if (cardData.TypeCardParameter == TypeCardParameter.LegendaryAbility)
-            {
-                isLegendariCard = true;
-                isLocked = true;
-            }
-            else
-            {
-                isLocked = false;
-                isLegendariCard = false;
-            }
-
-
-            CardState cardState = new(cardData.Id, isLocked, _defaultStateLevel, isLegendariCard);
             _cardState.Add(cardState);
             return cardState;
         }
@@ -172,42 +144,6 @@ namespace Assets.Source.Game.Scripts.Card
             }
 
             return false;
-        }
-
-        private void TakeAbility(CardView cardView)
-        {
-            SetNewAbility?.Invoke(cardView);
-
-            if (_cardDataAbility.Count > 0)
-                AddCardAbilityData(cardView, _cardDataAbility);
-            else
-                _cardDataAbility.Add(cardView.CardData);
-
-            if (cardView.CardData.AttributeData as AttackAbilityData)
-            {
-                if (_activeCardAbility.Count > 0)
-                    AddCardAbilityData(cardView, _activeCardAbility);
-                else
-                    _activeCardAbility.Add(cardView.CardData);
-            }
-        }
-
-        private void TakePassiveAbility(CardView cardView)
-        {
-            if (_cardDataAbility.Count > 0)
-                AddCardAbilityData(cardView, _cardDataAbility);
-            else
-                _cardDataAbility.Add(cardView.CardData);
-
-            TakedPassiveAbility?.Invoke(cardView);
-        }
-
-        private void AddCardAbilityData(CardView cardView, List<CardData> repository)
-        {
-            if (repository.Contains(cardView.CardData))
-                return;
-
-            repository.Add(cardView.CardData);
         }
     }
 }

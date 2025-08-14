@@ -12,7 +12,7 @@ namespace Assets.Source.Game.Scripts.SpawnersScripts
 {
     public class EnemySpawner : IDisposable
     {
-        private readonly System.Random _rnd = new();
+        private readonly System.Random _rnd = new ();
         private readonly int _minValueChance = 0;
         private readonly int _maxValueChance = 100;
 
@@ -239,17 +239,12 @@ namespace Assets.Source.Game.Scripts.SpawnersScripts
             _deadEnemy++;
 
             if (_deadEnemy == _totalEnemyCount)
-            {
                 AllEnemyRoomDied?.Invoke();
-            }
         }
 
         private bool CalculateChance(float chance)
         {
-            if (_rnd.Next(_minValueChance, _maxValueChance) <= chance + _currentRoomsLevel)
-                return true;
-            else
-                return false;
+            return _rnd.Next(_minValueChance, _maxValueChance) <= chance + _currentRoomsLevel;
         }
 
         private void OnPlayerDead()

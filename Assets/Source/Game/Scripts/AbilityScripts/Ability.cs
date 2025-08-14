@@ -15,15 +15,10 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
         private readonly int _minValue = 0;
         private readonly ICoroutineRunner _coroutineRunner;
 
+        private Dictionary<TypeParameter, float> _abilityParameters = new ();
         private float _currentDuration;
-        private float _defaultDuration;
-        private int _currentAbilityValue;
-        private float _chance;
-        private int _abilityDamage;
-        private float _defaultCooldown;
         private float _currentCooldown;
         private float _spellRadius;
-        private int _quantity;
         private Coroutine _coolDown;
         private Coroutine _duration;
         private bool _isAbilityUsed = false;
@@ -39,8 +34,8 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
             bool isAutoCast,
             ICoroutineRunner coroutineRunner)
         {
-            AbilityAttribute = abilityAttributeData;
             FillAbilityParameters(abilityAttributeData, currentLevel);
+            AbilityAttribute = abilityAttributeData;
             AudioClip = abilityAttributeData.AudioClip;
             _coroutineRunner = coroutineRunner;
             _isAutoCast = isAutoCast;
@@ -63,7 +58,7 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
             bool isAutoCast,
             ICoroutineRunner coroutineRunner)
         {
-            FillLegendaryAbilityParameters(legendaryAbilityData);
+            FillAbilityParameters(legendaryAbilityData, _minValue);
             AudioClip = legendaryAbilityData.AudioClip;
             _coroutineRunner = coroutineRunner;
             _isAutoCast = isAutoCast;
@@ -81,7 +76,7 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
             int currentLvl,
             ICoroutineRunner coroutineRunner)
         {
-            FillClassSkillParameter(classAbilityData, currentLvl);
+            FillAbilityParameters(classAbilityData, currentLvl);
             TypeAbility = classAbilityData.AbilityType;
             _isAutoCast = isAutoCast;
             _coroutineRunner = coroutineRunner;
@@ -98,11 +93,12 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
         public List<CardParameter> AmplifierParameters { get; private set; } = new List<CardParameter>();
         public bool IsAbilityEnded { get; private set; } = true;
         public bool IsAutoCast => _isAutoCast;
-        public float CurrentDuration => _currentDuration;
-        public int CurrentAbilityValue => _currentAbilityValue;
-        public int Quantity => _quantity;
+        public float CurrentDuration => _abilityParameters.ContainsKey(TypeParameter.AbilityDuration) 
+            ?_abilityParameters[TypeParameter.AbilityDuration]
+            : 0f;
+        public int CurrentAbilityValue => Convert.ToInt32(_abilityParameters[TypeParameter.AbilityValue]);
+        public Dictionary<TypeParameter, float> AbilityParameters => _abilityParameters;
         public float SpellRadius => _spellRadius;
-        public bool IsAbilityUsed => _isAbilityUsed;
         public DamageSource DamageSource => _damageSource;
         public int CurrentLevel { get; private set; }
         public int MaxLevel { get; private set; }
@@ -136,7 +132,8 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
                 _coroutineRunner.StopCoroutine(_coolDown);
         }
 
-        public void Upgrade(ActiveAbilityData abilityAttributeData,
+        public void Upgrade(
+            ActiveAbilityData abilityAttributeData,
             int currentLevel,
             int abilityDuration,
             int abilityDamage,
@@ -144,99 +141,84 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
         {
             FillAbilityParameters(abilityAttributeData, currentLevel);
             UpdateAbilityParameters(abilityDuration, abilityDamage, abilityCooldownReduction);
-            CurrentLevel = currentLevel;
-            AbilityUpgraded?.Invoke(_defaultCooldown);
-        }
 
-        public void UpdateAbilityParameters(float abilityDuration, 
-           int abilityDamage,
-           float abilityCooldownReduction)
-        {
-            _defaultCooldown -= abilityCooldownReduction;
-            _defaultDuration += abilityDuration;
-            _currentAbilityValue += abilityDamage;
-            ApplyDamageSource();
-        }
-
-        private void FillAbilityParameters(ActiveAbilityData abilityAttributeData, int currentLevel)
-        {
-            foreach (CardParameter parameter in abilityAttributeData.Parameters[currentLevel].CardParameters)
-            {
-                if (parameter.TypeParameter == TypeParameter.AbilityCooldown)
-                    _defaultCooldown = parameter.Value;
-                else if (parameter.TypeParameter == TypeParameter.AbilityValue)
-                    _currentAbilityValue = parameter.Value;
-                else if (parameter.TypeParameter == TypeParameter.AbilityDuration)
-                    _defaultDuration = parameter.Value;
-            }
-
-            if (abilityAttributeData as AttackAbilityData)
-                _damageSource = (abilityAttributeData as AttackAbilityData).DamageSource;
-        }
-
-        private void FillLegendaryAbilityParameters(LegendaryAbilityData legendaryAbilityData)
-        {
-            foreach (CardParameter parameter in legendaryAbilityData.Parameters[_minValue].CardParameters)
-            {
-                if (parameter.TypeParameter == TypeParameter.AbilityCooldown)
-                    _defaultCooldown = parameter.Value;
-                else if (parameter.TypeParameter == TypeParameter.AbilityValue)
-                    _currentAbilityValue = parameter.Value;
-                else if (parameter.TypeParameter == TypeParameter.AbilityDuration)
-                    _defaultDuration = parameter.Value;
-            }
-
-            _damageSource = legendaryAbilityData.DamageSource;
-        }
-
-        private void FillClassSkillParameter(ClassAbilityData abilityAttributeData, int currentLevel)
-        {
-            foreach (CardParameter parameter in abilityAttributeData.Parameters[currentLevel].CardParameters)
-            {
-                if (parameter.TypeParameter == TypeParameter.AbilityCooldown)
-                    _defaultCooldown = parameter.Value;
-                else if (parameter.TypeParameter == TypeParameter.AbilityValue)
-                    _currentAbilityValue = parameter.Value;
-                else if (parameter.TypeParameter == TypeParameter.AbilityDuration)
-                    _defaultDuration = parameter.Value;
-                else if (parameter.TypeParameter == TypeParameter.AbilityDamage)
-                    _abilityDamage = parameter.Value;
-                else if (parameter.TypeParameter == TypeParameter.Chance)
-                    _chance = parameter.Value;
-                else if (parameter.TypeParameter == TypeParameter.Quantity)
-                    _quantity = parameter.Value;
-            }
-
-            _damageSource = abilityAttributeData.DamageSource;
-
-            if (_damageSource != null)
+            if (abilityAttributeData is LegendaryAbilityData == false)
                 ApplyDamageSource();
 
-            _damageSource.ChangeDamage(_abilityDamage);
+            CurrentLevel = currentLevel;
+            AbilityUpgraded?.Invoke(_abilityParameters[TypeParameter.AbilityCooldown]);
         }
 
-        private void ApplyDamageSource() 
+        public void UpdateAbilityParameters(
+            float abilityDuration,
+            int abilityDamage,
+            float abilityCooldownReduction)
         {
-            _damageSource.ChangeDamage(_currentAbilityValue);
+            _abilityParameters.TryGetValue(TypeParameter.AbilityCooldown, out float defaultAbilityCooldown);
+            _abilityParameters[TypeParameter.AbilityCooldown] = defaultAbilityCooldown - abilityCooldownReduction;
 
+            _abilityParameters.TryGetValue(TypeParameter.AbilityDuration, out float defaultAbilityDuration);
+            _abilityParameters[TypeParameter.AbilityDuration] = defaultAbilityDuration + abilityDuration;
+
+            _abilityParameters.TryGetValue(TypeParameter.AbilityValue, out float defaultAbilityDamage);
+            _abilityParameters[TypeParameter.AbilityValue] = defaultAbilityDamage + abilityDamage;
+        }
+
+        private void FillAbilityParameters(AttributeData attributeData, int currentLevel)
+        {
+            DamageSource damageSource = null;
+            float damage = 0f;
+
+            foreach (CardParameter parameter in attributeData.Parameters[currentLevel].CardParameters)
+            {
+                if (_abilityParameters.ContainsKey(parameter.TypeParameter) == false)
+                    _abilityParameters.Add(parameter.TypeParameter, parameter.Value);
+                else
+                    _abilityParameters[parameter.TypeParameter] = parameter.Value;
+            }
+
+            if (attributeData is PassiveAttributeData || attributeData is PrimaryAttributeData)
+                return;
+
+            if (attributeData is ActiveAbilityData)
+                damageSource = (attributeData as ActiveAbilityData).DamageSource;
+
+            if (attributeData is ClassAbilityData)
+                damageSource = (attributeData as ClassAbilityData).DamageSource;
+
+            if (_abilityParameters.ContainsKey(TypeParameter.AbilityDamage))
+                damage = _abilityParameters[TypeParameter.AbilityDamage];
+
+            if (_abilityParameters.ContainsKey(TypeParameter.AbilityValue))
+                damage = _abilityParameters[TypeParameter.AbilityValue];
+
+            _damageSource = new DamageSource(
+                damageSource.TypeDamage,
+                damageSource.DamageParameters,
+                damageSource.PoolParticle,
+                damage);
+
+            if (attributeData is LegendaryAbilityData == false)
+                ApplyDamageSource();
+        }
+
+        private void ApplyDamageSource()
+        {
             foreach (var parameter in _damageSource.DamageParameters)
             {
-                switch (parameter.TypeDamageParameter)
-                {
-                    case TypeDamageParameter.Chance:
-                        parameter.ChangeParameterValue(_chance);
-                        break;
-                    case TypeDamageParameter.Duration:
-                        parameter.ChangeParameterValue(_defaultDuration);
-                        break;
-                }
+                if(parameter.TypeDamageParameter == TypeDamageParameter.Duration)
+                    parameter.ChangeParameterValue(_abilityParameters[TypeParameter.AbilityDuration]);
             }
         }
 
         private void ApplyAbility()
         {
-            _currentCooldown = _defaultCooldown;
-            _currentDuration = _defaultDuration;
+            _abilityParameters.TryGetValue(TypeParameter.AbilityCooldown, out float abilityCooldown);
+            _currentCooldown = abilityCooldown;
+
+            _abilityParameters.TryGetValue(TypeParameter.AbilityDuration, out float abilityDuration);
+            _currentDuration = abilityDuration;
+
             IsAbilityEnded = false;
             UpdateAbility(true, _currentCooldown);
             _duration = _coroutineRunner.StartCoroutine(DurationAbility());

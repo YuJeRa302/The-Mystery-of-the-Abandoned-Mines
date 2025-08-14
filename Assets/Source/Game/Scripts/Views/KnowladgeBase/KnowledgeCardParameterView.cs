@@ -16,7 +16,7 @@ namespace Assets.Source.Game.Scripts.Views
 
                 view.Initialize(
                     cardData.AttributeData.Parameters[currentLvl].CardParameters[index].Value,
-                    cardData.AttributeData.Parameters[currentLvl].CardParameters[index].TypeParameter);
+                    cardData.AttributeData.Parameters[currentLvl].CardParameters[index].TypeParameter.ToString());
             }
         }
     }

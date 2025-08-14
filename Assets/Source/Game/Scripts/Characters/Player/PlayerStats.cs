@@ -28,8 +28,6 @@ namespace Assets.Source.Game.Scripts.Characters
 
         private DamageSource _damageSource;
         private float _moveSpeed;
-        private float _maxMoveSpeed;
-        private float _ownSpeed;
         private int _currentLevel;
         private int _currentUpgradeLevel = 0;
         private int _currentUpgradePoints = 0;
@@ -47,6 +45,7 @@ namespace Assets.Source.Game.Scripts.Characters
         private float _searchRadius;
         private float _attackRange;
         private PlayerClassData _classData;
+        private Dictionary<TypeParameter, IUpgradeStats> _playerParametrs;
 
         public PlayerStats(
             WeaponData weaponData,
@@ -58,13 +57,25 @@ namespace Assets.Source.Game.Scripts.Characters
             int regeneration,
             int countKillEnemy)
         {
+            _playerParametrs = new Dictionary<TypeParameter, IUpgradeStats>
+            {
+                { TypeParameter.MoveSpeed, new MoveSpeedParametr(moveSpeed)},
+                { TypeParameter.Armor, new ArmorParametr(armor)},
+                { TypeParameter.Regeneration, new RegenerationParametr(regeneration)},
+                { TypeParameter.Health, new HealthParametr()},
+                { TypeParameter.Damage, new DamageParameterPlayer(_damageSource)},
+                { TypeParameter.Reroll, new RerollPointsParametr(rerollPoints)},
+                { TypeParameter.AbilityCooldown, new AbilityCooldownReductionParameter()},
+                { TypeParameter.AbilityDuration, new AbilityDurationParameter()},
+                { TypeParameter.AbilityValue, new AbilityDamageParameter()},
+            };
+
             _currentLevel = currentLevel;
-            _rerollPoints = rerollPoints;
+            _rerollPoints = rerollPoints;//
             _rerollPoints = 100;
-            _armor = armor;
-            _moveSpeed = moveSpeed;
-            _maxMoveSpeed = _moveSpeed * _moveSpeedAmplifier;
-            _regeneration = regeneration;
+            _armor = armor;///
+            _moveSpeed = moveSpeed;///
+            _regeneration = regeneration;///
             _countKillEnemy = countKillEnemy;
             _classData = classData;
             GenerateLevelPlayer(_maxPlayerLevel);
@@ -72,9 +83,7 @@ namespace Assets.Source.Game.Scripts.Characters
             ApplyWeaponParameters(weaponData, classData.TypeAttackRange);
         }
 
-        public event Action<int> MaxHealthChanged;
         public event Action<int> HealthUpgradeApplied;
-        public event Action<float> HealthReduced;
         public event Action<int> Healed;
         public event Action<int> ExperienceValueChanged;
         public event Action<int> UpgradeExperienceValueChanged;
@@ -87,9 +96,40 @@ namespace Assets.Source.Game.Scripts.Characters
         public event Action<int> CoinsAdding;
 
         public DamageSource DamageSource => _damageSource;
-        public int Armor => _armor;
-        public float MoveSpeed => _moveSpeed;
-        public float MaxMoveSpeed => _maxMoveSpeed;
+
+        public int Armor
+        {
+            get
+            {
+                //if (_playerParametrs.TryGetValue(TypeParameter.Armor, out var value))
+                //    return Convert.ToInt32((value as ArmorParametr).CurrentArmorValue);
+
+                return _armor;
+            }
+        }
+
+        public float MoveSpeed
+        {
+            get
+            {
+                //if (_playerParametrs.TryGetValue(TypeParameter.MoveSpeed, out var value))
+                //    return (value as MoveSpeedParametr).CurrentMoveSpeed;
+
+                return _moveSpeed;
+            }
+        }
+
+        public float MaxMoveSpeed
+        {
+            get
+            {
+                //if (_playerParametrs.TryGetValue(TypeParameter.MoveSpeed, out var value))
+                //    return (value as MoveSpeedParametr).MaxMoveSpeed;
+
+                return _moveSpeed;
+            }
+        }
+
         public int RerollPoints => _rerollPoints;
         public int Regeneration => _regeneration;
         public int UpgradePoints => _currentUpgradePoints;
@@ -121,6 +161,14 @@ namespace Assets.Source.Game.Scripts.Characters
             SetNewUpgradePoints(_currentUpgradeLevel);
         }
 
+        public IUpgradeStats GetParameter(TypeParameter type)
+        {
+            if (_playerParametrs.TryGetValue(type, out var value))
+                return value;
+
+            return null;
+        }
+
         public bool TryGetRerollPoints()
         {
             return _rerollPoints == _minValue ? false : true;
@@ -133,7 +181,12 @@ namespace Assets.Source.Game.Scripts.Characters
 
         public void UpdateCardPanelByRerollPoints()
         {
-            _rerollPoints = Mathf.Clamp(_rerollPoints--, _minValue, _rerollPoints);
+            var value = _rerollPoints = Mathf.Clamp(_rerollPoints--, _minValue, _rerollPoints);
+
+            if (_playerParametrs.TryGetValue(TypeParameter.Reroll, out IUpgradeStats parametr))
+            {
+                (parametr as IRevertStats).Revent(value);
+            }
         }
 
         public void GetReward(int value)
@@ -158,31 +211,22 @@ namespace Assets.Source.Game.Scripts.Characters
             foreach (var parameter in
                 cardView.CardData.AttributeData.Parameters[cardView.CardState.CurrentLevel].CardParameters)
             {
-                switch (parameter.TypeParameter)
+                if (_playerParametrs.TryGetValue(parameter.TypeParameter, out IUpgradeStats value))
                 {
-                    case TypeParameter.Armor:
-                        _armor += parameter.Value;
-                        break;
-                    case TypeParameter.Damage:
-                        _damageSource.ChangeDamage(_damageSource.Damage + parameter.Value);
-                        break;
-                    case TypeParameter.Regeneration:
-                        _regeneration += parameter.Value;
-                        break;
-                    case TypeParameter.Health:
-                        MaxHealthChanged?.Invoke(parameter.Value);
-                        break;
-                    case TypeParameter.MoveSpeed:
-                        IncreaseMoveSpeed(parameter.Value);
-                        break;
+                    value.Apply(parameter.Value);
                 }
             }
         }
 
         public void UpdateRerollPoints(CardView cardView)
         {
-            _rerollPoints +=
-                cardView.CardData.AttributeData.Parameters[cardView.CardState.CurrentLevel].CardParameters[0].Value;
+            var type = cardView.CardData.AttributeData.Parameters[cardView.CardState.CurrentLevel].CardParameters[0].TypeParameter;
+            var value = cardView.CardData.AttributeData.Parameters[cardView.CardState.CurrentLevel].CardParameters[0].Value;
+
+            if (_playerParametrs.TryGetValue(type, out IUpgradeStats parametr))
+            {
+                parametr.Apply(value);
+            }
         }
 
         public void SetPlayerUpgrades(GameConfig gameConfig, PersistentDataService persistentDataService)
@@ -200,41 +244,11 @@ namespace Assets.Source.Game.Scripts.Characters
                 if (upgradeState.CurrentLevel > _minValue)
                 {
                     upgradeData = gameConfig.GetUpgradeDataById(upgradeState.Id);
+                    float value = upgradeData.GetUpgradeParameterByCurrentLevel(upgradeState.CurrentLevel).Value;
 
-                    switch (upgradeData.TypeParameter)
+                    if (_playerParametrs.TryGetValue(upgradeData.TypeParameter, out IUpgradeStats parametr))
                     {
-                        case TypeParameter.Armor:
-                            _armor += upgradeData.GetUpgradeParameterByCurrentLevel(upgradeState.CurrentLevel).Value;
-                            break;
-                        case TypeParameter.Damage:
-                            _damageSource.ChangeDamage(
-                                _damageSource.Damage +
-                                upgradeData.GetUpgradeParameterByCurrentLevel(upgradeState.CurrentLevel).Value);
-                            break;
-                        case TypeParameter.Regeneration:
-                            _regeneration += upgradeData.GetUpgradeParameterByCurrentLevel(
-                                upgradeState.CurrentLevel).Value;
-                            break;
-                        case TypeParameter.Reroll:
-                            _rerollPoints += upgradeData.GetUpgradeParameterByCurrentLevel(
-                                upgradeState.CurrentLevel).Value;
-                            break;
-                        case TypeParameter.Health:
-                            HealthUpgradeApplied?.Invoke(upgradeData.GetUpgradeParameterByCurrentLevel(
-                                upgradeState.CurrentLevel).Value);
-                            break;
-                        case TypeParameter.AbilityCooldown:
-                            AbilityCooldownReductionChanged?.Invoke(upgradeData.GetUpgradeParameterByCurrentLevel(
-                                upgradeState.CurrentLevel).Value);
-                            break;
-                        case TypeParameter.AbilityDuration:
-                            AbilityDurationChanged?.Invoke(upgradeData.GetUpgradeParameterByCurrentLevel(
-                                upgradeState.CurrentLevel).Value);
-                            break;
-                        case TypeParameter.AbilityValue:
-                            AbilityDamageChanged?.Invoke(upgradeData.GetUpgradeParameterByCurrentLevel(
-                                upgradeState.CurrentLevel).Value);
-                            break;
+                        parametr.Apply(value);
                     }
                 }
             }
@@ -242,125 +256,24 @@ namespace Assets.Source.Game.Scripts.Characters
 
         public void AbilityUsed(Ability ability)
         {
-            if (ability.IsAutoCast)
+            foreach (CardParameter parameter in ability.AmplifierParameters)
             {
-                switch (ability.TypeAbility)
+                if (_playerParametrs.TryGetValue(parameter.TypeParameter, out IUpgradeStats value))
                 {
-                    case TypeAbility.DamageAmplifier:
-                        _damageSource.ChangeDamage(_damageSource.Damage + ability.CurrentAbilityValue);
-                        break;
-                    case TypeAbility.ArmorAmplifier:
-                        _armor += ability.CurrentAbilityValue;
-                        break;
-                    case TypeAbility.RegenerationAmplifier:
-                        _regeneration += ability.CurrentAbilityValue;
-                        break;
-                    case TypeAbility.MoveSpeedAmplifier:
-                        IncreaseMoveSpeed(ability.CurrentAbilityValue);
-                        break;
-                    case TypeAbility.Healing:
-                        _regeneration += ability.CurrentAbilityValue;
-                        break;
-                }
-            }
-            else
-            {
-                foreach (CardParameter parameter in ability.AmplifierParameters)
-                {
-                    switch (parameter.TypeParameter)
-                    {
-                        case TypeParameter.Damage:
-                            _damageSource.ChangeDamage(_damageSource.Damage + parameter.Value);
-                            break;
-                        case TypeParameter.Armor:
-                            _armor += parameter.Value;
-                            break;
-                        case TypeParameter.MoveSpeed:
-                            IncreaseMoveSpeed(parameter.Value);
-                            break;
-                        case TypeParameter.HealthReduce:
-                            HealthReduced?.Invoke(parameter.Value);
-                            break;
-                        case TypeParameter.Healing:
-                            Healed?.Invoke(parameter.Value);
-                            break;
-                        case TypeParameter.Regeneration:
-                            _regeneration += parameter.Value;
-                            break;
-                        case TypeParameter.TargetMoveSpeed:
-                            ChangeMoveSpeed(parameter.Value);
-                            break;
-                    }
+                    value.Apply(parameter.Value);
                 }
             }
         }
 
         public void AbilityEnded(Ability ability)
         {
-            if (ability.IsAutoCast)
+            foreach (CardParameter type in ability.AmplifierParameters)
             {
-                switch (ability.TypeAbility)
+                if (_playerParametrs.TryGetValue(type.TypeParameter, out IUpgradeStats parameter))
                 {
-                    case TypeAbility.DamageAmplifier:
-                        _damageSource.ChangeDamage(_damageSource.Damage - ability.CurrentAbilityValue);
-                        break;
-                    case TypeAbility.ArmorAmplifier:
-                        _armor -= ability.CurrentAbilityValue;
-                        break;
-                    case TypeAbility.RegenerationAmplifier:
-                        _regeneration -= ability.CurrentAbilityValue;
-                        break;
-                    case TypeAbility.MoveSpeedAmplifier:
-                        DecreaseMoveSpeed(ability.CurrentAbilityValue);
-                        break;
-                    case TypeAbility.Healing:
-                        _regeneration -= ability.CurrentAbilityValue;
-                        break;
+                    (parameter as IRevertStats).Revent(type.Value);
                 }
             }
-            else
-            {
-                foreach (CardParameter parameter in ability.AmplifierParameters)
-                {
-                    switch (parameter.TypeParameter)
-                    {
-                        case TypeParameter.Damage:
-                            _damageSource.ChangeDamage(_damageSource.Damage - parameter.Value);
-                            break;
-                        case TypeParameter.Armor:
-                            _armor -= parameter.Value;
-                            break;
-                        case TypeParameter.MoveSpeed:
-                            DecreaseMoveSpeed(parameter.Value);
-                            break;
-                        case TypeParameter.Regeneration:
-                            _regeneration -= parameter.Value;
-                            break;
-                        case TypeParameter.TargetMoveSpeed:
-                            ChangeMoveSpeed(_ownSpeed);
-                            break;
-                    }
-                }
-            }
-        }
-
-        private void ChangeMoveSpeed(float value)
-        {
-            _ownSpeed = _moveSpeed;
-            _moveSpeed = value;
-            _maxMoveSpeed = _moveSpeed * _moveSpeedAmplifier;
-        }
-
-        private void IncreaseMoveSpeed(float value)
-        {
-            _moveSpeed += value;
-            _maxMoveSpeed = _moveSpeed * _moveSpeedAmplifier;
-        }
-
-        private void DecreaseMoveSpeed(float value)
-        {
-            _moveSpeed -= value;
-            _maxMoveSpeed = _moveSpeed * _moveSpeedAmplifier;
         }
 
         private void ApplyWeaponParameters(WeaponData weaponData, TypeAttackRange typeAttackRange)

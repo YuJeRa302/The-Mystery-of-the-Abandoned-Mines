@@ -1,6 +1,7 @@
 using Assets.Source.Game.Scripts.AbilityScripts;
 using Assets.Source.Game.Scripts.Card;
 using Assets.Source.Game.Scripts.Factories;
+using Assets.Source.Game.Scripts.GamePanels;
 using Assets.Source.Game.Scripts.Items;
 using Assets.Source.Game.Scripts.Menu;
 using Assets.Source.Game.Scripts.PoolSystem;
@@ -8,6 +9,8 @@ using Assets.Source.Game.Scripts.ScriptableObjects;
 using Assets.Source.Game.Scripts.Services;
 using Assets.Source.Game.Scripts.Views;
 using System;
+using System.Collections.Generic;
+using UniRx;
 using UnityEngine;
 
 namespace Assets.Source.Game.Scripts.Characters
@@ -50,6 +53,7 @@ namespace Assets.Source.Game.Scripts.Characters
         private PlayerMovement _playerMovement;
         private AudioPlayer _audioPlayer;
         private Transform _spawnPoint;
+        private CompositeDisposable _disposables = new();
 
         public event Action PlayerLevelChanged;
         public event Action PlayerDied;
@@ -196,10 +200,17 @@ namespace Assets.Source.Game.Scripts.Characters
             _cardDeck.TakedPassiveAbility += OnTakenPassiveAbility;
             _playerStats.ExperienceValueChanged += OnExperienceValueChanged;
             _playerStats.UpgradeExperienceValueChanged += OnUpgradeExperienceValueChanged;
-            _playerStats.MaxHealthChanged += OnMaxHealthChanged;
+
+            MessageBroker.Default.Receive<M_MaxHealthChanged>()
+                .Subscribe(m => OnMaxHealthChanged(Convert.ToInt32(m.Value)))
+                .AddTo(_disposables);
+
+            MessageBroker.Default.Receive<M_HealthReduced>()
+                .Subscribe(m => OnReduceHealth(Convert.ToInt32(m.Reduction)))
+                .AddTo(_disposables);
+
             _playerStats.HealthUpgradeApplied += OnHealthUpgradeApplied;
             _playerStats.Healed += OnHealing;
-            _playerStats.HealthReduced += OnReduceHealth;
             _playerStats.AbilityDurationChanged += OnAbilityDurationChange;
             _playerStats.AbilityDamageChanged += OnAbilityDamageChanged;
             _playerStats.AbilityCooldownReductionChanged += OnAbilityCooldownReductionChanged;
@@ -223,6 +234,9 @@ namespace Assets.Source.Game.Scripts.Characters
 
         private void RemoveListeners()
         {
+            if (_disposables != null)
+                _disposables.Dispose();
+
             _playerAttacker.Attacked -= OnAttack;
             _playerAttacker.EnemyFinded -= OnRotateToTarget;
             _playerAttacker.CritAttacked -= OnApplayCritDamage;
@@ -233,10 +247,8 @@ namespace Assets.Source.Game.Scripts.Characters
             _cardDeck.TakedPassiveAbility -= OnTakenPassiveAbility;
             _playerStats.ExperienceValueChanged -= OnExperienceValueChanged;
             _playerStats.UpgradeExperienceValueChanged -= OnUpgradeExperienceValueChanged;
-            _playerStats.MaxHealthChanged -= OnMaxHealthChanged;
             _playerStats.HealthUpgradeApplied -= OnHealthUpgradeApplied;
             _playerStats.Healed -= OnHealing;
-            _playerStats.HealthReduced -= OnReduceHealth;
             _playerStats.CoinsAdding -= OnAddCoins;
             _playerStats.AbilityDurationChanged -= OnAbilityDurationChange;
             _playerStats.AbilityDamageChanged -= OnAbilityDamageChanged;

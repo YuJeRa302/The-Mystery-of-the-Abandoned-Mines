@@ -162,12 +162,12 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
         {
             foreach (CardParameter parameter in abilityAttributeData.Parameters[currentLevel].CardParameters)
             {
-                if (parameter.TypeParameter == TypeParameter.AbilityCooldown)
-                    _defaultCooldown = parameter.Value;
-                else if (parameter.TypeParameter == TypeParameter.AbilityValue)
-                    _currentAbilityValue = parameter.Value;
-                else if (parameter.TypeParameter == TypeParameter.AbilityDuration)
-                    _defaultDuration = parameter.Value;
+                //if (parameter.TypeParameter == TypeParameter.AbilityCooldown)
+                //    _defaultCooldown = parameter.Value;
+                //else if (parameter.TypeParameter == TypeParameter.AbilityValue)
+                //    _currentAbilityValue = parameter.Value;
+                //else if (parameter.TypeParameter == TypeParameter.AbilityDuration)
+                //    _defaultDuration = parameter.Value;
             }
 
             if (abilityAttributeData as AttackAbilityData)
@@ -178,12 +178,12 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
         {
             foreach (CardParameter parameter in legendaryAbilityData.Parameters[_minValue].CardParameters)
             {
-                if (parameter.TypeParameter == TypeParameter.AbilityCooldown)
-                    _defaultCooldown = parameter.Value;
-                else if (parameter.TypeParameter == TypeParameter.AbilityValue)
-                    _currentAbilityValue = parameter.Value;
-                else if (parameter.TypeParameter == TypeParameter.AbilityDuration)
-                    _defaultDuration = parameter.Value;
+                //if (parameter.TypeParameter == TypeParameter.AbilityCooldown)
+                //    _defaultCooldown = parameter.Value;
+                //else if (parameter.TypeParameter == TypeParameter.AbilityValue)
+                //    _currentAbilityValue = parameter.Value;
+                //else if (parameter.TypeParameter == TypeParameter.AbilityDuration)
+                //    _defaultDuration = parameter.Value;
             }
 
             _damageSource = legendaryAbilityData.DamageSource;
@@ -193,18 +193,18 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
         {
             foreach (CardParameter parameter in abilityAttributeData.Parameters[currentLevel].CardParameters)
             {
-                if (parameter.TypeParameter == TypeParameter.AbilityCooldown)
-                    _defaultCooldown = parameter.Value;
-                else if (parameter.TypeParameter == TypeParameter.AbilityValue)
-                    _currentAbilityValue = parameter.Value;
-                else if (parameter.TypeParameter == TypeParameter.AbilityDuration)
-                    _defaultDuration = parameter.Value;
-                else if (parameter.TypeParameter == TypeParameter.AbilityDamage)
-                    _abilityDamage = parameter.Value;
-                else if (parameter.TypeParameter == TypeParameter.Chance)
-                    _chance = parameter.Value;
-                else if (parameter.TypeParameter == TypeParameter.Quantity)
-                    _quantity = parameter.Value;
+                //if (parameter.TypeParameter == TypeParameter.AbilityCooldown)
+                //    _defaultCooldown = parameter.Value;
+                //else if (parameter.TypeParameter == TypeParameter.AbilityValue)
+                //    _currentAbilityValue = parameter.Value;
+                //else if (parameter.TypeParameter == TypeParameter.AbilityDuration)
+                //    _defaultDuration = parameter.Value;
+                //else if (parameter.TypeParameter == TypeParameter.AbilityDamage)
+                //    _abilityDamage = parameter.Value;
+                //else if (parameter.TypeParameter == TypeParameter.Chance)
+                //    _chance = parameter.Value;
+                //else if (parameter.TypeParameter == TypeParameter.Quantity)
+                //    _quantity = parameter.Value;
             }
 
             _damageSource = abilityAttributeData.DamageSource;

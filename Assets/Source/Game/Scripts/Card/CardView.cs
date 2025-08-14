@@ -70,7 +70,7 @@ namespace Assets.Source.Game.Scripts.Card
 
                 view.Initialize(
                     _cardData.AttributeData.Parameters[_cardState.CurrentLevel].CardParameters[index].Value,
-                    _cardData.AttributeData.Parameters[_cardState.CurrentLevel].CardParameters[index].TypeParameter);
+                    _cardData.AttributeData.Parameters[_cardState.CurrentLevel].CardParameters[index].TypeParameter.ToString());
             }
         }
 

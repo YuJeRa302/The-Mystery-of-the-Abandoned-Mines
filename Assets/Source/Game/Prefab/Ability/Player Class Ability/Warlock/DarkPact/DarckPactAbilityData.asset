@@ -22,7 +22,7 @@ MonoBehaviour:
     - _value: 15
       _typeParameter: 6
     - _value: 0
-      _typeParameter: 13
+      _typeParameter: 9
   - _cardParameters:
     - _value: 3
       _typeParameter: 2
@@ -31,7 +31,7 @@ MonoBehaviour:
     - _value: 10
       _typeParameter: 6
     - _value: 0
-      _typeParameter: 13
+      _typeParameter: 9
   - _cardParameters:
     - _value: 3
       _typeParameter: 2
@@ -40,7 +40,7 @@ MonoBehaviour:
     - _value: 8
       _typeParameter: 6
     - _value: 0
-      _typeParameter: 13
+      _typeParameter: 9
   _name: DarkPact
   _description: DarkPactDescription
   _icon: {fileID: -923664100, guid: 855001a07e231344b97e76392f4d2449, type: 3}
@@ -61,6 +61,7 @@ MonoBehaviour:
   _damageParameter:
     _typeDamage: 0
     _damage: 0
+    _damageDelay: 0
     _damageParameters: []
     _particle: {fileID: 0}
   _abilityStrategy:
@@ -71,3 +72,4 @@ MonoBehaviour:
     RefIds:
     - rid: 7260333074196725761
       type: {class: DarkPactAbilityPresenter, ns: Assets.Source.Game.Scripts.AbilityScripts, asm: Assembly-CSharp}
+      data: 

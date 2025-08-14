@@ -22,6 +22,7 @@ namespace Assets.Source.Game.Scripts.Characters
 
         private IAbilityStrategy _abilityStrategy;
         private Player _player;
+        private PlayerStats _playerStats;
         private List<Ability> _abilities = new ();
         private List<Ability> _classAbilities = new ();
         private List<Ability> _legendaryAbilities = new ();

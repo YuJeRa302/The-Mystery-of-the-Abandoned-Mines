@@ -16,8 +16,15 @@ MonoBehaviour:
   _parameters:
   - _cardParameters:
     - _value: 1
-      _typeParameter: 0
+      _typeParameter:
+        rid: 6653223193224413189
   _name: Damage
   _description: DamageDescription
   _icon: {fileID: 21300000, guid: dd9d1d850d4de49458514e1a9501fd0f, type: 3}
   _typeMagic: 3
+  references:
+    version: 2
+    RefIds:
+    - rid: 6653223193224413189
+      type: {class: DamageModifierStrategy, ns: , asm: Assembly-CSharp}
+      data: 

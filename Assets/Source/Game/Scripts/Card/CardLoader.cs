@@ -1,4 +1,3 @@
-using Assets.Source.Game.Scripts.Characters;
 using Assets.Source.Game.Scripts.Enums;
 using Assets.Source.Game.Scripts.ScriptableObjects;
 using System;

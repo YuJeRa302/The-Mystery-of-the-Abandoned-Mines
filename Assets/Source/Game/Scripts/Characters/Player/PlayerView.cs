@@ -58,8 +58,8 @@ namespace Assets.Source.Game.Scripts.Characters
 
             foreach (var parameter in abilityData.Parameters[currentLevel - 1].CardParameters)
             {
-                if (parameter.TypeParameter == TypeParameter.AbilityCooldown)
-                    currentAbilityCooldown = parameter.Value;
+                //if (parameter.TypeParameter.ToString() == TypeParameter.AbilityCooldown.ToString())
+                //    currentAbilityCooldown = parameter.Value;
             }
 
             abilityView.Initialize(abilityData.Icon, currentAbilityCooldown);
@@ -82,7 +82,7 @@ namespace Assets.Source.Game.Scripts.Characters
 
             foreach (var parameter in abilityAttributeData.Parameters[0].CardParameters)
             {
-                if (parameter.TypeParameter == TypeParameter.AbilityCooldown)
+                if (parameter.TypeParameter.ToString() == TypeParameter.AbilityCooldown.ToString())
                     currentAbilityCooldown = parameter.Value;
             }
 
@@ -100,7 +100,7 @@ namespace Assets.Source.Game.Scripts.Characters
 
             foreach (var parameter in abilityAttributeData.Parameters[currentLevel].CardParameters)
             {
-                if (parameter.TypeParameter == TypeParameter.AbilityCooldown)
+                if (parameter.TypeParameter.ToString() == TypeParameter.AbilityCooldown.ToString())
                     currentAbilityCooldown = parameter.Value;
             }
 

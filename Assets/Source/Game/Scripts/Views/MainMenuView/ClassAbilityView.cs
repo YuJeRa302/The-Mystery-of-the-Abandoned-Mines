@@ -249,22 +249,25 @@ namespace Assets.Source.Game.Scripts.Views
             for (int i = 0; i < currentParams.Count; i++)
             {
                 var stat = currentParams[i];
-                if (CantDisplayParameter(stat.TypeParameter)) continue;
+                if (CantDisplayParameter(stat.TypeParameter.ToString())) 
+                    continue;
 
                 string nextValue = string.Empty;
 
                 if (nextParams != null && currentLevel != 0)
-                    nextValue = FindParameterValue(nextParams, stat.TypeParameter);
+                    nextValue = FindParameterValue(nextParams, stat.TypeParameter.ToString());
 
                 CreateStatView(stat.TypeParameter.ToString(), stat.Value.ToString(), nextValue);
             }
         }
 
-        private string FindParameterValue(List<CardParameter> parameters, TypeParameter type)
+        private string FindParameterValue(List<CardParameter> parameters, string type)
         {
             for (int i = 0; i < parameters.Count; i++)
             {
-                if (parameters[i].TypeParameter == type)
+                if (parameters[i].TypeParameter.ToString() == type.ToString())
+
+                if (null == type)
                     return parameters[i].Value.ToString();
             }
 
@@ -278,9 +281,9 @@ namespace Assets.Source.Game.Scripts.Views
             _classAbilityStatsViews.Add(statsView);
         }
 
-        private bool CantDisplayParameter(TypeParameter typeParameter)
+        private bool CantDisplayParameter(string typeParameter)
         {
-            if (typeParameter == TypeParameter.AbilityValue || typeParameter == TypeParameter.TargetMoveSpeed)
+            if (typeParameter == TypeParameter.AbilityValue.ToString())
                 return true;
             else
                 return false;

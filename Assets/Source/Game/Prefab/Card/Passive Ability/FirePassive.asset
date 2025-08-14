@@ -16,9 +16,16 @@ MonoBehaviour:
   _parameters:
   - _cardParameters:
     - _value: 7
-      _typeParameter: 0
+      _typeParameter:
+        rid: 6653223193224413185
   _name: FirePassive
   _description: FirePassiveDescription
   _icon: {fileID: -498994127, guid: dc2e3af32fff16a4fa28920cc9449371, type: 3}
   _typeMagic: 0
   _abilityView: {fileID: 2680077035284226637, guid: 02e65a2996165c24281b87db23b3fabc, type: 3}
+  references:
+    version: 2
+    RefIds:
+    - rid: 6653223193224413185
+      type: {class: DamageModifierStrategy, ns: , asm: Assembly-CSharp}
+      data: 

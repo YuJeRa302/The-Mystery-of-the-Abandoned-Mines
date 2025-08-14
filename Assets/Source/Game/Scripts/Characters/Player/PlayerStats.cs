@@ -10,14 +10,13 @@ using UnityEngine;
 
 namespace Assets.Source.Game.Scripts.Characters
 {
-    public class PlayerStats : IDisposable
+    public class PlayerStats
     {
         private readonly Dictionary<int, int> _levels = new();
         private readonly Dictionary<int, int> _upgradeLevels = new();
         private readonly int _maxExperience = 50;
         private readonly int _maxUpgradeExperience = 500;
         private readonly int _minValue = 0;
-        private readonly float _moveSpeedAmplifier = 2f;
         private readonly float _defaultAttackRange = 5f;
         private readonly float _defaultSearchRadius = 5f;
         private readonly float _longAttackRange = 10f;
@@ -38,14 +37,11 @@ namespace Assets.Source.Game.Scripts.Characters
         private int _armor;
         private int _regeneration;
         private int _countKillEnemy;
-        private float _chanceCriticalDamage;
-        private float _criticalDamageMultiplier;
-        private float _chanceVampirism;
-        private float _vampirismValue;
         private float _searchRadius;
         private float _attackRange;
         private PlayerClassData _classData;
         private Dictionary<TypeParameter, IUpgradeStats> _playerParametrs;
+        private Dictionary<TypeWeaponSupportiveParameter, float> _weaponParametrs = new();
 
         public PlayerStats(
             WeaponData weaponData,
@@ -57,10 +53,22 @@ namespace Assets.Source.Game.Scripts.Characters
             int regeneration,
             int countKillEnemy)
         {
+            _currentLevel = currentLevel;
+            _rerollPoints = rerollPoints;
+            _rerollPoints = 100;
+            _moveSpeed = moveSpeed;
+            _regeneration = regeneration;
+            _countKillEnemy = countKillEnemy;
+            _classData = classData;
+            GenerateLevelPlayer(_maxPlayerLevel);
+            GenerateUpgradeLevel(_maxUpgradeLevel);
+            ApplyWeaponParameters(weaponData, classData.TypeAttackRange);
+            _armor = armor + Convert.ToInt32(GetDamageParameter(TypeWeaponSupportiveParameter.BonusArmor));
+
             _playerParametrs = new Dictionary<TypeParameter, IUpgradeStats>
             {
                 { TypeParameter.MoveSpeed, new MoveSpeedParametr(moveSpeed)},
-                { TypeParameter.Armor, new ArmorParametr(armor)},
+                { TypeParameter.Armor, new ArmorParametr(_armor)},
                 { TypeParameter.Regeneration, new RegenerationParametr(regeneration)},
                 { TypeParameter.Health, new HealthParametr()},
                 { TypeParameter.Damage, new DamageParameterPlayer(_damageSource)},
@@ -69,18 +77,6 @@ namespace Assets.Source.Game.Scripts.Characters
                 { TypeParameter.AbilityDuration, new AbilityDurationParameter()},
                 { TypeParameter.AbilityValue, new AbilityDamageParameter()},
             };
-
-            _currentLevel = currentLevel;
-            _rerollPoints = rerollPoints;//
-            _rerollPoints = 100;
-            _armor = armor;///
-            _moveSpeed = moveSpeed;///
-            _regeneration = regeneration;///
-            _countKillEnemy = countKillEnemy;
-            _classData = classData;
-            GenerateLevelPlayer(_maxPlayerLevel);
-            GenerateUpgradeLevel(_maxUpgradeLevel);
-            ApplyWeaponParameters(weaponData, classData.TypeAttackRange);
         }
 
         public event Action<int> HealthUpgradeApplied;
@@ -101,8 +97,8 @@ namespace Assets.Source.Game.Scripts.Characters
         {
             get
             {
-                //if (_playerParametrs.TryGetValue(TypeParameter.Armor, out var value))
-                //    return Convert.ToInt32((value as ArmorParametr).CurrentArmorValue);
+                if (_playerParametrs.TryGetValue(TypeParameter.Armor, out var value))
+                    return Convert.ToInt32((value as ArmorParametr).CurrentArmorValue);
 
                 return _armor;
             }
@@ -112,8 +108,8 @@ namespace Assets.Source.Game.Scripts.Characters
         {
             get
             {
-                //if (_playerParametrs.TryGetValue(TypeParameter.MoveSpeed, out var value))
-                //    return (value as MoveSpeedParametr).CurrentMoveSpeed;
+                if (_playerParametrs.TryGetValue(TypeParameter.MoveSpeed, out var value))
+                    return (value as MoveSpeedParametr).CurrentMoveSpeed;
 
                 return _moveSpeed;
             }
@@ -123,29 +119,45 @@ namespace Assets.Source.Game.Scripts.Characters
         {
             get
             {
-                //if (_playerParametrs.TryGetValue(TypeParameter.MoveSpeed, out var value))
-                //    return (value as MoveSpeedParametr).MaxMoveSpeed;
+                if (_playerParametrs.TryGetValue(TypeParameter.MoveSpeed, out var value))
+                    return (value as MoveSpeedParametr).MaxMoveSpeed;
 
                 return _moveSpeed;
             }
         }
 
-        public int RerollPoints => _rerollPoints;
-        public int Regeneration => _regeneration;
+        public int RerollPoints
+        {
+            get
+            {
+                if (_playerParametrs.TryGetValue(TypeParameter.Reroll, out var value))
+                    return (value as RerollPointsParametr).RerollPoints;
+
+                return _rerollPoints;
+            }
+        }
+
+        public int Regeneration
+        {
+            get
+            {
+                if (_playerParametrs.TryGetValue(TypeParameter.Regeneration, out var value))
+                    return Convert.ToInt32((value as RegenerationParametr).CurrentRegenerationValue);
+
+                return _regeneration;
+            }
+        }
+
         public int UpgradePoints => _currentUpgradePoints;
         public int Score => _score;
         public int CountKillEnemy => _countKillEnemy;
-        public float ChanceCriticalDamage => _chanceCriticalDamage;
-        public float CriticalDamageMultiplier => _criticalDamageMultiplier;
-        public float ChanceVampirism => _chanceVampirism;
-        public float VampirismValue => _vampirismValue;
+        public float ChanceCriticalDamage => GetDamageParameter(TypeWeaponSupportiveParameter.CritChance);
+        public float CriticalDamageMultiplier => GetDamageParameter(TypeWeaponSupportiveParameter.CritDamage);
+        public float ChanceVampirism => GetDamageParameter(TypeWeaponSupportiveParameter.LifeStealChance);
+        public float VampirismValue => GetDamageParameter(TypeWeaponSupportiveParameter.LifeStealValue);
         public float SearchRadius => _searchRadius;
         public float AttackRange => _attackRange;
         public PlayerClassData PlayerClassData => _classData;
-
-        public void Dispose()
-        {
-        }
 
         public void EnemyDied(Enemy enemy)
         {
@@ -161,22 +173,15 @@ namespace Assets.Source.Game.Scripts.Characters
             SetNewUpgradePoints(_currentUpgradeLevel);
         }
 
-        public IUpgradeStats GetParameter(TypeParameter type)
+        public float GetDamageParameter(TypeWeaponSupportiveParameter type)
         {
-            if (_playerParametrs.TryGetValue(type, out var value))
-                return value;
-
-            return null;
+            _weaponParametrs.TryGetValue(type, out float value);
+            return value;
         }
 
         public bool TryGetRerollPoints()
         {
             return _rerollPoints == _minValue ? false : true;
-        }
-
-        public void TakeLootRoomReward(int reward)
-        {
-            CoinsAdding?.Invoke(reward);
         }
 
         public void UpdateCardPanelByRerollPoints()
@@ -220,8 +225,14 @@ namespace Assets.Source.Game.Scripts.Characters
 
         public void UpdateRerollPoints(CardView cardView)
         {
-            var type = cardView.CardData.AttributeData.Parameters[cardView.CardState.CurrentLevel].CardParameters[0].TypeParameter;
-            var value = cardView.CardData.AttributeData.Parameters[cardView.CardState.CurrentLevel].CardParameters[0].Value;
+            var type = cardView
+                .CardData
+                .AttributeData.Parameters[cardView.CardState.CurrentLevel]
+                .CardParameters[0].TypeParameter;
+            var value = cardView
+                .CardData
+                .AttributeData
+                .Parameters[cardView.CardState.CurrentLevel].CardParameters[0].Value;
 
             if (_playerParametrs.TryGetValue(type, out IUpgradeStats parametr))
             {
@@ -286,24 +297,10 @@ namespace Assets.Source.Game.Scripts.Characters
 
             foreach (var parameter in weaponData.WeaponParameters)
             {
-                switch (parameter.SupportiveParameter)
-                {
-                    case TypeWeaponSupportiveParameter.CritChance:
-                        _chanceCriticalDamage = parameter.Value;
-                        break;
-                    case TypeWeaponSupportiveParameter.CritDamage:
-                        _criticalDamageMultiplier = parameter.Value;
-                        break;
-                    case TypeWeaponSupportiveParameter.LifeStealChance:
-                        _chanceVampirism = parameter.Value;
-                        break;
-                    case TypeWeaponSupportiveParameter.LifeStealValue:
-                        _vampirismValue = parameter.Value;
-                        break;
-                    case TypeWeaponSupportiveParameter.BonusArmor:
-                        _armor += Convert.ToInt32(parameter.Value);
-                        break;
-                }
+                if(_weaponParametrs.ContainsKey(parameter.SupportiveParameter) == false)
+                    _weaponParametrs.Add(parameter.SupportiveParameter, parameter.Value);
+                else
+                    _weaponParametrs[parameter.SupportiveParameter] = parameter.Value;
             }
 
             if (typeAttackRange == TypeAttackRange.Ranged)

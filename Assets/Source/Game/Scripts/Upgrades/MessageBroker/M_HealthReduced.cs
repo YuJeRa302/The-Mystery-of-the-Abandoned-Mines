@@ -1,11 +1,14 @@
-public struct M_HealthReduced 
+namespace Assets.Source.Game.Scripts.Upgrades
 {
-    private float _reduction;
-
-    public M_HealthReduced(float reduction)
+    public struct M_HealthReduced
     {
-        _reduction = reduction;
-    }
+        private float _reduction;
 
-    public float Reduction => _reduction;
+        public M_HealthReduced(float reduction)
+        {
+            _reduction = reduction;
+        }
+
+        public float Reduction => _reduction;
+    }
 }

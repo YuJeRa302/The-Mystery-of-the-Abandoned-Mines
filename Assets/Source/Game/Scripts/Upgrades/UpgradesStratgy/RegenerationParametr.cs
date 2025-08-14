@@ -1,23 +1,26 @@
 using Assets.Source.Game.Scripts.Services;
 
-public class RegenerationParametr : IUpgradeStats, IRevertStats
+namespace Assets.Source.Game.Scripts.Upgrades
 {
-    private float _currentRegenerationValue;
-
-    public RegenerationParametr(float baseValue)
+    public class RegenerationParametr : IUpgradeStats, IRevertStats
     {
-        _currentRegenerationValue = baseValue;
-    }
+        private float _currentRegenerationValue;
 
-    public float CurrentRegenerationValue => _currentRegenerationValue;
+        public RegenerationParametr(float baseValue)
+        {
+            _currentRegenerationValue = baseValue;
+        }
 
-    public void Apply(float value)
-    {
-        _currentRegenerationValue += value;
-    }
+        public float CurrentRegenerationValue => _currentRegenerationValue;
 
-    public void Revent(float value)
-    {
-        _currentRegenerationValue -= value;
+        public void Apply(float value)
+        {
+            _currentRegenerationValue += value;
+        }
+
+        public void Revent(float value)
+        {
+            _currentRegenerationValue -= value;
+        }
     }
 }

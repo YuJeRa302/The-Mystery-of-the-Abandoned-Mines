@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UniRx;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -13,6 +14,7 @@ namespace Assets.Source.Game.Scripts.Characters
         private StateMachine _stateMashine;
         private Enemy _enemy;
         private NavMeshAgent _meshAgent;
+        private CompositeDisposable _disposables = new();
 
         public event Action MachineInitialized;
 
@@ -26,16 +28,20 @@ namespace Assets.Source.Game.Scripts.Characters
 
         private void OnDestroy()
         {
-            _enemy.EnemyStuned -= OnEnemyStuned;
-            _enemy.EnemyStunEnded -= OnEnemyEndedStun;
+            if (_disposables != null)
+                _disposables.Dispose();
         }
 
         public void InitializeStateMachine(Player target)
         {
             _meshAgent = GetComponent<NavMeshAgent>();
             _enemy = GetComponent<Enemy>();
-            _enemy.EnemyStuned += OnEnemyStuned;
-            _enemy.EnemyStunEnded += OnEnemyEndedStun;
+
+            MessageBroker.Default
+               .Receive<M_Stuned>()
+               .Subscribe(m => OnEnemyStuned(m.IsStun))
+               .AddTo(_disposables);
+
             _target = target;
             _stateMashine = new StateMachine();
 
@@ -79,14 +85,12 @@ namespace Assets.Source.Game.Scripts.Characters
             _stateMashine.SetState<EnemyIdleState>();
         }
 
-        private void OnEnemyStuned()
+        private void OnEnemyStuned(bool isStun)
         {
-            _stateMashine.SetState<EnemyStunedState>();
-        }
-
-        private void OnEnemyEndedStun()
-        {
-            _stateMashine.SetState<EnemyIdleState>();
+            if (isStun)
+                _stateMashine.SetState<EnemyStunedState>();
+            else
+                _stateMashine.SetState<EnemyIdleState>();
         }
     }
 }

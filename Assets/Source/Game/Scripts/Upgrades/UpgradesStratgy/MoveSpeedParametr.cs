@@ -1,54 +1,57 @@
 using Assets.Source.Game.Scripts.Services;
 
-public class MoveSpeedParametr : IUpgradeStats, IRevertStats
+namespace Assets.Source.Game.Scripts.Upgrades
 {
-    private readonly float _moveSpeedAmplifier = 2f;
-
-    private float _moveSpeed;
-    private float _maxMoveSpeed;
-    private float _ownSpeed;
-
-    public MoveSpeedParametr(float baseValue)
+    public class MoveSpeedParametr : IUpgradeStats, IRevertStats
     {
-        _moveSpeed = baseValue;
-        _maxMoveSpeed = _moveSpeed * _moveSpeedAmplifier;
-    }
+        private readonly float _moveSpeedAmplifier = 2f;
 
-    public float CurrentMoveSpeed => _moveSpeed;
-    public float MaxMoveSpeed => _maxMoveSpeed;
+        private float _moveSpeed;
+        private float _maxMoveSpeed;
+        private float _ownSpeed;
 
-    public void Apply(float value)
-    {
-        if(value == 0)
-            ChangeMoveSpeed(value);
-        else
-            IncreaseMoveSpeed(value);
-    }
+        public MoveSpeedParametr(float baseValue)
+        {
+            _moveSpeed = baseValue;
+            _maxMoveSpeed = _moveSpeed * _moveSpeedAmplifier;
+        }
 
-    public void Revent(float value)
-    {
-        if (value == 0)
-            ChangeMoveSpeed(_ownSpeed);
-        else
-            DecreaseMoveSpeed(value);
-    }
+        public float CurrentMoveSpeed => _moveSpeed;
+        public float MaxMoveSpeed => _maxMoveSpeed;
 
-    private void IncreaseMoveSpeed(float value)
-    {
-        _moveSpeed += value;
-        _maxMoveSpeed = _moveSpeed * _moveSpeedAmplifier;
-    }
+        public void Apply(float value)
+        {
+            if (value == 0)
+                ChangeMoveSpeed(value);
+            else
+                IncreaseMoveSpeed(value);
+        }
 
-    private void DecreaseMoveSpeed(float value)
-    {
-        _moveSpeed -= value;
-        _maxMoveSpeed = _moveSpeed * _moveSpeedAmplifier;
-    }
+        public void Revent(float value)
+        {
+            if (value == 0)
+                ChangeMoveSpeed(_ownSpeed);
+            else
+                DecreaseMoveSpeed(value);
+        }
 
-    private void ChangeMoveSpeed(float value)
-    {
-        _ownSpeed = _moveSpeed;
-        _moveSpeed = value;
-        _maxMoveSpeed = _moveSpeed * _moveSpeedAmplifier;
+        private void IncreaseMoveSpeed(float value)
+        {
+            _moveSpeed += value;
+            _maxMoveSpeed = _moveSpeed * _moveSpeedAmplifier;
+        }
+
+        private void DecreaseMoveSpeed(float value)
+        {
+            _moveSpeed -= value;
+            _maxMoveSpeed = _moveSpeed * _moveSpeedAmplifier;
+        }
+
+        private void ChangeMoveSpeed(float value)
+        {
+            _ownSpeed = _moveSpeed;
+            _moveSpeed = value;
+            _maxMoveSpeed = _moveSpeed * _moveSpeedAmplifier;
+        }
     }
 }

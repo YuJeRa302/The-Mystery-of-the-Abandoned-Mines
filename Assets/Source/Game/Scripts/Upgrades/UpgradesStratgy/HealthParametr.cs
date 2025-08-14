@@ -1,17 +1,16 @@
 using Assets.Source.Game.Scripts.Services;
 using UniRx;
 
-public class HealthParametr : IUpgradeStats
+namespace Assets.Source.Game.Scripts.Upgrades
 {
-    public HealthParametr()
+    public class HealthParametr : IUpgradeStats
     {
-    }
-
-    public void Apply(float value)
-    {
-        if (value < 0)
-            MessageBroker.Default.Publish(new M_HealthReduced(value));
-        else
-            MessageBroker.Default.Publish(new M_MaxHealthChanged(value));
+        public void Apply(float value)
+        {
+            if (value < 0)
+                MessageBroker.Default.Publish(new M_HealthReduced(value));
+            else
+                MessageBroker.Default.Publish(new M_MaxHealthChanged(value));
+        }
     }
 }

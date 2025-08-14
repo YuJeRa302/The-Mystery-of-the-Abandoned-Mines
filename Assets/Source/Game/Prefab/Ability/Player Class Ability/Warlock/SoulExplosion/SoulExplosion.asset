@@ -17,8 +17,8 @@ MonoBehaviour:
   - _cardParameters:
     - _value: 10
       _typeParameter: 11
-    - _value: 50
-      _typeParameter: 12
+    - _value: -50
+      _typeParameter: 3
     - _value: 15
       _typeParameter: 6
     - _value: 1
@@ -26,8 +26,8 @@ MonoBehaviour:
   - _cardParameters:
     - _value: 15
       _typeParameter: 11
-    - _value: 40
-      _typeParameter: 12
+    - _value: -40
+      _typeParameter: 3
     - _value: 15
       _typeParameter: 6
     - _value: 1
@@ -35,8 +35,8 @@ MonoBehaviour:
   - _cardParameters:
     - _value: 25
       _typeParameter: 11
-    - _value: 35
-      _typeParameter: 12
+    - _value: -35
+      _typeParameter: 3
     - _value: 12
       _typeParameter: 6
     - _value: 1
@@ -75,3 +75,4 @@ MonoBehaviour:
     RefIds:
     - rid: 7260333074196725760
       type: {class: SoulExplosionAbilityPresenter, ns: Assets.Source.Game.Scripts.AbilityScripts, asm: Assembly-CSharp}
+      data: 

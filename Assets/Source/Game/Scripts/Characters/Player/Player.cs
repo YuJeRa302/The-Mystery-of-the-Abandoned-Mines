@@ -7,6 +7,7 @@ using Assets.Source.Game.Scripts.Menu;
 using Assets.Source.Game.Scripts.PoolSystem;
 using Assets.Source.Game.Scripts.ScriptableObjects;
 using Assets.Source.Game.Scripts.Services;
+using Assets.Source.Game.Scripts.Upgrades;
 using Assets.Source.Game.Scripts.Views;
 using System;
 using System.Collections.Generic;
@@ -55,7 +56,6 @@ namespace Assets.Source.Game.Scripts.Characters
         private PlayerMovement _playerMovement;
         private AudioPlayer _audioPlayer;
         private Transform _spawnPoint;
-        private CompositeDisposable _disposables = new();
 
         public event Action PlayerLevelChanged;
         public event Action PlayerDied;
@@ -527,7 +527,6 @@ namespace Assets.Source.Game.Scripts.Characters
             _playerAttacker.Dispose();
             _playerAbilityCaster.Dispose();
             _playerMovement.Dispose();
-            _playerStats.Dispose();
         }
     }
 }

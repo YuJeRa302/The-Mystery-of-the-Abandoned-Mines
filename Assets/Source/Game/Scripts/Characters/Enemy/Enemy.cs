@@ -3,6 +3,7 @@ using Assets.Source.Game.Scripts.Services;
 using Assets.Source.Game.Scripts.Utility;
 using Assets.Source.Game.Scripts.Views;
 using System;
+using UniRx;
 using UnityEngine;
 
 namespace Assets.Source.Game.Scripts.Characters
@@ -31,6 +32,7 @@ namespace Assets.Source.Game.Scripts.Characters
         private int _tier;
         private EnemyHealth _health;
         private EnemyDamageHandler _damageHandler;
+        private CompositeDisposable _disposables = new();
 
         public float AttackDelay => _attackDelay;
         public float Damage => _damage;
@@ -47,8 +49,6 @@ namespace Assets.Source.Game.Scripts.Characters
         public Rigidbody Rigidbody => _rigidbody;
 
         public event Action<Enemy> Died;
-        public event Action EnemyStuned;
-        public event Action EnemyStunEnded;
         public event Action<AudioClip> PlayerAttacked;
 
         private void OnDisable()
@@ -59,10 +59,9 @@ namespace Assets.Source.Game.Scripts.Characters
         private void OnDestroy()
         {
             _animationController.Attacked -= OnEnemyAttack;
-            _damageHandler.Stuned -= OnEnemyStaned;
-            _damageHandler.StunEnded -= OnStanEnded;
-            _damageHandler.MoveSpeedReduced -= OnMoveSpeedReduced;
-            _damageHandler.MoveSpeedReseted -= OnMoveSpeedReset;
+
+            if (_disposables != null)
+                _disposables.Dispose();
         }
 
         public virtual void Initialize(Player player, int lvlRoom, EnemyData data, int tire)
@@ -121,10 +120,17 @@ namespace Assets.Source.Game.Scripts.Characters
         {
             _health = new EnemyHealth(data.EnemyStats[_tier].Health);
             _damageHandler = new EnemyDamageHandler(_pool, _damageEffectContainer, this);
-            _damageHandler.Stuned += OnEnemyStaned;
-            _damageHandler.StunEnded += OnStanEnded;
-            _damageHandler.MoveSpeedReduced += OnMoveSpeedReduced;
-            _damageHandler.MoveSpeedReseted += OnMoveSpeedReset;
+
+            MessageBroker.Default
+              .Receive<M_MoveSpeedReduced>()
+              .Subscribe(m => OnMoveSpeedReduced(m.ValueSlowed))
+              .AddTo(_disposables);
+
+            MessageBroker.Default
+               .Receive<M_MoveSpeedReseted>()
+               .Subscribe(m => OnMoveSpeedReset())
+               .AddTo(_disposables);
+
             _animationController.Attacked += OnEnemyAttack;
 
             _damage = data.EnemyStats[_tier].Damage;
@@ -143,16 +149,6 @@ namespace Assets.Source.Game.Scripts.Characters
         private void OnEnemyAttack()
         {
             PlayerAttacked?.Invoke(_hitAudio);
-        }
-
-        private void OnEnemyStaned()
-        {
-            EnemyStuned?.Invoke();
-        }
-
-        private void OnStanEnded()
-        {
-            EnemyStunEnded?.Invoke();
         }
 
         private void OnMoveSpeedReset()

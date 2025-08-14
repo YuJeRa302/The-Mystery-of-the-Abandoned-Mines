@@ -1,23 +1,26 @@
 using Assets.Source.Game.Scripts.Services;
 
-public class ArmorParametr : IUpgradeStats, IRevertStats
+namespace Assets.Source.Game.Scripts.Upgrades
 {
-    private float _currentArmorValue;
-
-    public ArmorParametr(float baseArmor)
+    public class ArmorParametr : IUpgradeStats, IRevertStats
     {
-        _currentArmorValue = baseArmor;
-    }
+        private float _currentArmorValue;
 
-    public float CurrentArmorValue => _currentArmorValue;
+        public ArmorParametr(float baseArmor)
+        {
+            _currentArmorValue = baseArmor;
+        }
 
-    public void Apply(float value)
-    {
-        _currentArmorValue += value;
-    }
+        public float CurrentArmorValue => _currentArmorValue;
 
-    public void Revent(float value)
-    {
-        _currentArmorValue -= value;
+        public void Apply(float value)
+        {
+            _currentArmorValue += value;
+        }
+
+        public void Revent(float value)
+        {
+            _currentArmorValue -= value;
+        }
     }
 }

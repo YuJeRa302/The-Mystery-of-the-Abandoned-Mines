@@ -1,11 +1,14 @@
-public struct M_MaxHealthChanged
+namespace Assets.Source.Game.Scripts.Upgrades
 {
-    private float _value;
-
-    public M_MaxHealthChanged(float value)
+    public struct M_MaxHealthChanged
     {
-        _value = value;
-    }
+        private float _value;
 
-    public float Value => _value;
+        public M_MaxHealthChanged(float value)
+        {
+            _value = value;
+        }
+
+        public float Value => _value;
+    }
 }

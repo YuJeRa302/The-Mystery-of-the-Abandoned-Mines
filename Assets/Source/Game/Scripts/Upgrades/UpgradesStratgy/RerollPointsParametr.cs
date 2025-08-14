@@ -1,24 +1,27 @@
 using Assets.Source.Game.Scripts.Services;
 using System;
 
-public class RerollPointsParametr : IUpgradeStats, IRevertStats
+namespace Assets.Source.Game.Scripts.Upgrades
 {
-    private int _rerollPoints;
-
-    public RerollPointsParametr(float stardValue)
+    public class RerollPointsParametr : IUpgradeStats, IRevertStats
     {
-        _rerollPoints = Convert.ToInt32(stardValue);
-    }
+        private int _rerollPoints;
 
-    public int RerollPoints => _rerollPoints;
+        public RerollPointsParametr(float stardValue)
+        {
+            _rerollPoints = Convert.ToInt32(stardValue);
+        }
 
-    public void Apply(float value)
-    {
-        _rerollPoints += Convert.ToInt32(value);
-    }
+        public int RerollPoints => _rerollPoints;
 
-    public void Revent(float value)
-    {
-        _rerollPoints -= Convert.ToInt32(value);
+        public void Apply(float value)
+        {
+            _rerollPoints += Convert.ToInt32(value);
+        }
+
+        public void Revent(float value)
+        {
+            _rerollPoints -= Convert.ToInt32(value);
+        }
     }
 }

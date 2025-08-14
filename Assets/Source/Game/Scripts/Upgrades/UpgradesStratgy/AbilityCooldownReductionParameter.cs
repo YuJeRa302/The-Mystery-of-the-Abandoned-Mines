@@ -1,13 +1,16 @@
 using Assets.Source.Game.Scripts.Services;
 
-public class AbilityCooldownReductionParameter : IUpgradeStats
+namespace Assets.Source.Game.Scripts.Upgrades
 {
-    private float _currentReduction = 0;
-
-    public float CurrentReduction => _currentReduction;
-
-    public void Apply(float value)
+    public class AbilityCooldownReductionParameter : IUpgradeStats
     {
-        _currentReduction = value;
+        private float _currentReduction = 0;
+
+        public float CurrentReduction => _currentReduction;
+
+        public void Apply(float value)
+        {
+            _currentReduction = value;
+        }
     }
 }

@@ -519,7 +519,7 @@ Transform:
   - {fileID: 4676482698656249478}
   - {fileID: 1514387994940771477}
   m_Father: {fileID: 0}
-  m_RootOrder: -2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &2234261728090648628
 Animator:
@@ -618,16 +618,30 @@ MonoBehaviour:
   _vampirismParticle: {fileID: 7431331362718704324, guid: 88e2ca157caa14e4db3df5e4ba13b8fd, type: 3}
   _currentLevel: 1
   _currentUpgradeLevel: 0
-  _currentUpgradePoints: 0
   _currentExperience: 0
   _currentUpgradeExperience: 0
   _rerollPoints: 2
-  _score: 0
   _armor: 2
   _regeneration: 1
   _countKillEnemy: 0
   _moveSpeed: 1.5
   _currentHealth: 100
+  _takeCardStrategies:
+  - rid: 8041066414533509120
+  - rid: 8041066414533509121
+  - rid: 8041066414533509122
+  - rid: 8041066414533509123
+  references:
+    version: 2
+    RefIds:
+    - rid: 8041066414533509120
+      type: {class: TakeDefaultAbility, ns: Assets.Source.Game.Scripts.Card, asm: Assembly-CSharp}
+    - rid: 8041066414533509121
+      type: {class: TakePassiveAbility, ns: Assets.Source.Game.Scripts.Card, asm: Assembly-CSharp}
+    - rid: 8041066414533509122
+      type: {class: TakePrimaryAttribute, ns: Assets.Source.Game.Scripts.Card, asm: Assembly-CSharp}
+    - rid: 8041066414533509123
+      type: {class: TakeRerollPoints, ns: Assets.Source.Game.Scripts.Card, asm: Assembly-CSharp}
 --- !u!114 &3665270091436053377
 MonoBehaviour:
   m_ObjectHideFlags: 0

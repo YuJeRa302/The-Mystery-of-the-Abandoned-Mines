@@ -13,6 +13,7 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
         {
             _ability = abilityEntitiesHolder.Ability;
             _classSkillButtonView = abilityEntitiesHolder.AbilityView as ClassSkillButtonView;
+            IsAbilityUse = false;
         }
 
         public virtual void UsedAbility(Ability ability)

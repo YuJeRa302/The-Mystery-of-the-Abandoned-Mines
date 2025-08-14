@@ -40,7 +40,9 @@ namespace Assets.Source.Game.Scripts.Characters
         [SerializeField] private int _countKillEnemy = 0;
         [SerializeField] private float _moveSpeed = 1.5f;
         [SerializeField] private int _currentHealth = 100;
+        [SerializeReference] private List<ITakeCardStrategy> _takeCardStrategies;
 
+        private CompositeDisposable _disposables = new ();
         private PlayerView _playerView;
         private PlayerAbilityCaster _playerAbilityCaster;
         private PlayerStats _playerStats;
@@ -150,7 +152,8 @@ namespace Assets.Source.Game.Scripts.Characters
 
             _cardDeck = new CardDeck(
                 gameConfig.GetLevelData(
-                    persistentDataService.PlayerProgress.LevelService.CurrentLevelId).IsContractLevel);
+                    persistentDataService.PlayerProgress.LevelService.CurrentLevelId).IsContractLevel,
+                _takeCardStrategies);
             
             _playerAbilityCaster = new PlayerAbilityCaster(
                 abilityFactory,
@@ -194,10 +197,27 @@ namespace Assets.Source.Game.Scripts.Characters
             _playerAttacker.EnemyFinded += OnRotateToTarget;
             _playerAttacker.CritAttacked += OnApplayCritDamage;
             _playerAttacker.HealedVampirism += OnHealingVampirism;
-            _cardDeck.SetNewAbility += OnSetNewAbility;
-            _cardDeck.RerollPointsUpdated += OnUpdateRerollPoints;
-            _cardDeck.PlayerStatsUpdated += OnStatsUpdate;
-            _cardDeck.TakedPassiveAbility += OnTakenPassiveAbility;
+
+            CardDeck.MessageBroker
+                .Receive<M_TakeAbility>()
+                .Subscribe(m => OnSetNewAbility(m.CardView))
+                .AddTo(_disposables);
+
+            CardDeck.MessageBroker
+                .Receive<M_TakePassiveAbility>()
+                .Subscribe(m => OnTakenPassiveAbility(m.CardView))
+                .AddTo(_disposables);
+
+            CardDeck.MessageBroker
+                .Receive<M_TakePrimaryAttribute>()
+                .Subscribe(m => OnStatsUpdate(m.CardView))
+                .AddTo(_disposables);
+
+            CardDeck.MessageBroker
+                .Receive<M_TakeRerollPoints>()
+                .Subscribe(m => OnUpdateRerollPoints(m.CardView))
+                .AddTo(_disposables);
+
             _playerStats.ExperienceValueChanged += OnExperienceValueChanged;
             _playerStats.UpgradeExperienceValueChanged += OnUpgradeExperienceValueChanged;
 
@@ -241,10 +261,6 @@ namespace Assets.Source.Game.Scripts.Characters
             _playerAttacker.EnemyFinded -= OnRotateToTarget;
             _playerAttacker.CritAttacked -= OnApplayCritDamage;
             _playerAttacker.HealedVampirism -= OnHealingVampirism;
-            _cardDeck.SetNewAbility -= OnSetNewAbility;
-            _cardDeck.RerollPointsUpdated -= OnUpdateRerollPoints;
-            _cardDeck.PlayerStatsUpdated -= OnStatsUpdate;
-            _cardDeck.TakedPassiveAbility -= OnTakenPassiveAbility;
             _playerStats.ExperienceValueChanged -= OnExperienceValueChanged;
             _playerStats.UpgradeExperienceValueChanged -= OnUpgradeExperienceValueChanged;
             _playerStats.HealthUpgradeApplied -= OnHealthUpgradeApplied;
@@ -268,6 +284,9 @@ namespace Assets.Source.Game.Scripts.Characters
             _playerView.PassiveAbilityViewCreated -= OnPassiveAbilityViewCreated;
             _playerView.LegendaryAbilityViewCreated -= OnLegendaryAbilityViewCreated;
             _playerView.ClassAbilityViewCreated -= OnClassAbilityViewCreated;
+
+            if (_disposables != null)
+                _disposables.Dispose();
         }
 
         private void SetPlayerStats()

@@ -242,10 +242,7 @@ namespace Assets.Source.Game.Scripts.Characters
 
         private bool CalculateChance(float chance)
         {
-            if (_rnd.Next(_minValueChance, _maxValueChance) <= chance)
-                return true;
-            else
-                return false;
+            return _rnd.Next(_minValueChance, _maxValueChance) <= chance;
         }
     }
 }

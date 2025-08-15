@@ -1,12 +1,13 @@
 using Assets.Source.Game.Scripts.Card;
 using Assets.Source.Game.Scripts.Enums;
+using Assets.Source.Game.Scripts.Models;
 using Assets.Source.Game.Scripts.ScriptableObjects;
 using Assets.Source.Game.Scripts.Services;
 using Assets.Source.Game.Scripts.States;
-using Assets.Source.Game.Scripts.ViewModels;
 using Lean.Localization;
 using System.Collections.Generic;
 using System.Linq;
+using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -50,8 +51,9 @@ namespace Assets.Source.Game.Scripts.Views
         private List<PlayerClassDataView> _playerClassDataViews = new();
         private List<ClassAbilityDataView> _classAbilityDataViews = new();
         private List<ClassAbilityStatsView> _classAbilityStatsViews = new();
-        private ClassAbilityViewModel _classAbilityViewModel;
+        private ClassAbilityModel _classAbilityModel;
         private IAudioPlayerService _audioPlayerService;
+        private CompositeDisposable _disposables = new();
 
         private void OnDisable()
         {
@@ -63,11 +65,11 @@ namespace Assets.Source.Game.Scripts.Views
             RemoveListener();
         }
 
-        public void Initialize(ClassAbilityViewModel classAbilityViewModel, IAudioPlayerService audioPlayerService)
+        public void Initialize(ClassAbilityModel classAbilityModel, IAudioPlayerService audioPlayerService)
         {
+            _classAbilityModel = classAbilityModel;
             _audioPlayerService = audioPlayerService;
-            _classAbilityViewModel = classAbilityViewModel;
-            _coinsText.text = _classAbilityViewModel.GetCoins().ToString();
+            _coinsText.text = _classAbilityModel.Coins.ToString();
             _abilityImage.sprite = _defaultSprite;
             _nameAbility.TranslationName = _nameText;
             _description.TranslationName = _descriptionText;
@@ -80,9 +82,21 @@ namespace Assets.Source.Game.Scripts.Views
 
         private void AddListener()
         {
-            _classAbilityViewModel.Showing += Show;
-            _classAbilityViewModel.InvokedAbilityUpgraded += OnAbilityUpgraded;
-            _classAbilityViewModel.InvokedAbilityReseted += OnAbilityReseted;
+            MessageBroker.Default
+                .Receive<M_ShowClassAbility>()
+                .Subscribe(m => Show())
+                .AddTo(_disposables);
+
+            MessageBroker.Default
+                .Receive<M_AbilityUpgraded>()
+                .Subscribe(m => OnAbilityUpgraded(m.ClassAbilityState))
+                .AddTo(_disposables);
+
+            MessageBroker.Default
+                .Receive<M_AbilityReseted>()
+                .Subscribe(m => OnAbilityReseted(m.PlayerClassData))
+                .AddTo(_disposables);
+
             _backButton.onClick.AddListener(OnExitButtonClicked);
             _upgradeButton.onClick.AddListener(Upgrade);
             _resetButton.onClick.AddListener(ResetAbilities);
@@ -90,9 +104,9 @@ namespace Assets.Source.Game.Scripts.Views
 
         private void RemoveListener()
         {
-            _classAbilityViewModel.Showing -= Show;
-            _classAbilityViewModel.InvokedAbilityUpgraded -= OnAbilityUpgraded;
-            _classAbilityViewModel.InvokedAbilityReseted -= OnAbilityReseted;
+            if (_disposables != null)
+                _disposables.Dispose();
+
             _backButton.onClick.RemoveListener(OnExitButtonClicked);
             _upgradeButton.onClick.RemoveListener(Upgrade);
             _resetButton.onClick.RemoveListener(ResetAbilities);
@@ -106,8 +120,8 @@ namespace Assets.Source.Game.Scripts.Views
             foreach (ClassAbilityData classAbilityData in playerClassData.ClassAbilityDatas)
             {
                 ClassAbilityDataView view = Instantiate(_classAbilityDataView, _abilityClassContainer);
-                ClassAbilityState classAbilityState = _classAbilityViewModel.GetClassAbilityState(classAbilityData);
-                view.Initialize(classAbilityData, classAbilityState, _classAbilityViewModel, _audioPlayerService);
+                ClassAbilityState classAbilityState = _classAbilityModel.GetClassAbilityState(classAbilityData);
+                view.Initialize(classAbilityData, classAbilityState, _audioPlayerService);
                 view.AbilitySelected += OnAbilitySelected;
                 _classAbilityDataViews.Add(view);
             }
@@ -156,12 +170,12 @@ namespace Assets.Source.Game.Scripts.Views
         {
             ClearClassAbility();
             CreateClassAbility(playerClassDataView.PlayerClassData);
-            _classAbilityViewModel.SelectPlayerClass(playerClassDataView.PlayerClassData);
+            _classAbilityModel.SelectPlayerClass(playerClassDataView.PlayerClassData);
         }
 
         private void OnAbilityUpgraded(ClassAbilityState classAbilityState)
         {
-            _coinsText.text = _classAbilityViewModel.GetCoins().ToString();
+            _coinsText.text = _classAbilityModel.Coins.ToString();
 
             foreach (var view in _classAbilityDataViews)
             {
@@ -198,7 +212,7 @@ namespace Assets.Source.Game.Scripts.Views
         {
             SetActiveSubPanel(true);
             RenderCurrentAbility(classAbilityDataView);
-            _classAbilityViewModel.SelectClassAbility(classAbilityDataView);
+            _classAbilityModel.SelectClassAbility(classAbilityDataView);
             ClearStats();
 
             int currentLevel = classAbilityDataView.ClassAbilityState.CurrentLevel;
@@ -302,14 +316,14 @@ namespace Assets.Source.Game.Scripts.Views
                 }
             }
 
-            _classAbilityViewModel.ResetAbilities(currentUpgradeCoins);
-            _coinsText.text = _classAbilityViewModel.GetCoins().ToString();
+            _classAbilityModel.ResetAbilities(currentUpgradeCoins);
+            _coinsText.text = _classAbilityModel.Coins.ToString();
             ClearClassAbility();
         }
 
         private void Upgrade()
         {
-            _classAbilityViewModel.UpgradeAbility();
+            _classAbilityModel.UpgradeAbility();
             _audioPlayerService.PlayOneShotButtonClickSound();
         }
 
@@ -327,7 +341,7 @@ namespace Assets.Source.Game.Scripts.Views
             ClearClassAbility();
             ClearClass();
             _abilityImage.sprite = _defaultSprite;
-            _classAbilityViewModel.Hide();
+            MessageBroker.Default.Publish(new M_Hide());
         }
 
         private void SetActiveSubPanel(bool isActive)

@@ -1,13 +1,16 @@
 using Assets.Source.Game.Scripts.PoolSystem;
 
-public struct M_CreateDamageParticle
+namespace Assets.Source.Game.Scripts.Characters
 {
-    private PoolParticle _poolParticle;
-
-    public M_CreateDamageParticle(PoolParticle poolParticle)
+    public struct M_CreateDamageParticle
     {
-        _poolParticle = poolParticle;
-    }
+        private PoolParticle _poolParticle;
 
-    public PoolParticle PoolParticle => _poolParticle;
+        public M_CreateDamageParticle(PoolParticle poolParticle)
+        {
+            _poolParticle = poolParticle;
+        }
+
+        public PoolParticle PoolParticle => _poolParticle;
+    }
 }

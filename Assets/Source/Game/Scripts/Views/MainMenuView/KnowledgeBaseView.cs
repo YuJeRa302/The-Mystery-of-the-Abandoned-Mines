@@ -1,7 +1,8 @@
+using Assets.Source.Game.Scripts.Models;
 using Assets.Source.Game.Scripts.ScriptableObjects;
 using Assets.Source.Game.Scripts.Services;
-using Assets.Source.Game.Scripts.ViewModels;
 using System.Collections.Generic;
+using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -26,8 +27,8 @@ namespace Assets.Source.Game.Scripts.Views
 
         private List<SubcategoriesButtonView> _subcategoriesButtonViews = new();
         private List<KnowledgeView> _knowladgeViews = new();
-        private KnowledgeBaseViewModel _knowledgeBaseViewModel;
         private IAudioPlayerService _audioPlayerService;
+        private CompositeDisposable _disposables = new();
 
         private void OnDisable()
         {
@@ -40,9 +41,8 @@ namespace Assets.Source.Game.Scripts.Views
             RemoveListener();
         }
 
-        public void Initialize(KnowledgeBaseViewModel knowledgeBaseViewModel, IAudioPlayerService audioPlayerService)
+        public void Initialize(IAudioPlayerService audioPlayerService)
         {
-            _knowledgeBaseViewModel = knowledgeBaseViewModel;
             _audioPlayerService = audioPlayerService;
             AddListener();
             _buttonSubCategories.SetActive(false);
@@ -52,7 +52,11 @@ namespace Assets.Source.Game.Scripts.Views
 
         private void AddListener()
         {
-            _knowledgeBaseViewModel.Showing += Show;
+            MessageBroker.Default
+                .Receive<M_KnowledgeBaseShow>()
+                .Subscribe(m => Show())
+                .AddTo(_disposables);
+
             _playerInfo.onClick.AddListener(() => ShowCatigories(_baseData.PlayerSubcategoriesViews));
             _gameInfo.onClick.AddListener(() => ShowCatigories(_baseData.GameSubcategoriesViews));
             _enemyInfo.onClick.AddListener(() => ShowCatigories(_baseData.EnemySubcategoriesViews));
@@ -61,7 +65,9 @@ namespace Assets.Source.Game.Scripts.Views
 
         private void RemoveListener()
         {
-            _knowledgeBaseViewModel.Showing -= Show;
+            if (_disposables != null)
+                _disposables.Dispose();
+
             _playerInfo.onClick.RemoveListener(() => ShowCatigories(_baseData.PlayerSubcategoriesViews));
             _gameInfo.onClick.RemoveListener(() => ShowCatigories(_baseData.GameSubcategoriesViews));
             _enemyInfo.onClick.RemoveListener(() => ShowCatigories(_baseData.EnemySubcategoriesViews));
@@ -102,7 +108,7 @@ namespace Assets.Source.Game.Scripts.Views
         private void OnExitButtonClicked()
         {
             _audioPlayerService?.PlayOneShotButtonClickSound();
-            _knowledgeBaseViewModel.Hide();
+            MessageBroker.Default.Publish(new M_Hide());
             gameObject.SetActive(false);
         }
 

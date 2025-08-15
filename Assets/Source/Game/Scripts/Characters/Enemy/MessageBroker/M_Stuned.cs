@@ -1,11 +1,14 @@
-public struct M_Stuned
+namespace Assets.Source.Game.Scripts.Characters
 {
-    private bool _isStun;
-
-    public M_Stuned(bool isStun)
+    public struct M_Stuned
     {
-        _isStun = isStun;
-    }
+        private bool _isStun;
 
-    public bool IsStun => _isStun;
+        public M_Stuned(bool isStun)
+        {
+            _isStun = isStun;
+        }
+
+        public bool IsStun => _isStun;
+    }
 }

@@ -2,7 +2,7 @@ using Assets.Source.Game.Scripts.ScriptableObjects;
 using Assets.Source.Game.Scripts.Services;
 using Assets.Source.Game.Scripts.States;
 using Assets.Source.Game.Scripts.Views;
-using System;
+using UniRx;
 
 namespace Assets.Source.Game.Scripts.Models
 {
@@ -20,15 +20,12 @@ namespace Assets.Source.Game.Scripts.Models
             _persistentDataService = persistentDataService;
         }
 
-        public event Action<ClassAbilityState> InvokedAbilityUpgraded;
-        public event Action<PlayerClassData> InvokedAbilityReseted;
-
         public int Coins => _persistentDataService.PlayerProgress.Coins;
 
         public void ResetAbilities(int value)
         {
             _persistentDataService.PlayerProgress.Coins += value;
-            InvokedAbilityReseted?.Invoke(_currentPlayerClassData);
+            MessageBroker.Default.Publish(new M_AbilityReseted(_currentPlayerClassData));
         }
 
         public ClassAbilityState GetClassAbilityState(ClassAbilityData classAbilityData)
@@ -67,7 +64,7 @@ namespace Assets.Source.Game.Scripts.Models
                     _currentClassAbilityState.ChangeCurrentLevel(nextLevel);
                 }
 
-                InvokedAbilityUpgraded?.Invoke(_currentClassAbilityState);
+                MessageBroker.Default.Publish(new M_AbilityUpgraded(_currentClassAbilityState));
                 _persistentDataService.PlayerProgress.
                     ClassAbilityService.SetClassAbilityState(_currentClassAbilityState);
             }

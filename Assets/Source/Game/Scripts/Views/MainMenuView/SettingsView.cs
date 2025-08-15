@@ -1,7 +1,9 @@
+using Assets.Source.Game.Scripts.Models;
 using Assets.Source.Game.Scripts.ScriptableObjects;
 using Assets.Source.Game.Scripts.Services;
 using Assets.Source.Game.Scripts.ViewModels;
 using System.Collections.Generic;
+using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,8 +19,9 @@ namespace Assets.Source.Game.Scripts.Views
         [SerializeField] private LanguageButtonView _languageButtonView;
         [SerializeField] private Transform _buttonsContainer;
 
+        private SettingsModel _settingsModel;
         private List<LanguageButtonView> _languageButtonViews = new();
-        private SettingsViewModel _settingsViewModel;
+        private CompositeDisposable _disposables = new();
         private IAudioPlayerService _audioPlayerService;
 
         private void OnDestroy()
@@ -27,13 +30,13 @@ namespace Assets.Source.Game.Scripts.Views
             RemoveListeners();
         }
 
-        public void Initialize(SettingsViewModel settingsViewModel, IAudioPlayerService audioPlayerService)
+        public void Initialize(SettingsModel settingsModel, IAudioPlayerService audioPlayerService)
         {
+            _settingsModel = settingsModel;
             _audioPlayerService = audioPlayerService;
-            _settingsViewModel = settingsViewModel;
-            _ambientSlider.value = settingsViewModel.GetAmbientVolume();
-            _sfxSlider.value = settingsViewModel.GetSfxVolume();
-            _muteToggle.isOn = settingsViewModel.GetMuteStatus();
+            _ambientSlider.value = _settingsModel.AmbientVolumeValue;
+            _sfxSlider.value = _settingsModel.SfxVolumeValue;
+            _muteToggle.isOn = _settingsModel.IsMuted;
             AddListeners();
             ClearLanguageButtons();
             CreateLanguageButtons();
@@ -67,8 +70,12 @@ namespace Assets.Source.Game.Scripts.Views
 
         private void AddListeners()
         {
-            _settingsViewModel.Showing += Show;
-            _settingsViewModel.Hiding += Hide;
+
+            MessageBroker.Default
+                .Receive<M_SettingsShow>()
+                .Subscribe(m => Show())
+                .AddTo(_disposables);
+
             _closeButton.onClick.AddListener(OnExitButtonClicked);
             _ambientSlider.onValueChanged.AddListener(OnAmbientValueChanged);
             _sfxSlider.onValueChanged.AddListener(OnSfxValueChanged);
@@ -77,29 +84,30 @@ namespace Assets.Source.Game.Scripts.Views
 
         private void RemoveListeners()
         {
-            _settingsViewModel.Showing -= Show;
-            _settingsViewModel.Hiding -= Hide;
+            if (_disposables != null)
+                _disposables.Dispose();
+
             _closeButton.onClick.RemoveListener(OnExitButtonClicked);
             _ambientSlider.onValueChanged.RemoveListener(OnAmbientValueChanged);
             _sfxSlider.onValueChanged.RemoveListener(OnSfxValueChanged);
             _muteToggle.onValueChanged.RemoveListener(OnMuteValueChanged);
         }
 
-        private void OnExitButtonClicked() => _settingsViewModel.Hide();
-        private void OnLanguageChanged(string value) => _settingsViewModel.SetLanguage(value);
+        private void OnExitButtonClicked() => MessageBroker.Default.Publish(new M_Hide());
+        private void OnLanguageChanged(string value) => _settingsModel.SetLanguage(value);
         private void OnAmbientValueChanged(float value)
         {
             _audioPlayerService.AmbientValueChanged(value);
-            _settingsViewModel.SetAmbientVolume(value);
+            _settingsModel.SetAmbientVolume(value);
         }
 
         private void OnSfxValueChanged(float value)
         {
             _audioPlayerService.SfxValueChanged(value);
-            _settingsViewModel.SetSfxVolume(value);
+            _settingsModel.SetSfxVolume(value);
         }
 
-        private void OnMuteValueChanged(bool value) => _settingsViewModel.SetMuteStatus(value);
+        private void OnMuteValueChanged(bool value) => _settingsModel.SetMute(value);
         private void Show() => gameObject.SetActive(true);
         private void Hide() => gameObject.SetActive(false);
     }

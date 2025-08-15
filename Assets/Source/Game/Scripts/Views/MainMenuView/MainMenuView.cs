@@ -1,3 +1,5 @@
+using Assets.Source.Game.Scripts.Characters;
+using Assets.Source.Game.Scripts.Models;
 using Assets.Source.Game.Scripts.ScriptableObjects;
 using Assets.Source.Game.Scripts.Services;
 using Assets.Source.Game.Scripts.ViewModels;
@@ -5,8 +7,10 @@ using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
+using YG;
 
 namespace Assets.Source.Game.Scripts.Views
 {
@@ -31,11 +35,11 @@ namespace Assets.Source.Game.Scripts.Views
         [SerializeField] private float _duration = 1f;
         [SerializeField] private float _timeNewTips = 10;
 
+        private MenuModel _menuModel;
         private List<TipView> _tipViews = new();
         private IEnumerator _getTips;
         private IEnumerator _animationTips;
         private IAudioPlayerService _audioPlayerService;
-        private MainMenuViewModel _menuViewModel;
         private WaitForSeconds _delayNewTips;
 
         private void OnEnable()
@@ -53,12 +57,12 @@ namespace Assets.Source.Game.Scripts.Views
         private void OnDestroy()
         {
             RemoveListener();
-            _menuViewModel.Dispose();
         }
 
-        public void Initialize(MainMenuViewModel menuViewModel, IAudioPlayerService audioPlayerService)
+        public void Initialize(MenuModel menuModel, IAudioPlayerService audioPlayerService)
         {
-            _menuViewModel = menuViewModel;
+            _menuModel = menuModel;
+
             _audioPlayerService = audioPlayerService;
             _delayNewTips = new WaitForSeconds(_timeNewTips);
             AddListener();
@@ -82,13 +86,14 @@ namespace Assets.Source.Game.Scripts.Views
             _openClassAbilityButton.onClick.AddListener(ShowClassAbility);
             _openKnowledgeBaseButton.onClick.AddListener(ShowKnowledgeBase);
             _openLeaderboardButton.onClick.AddListener(ShowLeaderboard);
-            _menuViewModel.Showing += Show;
-            _menuViewModel.GamePaused += OnGamePaused;
-            _menuViewModel.GameResumed += OnGameResumed;
+            _menuModel.InvokedMainMenuShowed += Show;
+            _menuModel.GamePaused += OnGamePaused;
+            _menuModel.GameResumed += OnGameResumed;
         }
 
         private void RemoveListener()
         {
+            _menuModel.Dispose();
             _openUpgradesButton.onClick.RemoveListener(ShowUpgrades);
             _openSettingsButton.onClick.RemoveListener(ShowSettings);
             _openLevelsButton.onClick.RemoveListener(ShowLevels);
@@ -96,56 +101,56 @@ namespace Assets.Source.Game.Scripts.Views
             _openClassAbilityButton.onClick.RemoveListener(ShowClassAbility);
             _openKnowledgeBaseButton.onClick.RemoveListener(ShowKnowledgeBase);
             _openLeaderboardButton.onClick.RemoveListener(ShowLeaderboard);
-            _menuViewModel.Showing -= Show;
-            _menuViewModel.GamePaused -= OnGamePaused;
-            _menuViewModel.GameResumed -= OnGameResumed;
+            _menuModel.InvokedMainMenuShowed -= Show;
+            _menuModel.GamePaused -= OnGamePaused;
+            _menuModel.GameResumed -= OnGameResumed;
         }
 
         private void ShowLeaderboard()
         {
-            _menuViewModel.InvokeLeaderboardShow();
+            MessageBroker.Default.Publish(new M_LeaderboardShowed());
             _audioPlayerService.PlayOneShotButtonClickSound();
             gameObject.SetActive(false);
         }
 
         private void ShowKnowledgeBase()
         {
-            _menuViewModel.InvokeKnowledgeBaseShow();
+            MessageBroker.Default.Publish(new M_KnowledgeBaseShow());
             _audioPlayerService.PlayOneShotButtonClickSound();
             gameObject.SetActive(false);
         }
 
         private void ShowUpgrades()
         {
-            _menuViewModel.InvokeUpgradesShow();
+            MessageBroker.Default.Publish(new M_UpgradesShow());
             _audioPlayerService.PlayOneShotButtonClickSound();
             gameObject.SetActive(false);
         }
 
         private void ShowSettings()
         {
-            _menuViewModel.InvokeSettingsShow();
+            MessageBroker.Default.Publish(new M_SettingsShow());
             _audioPlayerService.PlayOneShotButtonClickSound();
             gameObject.SetActive(false);
         }
 
         private void ShowLevels()
         {
-            _menuViewModel.InvokeLevelsShow();
+            MessageBroker.Default.Publish(new M_LevelsShow());
             _audioPlayerService.PlayOneShotButtonClickSound();
             gameObject.SetActive(false);
         }
 
         private void ShowWeapons()
         {
-            _menuViewModel.InvokeWeaponsShow();
+            MessageBroker.Default.Publish(new M_WeaponsShow());
             _audioPlayerService.PlayOneShotButtonClickSound();
             gameObject.SetActive(false);
         }
 
         private void ShowClassAbility()
         {
-            _menuViewModel.InvokeClassAbilityShow();
+            MessageBroker.Default.Publish(new M_ShowClassAbility());
             _audioPlayerService.PlayOneShotButtonClickSound();
             gameObject.SetActive(false);
         }

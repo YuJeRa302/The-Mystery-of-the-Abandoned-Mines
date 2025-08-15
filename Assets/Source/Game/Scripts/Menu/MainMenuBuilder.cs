@@ -74,32 +74,19 @@ namespace Assets.Source.Game.Scripts.Menu
                 _canvasLoader);
 
             UpgradeModel upgradeModel = new UpgradeModel(_persistentDataService);
-            MenuModel menuModel = new MenuModel();
             WeaponsModel weaponsModel = new WeaponsModel(_persistentDataService);
             ClassAbilityModel classAbilityModel = new ClassAbilityModel(_persistentDataService);
-            KnowledgeBaseModel knowledgeBaseModel = new KnowledgeBaseModel();
             LeaderboardModel leaderboardModel = new LeaderboardModel(_persistentDataService);
-            MainMenuViewModel mainMenuViewModel = new MainMenuViewModel(menuModel);
-            SettingsViewModel settingsViewModel = new SettingsViewModel(settingsModel, menuModel);
-            LevelsViewModel levelsViewModel = new LevelsViewModel(levelsModel, menuModel);
-            UpgradeViewModel upgradeViewModel = new UpgradeViewModel(upgradeModel, menuModel);
-            WeaponsViewModel weaponsViewModel = new WeaponsViewModel(weaponsModel, menuModel);
-            ClassAbilityViewModel classAbilityViewModel = new ClassAbilityViewModel(classAbilityModel, menuModel);
+            MenuModel menuModel = new MenuModel();
 
-            KnowledgeBaseViewModel knowledgeBaseViewModel = new KnowledgeBaseViewModel(
-                knowledgeBaseModel,
-                menuModel);
-
-            LeaderboardViewModel leaderboardViewModel = new LeaderboardViewModel(leaderboardModel, menuModel);
-
-            _settingsView.Initialize(settingsViewModel, _audioPlayer);
-            _upgradesView.Initialize(upgradeViewModel, _audioPlayer);
-            _mainMenuView.Initialize(mainMenuViewModel, _audioPlayer);
-            _levelsView.Initialize(levelsViewModel, _audioPlayer);
-            _weaponsView.Initialize(weaponsViewModel, _audioPlayer);
-            _classAbilityView.Initialize(classAbilityViewModel, _audioPlayer);
-            _knowledgeBaseView.Initialize(knowledgeBaseViewModel, _audioPlayer);
-            _leaderboardView.Initialize(leaderboardViewModel);
+            _settingsView.Initialize(settingsModel, _audioPlayer);
+            _upgradesView.Initialize(upgradeModel, _audioPlayer);
+            _mainMenuView.Initialize(menuModel, _audioPlayer);
+            _levelsView.Initialize(levelsModel, _audioPlayer);
+            _weaponsView.Initialize(weaponsModel, _audioPlayer);
+            _classAbilityView.Initialize(classAbilityModel, _audioPlayer);
+            _knowledgeBaseView.Initialize(_audioPlayer);
+            _leaderboardView.Initialize(leaderboardModel);
         }
     }
 }

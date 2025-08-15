@@ -15,7 +15,6 @@ namespace Assets.Source.Game.Scripts.Characters
         {
             _maxHealth = health;
             _currentHealth = health;
-            HealthChanged?.Invoke();
         }
 
         public bool IsDead => _isDead;

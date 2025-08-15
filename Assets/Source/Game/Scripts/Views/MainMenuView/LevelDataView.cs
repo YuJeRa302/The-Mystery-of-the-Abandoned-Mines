@@ -1,4 +1,5 @@
 using Assets.Source.Game.Scripts.Levels;
+using Assets.Source.Game.Scripts.Models;
 using Assets.Source.Game.Scripts.ScriptableObjects;
 using Assets.Source.Game.Scripts.Services;
 using Assets.Source.Game.Scripts.ViewModels;
@@ -25,7 +26,7 @@ namespace Assets.Source.Game.Scripts.Views
 
         private LevelData _levelData;
         private IAudioPlayerService _audioPlayerService;
-        private LevelsViewModel _levelsViewModel;
+        private LevelsModel _levelsModel;
 
         public event Action<LevelDataView> LevelSelected;
 
@@ -37,11 +38,11 @@ namespace Assets.Source.Game.Scripts.Views
         }
 
         public void Initialize(LevelData levelData,
-            LevelState levelState, LevelsViewModel levelsViewModel, IAudioPlayerService audioPlayerService)
+            LevelState levelState, LevelsModel levelsModel, IAudioPlayerService audioPlayerService)
         {
             _audioPlayerService = audioPlayerService;
             _levelData = levelData;
-            _levelsViewModel = levelsViewModel;
+            _levelsModel = levelsModel;
             _button.onClick.AddListener(OnSelected);
             Fill(levelData);
             UpdateLevelState(levelData, levelState);
@@ -80,7 +81,7 @@ namespace Assets.Source.Game.Scripts.Views
                 return;
             }
 
-            SetImageLevelState(_levelsViewModel.TryUnlockLevel(levelState.Id - _levelIndexShift));
+            SetImageLevelState(_levelsModel.TryUnlockLevel(levelState.Id - _levelIndexShift));
         }
 
         private void UpdateContractLevelState(LevelData levelData)

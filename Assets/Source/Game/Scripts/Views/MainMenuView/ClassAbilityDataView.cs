@@ -1,8 +1,10 @@
+using Assets.Source.Game.Scripts.Models;
 using Assets.Source.Game.Scripts.ScriptableObjects;
 using Assets.Source.Game.Scripts.Services;
 using Assets.Source.Game.Scripts.States;
 using Assets.Source.Game.Scripts.ViewModels;
 using System;
+using UniRx;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -18,8 +20,8 @@ namespace Assets.Source.Game.Scripts.Views
         [SerializeField] private Sprite _upgradeSprite;
         [SerializeField] private Button _button;
 
-        private ClassAbilityViewModel _classAbilityViewModel;
         private IAudioPlayerService _audioPlayerService;
+        private CompositeDisposable _disposables = new();
 
         public event Action<ClassAbilityDataView> AbilitySelected;
 
@@ -29,22 +31,27 @@ namespace Assets.Source.Game.Scripts.Views
         private void OnDestroy()
         {
             _button.onClick.RemoveListener(OnSelected);
-            _classAbilityViewModel.InvokedAbilityUpgraded -= OnAbilityUpgraded;
-            _classAbilityViewModel.InvokedAbilityReseted -= OnResetState;
         }
 
         public void Initialize(ClassAbilityData classAbilityData,
             ClassAbilityState classAbilityState,
-            ClassAbilityViewModel classAbilityViewModel,
             IAudioPlayerService audioPlayerService)
         {
             _audioPlayerService = audioPlayerService;
-            _classAbilityViewModel = classAbilityViewModel;
             ClassAbilityState = classAbilityState;
             ClassAbilityData = classAbilityData;
             _button.onClick.AddListener(OnSelected);
-            _classAbilityViewModel.InvokedAbilityUpgraded += OnAbilityUpgraded;
-            _classAbilityViewModel.InvokedAbilityReseted += OnResetState;
+
+            MessageBroker.Default
+                .Receive<M_AbilityUpgraded>()
+                .Subscribe(m => OnAbilityUpgraded(m.ClassAbilityState))
+                .AddTo(_disposables);
+
+            MessageBroker.Default
+                .Receive<M_AbilityReseted>()
+                .Subscribe(m => OnResetState(m.PlayerClassData))
+                .AddTo(_disposables);
+
             Fill(ClassAbilityData);
         }
 

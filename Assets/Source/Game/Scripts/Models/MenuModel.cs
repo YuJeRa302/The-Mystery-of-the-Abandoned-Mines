@@ -1,46 +1,35 @@
 using System;
+using UniRx;
 using YG;
 
 namespace Assets.Source.Game.Scripts.Models
 {
     public class MenuModel : IDisposable
     {
+        private CompositeDisposable _disposables = new();
+
         public MenuModel()
         {
             YG2.onFocusWindowGame += OnVisibilityWindowGame;
-        }
 
-        public event Action InvokedUpgradesShowed;
-        public event Action InvokedLevelsShowed;
-        public event Action InvokedSettingsShowed;
-        public event Action InvokedWeaponsShowed;
-        public event Action InvokedClassAbilityShowed;
-        public event Action InvokeKnowBaswShowed;
-        public event Action InvokedLeaderboardShowed;
+            MessageBroker.Default
+                .Receive<M_Hide>()
+                .Subscribe(m => OnShowMenu())
+                .AddTo(_disposables);
+        }
 
         public event Action InvokedMainMenuShowed;
         public event Action<bool> GamePaused;
         public event Action<bool> GameResumed;
 
-        public void InvokeUpgradesHide() => InvokedMainMenuShowed?.Invoke();
-        public void InvokeLevelsHide() => InvokedMainMenuShowed?.Invoke();
-        public void InvokeSettingsHide() => InvokedMainMenuShowed?.Invoke();
-        public void InvokeWeaponsHide() => InvokedMainMenuShowed?.Invoke();
-        public void InvokeKnowledgeBaseHide() => InvokedMainMenuShowed?.Invoke();
-        public void InvokeClassAbilityHide() => InvokedMainMenuShowed?.Invoke();
-        public void InvokeLeaderboardHide() => InvokedMainMenuShowed?.Invoke();
-
-        public void InvokeUpgradesShow() => InvokedUpgradesShowed?.Invoke();
-        public void InvokeLevelsShow() => InvokedLevelsShowed?.Invoke();
-        public void InvokeSettingsShow() => InvokedSettingsShowed?.Invoke();
-        public void InvokeWeaponsShow() => InvokedWeaponsShowed?.Invoke();
-        public void InvokeClassAbilityShow() => InvokedClassAbilityShowed?.Invoke();
-        public void InvokeKnowledgeBaseShow() => InvokeKnowBaswShowed?.Invoke();
-        public void InvokeLeaderboardShow() => InvokedLeaderboardShowed?.Invoke();
-
         public void Dispose()
         {
             YG2.onFocusWindowGame -= OnVisibilityWindowGame;
+        }
+
+        private void OnShowMenu()
+        {
+            InvokedMainMenuShowed?.Invoke();
         }
 
         private void OnVisibilityWindowGame(bool state)

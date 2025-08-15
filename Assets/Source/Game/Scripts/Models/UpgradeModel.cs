@@ -1,7 +1,7 @@
 using Assets.Source.Game.Scripts.ScriptableObjects;
 using Assets.Source.Game.Scripts.Services;
 using Assets.Source.Game.Scripts.Upgrades;
-using System;
+using UniRx;
 
 namespace Assets.Source.Game.Scripts.Models
 {
@@ -18,15 +18,12 @@ namespace Assets.Source.Game.Scripts.Models
             _persistentDataService = persistentDataService;
         }
 
-        public event Action<UpgradeState> InvokedStatsUpgraded;
-        public event Action InvokedStatsReseted;
-
         public int UpgradePoints => _persistentDataService.PlayerProgress.UpgradePoints;
 
         public void ResetUpgrade(int value)
         {
             _persistentDataService.PlayerProgress.UpgradePoints += value;
-            InvokedStatsReseted?.Invoke();
+            MessageBroker.Default.Publish(new M_StatsReseted());
         }
 
         public UpgradeState GetUpgradeState(UpgradeData upgradeData)
@@ -59,17 +56,13 @@ namespace Assets.Source.Game.Scripts.Models
                     _currentStats.ChangeCurrentLevel(nextLevel);
                 }
 
-                InvokedStatsUpgraded?.Invoke(_currentStats);
+                MessageBroker.Default.Publish(new M_StatsUpgraded(_currentStats));
                 _persistentDataService.PlayerProgress.UpgradeService.SetUpgradeState(_currentStats);
             }
             else
             {
                 return;
             }
-        }
-
-        public void Dispose()
-        {
         }
     }
 }

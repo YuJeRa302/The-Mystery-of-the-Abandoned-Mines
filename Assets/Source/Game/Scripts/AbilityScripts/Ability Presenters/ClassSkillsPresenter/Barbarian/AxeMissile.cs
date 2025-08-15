@@ -28,7 +28,6 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
         private float _throwDuration;
         private bool _isReturn = false;
         private Collider[] _foundEnemyColliders = new Collider[50];
-        private List<Enemy> _enemies = new List<Enemy>();
 
         private void OnEnable()
         {

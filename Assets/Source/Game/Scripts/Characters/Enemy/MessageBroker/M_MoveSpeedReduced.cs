@@ -1,11 +1,14 @@
-public struct M_MoveSpeedReduced
+namespace Assets.Source.Game.Scripts.Characters
 {
-    private float _valueSlowed;
-
-    public M_MoveSpeedReduced(float valueSlowed)
+    public struct M_MoveSpeedReduced
     {
-        _valueSlowed = valueSlowed;
-    }
+        private float _valueSlowed;
 
-    public float ValueSlowed => _valueSlowed;
+        public M_MoveSpeedReduced(float valueSlowed)
+        {
+            _valueSlowed = valueSlowed;
+        }
+
+        public float ValueSlowed => _valueSlowed;
+    }
 }

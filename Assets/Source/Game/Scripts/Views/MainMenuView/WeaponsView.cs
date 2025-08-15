@@ -1,10 +1,12 @@
 using Assets.Source.Game.Scripts.Enums;
 using Assets.Source.Game.Scripts.Items;
+using Assets.Source.Game.Scripts.Models;
 using Assets.Source.Game.Scripts.ScriptableObjects;
 using Assets.Source.Game.Scripts.Services;
 using Assets.Source.Game.Scripts.ViewModels;
 using Lean.Localization;
 using System.Collections.Generic;
+using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -39,7 +41,8 @@ namespace Assets.Source.Game.Scripts.Views
         private List<WeaponStatsView> _weaponStatsViews = new();
         private List<PlayerClassDataView> _playerClassDataViews = new();
         private List<WeaponDataView> _weaponDataViews = new();
-        private WeaponsViewModel _weaponsViewModel;
+        private CompositeDisposable _disposables = new();
+        private WeaponsModel _weaponsModel;
         private IAudioPlayerService _audioPlayerService;
 
         private void OnEnable()
@@ -49,17 +52,24 @@ namespace Assets.Source.Game.Scripts.Views
 
         private void OnDestroy()
         {
-            _weaponsViewModel.Showing -= Show;
+            if (_disposables != null)
+                _disposables.Dispose();
+
             _backButton.onClick.RemoveListener(OnBackButtonClicked);
         }
 
-        public void Initialize(WeaponsViewModel weaponsViewModel, IAudioPlayerService audioPlayerService)
+        public void Initialize(WeaponsModel weaponsModel, IAudioPlayerService audioPlayerService)
         {
-            _weaponsViewModel = weaponsViewModel;
+            _weaponsModel = weaponsModel;
             _audioPlayerService = audioPlayerService;
             _parameterPanel.SetActive(false);
             gameObject.SetActive(false);
-            _weaponsViewModel.Showing += Show;
+
+            MessageBroker.Default
+                .Receive<M_WeaponsShow>()
+                .Subscribe(m => Show())
+                .AddTo(_disposables);
+
             _backButton.onClick.AddListener(OnBackButtonClicked);
             SortElementsByTier();
         }
@@ -81,7 +91,7 @@ namespace Assets.Source.Game.Scripts.Views
             {
                 if (typePlayerClass == weaponData.TypePlayerClass)
                 {
-                    WeaponState weaponState = _weaponsViewModel.GetWeaponState(weaponData);
+                    WeaponState weaponState = _weaponsModel.GetWeaponState(weaponData);
                     WeaponDataView view = Instantiate(_weaponDataView, _weaponsContainer);
                     view.Initialize(weaponData, weaponState, _audioPlayerService, null);
                     view.Equipped += OnWeaponSelected;
@@ -197,7 +207,7 @@ namespace Assets.Source.Game.Scripts.Views
             ClearWeapons();
             ClearClass();
             gameObject.SetActive(false);
-            _weaponsViewModel.Hide();
+            MessageBroker.Default.Publish(new M_Hide());
         }
     }
 }

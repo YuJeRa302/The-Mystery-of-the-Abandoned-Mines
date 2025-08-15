@@ -1,4 +1,5 @@
-using Assets.Source.Game.Scripts.ViewModels;
+using Assets.Source.Game.Scripts.Models;
+using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 using YG;
@@ -13,16 +14,17 @@ namespace Assets.Source.Game.Scripts.Views
         [SerializeField] private GameObject _authorizationPanel;
         [SerializeField] private LeaderboardYG _leaderboardYG;
 
-        private LeaderboardViewModel _leaderboardViewModel;
+        private LeaderboardModel _leaderboardModel;
+        private CompositeDisposable _disposables = new();
 
         private void OnDestroy()
         {
             RemoveListeners();
         }
 
-        public void Initialize(LeaderboardViewModel leaderboardViewModel)
+        public void Initialize(LeaderboardModel leaderboardModel)
         {
-            _leaderboardViewModel = leaderboardViewModel;
+            _leaderboardModel = leaderboardModel;
             AddListeners();
             gameObject.SetActive(false);
             _leaderboardYG.gameObject.SetActive(false);
@@ -30,8 +32,11 @@ namespace Assets.Source.Game.Scripts.Views
 
         private void AddListeners()
         {
-            _leaderboardViewModel.Showing += Show;
-            _leaderboardViewModel.Hiding += Hide;
+            MessageBroker.Default
+                .Receive<M_LeaderboardShowed>()
+                .Subscribe(m => Show())
+                .AddTo(_disposables);
+
             _closeButton.onClick.AddListener(OnExitButtonClicked);
             _closeAuthorize.onClick.AddListener(OnCloseAuthorizeClicked);
             _openAuthorize.onClick.AddListener(Authorize);
@@ -39,8 +44,9 @@ namespace Assets.Source.Game.Scripts.Views
 
         private void RemoveListeners()
         {
-            _leaderboardViewModel.Showing -= Show;
-            _leaderboardViewModel.Hiding -= Hide;
+            if (_disposables != null)
+                _disposables.Dispose();
+
             _closeButton.onClick.RemoveListener(OnExitButtonClicked);
             _closeAuthorize.onClick.RemoveListener(OnCloseAuthorizeClicked);
             _openAuthorize.onClick.RemoveListener(Authorize);
@@ -51,7 +57,7 @@ namespace Assets.Source.Game.Scripts.Views
             YG2.OpenAuthDialog();
 
             if (YG2.player.auth == true)
-                CreateLeaderboard(_leaderboardViewModel.GetScore());
+                CreateLeaderboard(_leaderboardModel.GetScore());
             else
                 return;
         }
@@ -67,23 +73,24 @@ namespace Assets.Source.Game.Scripts.Views
         private void OnCloseAuthorizeClicked()
         {
             _authorizationPanel.gameObject.SetActive(false);
-            _leaderboardViewModel.Hide();
+            MessageBroker.Default.Publish(new M_Hide());
         }
 
-        private void OnExitButtonClicked() => _leaderboardViewModel.Hide();
+        private void OnExitButtonClicked() => Hide();
 
         private void Show()
         {
             gameObject.SetActive(true);
 
             if (YG2.player.auth == true)
-                CreateLeaderboard(_leaderboardViewModel.GetScore());
+                CreateLeaderboard(_leaderboardModel.GetScore());
             else
                 _authorizationPanel.gameObject.SetActive(true);
         }
 
         private void Hide()
         {
+            MessageBroker.Default.Publish(new M_Hide());
             gameObject.SetActive(false);
             _leaderboardYG.gameObject.SetActive(false);
         }

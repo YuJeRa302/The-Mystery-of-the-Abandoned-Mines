@@ -1,11 +1,14 @@
-public struct M_ApplyBurnDamage
+namespace Assets.Source.Game.Scripts.Characters
 {
-    private float _damage;
-
-    public M_ApplyBurnDamage(float damage)
+    public struct M_ApplyBurnDamage
     {
-        _damage = damage;
-    }
+        private float _damage;
 
-    public float Damage => _damage;
+        public M_ApplyBurnDamage(float damage)
+        {
+            _damage = damage;
+        }
+
+        public float Damage => _damage;
+    }
 }

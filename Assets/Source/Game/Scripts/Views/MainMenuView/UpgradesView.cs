@@ -1,3 +1,4 @@
+using Assets.Source.Game.Scripts.Models;
 using Assets.Source.Game.Scripts.ScriptableObjects;
 using Assets.Source.Game.Scripts.Services;
 using Assets.Source.Game.Scripts.Upgrades;
@@ -6,6 +7,7 @@ using DG.Tweening;
 using Lean.Localization;
 using System.Collections;
 using System.Collections.Generic;
+using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -44,8 +46,9 @@ namespace Assets.Source.Game.Scripts.Views
         [Space(20)]
         [SerializeField] private GameObject _parameterPanel;
 
+        private UpgradeModel _upgradeModel;
+        private CompositeDisposable _disposables = new();
         private List<UpgradeDataView> _upgradeDataViews = new();
-        private UpgradeViewModel _upgradeViewModel;
         private IAudioPlayerService _audioPlayerService;
         private Coroutine _coroutine;
         private List<ClassAbilityStatsView> _classAbilityStatsViews = new();
@@ -68,11 +71,11 @@ namespace Assets.Source.Game.Scripts.Views
             _parameterPanel.SetActive(false);
         }
 
-        public void Initialize(UpgradeViewModel upgradeViewModel, IAudioPlayerService audioPlayerService)
+        public void Initialize(UpgradeModel upgradeModel, IAudioPlayerService audioPlayerService)
         {
             _audioPlayerService = audioPlayerService;
-            _upgradeViewModel = upgradeViewModel;
-            _countUpgradePoints.text = _upgradeViewModel.GetUpgradePoints().ToString();
+            _upgradeModel = upgradeModel;
+            _countUpgradePoints.text = _upgradeModel.UpgradePoints.ToString();
             _statsImage.sprite = _defaultSprite;
             _nameStats.TranslationName = _nameText;
             _description.TranslationName = _descriptionText;
@@ -85,8 +88,16 @@ namespace Assets.Source.Game.Scripts.Views
 
         private void AddListener()
         {
-            _upgradeViewModel.Showing += Show;
-            _upgradeViewModel.InvokedStatsUpgraded += OnStatsUpgraded;
+            MessageBroker.Default
+                .Receive<M_UpgradesShow>()
+                .Subscribe(m => Show())
+                .AddTo(_disposables);
+
+            MessageBroker.Default
+                .Receive<M_StatsUpgraded>()
+                .Subscribe(m => OnStatsUpgraded(m.UpgradeState))
+                .AddTo(_disposables);
+
             _closeButton.onClick.AddListener(OnExitButtonClicked);
             _upgradeButton.onClick.AddListener(Upgrade);
             _resetButton.onClick.AddListener(ResetUpgrades);
@@ -94,8 +105,9 @@ namespace Assets.Source.Game.Scripts.Views
 
         private void RemoveListener()
         {
-            _upgradeViewModel.Showing -= Show;
-            _upgradeViewModel.InvokedStatsUpgraded -= OnStatsUpgraded;
+            if (_disposables != null)
+                _disposables.Dispose();
+
             _closeButton.onClick.RemoveListener(OnExitButtonClicked);
             _upgradeButton.onClick.RemoveListener(Upgrade);
             _resetButton.onClick.RemoveListener(ResetUpgrades);
@@ -107,8 +119,8 @@ namespace Assets.Source.Game.Scripts.Views
             {
                 UpgradeDataView view = Instantiate(_upgradeDataView, _upgradesContainer);
                 _upgradeDataViews.Add(view);
-                UpgradeState upgradeState = _upgradeViewModel.GetUpgradeState(upgradeData);
-                view.Initialize(upgradeData, upgradeState, _upgradeViewModel, _audioPlayerService);
+                UpgradeState upgradeState = _upgradeModel.GetUpgradeState(upgradeData);
+                view.Initialize(upgradeData, upgradeState, _audioPlayerService);
                 view.StatsSelected += OnStatsSelected;
             }
         }
@@ -140,8 +152,8 @@ namespace Assets.Source.Game.Scripts.Views
             }
 
             _parameterPanel.SetActive(false);
-            _upgradeViewModel.ResetUpgrades(currentUpgradePoints);
-            _countUpgradePoints.text = _upgradeViewModel.GetUpgradePoints().ToString();
+            _upgradeModel.ResetUpgrade(currentUpgradePoints);
+            _countUpgradePoints.text = _upgradeModel.UpgradePoints.ToString();
             Clear();
             Fill();
             _audioPlayerService?.PlayOneShotButtonClickSound();
@@ -149,7 +161,7 @@ namespace Assets.Source.Game.Scripts.Views
 
         private void Upgrade()
         {
-            _upgradeViewModel.UpgradeStats();
+            _upgradeModel.UpgradeStats();
             _audioPlayerService?.PlayOneShotButtonClickSound();
         }
 
@@ -174,7 +186,7 @@ namespace Assets.Source.Game.Scripts.Views
         {
             _parameterPanel.SetActive(true);
             RenderCurrentUpgrade(upgradeDataView);
-            _upgradeViewModel.SelectStats(upgradeDataView);
+            _upgradeModel.SelectStats(upgradeDataView);
             ClearStats();
 
             int currentLevel = upgradeDataView.UpgradeState.CurrentLevel;
@@ -215,7 +227,7 @@ namespace Assets.Source.Game.Scripts.Views
 
         private void OnStatsUpgraded(UpgradeState upgradeState)
         {
-            _countUpgradePoints.text = _upgradeViewModel.GetUpgradePoints().ToString();
+            _countUpgradePoints.text = _upgradeModel.UpgradePoints.ToString();
 
             foreach (var view in _upgradeDataViews)
             {
@@ -245,14 +257,13 @@ namespace Assets.Source.Game.Scripts.Views
 
         private void OnExitButtonClicked()
         {
-            _audioPlayerService?.PlayOneShotButtonClickSound();
             gameObject.SetActive(false);
 
             if (_coroutine != null)
                 StopCoroutine(_coroutine);
 
             Clear();
-            _upgradeViewModel.Hide();
+            MessageBroker.Default.Publish(new M_Hide());
         }
 
         private void Show()

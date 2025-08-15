@@ -1,9 +1,7 @@
-using Assets.Source.Game.Scripts.Card;
 using Assets.Source.Game.Scripts.Enums;
 using Assets.Source.Game.Scripts.PoolSystem;
 using Assets.Source.Game.Scripts.Services;
 using Reflex.Extensions;
-using System;
 using System.Collections.Generic;
 using UniRx;
 using UnityEngine;
@@ -66,6 +64,9 @@ namespace Assets.Source.Game.Scripts.Characters
 
         public void Disable()
         {
+            if (_disposables != null)
+                _disposables.Dispose();
+
             foreach (var spawnedParticle in _spawnedEffects)
             {
                 spawnedParticle.ReturnObjectPool();

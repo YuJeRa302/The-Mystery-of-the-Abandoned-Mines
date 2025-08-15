@@ -1,6 +1,7 @@
 using Assets.Source.Game.Scripts.Enums;
 using Assets.Source.Game.Scripts.Items;
 using Assets.Source.Game.Scripts.Levels;
+using Assets.Source.Game.Scripts.Models;
 using Assets.Source.Game.Scripts.ScriptableObjects;
 using Assets.Source.Game.Scripts.Services;
 using Assets.Source.Game.Scripts.ViewModels;
@@ -8,6 +9,7 @@ using DG.Tweening;
 using Lean.Localization;
 using System;
 using System.Collections.Generic;
+using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -69,12 +71,13 @@ namespace Assets.Source.Game.Scripts.Views
         private List<PlayerClassDataView> _playerClassDataViews = new();
         private List<LevelDataView> _levelDataViews = new();
         private List<WeaponDataView> _weaponDataViews = new();
-        private LevelsViewModel _levelsViewModel;
+        private LevelsModel _levelsModel;
         private IAudioPlayerService _audioPlayerService;
         private bool _isLevelSelect = false;
         private bool _isPlayerClassShow = false;
         private bool _isLevelsShow = false;
         private bool _isWeaponSelect = false;
+        private CompositeDisposable _disposables = new();
 
         public event Action<int> WeaponStateReseted;
 
@@ -83,9 +86,9 @@ namespace Assets.Source.Game.Scripts.Views
             RemoveListener();
         }
 
-        public void Initialize(LevelsViewModel levelsViewModel, IAudioPlayerService audioPlayerService)
+        public void Initialize(LevelsModel levelsModel, IAudioPlayerService audioPlayerService)
         {
-            _levelsViewModel = levelsViewModel;
+            _levelsModel = levelsModel;
             _audioPlayerService = audioPlayerService;
             SetInteractableContract();
             AddListener();
@@ -97,7 +100,11 @@ namespace Assets.Source.Game.Scripts.Views
 
         private void AddListener()
         {
-            _levelsViewModel.Showing += Show;
+            MessageBroker.Default
+                .Receive<M_LevelsShow>()
+                .Subscribe(m => Show())
+                .AddTo(_disposables);
+
             _backButton.onClick.AddListener(OnBackButtonClicked);
             _buyButton.onClick.AddListener(OnBuyButtonClick);
             _cancelButton.onClick.AddListener(OnCancelButtonClick);
@@ -109,7 +116,9 @@ namespace Assets.Source.Game.Scripts.Views
 
         private void RemoveListener()
         {
-            _levelsViewModel.Showing -= Show;
+            if (_disposables != null)
+                _disposables.Dispose();
+
             _backButton.onClick.RemoveListener(OnBackButtonClicked);
             _buyButton.onClick.RemoveListener(OnBuyButtonClick);
             _cancelButton.onClick.RemoveListener(OnCancelButtonClick);
@@ -120,7 +129,7 @@ namespace Assets.Source.Game.Scripts.Views
 
         private void SetInteractableContract()
         {
-            _contractButton.interactable = _levelsViewModel.TryUnlockContractButton(_indexUnlockContractButton);
+            _contractButton.interactable = _levelsModel.TryUnlockContractButton(_indexUnlockContractButton);
 
             if (_contractButton.interactable)
                 _descriptionContract.TranslationName = _keyUnLockContract;
@@ -135,8 +144,8 @@ namespace Assets.Source.Game.Scripts.Views
             {
                 LevelDataView view = Instantiate(_levelDataView, _levelsContainer);
                 _levelDataViews.Add(view);
-                LevelState levelState = _levelsViewModel.GetLevelState(levelData);
-                view.Initialize(levelData, levelState, _levelsViewModel, _audioPlayerService);
+                LevelState levelState = _levelsModel.GetLevelState(levelData);
+                view.Initialize(levelData, levelState, _levelsModel, _audioPlayerService);
                 view.LevelSelected += OnLevelSelected;
             }
         }
@@ -158,7 +167,7 @@ namespace Assets.Source.Game.Scripts.Views
             {
                 if (typePlayerClass == weaponData.TypePlayerClass)
                 {
-                    WeaponState weaponState = _levelsViewModel.GetWeaponState(weaponData);
+                    WeaponState weaponState = _levelsModel.GetWeaponState(weaponData);
 
                     if (weaponState.IsUnlock == false)
                     {
@@ -303,7 +312,7 @@ namespace Assets.Source.Game.Scripts.Views
             _textHint.TranslationName = _chooseWeapon;
             ClearWeapons();
             CreateWeapons(playerClassDataView.PlayerClassData.TypePlayerClass);
-            _levelsViewModel.SelectClass(playerClassDataView);
+            _levelsModel.SelectClass(playerClassDataView);
             _nextButton.interactable = false;
         }
 
@@ -311,7 +320,7 @@ namespace Assets.Source.Game.Scripts.Views
         {
             WeaponStateReseted?.Invoke(weaponDataView.WeaponData.Id);
             _nextButton.interactable = true;
-            _levelsViewModel.SelectWeapon(weaponDataView);
+            _levelsModel.SelectWeapon(weaponDataView);
             _isWeaponSelect = true;
         }
 
@@ -322,14 +331,14 @@ namespace Assets.Source.Game.Scripts.Views
             _levelName.TranslationName = levelDataView.LevelData.TranslationName;
             _levelDescription.TranslationName = levelDataView.LevelData.TranslationDescription;
             _nextButton.interactable = true;
-            _levelsViewModel.SelectLevel(levelDataView);
+            _levelsModel.SelectLevel(levelDataView);
             _currentLevelDataView = levelDataView;
             _isLevelSelect = true;
         }
 
         private void OnBuyButtonClick()
         {
-            if (_levelsViewModel.TryBuyContract(_currentLevelDataView.LevelData.Cost))
+            if (_levelsModel.TryBuyContract(_currentLevelDataView.LevelData.Cost))
                 LoadLevel();
             else
                 PlayCoinsAnimation();
@@ -379,7 +388,7 @@ namespace Assets.Source.Game.Scripts.Views
             }
 
             gameObject.SetActive(false);
-            _levelsViewModel.Hide();
+            MessageBroker.Default.Publish(new M_Hide());
         }
 
         private void PlayCoinsAnimation()
@@ -395,12 +404,12 @@ namespace Assets.Source.Game.Scripts.Views
         private void ShowDialogPanel()
         {
             _dialogPanel.SetActive(true);
-            _currentPlayerGold.text = _levelsViewModel.GetPlayerCoins().ToString();
+            _currentPlayerGold.text = _levelsModel.GetPlayerCoinCount().ToString();
             _goldTextDialogPanel.text = _currentLevelDataView.LevelData.Cost.ToString();
         }
 
         private void Show() => gameObject.SetActive(true);
 
-        private void LoadLevel() => _levelsViewModel.LoadLevel();
+        private void LoadLevel() => _levelsModel.LoadScene();
     }
 }

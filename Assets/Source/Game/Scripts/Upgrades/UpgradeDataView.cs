@@ -1,7 +1,9 @@
+using Assets.Source.Game.Scripts.Models;
 using Assets.Source.Game.Scripts.ScriptableObjects;
 using Assets.Source.Game.Scripts.Services;
 using Assets.Source.Game.Scripts.ViewModels;
 using System;
+using UniRx;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -19,8 +21,8 @@ namespace Assets.Source.Game.Scripts.Upgrades
 
         private UpgradeState _upgradeState;
         private UpgradeData _upgradeData;
-        private UpgradeViewModel _upgradeViewModel;
         private IAudioPlayerService _audioPlayerService;
+        private CompositeDisposable _disposables = new();
 
         public event Action<UpgradeDataView> StatsSelected;
 
@@ -29,23 +31,31 @@ namespace Assets.Source.Game.Scripts.Upgrades
 
         private void OnDestroy()
         {
+            if (_disposables != null)
+                _disposables.Dispose();
+
             _button.onClick.RemoveListener(OnSelected);
-            _upgradeViewModel.InvokedStatsUpgraded -= OnStateUpgraded;
-            _upgradeViewModel.InvokedStatsReseted -= OnResetState;
         }
 
         public void Initialize(UpgradeData upgradeData,
             UpgradeState upgradeState,
-            UpgradeViewModel upgradeViewModel,
             IAudioPlayerService audioPlayerService)
         {
             _audioPlayerService = audioPlayerService;
-            _upgradeViewModel = upgradeViewModel;
             _upgradeData = upgradeData;
             _upgradeState = upgradeState;
             _button.onClick.AddListener(OnSelected);
-            _upgradeViewModel.InvokedStatsUpgraded += OnStateUpgraded;
-            _upgradeViewModel.InvokedStatsReseted += OnResetState;
+
+            MessageBroker.Default
+                .Receive<M_StatsUpgraded>()
+                .Subscribe(m => OnStateUpgraded(m.UpgradeState))
+                .AddTo(_disposables);
+
+            MessageBroker.Default
+                .Receive<M_StatsReseted>()
+                .Subscribe(m => OnResetState())
+                .AddTo(_disposables);
+
             Fill(upgradeData);
         }
 

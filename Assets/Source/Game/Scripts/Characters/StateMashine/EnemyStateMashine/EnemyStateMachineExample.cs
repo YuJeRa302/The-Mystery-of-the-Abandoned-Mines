@@ -39,6 +39,7 @@ namespace Assets.Source.Game.Scripts.Characters
 
             MessageBroker.Default
                .Receive<M_Stuned>()
+               .Where(m => m.EnemyStateMachineExample == this)
                .Subscribe(m => OnEnemyStuned(m.IsStun))
                .AddTo(_disposables);
 

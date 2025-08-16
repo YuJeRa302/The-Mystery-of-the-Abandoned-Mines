@@ -14,10 +14,14 @@ public class StunDamageHandler : IDamageEffectHandler
 
     private ICoroutineRunner _coroutineRunner;
     private Coroutine _stunCoroutine;
+    private EnemyDamageHandler _enemyDamageHandler;
+    private EnemyStateMachineExample _enemyStateMachine;
 
-    public StunDamageHandler(ICoroutineRunner coroutineRunner)
+    public StunDamageHandler(ICoroutineRunner coroutineRunner, EnemyDamageHandler enemyDamageHandler, Enemy enemy)
     {
         _coroutineRunner = coroutineRunner;
+        _enemyDamageHandler = enemyDamageHandler;
+        _enemyStateMachine = enemy.EnemyStateMachineExample;
     }
 
     public void ApplayDamageEffect(DamageSource damageSource,
@@ -50,10 +54,10 @@ public class StunDamageHandler : IDamageEffectHandler
 
     private IEnumerator Stun(float duration, PoolParticle particle)
     {
-        MessageBroker.Default.Publish(new M_CreateDamageParticle(particle));
-        MessageBroker.Default.Publish(new M_Stuned(true));
+        MessageBroker.Default.Publish(new M_CreateDamageParticle(particle, _enemyDamageHandler));
+        MessageBroker.Default.Publish(new M_Stuned(true, _enemyStateMachine));
         yield return new WaitForSeconds(duration);
-        MessageBroker.Default.Publish(new M_Stuned(false));
-        MessageBroker.Default.Publish(new M_DisableParticle(particle));
+        MessageBroker.Default.Publish(new M_Stuned(false, _enemyStateMachine));
+        MessageBroker.Default.Publish(new M_DisableParticle(particle, _enemyDamageHandler));
     }
 }

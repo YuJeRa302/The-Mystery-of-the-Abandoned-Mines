@@ -3,8 +3,9 @@ using UnityEngine.UI;
 using YG;
 using Lean.Localization;
 using Assets.Source.Game.Scripts.Utility;
-using Assets.Source.Game.Scripts.ViewModels;
 using Assets.Source.Game.Scripts.ScriptableObjects;
+using UniRx;
+using Assets.Source.Game.Scripts.Models;
 
 namespace Assets.Source.Game.Scripts.GamePanels
 {
@@ -37,24 +38,24 @@ namespace Assets.Source.Game.Scripts.GamePanels
         private bool _isLootReward = false;
         private int _currentRewardLoot;
         private WeaponData _currentWeaponData;
-        private GamePanelsViewModel _gamePanelsViewModel;
+        private GamePanelsModel _gamePanelsModel;
 
         private void OnDestroy()
         {
             RemoveListeners();
         }
 
-        public override void Initialize(GamePanelsViewModel gamePanelsViewModel)
+        public override void Initialize(GamePanelsModel gamePanelsModel)
         {
-            base.Initialize(gamePanelsViewModel);
-            _gamePanelsViewModel = gamePanelsViewModel;
+            base.Initialize(gamePanelsModel);
+            _gamePanelsModel = gamePanelsModel;
             AddListeners();
         }
 
         protected override void OpenRewardAds()
         {
             base.OpenRewardAds();
-            YG2.RewardedAdvShow(_gamePanelsViewModel.GetDefalutRewardIndex());
+            YG2.RewardedAdvShow(_gamePanelsModel.GetDefalutRewardIndex());
         }
 
         private void OpenRewardPanel(bool gameState)
@@ -71,9 +72,9 @@ namespace Assets.Source.Game.Scripts.GamePanels
 
         private void OnRewardCallback(string index)
         {
-            if (index == _gamePanelsViewModel.GetDefalutRewardIndex())
+            if (index == _gamePanelsModel.GetDefalutRewardIndex())
             {
-                GamePanelsViewModel.GetEndGameReward();
+                GamePanelsModel.GetEndGameReward();
                 _isRewardReceived = true;
             }
         }
@@ -105,8 +106,8 @@ namespace Assets.Source.Game.Scripts.GamePanels
             {
                 if (_isRewardReceived == true)
                 {
-                    _coinsText.text = GamePanelsViewModel.GetPlayer().Coins.ToString();
-                    _upgradePointsText.text = GamePanelsViewModel.GetPlayer().UpgradePoints.ToString();
+                    _coinsText.text = GamePanelsModel.GetPlayer().Coins.ToString();
+                    _upgradePointsText.text = GamePanelsModel.GetPlayer().UpgradePoints.ToString();
                     _openAdButton.gameObject.SetActive(false);
                     _collectButton.gameObject.SetActive(false);
                     _closeGameButton.gameObject.SetActive(true);
@@ -133,8 +134,16 @@ namespace Assets.Source.Game.Scripts.GamePanels
 
         private void AddListeners()
         {
-            GamePanelsViewModel.GameEnded += OpenRewardPanel;
-            GamePanelsViewModel.LootRoomComplitetd += ShowLootRoomReward;
+            MessageBroker.Default
+                .Receive<M_GameEnd>()
+                .Subscribe(m => OpenRewardPanel(m.State))
+                .AddTo(Disposable);
+
+            MessageBroker.Default
+                .Receive<M_LootRoomComplet>()
+                .Subscribe(m => ShowLootRoomReward(m.Reward))
+                .AddTo(Disposable);
+
             YG2.onRewardAdv += OnRewardCallback;
             YG2.onCloseRewardedAdv += OnCloseAdCallback;
             YG2.onErrorRewardedAdv += OnErrorRewardAdCallback;
@@ -177,7 +186,7 @@ namespace Assets.Source.Game.Scripts.GamePanels
 
         private void CreateViewEntities(bool gameState)
         {
-            if (GamePanelsViewModel.IsContractLevel == true)
+            if (GamePanelsModel.GetLevelType() == true)
                 CreateWeaponRewards(gameState);
             else
                 CreateDefaultRewards(gameState);
@@ -187,7 +196,7 @@ namespace Assets.Source.Game.Scripts.GamePanels
         {
             if (gameState == true)
             {
-                _currentWeaponData = GamePanelsViewModel.CreateRewardWeapon();
+                _currentWeaponData = GamePanelsModel.CreateRewardWeapon();
 
                 if (_currentWeaponData != null)
                 {
@@ -227,7 +236,7 @@ namespace Assets.Source.Game.Scripts.GamePanels
         private void CreateCoinsRewards()
         {
             _defaulContractReward.SetActive(true);
-            _defaultContractRewardCoins.text = GamePanelsViewModel.GetPlayer().Coins.ToString();
+            _defaultContractRewardCoins.text = GamePanelsModel.GetPlayer().Coins.ToString();
             Fill();
         }
 
@@ -244,8 +253,8 @@ namespace Assets.Source.Game.Scripts.GamePanels
 
         private void Fill()
         {
-            _coinsText.text = GamePanelsViewModel.GetPlayer().Coins.ToString();
-            _upgradePointsText.text = GamePanelsViewModel.GetPlayer().UpgradePoints.ToString();
+            _coinsText.text = GamePanelsModel.GetPlayer().Coins.ToString();
+            _upgradePointsText.text = GamePanelsModel.GetPlayer().UpgradePoints.ToString();
         }
     }
 }

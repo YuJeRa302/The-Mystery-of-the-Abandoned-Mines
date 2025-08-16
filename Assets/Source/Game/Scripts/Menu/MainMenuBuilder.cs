@@ -2,7 +2,6 @@ using Assets.Source.Game.Scripts.Models;
 using Assets.Source.Game.Scripts.Saves;
 using Assets.Source.Game.Scripts.ScriptableObjects;
 using Assets.Source.Game.Scripts.Services;
-using Assets.Source.Game.Scripts.ViewModels;
 using Assets.Source.Game.Scripts.Views;
 using Lean.Localization;
 using UnityEngine;

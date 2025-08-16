@@ -32,34 +32,39 @@ namespace Assets.Source.Game.Scripts.Characters
 
             _typeDamage = new Dictionary<TypeDamage, IDamageEffectHandler> 
             {
-                { TypeDamage.BurningDamage, new BurningDamageHandler(_coroutineRunner)},
+                { TypeDamage.BurningDamage, new BurningDamageHandler(_coroutineRunner, this)},
                 { TypeDamage.RepulsiveDamage, new RepulsiveDamageHandler(_coroutineRunner, _rigidbody)},
-                { TypeDamage.StunDamage, new StunDamageHandler(_coroutineRunner)},
-                { TypeDamage.SlowedDamage, new SlowedDamageHandler(_coroutineRunner)},
+                { TypeDamage.StunDamage, new StunDamageHandler(_coroutineRunner, this, enemy)},
+                { TypeDamage.SlowedDamage, new SlowedDamageHandler(_coroutineRunner, this, enemy)},
             };
 
             MessageBroker.Default
                 .Receive<M_CreateDamageParticle>()
+                .Where(m => m.EnemyDamageHandler == this)
                 .Subscribe(m => OnCreateDamageParticle(m.PoolParticle))
                 .AddTo(_disposables);
 
             MessageBroker.Default
                 .Receive<M_DisableParticle>()
+                .Where(m => m.EnemyDamageHandler == this)
                 .Subscribe(m => OnDisableParticle(m.PoolParticle))
                 .AddTo(_disposables);
 
             MessageBroker.Default
                .Receive<M_ApplyBurnDamage>()
+               .Where(m => m.EnemyDamageHandler == this)
                .Subscribe(m => OnApplayDamage(m.Damage))
                .AddTo(_disposables);
         }
 
         public void CreateDamageEffect(DamageSource damageSource)
         {
-            ExtractDamageParameters(damageSource);
+            if(_typeDamage.TryGetValue(damageSource.TypeDamage, out IDamageEffectHandler effectHandler))
+            {
+                ExtractDamageParameters(damageSource);
+                effectHandler.ApplayDamageEffect(damageSource, _extractDamage);
 
-            _typeDamage.TryGetValue(damageSource.TypeDamage, out IDamageEffectHandler effectHandler);
-            effectHandler.ApplayDamageEffect(damageSource, _extractDamage);
+            }
         }
 
         public void Disable()

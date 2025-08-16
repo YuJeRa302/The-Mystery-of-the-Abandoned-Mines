@@ -43,9 +43,10 @@ MonoBehaviour:
   _typeAttack: 0
   _abilityStrategy:
     rid: 7260333119341592592
-  _legendarySpell: {fileID: 3025569755371615153, guid: 6276db9b4ca61b342852fdf1b488cfda, type: 3}
+  _legendarySpell: {fileID: 7974601554420302391, guid: 27bd6244777c51d4dbbe8629a6b2706a, type: 3}
   references:
     version: 2
     RefIds:
     - rid: 7260333119341592592
       type: {class: BuranPresenter, ns: Assets.Source.Game.Scripts.AbilityScripts, asm: Assembly-CSharp}
+      data: 

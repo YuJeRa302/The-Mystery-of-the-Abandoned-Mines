@@ -1,11 +1,13 @@
 using Assets.Source.Game.Scripts.Card;
 using Assets.Source.Game.Scripts.Characters;
+using Assets.Source.Game.Scripts.GamePanels;
 using Assets.Source.Game.Scripts.Menu;
 using Assets.Source.Game.Scripts.ScriptableObjects;
 using Assets.Source.Game.Scripts.Services;
 using Lean.Localization;
 using System;
 using System.Collections.Generic;
+using UniRx;
 
 namespace Assets.Source.Game.Scripts.Models
 {
@@ -50,16 +52,15 @@ namespace Assets.Source.Game.Scripts.Models
             AddListeners();
         }
 
-        public event Action StageCompleted;
-        public event Action CardPoolCreated;
-        public event Action<int> LootRoomCompleted;
-        public event Action CardPanelOpened;
-        public event Action<bool> GameEnded;
-
         public float AmbientVolumeValue { get; private set; }
         public float SfxVolumeValue { get; private set; }
         public bool IsMuted { get; private set; } = false;
         public AudioPlayer AudioPlayer => _audioPlayer;
+
+        public void OpenCardPanel()
+        {
+            MessageBroker.Default.Publish(new M_CardPanelOpen());
+        }
 
         public string GetRerollPointsRewardIndex()
         {
@@ -174,28 +175,28 @@ namespace Assets.Source.Game.Scripts.Models
 
         private void OnPlayerLevelChanged()
         {
-            CardPanelOpened?.Invoke();
+            MessageBroker.Default.Publish(new M_CardPanelOpen());
         }
 
         private void OnGameEnded(bool state)
         {
             _audioPlayer.StopAmbient();
-            GameEnded?.Invoke(state);
+            MessageBroker.Default.Publish(new M_GameEnd(state));
         }
 
         private void OnLootRoomComplited(int reward)
         {
-            LootRoomCompleted?.Invoke(reward);
+            MessageBroker.Default.Publish(new M_LootRoomComplet(reward));
         }
 
         private void OnCardPoolCreate()
         {
-            CardPoolCreated?.Invoke();
+            MessageBroker.Default.Publish(new M_CardPoolCreat());
         }
 
         private void OnStageComplete()
         {
-            StageCompleted?.Invoke();
+            MessageBroker.Default.Publish(new M_StageComplet());
         }
 
         private void OnGamePause(bool state)

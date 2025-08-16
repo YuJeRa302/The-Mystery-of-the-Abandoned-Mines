@@ -72,7 +72,7 @@ namespace Assets.Source.Game.Scripts.Characters
                 { TypeParameter.Regeneration, new RegenerationParametr(regeneration)},
                 { TypeParameter.Health, new HealthParametr()},
                 { TypeParameter.Damage, new DamageParameterPlayer(_damageSource)},
-                { TypeParameter.Reroll, new RerollPointsParametr(rerollPoints)},
+                { TypeParameter.Reroll, new RerollPointsParametr(100)},
                 { TypeParameter.AbilityCooldown, new AbilityCooldownReductionParameter()},
                 { TypeParameter.AbilityDuration, new AbilityDurationParameter()},
                 { TypeParameter.AbilityValue, new AbilityDamageParameter()},
@@ -186,11 +186,11 @@ namespace Assets.Source.Game.Scripts.Characters
 
         public void UpdateCardPanelByRerollPoints()
         {
-            var value = _rerollPoints = Mathf.Clamp(_rerollPoints--, _minValue, _rerollPoints);
+            _rerollPoints = Mathf.Clamp(_rerollPoints--, _minValue, _rerollPoints);
 
             if (_playerParametrs.TryGetValue(TypeParameter.Reroll, out IUpgradeStats parametr))
             {
-                (parametr as IRevertStats).Revent(value);
+                (parametr as IRevertStats).Revent(1);
             }
         }
 
@@ -282,7 +282,8 @@ namespace Assets.Source.Game.Scripts.Characters
             {
                 if (_playerParametrs.TryGetValue(type.TypeParameter, out IUpgradeStats parameter))
                 {
-                    (parameter as IRevertStats).Revent(type.Value);
+                    if((parameter as IRevertStats) != null)
+                        (parameter as IRevertStats).Revent(type.Value);
                 }
             }
         }

@@ -1,4 +1,4 @@
-using Assets.Source.Game.Scripts.ViewModels;
+using Assets.Source.Game.Scripts.Models;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,9 +16,9 @@ namespace Assets.Source.Game.Scripts.GamePanels
             _closeButton.onClick.RemoveListener(Close);
         }
 
-        public override void Initialize(GamePanelsViewModel gamePanelsViewModel)
+        public override void Initialize(GamePanelsModel gamePanelsModel)
         {
-            base.Initialize(gamePanelsViewModel);
+            base.Initialize(gamePanelsModel);
             _openButton.onClick.AddListener(Open);
             _closeButton.onClick.AddListener(Close);
         }

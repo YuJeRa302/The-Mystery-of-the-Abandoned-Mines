@@ -2,7 +2,6 @@ using Assets.Source.Game.Scripts.Models;
 using Assets.Source.Game.Scripts.ScriptableObjects;
 using Assets.Source.Game.Scripts.Services;
 using Assets.Source.Game.Scripts.States;
-using Assets.Source.Game.Scripts.ViewModels;
 using System;
 using UniRx;
 using UnityEngine;

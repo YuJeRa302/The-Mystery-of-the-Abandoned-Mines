@@ -1,5 +1,5 @@
+using Assets.Source.Game.Scripts.Models;
 using Assets.Source.Game.Scripts.Services;
-using Assets.Source.Game.Scripts.ViewModels;
 using UniRx;
 using UnityEngine;
 using YG;
@@ -8,14 +8,21 @@ namespace Assets.Source.Game.Scripts.GamePanels
 {
     public abstract class GamePanelsView : MonoBehaviour
     {
-        protected GamePanelsViewModel GamePanelsViewModel => _gamePanelsViewModel;
+        protected GamePanelsModel GamePanelsModel => _gamePanelsModel;
+        protected CompositeDisposable Disposable => _disposables;
 
-        private GamePanelsViewModel _gamePanelsViewModel;
+        private GamePanelsModel _gamePanelsModel;
         private CompositeDisposable _disposables = new ();
 
-        public virtual void Initialize(GamePanelsViewModel gamePanelsViewModel)
+        private void OnDestroy()
         {
-            _gamePanelsViewModel = gamePanelsViewModel;
+            if (_disposables != null)
+                _disposables.Dispose();
+        }
+
+        public virtual void Initialize(GamePanelsModel gamePanelsModel)
+        {
+            _gamePanelsModel = gamePanelsModel;
             gameObject.SetActive(false);
             MessageBroker.Default.Receive<M_ClosePanels>().Subscribe(m => OnPanelsClosed()).AddTo(_disposables);
         }

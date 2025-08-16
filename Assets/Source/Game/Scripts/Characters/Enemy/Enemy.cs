@@ -47,6 +47,7 @@ namespace Assets.Source.Game.Scripts.Characters
         public Pool EnemyPool => _pool;
         public EnemyHealth EnemyHealth => _health;
         public Rigidbody Rigidbody => _rigidbody;
+        public EnemyStateMachineExample EnemyStateMachineExample => _stateMachine;
 
         public event Action<Enemy> Died;
         public event Action<AudioClip> PlayerAttacked;
@@ -123,11 +124,13 @@ namespace Assets.Source.Game.Scripts.Characters
 
             MessageBroker.Default
               .Receive<M_MoveSpeedReduced>()
+              .Where(m => m.Enemy == this)
               .Subscribe(m => OnMoveSpeedReduced(m.ValueSlowed))
               .AddTo(_disposables);
 
             MessageBroker.Default
                .Receive<M_MoveSpeedReseted>()
+               .Where(m => m.Enemy == this)
                .Subscribe(m => OnMoveSpeedReset())
                .AddTo(_disposables);
 

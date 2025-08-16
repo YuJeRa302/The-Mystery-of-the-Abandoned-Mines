@@ -12,10 +12,14 @@ public class SlowedDamageHandler : IDamageEffectHandler
 {
     private ICoroutineRunner _coroutineRunner;
     private Coroutine _slowDamage;
+    private EnemyDamageHandler _enemyDamageHandler;
+    private Enemy _enemy;
 
-    public SlowedDamageHandler(ICoroutineRunner coroutineRunner)
+    public SlowedDamageHandler(ICoroutineRunner coroutineRunner, EnemyDamageHandler enemyDamageHandler, Enemy enemy)
     {
         _coroutineRunner = coroutineRunner;
+        _enemyDamageHandler = enemyDamageHandler;
+        _enemy = enemy;
     }
 
     public void ApplayDamageEffect(DamageSource damageSource, Dictionary<TypeDamageParameter, float> extractDamage)
@@ -43,8 +47,8 @@ public class SlowedDamageHandler : IDamageEffectHandler
     private IEnumerator Slowed(float duration, float valueSlowed, PoolParticle particle)
     {
         float currentTime = 0;
-        MessageBroker.Default.Publish(new M_CreateDamageParticle(particle));
-        MessageBroker.Default.Publish(new M_MoveSpeedReduced(valueSlowed));
+        MessageBroker.Default.Publish(new M_CreateDamageParticle(particle, _enemyDamageHandler));
+        MessageBroker.Default.Publish(new M_MoveSpeedReduced(valueSlowed, _enemy));
 
         while (currentTime <= duration)
         {
@@ -52,7 +56,7 @@ public class SlowedDamageHandler : IDamageEffectHandler
             yield return null;
         }
 
-        MessageBroker.Default.Publish(new M_MoveSpeedReseted());
-        MessageBroker.Default.Publish(new M_DisableParticle(particle));
+        MessageBroker.Default.Publish(new M_MoveSpeedReseted(_enemy));
+        MessageBroker.Default.Publish(new M_DisableParticle(particle, _enemyDamageHandler));
     }
 }

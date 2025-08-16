@@ -31,7 +31,7 @@ namespace Assets.Source.Game.Scripts.CameraScripts
         public bool TrySeeDoor(GameObject leftWall)
         {
             Vector3 point = _camera.WorldToViewportPoint(leftWall.transform.position);
-            return point.x < _viewportLeftThreshold;
+            return !(point.x < _viewportLeftThreshold);
         }
     }
 }

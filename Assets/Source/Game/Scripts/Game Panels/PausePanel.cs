@@ -1,6 +1,6 @@
+using Assets.Source.Game.Scripts.Models;
 using Assets.Source.Game.Scripts.ScriptableObjects;
 using Assets.Source.Game.Scripts.Services;
-using Assets.Source.Game.Scripts.ViewModels;
 using Assets.Source.Game.Scripts.Views;
 using System.Collections.Generic;
 using UnityEngine;
@@ -39,16 +39,16 @@ namespace Assets.Source.Game.Scripts.GamePanels
             RemoveListeners();
         }
 
-        public override void Initialize(GamePanelsViewModel gamePanelsViewModel)
+        public override void Initialize(GamePanelsModel gamePanelsModel)
         {
-            _ambientSlider.value = gamePanelsViewModel.GetAmbientVolume();
-            _sfxSlider.value = gamePanelsViewModel.GetSfxVolume();
-            _muteToggle.isOn = gamePanelsViewModel.GetMuteStatus();
-            _audioPlayerService = gamePanelsViewModel.GetAudioPlayerService();
+            _ambientSlider.value = gamePanelsModel.AmbientVolumeValue;
+            _sfxSlider.value = gamePanelsModel.SfxVolumeValue;
+            _muteToggle.isOn = gamePanelsModel.IsMuted;
+            _audioPlayerService = gamePanelsModel.AudioPlayer;
             AddListeners();
             ClearLanguageButton();
             CreateLanguageButton();
-            base.Initialize(gamePanelsViewModel);
+            base.Initialize(gamePanelsModel);
         }
 
         protected override void Open()
@@ -79,12 +79,12 @@ namespace Assets.Source.Game.Scripts.GamePanels
 
         private void FillGameParameters()
         {
-            _playerHealth.text = GamePanelsViewModel.GetPlayer().CurrentHealth.ToString();
-            _playerDamage.text = GamePanelsViewModel.GetPlayer().DamageSource.Damage.ToString();
-            _coins.text = GamePanelsViewModel.GetPlayer().Coins.ToString();
-            _rerollPoints.text = GamePanelsViewModel.GetPlayer().RerollPoints.ToString();
-            _currentRoomLevel.text = GamePanelsViewModel.GetCurrentRoomLevel().ToString();
-            _killCount.text = GamePanelsViewModel.GetPlayer().KillCount.ToString();
+            _playerHealth.text = GamePanelsModel.GetPlayer().CurrentHealth.ToString();
+            _playerDamage.text = GamePanelsModel.GetPlayer().DamageSource.Damage.ToString();
+            _coins.text = GamePanelsModel.GetPlayer().Coins.ToString();
+            _rerollPoints.text = GamePanelsModel.GetPlayer().RerollPoints.ToString();
+            _currentRoomLevel.text = GamePanelsModel.GetCurrentRoomLevel().ToString();
+            _killCount.text = GamePanelsModel.GetPlayer().KillCount.ToString();
         }
 
         private void CreateLanguageButton()
@@ -112,9 +112,9 @@ namespace Assets.Source.Game.Scripts.GamePanels
             _languageButtonViews.Clear();
         }
 
-        private void OnLanguageChanged(string value) => GamePanelsViewModel.SetLanguage(value);
-        private void OnAmbientValueChanged(float value) => GamePanelsViewModel.SetAmbientVolume(value);
-        private void OnSfxValueChanged(float value) => GamePanelsViewModel.SetSfxVolume(value);
-        private void OnMuteValueChanged(bool value) => GamePanelsViewModel.SetMuteStatus(value);
+        private void OnLanguageChanged(string value) => GamePanelsModel.SetLanguage(value);
+        private void OnAmbientValueChanged(float value) => GamePanelsModel.SetAmbientVolume(value);
+        private void OnSfxValueChanged(float value) => GamePanelsModel.SetSfxVolume(value);
+        private void OnMuteValueChanged(bool value) => GamePanelsModel.SetMute(value);
     }
 }

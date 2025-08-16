@@ -11,7 +11,6 @@ using Assets.Source.Game.Scripts.ScriptableObjects;
 using Assets.Source.Game.Scripts.Services;
 using Assets.Source.Game.Scripts.SpawnersScripts;
 using Assets.Source.Game.Scripts.Utility;
-using Assets.Source.Game.Scripts.ViewModels;
 using Lean.Localization;
 using Reflex.Core;
 using System.Collections.Generic;
@@ -45,7 +44,6 @@ namespace Assets.Source.Game.Scripts.Levels
         private RoomService _roomService;
         private GamePauseService _gamePauseService;
         private GameLoopService _gameLoopService;
-        private GamePanelsViewModel _gamePanelsViewModel;
         private GamePanelsModel _gamePanelsModel;
         private Player _player;
         private AbilityFactory _abilityFactory;
@@ -59,7 +57,7 @@ namespace Assets.Source.Game.Scripts.Levels
         private void Start()
         {
             InitGameEntities();
-            _gamePanelsViewModel.OpenCardPanel();
+            _gamePanelsModel.OpenCardPanel();
         }
 
         private void OnDestroy()
@@ -123,8 +121,6 @@ namespace Assets.Source.Game.Scripts.Levels
                 _levelData,
                 _audioPlayerService,
                 _leanLocalization);
-
-            _gamePanelsViewModel = new GamePanelsViewModel(_gamePanelsModel);
         }
 
         private void InitGameEntities()
@@ -136,7 +132,7 @@ namespace Assets.Source.Game.Scripts.Levels
 
             foreach (var panel in _gamePanelsViews)
             {
-                panel.Initialize(_gamePanelsViewModel);
+                panel.Initialize(_gamePanelsModel);
             }
         }
 

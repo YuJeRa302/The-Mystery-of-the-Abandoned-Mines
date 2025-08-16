@@ -2,7 +2,6 @@ using Assets.Source.Game.Scripts.Levels;
 using Assets.Source.Game.Scripts.Models;
 using Assets.Source.Game.Scripts.ScriptableObjects;
 using Assets.Source.Game.Scripts.Services;
-using Assets.Source.Game.Scripts.ViewModels;
 using Lean.Localization;
 using System;
 using UnityEngine;

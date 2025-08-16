@@ -1,5 +1,6 @@
-using Assets.Source.Game.Scripts.ViewModels;
+using Assets.Source.Game.Scripts.Models;
 using Lean.Localization;
+using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -30,13 +31,16 @@ namespace Assets.Source.Game.Scripts.GamePanels
         private void OnDestroy()
         {
             _buttonNext.onClick.RemoveListener(ClickButtonNext);
-            GamePanelsViewModel.StageCompleted -= Open;
         }
 
-        public override void Initialize(GamePanelsViewModel gamePanelsViewModel)
+        public override void Initialize(GamePanelsModel gamePanelsModel)
         {
-            base.Initialize(gamePanelsViewModel);
-            GamePanelsViewModel.StageCompleted += Open;
+            base.Initialize(gamePanelsModel);
+
+            MessageBroker.Default
+              .Receive<M_StageComplet>()
+              .Subscribe(m => Open())
+              .AddTo(Disposable);
         }
 
         protected override void Open()
@@ -48,15 +52,15 @@ namespace Assets.Source.Game.Scripts.GamePanels
         private void FillGameParameters()
         {
             _numberStageText.text =
-                GamePanelsViewModel.GetCurrentRoomLevel().ToString() +
-                " / " + GamePanelsViewModel.GetStagesCount().ToString();
+                GamePanelsModel.GetCurrentRoomLevel().ToString() +
+                " / " + GamePanelsModel.GetStagesCount().ToString();
 
-            _playerHealth.text = GamePanelsViewModel.GetPlayer().CurrentHealth.ToString();
-            _playerDamage.text = GamePanelsViewModel.GetPlayer().DamageSource.Damage.ToString();
-            _coins.text = GamePanelsViewModel.GetPlayer().Coins.ToString();
-            _rerollPoints.text = GamePanelsViewModel.GetPlayer().RerollPoints.ToString();
-            _currentRoomLevel.text = GamePanelsViewModel.GetCurrentRoomLevel().ToString();
-            _killCount.text = GamePanelsViewModel.GetPlayer().KillCount.ToString();
+            _playerHealth.text = GamePanelsModel.GetPlayer().CurrentHealth.ToString();
+            _playerDamage.text = GamePanelsModel.GetPlayer().DamageSource.Damage.ToString();
+            _coins.text = GamePanelsModel.GetPlayer().Coins.ToString();
+            _rerollPoints.text = GamePanelsModel.GetPlayer().RerollPoints.ToString();
+            _currentRoomLevel.text = GamePanelsModel.GetCurrentRoomLevel().ToString();
+            _killCount.text = GamePanelsModel.GetPlayer().KillCount.ToString();
         }
 
         private void ClickButtonNext()

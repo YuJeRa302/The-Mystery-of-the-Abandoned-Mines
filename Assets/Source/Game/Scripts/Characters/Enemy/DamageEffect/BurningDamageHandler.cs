@@ -2,7 +2,6 @@ using Assets.Source.Game.Scripts.Characters;
 using Assets.Source.Game.Scripts.Enums;
 using Assets.Source.Game.Scripts.PoolSystem;
 using Assets.Source.Game.Scripts.Services;
-using Assets.Source.Game.Scripts.Upgrades;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,10 +12,12 @@ public class BurningDamageHandler : IDamageEffectHandler
 {
     private ICoroutineRunner _coroutineRunner;
     private Coroutine _burnDamage;
+    private EnemyDamageHandler _enemyDamageHandler;
 
-    public BurningDamageHandler(ICoroutineRunner coroutineRunner)
+    public BurningDamageHandler(ICoroutineRunner coroutineRunner, EnemyDamageHandler enemyDamageHandler)
     {
         _coroutineRunner = coroutineRunner;
+        _enemyDamageHandler = enemyDamageHandler;
     }
 
     public void ApplayDamageEffect(DamageSource damageSource, Dictionary<TypeDamageParameter, float> extractDamage)
@@ -47,7 +48,7 @@ public class BurningDamageHandler : IDamageEffectHandler
         float pastSeconds = 0;
         float delayDamage = 1f;
 
-        MessageBroker.Default.Publish(new M_CreateDamageParticle(particle));
+        MessageBroker.Default.Publish(new M_CreateDamageParticle(particle, _enemyDamageHandler));
 
         while (currentTime <= time)
         {
@@ -55,7 +56,7 @@ public class BurningDamageHandler : IDamageEffectHandler
 
             if (pastSeconds >= delayDamage)
             {
-                MessageBroker.Default.Publish(new M_ApplyBurnDamage(damage));
+                MessageBroker.Default.Publish(new M_ApplyBurnDamage(damage, _enemyDamageHandler));
                 pastSeconds = 0;
                 currentTime++;
             }
@@ -63,6 +64,6 @@ public class BurningDamageHandler : IDamageEffectHandler
             yield return null;
         }
 
-        MessageBroker.Default.Publish(new M_DisableParticle(particle));
+        MessageBroker.Default.Publish(new M_DisableParticle(particle, _enemyDamageHandler));
     }
 }

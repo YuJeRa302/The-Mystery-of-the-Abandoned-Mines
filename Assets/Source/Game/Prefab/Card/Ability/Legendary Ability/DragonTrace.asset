@@ -43,9 +43,10 @@ MonoBehaviour:
   _typeAttack: 0
   _abilityStrategy:
     rid: 7260333119341592593
-  _legendarySpell: {fileID: 3025569755371615153, guid: 6276db9b4ca61b342852fdf1b488cfda, type: 3}
+  _legendarySpell: {fileID: 5494780557648723383, guid: d3608195da37cab488fd2e315672de3e, type: 3}
   references:
     version: 2
     RefIds:
     - rid: 7260333119341592593
       type: {class: DragonTracePresenter, ns: Assets.Source.Game.Scripts.AbilityScripts, asm: Assembly-CSharp}
+      data: 

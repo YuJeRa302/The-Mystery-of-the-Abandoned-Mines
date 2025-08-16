@@ -1,8 +1,6 @@
-using Assets.Source.Game.Scripts.Characters;
 using Assets.Source.Game.Scripts.Models;
 using Assets.Source.Game.Scripts.ScriptableObjects;
 using Assets.Source.Game.Scripts.Services;
-using Assets.Source.Game.Scripts.ViewModels;
 using DG.Tweening;
 using System;
 using System.Collections;

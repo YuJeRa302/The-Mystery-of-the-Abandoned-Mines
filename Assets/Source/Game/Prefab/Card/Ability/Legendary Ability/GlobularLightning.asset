@@ -39,9 +39,10 @@ MonoBehaviour:
   _typeAttack: 3
   _abilityStrategy:
     rid: 7260333119341592596
-  _legendarySpell: {fileID: 3025569755371615153, guid: 6276db9b4ca61b342852fdf1b488cfda, type: 3}
+  _legendarySpell: {fileID: 5332783102440773417, guid: 05def5971c92e754289c752393ffa96b, type: 3}
   references:
     version: 2
     RefIds:
     - rid: 7260333119341592596
       type: {class: GlobularLightningPresenter, ns: Assets.Source.Game.Scripts.AbilityScripts, asm: Assembly-CSharp}
+      data: 

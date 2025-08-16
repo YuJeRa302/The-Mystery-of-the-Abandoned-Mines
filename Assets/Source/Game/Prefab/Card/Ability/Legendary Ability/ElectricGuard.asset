@@ -39,9 +39,10 @@ MonoBehaviour:
   _typeAttack: 0
   _abilityStrategy:
     rid: 7260333119341592594
-  _legendarySpell: {fileID: 3025569755371615153, guid: 6276db9b4ca61b342852fdf1b488cfda, type: 3}
+  _legendarySpell: {fileID: 6894030413536013047, guid: 73078fed5fbb1dd48a44c7d2221caf72, type: 3}
   references:
     version: 2
     RefIds:
     - rid: 7260333119341592594
       type: {class: ElectricGuardPresenter, ns: Assets.Source.Game.Scripts.AbilityScripts, asm: Assembly-CSharp}
+      data: 

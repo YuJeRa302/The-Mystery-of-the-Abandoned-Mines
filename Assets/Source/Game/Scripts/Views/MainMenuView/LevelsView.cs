@@ -4,7 +4,6 @@ using Assets.Source.Game.Scripts.Levels;
 using Assets.Source.Game.Scripts.Models;
 using Assets.Source.Game.Scripts.ScriptableObjects;
 using Assets.Source.Game.Scripts.Services;
-using Assets.Source.Game.Scripts.ViewModels;
 using DG.Tweening;
 using Lean.Localization;
 using System;

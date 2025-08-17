@@ -3,11 +3,11 @@ using UniRx;
 
 namespace Assets.Source.Game.Scripts.Upgrades
 {
-    public class AbilityCooldownReductionParameter : IUpgradeStats
+    public class HealingParameter : IUpgradeStats
     {
         public void Apply(float value)
         {
-            MessageBroker.Default.Publish(new M_AbilityCooldownReductionChange(value));
+            MessageBroker.Default.Publish(new M_Healing(value));
         }
     }
 }

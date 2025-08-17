@@ -17,6 +17,7 @@ namespace Assets.Source.Game.Scripts.Characters
         private readonly int _maxExperience = 50;
         private readonly int _maxUpgradeExperience = 500;
         private readonly int _minValue = 0;
+        private readonly int _rerollCost = 1;
         private readonly float _defaultAttackRange = 5f;
         private readonly float _defaultSearchRadius = 5f;
         private readonly float _longAttackRange = 10f;
@@ -55,7 +56,6 @@ namespace Assets.Source.Game.Scripts.Characters
         {
             _currentLevel = currentLevel;
             _rerollPoints = rerollPoints;
-            _rerollPoints = 100;
             _moveSpeed = moveSpeed;
             _regeneration = regeneration;
             _countKillEnemy = countKillEnemy;
@@ -72,20 +72,16 @@ namespace Assets.Source.Game.Scripts.Characters
                 { TypeParameter.Regeneration, new RegenerationParametr(regeneration)},
                 { TypeParameter.Health, new HealthParametr()},
                 { TypeParameter.Damage, new DamageParameterPlayer(_damageSource)},
-                { TypeParameter.Reroll, new RerollPointsParametr(100)},
+                { TypeParameter.Reroll, new RerollPointsParametr(_rerollPoints)},
                 { TypeParameter.AbilityCooldown, new AbilityCooldownReductionParameter()},
                 { TypeParameter.AbilityDuration, new AbilityDurationParameter()},
                 { TypeParameter.AbilityValue, new AbilityDamageParameter()},
+                { TypeParameter.Healing, new HealingParameter()},
             };
         }
 
-        public event Action<int> HealthUpgradeApplied;
-        public event Action<int> Healed;
         public event Action<int> ExperienceValueChanged;
         public event Action<int> UpgradeExperienceValueChanged;
-        public event Action<int> AbilityDurationChanged;
-        public event Action<int> AbilityDamageChanged;
-        public event Action<int> AbilityCooldownReductionChanged;
         public event Action<int> KillCountChanged;
         public event Action<int, int, int> PlayerLevelChanged;
         public event Action<int, int, int> PlayerUpgradeLevelChanged;
@@ -189,7 +185,7 @@ namespace Assets.Source.Game.Scripts.Characters
             _rerollPoints = Mathf.Clamp(_rerollPoints--, _minValue, _rerollPoints);
 
             if (_playerParametrs.TryGetValue(TypeParameter.Reroll, out IUpgradeStats parametr))
-                (parametr as IRevertStats).Revent(1);
+                (parametr as IRevertStats).Revent(_rerollCost);
         }
 
         public void GetReward(int value)
@@ -232,6 +228,7 @@ namespace Assets.Source.Game.Scripts.Characters
                 .CardData
                 .AttributeData
                 .Parameters[cardView.CardState.CurrentLevel].CardParameters[0].Value;
+            _rerollPoints += value;
 
             if (_playerParametrs.TryGetValue(type, out IUpgradeStats parametr))
                 parametr.Apply(value);

@@ -1,4 +1,5 @@
 using Assets.Source.Game.Scripts.AbilityScripts;
+using Assets.Source.Game.Scripts.Card;
 using Assets.Source.Game.Scripts.Enums;
 using Assets.Source.Game.Scripts.ScriptableObjects;
 using Assets.Source.Game.Scripts.Views;
@@ -56,8 +57,8 @@ namespace Assets.Source.Game.Scripts.Characters
 
             foreach (var parameter in abilityData.Parameters[currentLevel - 1].CardParameters)
             {
-                //if (parameter.TypeParameter.ToString() == TypeParameter.AbilityCooldown.ToString())
-                //    currentAbilityCooldown = parameter.Value;
+                if (parameter.TypeParameter == TypeParameter.AbilityCooldown)
+                    currentAbilityCooldown = parameter.Value;
             }
 
             abilityView.Initialize(abilityData.Icon, currentAbilityCooldown);

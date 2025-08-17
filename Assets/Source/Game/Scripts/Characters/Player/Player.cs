@@ -230,11 +230,26 @@ namespace Assets.Source.Game.Scripts.Characters
                 .Subscribe(m => OnReduceHealth(Convert.ToInt32(m.Reduction)))
                 .AddTo(_disposables);
 
-            _playerStats.HealthUpgradeApplied += OnHealthUpgradeApplied;
-            _playerStats.Healed += OnHealing;
-            _playerStats.AbilityDurationChanged += OnAbilityDurationChange;
-            _playerStats.AbilityDamageChanged += OnAbilityDamageChanged;
-            _playerStats.AbilityCooldownReductionChanged += OnAbilityCooldownReductionChanged;
+            MessageBroker.Default
+                .Receive<M_Healing>()
+                .Subscribe(m => OnHealing(Convert.ToInt32(m.Value)))
+                .AddTo(_disposables);
+
+            MessageBroker.Default
+                .Receive<M_AbilityDurationChange>()
+                .Subscribe(m => OnAbilityDurationChange(Convert.ToInt32(m.Value)))
+                .AddTo(_disposables);
+
+            MessageBroker.Default
+                .Receive<M_AbilityDamageChange>()
+                .Subscribe(m => OnAbilityDamageChanged(Convert.ToInt32(m.Value)))
+                .AddTo(_disposables);
+
+            MessageBroker.Default
+                .Receive<M_AbilityCooldownReductionChange>()
+                .Subscribe(m => OnAbilityCooldownReductionChanged(Convert.ToInt32(m.Value)))
+                .AddTo(_disposables);
+
             _playerStats.KillCountChanged += OnKillCountChanged;
             _playerStats.PlayerLevelChanged += OnPlayerLevelChanged;
             _playerStats.PlayerUpgradeLevelChanged += OnPlayerUpgradeLevelChanged;
@@ -261,12 +276,7 @@ namespace Assets.Source.Game.Scripts.Characters
             _playerAttacker.HealedVampirism -= OnHealingVampirism;
             _playerStats.ExperienceValueChanged -= OnExperienceValueChanged;
             _playerStats.UpgradeExperienceValueChanged -= OnUpgradeExperienceValueChanged;
-            _playerStats.HealthUpgradeApplied -= OnHealthUpgradeApplied;
-            _playerStats.Healed -= OnHealing;
             _playerStats.CoinsAdding -= OnAddCoins;
-            _playerStats.AbilityDurationChanged -= OnAbilityDurationChange;
-            _playerStats.AbilityDamageChanged -= OnAbilityDamageChanged;
-            _playerStats.AbilityCooldownReductionChanged -= OnAbilityCooldownReductionChanged;
             _playerStats.KillCountChanged -= OnKillCountChanged;
             _playerStats.PlayerLevelChanged -= OnPlayerLevelChanged;
             _playerStats.PlayerUpgradeLevelChanged -= OnPlayerUpgradeLevelChanged;
@@ -456,12 +466,6 @@ namespace Assets.Source.Game.Scripts.Characters
         private void OnMaxHealthChanged(int healthValue)
         {
             _playerHealth.ChangeMaxHealth(healthValue, out int currentHealthValue, out int maxHealth);
-            _playerView.ChangeMaxHealthValue(maxHealth, currentHealthValue);
-        }
-
-        private void OnHealthUpgradeApplied(int healthValue)
-        {
-            _playerHealth.ApplyHealthUpgrade(healthValue, out int currentHealthValue, out int maxHealth);
             _playerView.ChangeMaxHealthValue(maxHealth, currentHealthValue);
         }
 

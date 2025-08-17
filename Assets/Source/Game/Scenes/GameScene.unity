@@ -13300,11 +13300,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1676609100239073865, guid: 0d780173c250d334f80c9061373c8e4f, type: 3}
   m_PrefabInstance: {fileID: 964151453}
   m_PrefabAsset: {fileID: 0}
---- !u!64 &964151457 stripped
-MeshCollider:
-  m_CorrespondingSourceObject: {fileID: 4551713866318324650, guid: 0d780173c250d334f80c9061373c8e4f, type: 3}
-  m_PrefabInstance: {fileID: 964151453}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &964675363
 GameObject:
   m_ObjectHideFlags: 0
@@ -26306,7 +26301,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ConfineMode: 1
-  m_BoundingVolume: {fileID: 964151457}
+  m_BoundingVolume: {fileID: 0}
   m_BoundingShape2D: {fileID: 0}
   m_ConfineScreenEdges: 1
   m_Damping: 0

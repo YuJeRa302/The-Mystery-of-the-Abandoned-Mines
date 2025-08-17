@@ -23,6 +23,7 @@ namespace Assets.Source.Game.Scripts.Card
         public event Action CardPoolCreated;
 
         public List<CardData> MainCardsPool => _mainCardsPool;
+        public List<CardData> CardData => _cardData;
 
         public void Initialize(CardDeck cardDeck)
         {
@@ -35,9 +36,9 @@ namespace Assets.Source.Game.Scripts.Card
 
             _cardHandlers = new Dictionary<TypeCardParameter, IProcessCard>()
             {
-                {TypeCardParameter.Ability, new ProcessAbilityCard(_mainCardsPool, _deck)},
+                {TypeCardParameter.Ability, new ProcessAbilityCard(this, _deck)},
                 {TypeCardParameter.PassiveAbility, new ProcessPassiveCard()},
-                { TypeCardParameter.LegendaryAbility, new ProcessLegendaryCard()}
+                {TypeCardParameter.LegendaryAbility, new ProcessLegendaryCard()}
             };
         }
 

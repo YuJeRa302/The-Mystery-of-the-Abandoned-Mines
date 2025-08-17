@@ -7,12 +7,12 @@ namespace Assets.Source.Game.Scripts.Card
 {
     public class ProcessAbilityCard : IProcessCard
     {
-        private List<CardData> _cardDatas;
+        private CardLoader _cardLoader;
         private CardDeck _deck;
 
-        public ProcessAbilityCard(List<CardData> allCards, CardDeck cardDeck)
+        public ProcessAbilityCard(CardLoader cardLoader, CardDeck cardDeck)
         {
-            _cardDatas = allCards;
+            _cardLoader = cardLoader;
             _deck = cardDeck;
         }
 
@@ -31,11 +31,11 @@ namespace Assets.Source.Game.Scripts.Card
 
             cardState.SetCardLocked(true);
 
-            if (cardData.AttributeData is ActiveAbilityData activeAbility)
+            if (cardData.AttributeData as ActiveAbilityData)
             {
-                if (TryFindPassivCard(_cardDatas, activeAbility.MagicType))
+                if (TryFindPassivCard(_cardLoader.CardData, (cardData.AttributeData as ActiveAbilityData).MagicType))
                 {
-                    if (FindLegendaryCard(_cardDatas, activeAbility.UpgradeType, out CardData legendaryCard))
+                    if (FindLegendaryCard(_cardLoader.CardData, (cardData.AttributeData as ActiveAbilityData).UpgradeType, out CardData legendaryCard))
                     {
                         _deck.GetCardStateByData(legendaryCard).SetCardLocked(false);
                     }

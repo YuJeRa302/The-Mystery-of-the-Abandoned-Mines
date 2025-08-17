@@ -95,14 +95,6 @@ namespace Assets.Source.Game.Scripts.Characters
             maxHealth = _maxHealth;
         }
 
-        public void ApplyHealthUpgrade(int value, out int currentHealth, out int maxHealth)
-        {
-            _maxHealth += value;
-            _currentHealth = _maxHealth;
-            currentHealth = _currentHealth;
-            maxHealth = _maxHealth;
-        }
-
         public int GetMaxHealth()
         {
             return _maxHealth;

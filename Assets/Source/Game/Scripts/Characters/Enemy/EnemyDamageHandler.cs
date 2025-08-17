@@ -17,9 +17,9 @@ namespace Assets.Source.Game.Scripts.Characters
         private Transform _damageEffectContainer;
         private EnemyHealth _health;
         private Rigidbody _rigidbody;
-        private Dictionary<TypeDamageParameter,float> _extractDamage = new();
+        private Dictionary<TypeDamageParameter,float> _extractDamage = new ();
         private Dictionary<TypeDamage, IDamageEffectHandler> _typeDamage;
-        private CompositeDisposable _disposables = new();
+        private CompositeDisposable _disposables = new ();
 
         public EnemyDamageHandler(Pool pool, Transform effectContainer, Enemy enemy)
         {
@@ -63,7 +63,6 @@ namespace Assets.Source.Game.Scripts.Characters
             {
                 ExtractDamageParameters(damageSource);
                 effectHandler.ApplayDamageEffect(damageSource, _extractDamage);
-
             }
         }
 

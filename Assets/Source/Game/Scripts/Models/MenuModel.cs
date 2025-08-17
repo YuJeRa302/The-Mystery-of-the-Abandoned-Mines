@@ -6,7 +6,7 @@ namespace Assets.Source.Game.Scripts.Models
 {
     public class MenuModel : IDisposable
     {
-        private CompositeDisposable _disposables = new();
+        private CompositeDisposable _disposables = new ();
 
         public MenuModel()
         {

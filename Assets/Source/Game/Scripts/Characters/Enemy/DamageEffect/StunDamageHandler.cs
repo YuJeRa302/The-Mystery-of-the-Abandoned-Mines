@@ -10,7 +10,7 @@ using UnityEngine;
 
 public class StunDamageHandler : IDamageEffectHandler
 {
-    private readonly System.Random _rnd = new();
+    private readonly System.Random _rnd = new ();
 
     private ICoroutineRunner _coroutineRunner;
     private Coroutine _stunCoroutine;
@@ -24,7 +24,8 @@ public class StunDamageHandler : IDamageEffectHandler
         _enemyStateMachine = enemy.EnemyStateMachineExample;
     }
 
-    public void ApplayDamageEffect(DamageSource damageSource,
+    public void ApplayDamageEffect(
+        DamageSource damageSource,
         Dictionary<TypeDamageParameter, float> extractDamage)
     {
         extractDamage.TryGetValue(TypeDamageParameter.Chance, out float chance);

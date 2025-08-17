@@ -15,7 +15,7 @@ namespace Assets.Source.Game.Scripts.Views
         [SerializeField] private LeaderboardYG _leaderboardYG;
 
         private LeaderboardModel _leaderboardModel;
-        private CompositeDisposable _disposables = new();
+        private CompositeDisposable _disposables = new ();
 
         private void OnDestroy()
         {
@@ -76,7 +76,12 @@ namespace Assets.Source.Game.Scripts.Views
             MessageBroker.Default.Publish(new M_Hide());
         }
 
-        private void OnExitButtonClicked() => Hide();
+        private void OnExitButtonClicked() 
+        {
+            MessageBroker.Default.Publish(new M_Hide());
+            gameObject.SetActive(false);
+            _leaderboardYG.gameObject.SetActive(false);
+        }
 
         private void Show()
         {
@@ -86,13 +91,6 @@ namespace Assets.Source.Game.Scripts.Views
                 CreateLeaderboard(_leaderboardModel.GetScore());
             else
                 _authorizationPanel.gameObject.SetActive(true);
-        }
-
-        private void Hide()
-        {
-            MessageBroker.Default.Publish(new M_Hide());
-            gameObject.SetActive(false);
-            _leaderboardYG.gameObject.SetActive(false);
         }
     }
 }

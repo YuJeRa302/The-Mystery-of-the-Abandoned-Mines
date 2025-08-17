@@ -8,13 +8,12 @@ using System.Collections.Generic;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
-using YG;
 
 namespace Assets.Source.Game.Scripts.Views
 {
     public class MainMenuView : MonoBehaviour
     {
-        private readonly System.Random _rnd = new();
+        private readonly System.Random _rnd = new ();
 
         [SerializeField] private Button _openUpgradesButton;
         [SerializeField] private Button _openSettingsButton;
@@ -34,7 +33,7 @@ namespace Assets.Source.Game.Scripts.Views
         [SerializeField] private float _timeNewTips = 10;
 
         private MenuModel _menuModel;
-        private List<TipView> _tipViews = new();
+        private List<TipView> _tipViews = new ();
         private IEnumerator _getTips;
         private IEnumerator _animationTips;
         private IAudioPlayerService _audioPlayerService;
@@ -60,7 +59,6 @@ namespace Assets.Source.Game.Scripts.Views
         public void Initialize(MenuModel menuModel, IAudioPlayerService audioPlayerService)
         {
             _menuModel = menuModel;
-
             _audioPlayerService = audioPlayerService;
             _delayNewTips = new WaitForSeconds(_timeNewTips);
             AddListener();

@@ -46,11 +46,11 @@ namespace Assets.Source.Game.Scripts.Views
         [SerializeField] private GameObject _parameterPanel;
 
         private UpgradeModel _upgradeModel;
-        private CompositeDisposable _disposables = new();
-        private List<UpgradeDataView> _upgradeDataViews = new();
+        private CompositeDisposable _disposables = new ();
+        private List<UpgradeDataView> _upgradeDataViews = new ();
         private IAudioPlayerService _audioPlayerService;
         private Coroutine _coroutine;
-        private List<ClassAbilityStatsView> _classAbilityStatsViews = new();
+        private List<ClassAbilityStatsView> _classAbilityStatsViews = new ();
 
         public List<UpgradeData> UpgradeDatas => _defaultUpgradeData;
 

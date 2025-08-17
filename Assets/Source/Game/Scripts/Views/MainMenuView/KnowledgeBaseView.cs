@@ -25,10 +25,10 @@ namespace Assets.Source.Game.Scripts.Views
         [SerializeField] private GameObject _buttonSubCategories;
         [SerializeField] private GameObject _infoPanel;
 
-        private List<SubcategoriesButtonView> _subcategoriesButtonViews = new();
-        private List<KnowledgeView> _knowladgeViews = new();
+        private List<SubcategoriesButtonView> _subcategoriesButtonViews = new ();
+        private List<KnowledgeView> _knowladgeViews = new ();
         private IAudioPlayerService _audioPlayerService;
-        private CompositeDisposable _disposables = new();
+        private CompositeDisposable _disposables = new ();
 
         private void OnDisable()
         {

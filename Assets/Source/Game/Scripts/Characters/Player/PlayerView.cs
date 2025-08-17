@@ -1,5 +1,4 @@
 using Assets.Source.Game.Scripts.AbilityScripts;
-using Assets.Source.Game.Scripts.Card;
 using Assets.Source.Game.Scripts.Enums;
 using Assets.Source.Game.Scripts.ScriptableObjects;
 using Assets.Source.Game.Scripts.Views;
@@ -86,8 +85,11 @@ namespace Assets.Source.Game.Scripts.Characters
             }
 
             abilityView.Initialize(abilityAttributeData.Icon, currentAbilityCooldown);
+
             LegendaryAbilityViewCreated?.Invoke(
-                abilityView, abilityAttributeData.Particle, abilityAttributeData);
+                abilityView, 
+                abilityAttributeData.Particle, 
+                abilityAttributeData);
         }
 
         public void TakeAbility(ActiveAbilityData abilityAttributeData, int currentLevel)

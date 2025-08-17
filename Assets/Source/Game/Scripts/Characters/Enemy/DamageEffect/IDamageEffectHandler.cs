@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public interface IDamageEffectHandler
 {
-    public void ApplayDamageEffect(DamageSource damageSource, 
+    public void ApplayDamageEffect(
+        DamageSource damageSource, 
         Dictionary<TypeDamageParameter, float> extractDamage);
 }

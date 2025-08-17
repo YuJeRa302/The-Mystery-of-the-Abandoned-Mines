@@ -8,6 +8,8 @@ using UnityEngine;
 
 public class RepulsiveDamageHandler : IDamageEffectHandler
 {
+    private readonly float _controlValueTime = 0.17f;
+
     private ICoroutineRunner _coroutineRunner;
     private Coroutine _repulsiveDamage;
     private Rigidbody _rigidbody;
@@ -44,7 +46,7 @@ public class RepulsiveDamageHandler : IDamageEffectHandler
         float currentTime = 0;
         _rigidbody.isKinematic = false;
 
-        while (currentTime <= 0.17f)
+        while (currentTime <= _controlValueTime)
         {
             _rigidbody.AddForce(_rigidbody.transform.forward * -value, ForceMode.Impulse);
             currentTime += Time.deltaTime;

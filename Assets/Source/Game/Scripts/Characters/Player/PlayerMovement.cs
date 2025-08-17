@@ -9,6 +9,7 @@ namespace Assets.Source.Game.Scripts.Characters
 {
     public class PlayerMovement : IDisposable
     {
+        private readonly float _controlMagnitudeValue = 0.1f;
         private readonly ICoroutineRunner _coroutineRunner;
         private readonly GamePauseService _gamePauseService;
         private readonly Player _player;
@@ -162,7 +163,7 @@ namespace Assets.Source.Game.Scripts.Characters
             Vector3 direction = _rigidbody.velocity;
             direction.y = 0;
 
-            if (input.sqrMagnitude > 0.1f && direction.sqrMagnitude > 0.1f)
+            if (input.sqrMagnitude > _controlMagnitudeValue && direction.sqrMagnitude > _controlMagnitudeValue)
                 _rigidbody.rotation = Quaternion.LookRotation(direction, Vector3.up);
             else
                 _rigidbody.angularVelocity = Vector3.zero;

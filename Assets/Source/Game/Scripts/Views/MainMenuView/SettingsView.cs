@@ -19,8 +19,8 @@ namespace Assets.Source.Game.Scripts.Views
         [SerializeField] private Transform _buttonsContainer;
 
         private SettingsModel _settingsModel;
-        private List<LanguageButtonView> _languageButtonViews = new();
-        private CompositeDisposable _disposables = new();
+        private List<LanguageButtonView> _languageButtonViews = new ();
+        private CompositeDisposable _disposables = new ();
         private IAudioPlayerService _audioPlayerService;
 
         private void OnDestroy()
@@ -69,7 +69,6 @@ namespace Assets.Source.Game.Scripts.Views
 
         private void AddListeners()
         {
-
             MessageBroker.Default
                 .Receive<M_SettingsShow>()
                 .Subscribe(m => Show())
@@ -92,8 +91,12 @@ namespace Assets.Source.Game.Scripts.Views
             _muteToggle.onValueChanged.RemoveListener(OnMuteValueChanged);
         }
 
-        private void OnExitButtonClicked() => MessageBroker.Default.Publish(new M_Hide());
-        private void OnLanguageChanged(string value) => _settingsModel.SetLanguage(value);
+        private void OnExitButtonClicked() 
+        {
+            gameObject.SetActive(false);
+            MessageBroker.Default.Publish(new M_Hide());
+        }
+
         private void OnAmbientValueChanged(float value)
         {
             _audioPlayerService.AmbientValueChanged(value);
@@ -108,6 +111,6 @@ namespace Assets.Source.Game.Scripts.Views
 
         private void OnMuteValueChanged(bool value) => _settingsModel.SetMute(value);
         private void Show() => gameObject.SetActive(true);
-        private void Hide() => gameObject.SetActive(false);
+        private void OnLanguageChanged(string value) => _settingsModel.SetLanguage(value);
     }
 }

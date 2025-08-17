@@ -65,6 +65,7 @@ namespace Assets.Source.Game.Scripts.Models
                 }
 
                 MessageBroker.Default.Publish(new M_AbilityUpgraded(_currentClassAbilityState));
+                
                 _persistentDataService.PlayerProgress.
                     ClassAbilityService.SetClassAbilityState(_currentClassAbilityState);
             }

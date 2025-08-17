@@ -1,7 +1,6 @@
 using Assets.Source.Game.Scripts.Enums;
 using Assets.Source.Game.Scripts.ScriptableObjects;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace Assets.Source.Game.Scripts.Card
 {
@@ -36,9 +35,7 @@ namespace Assets.Source.Game.Scripts.Card
                 if (TryFindPassivCard(_cardLoader.CardData, (cardData.AttributeData as ActiveAbilityData).MagicType))
                 {
                     if (FindLegendaryCard(_cardLoader.CardData, (cardData.AttributeData as ActiveAbilityData).UpgradeType, out CardData legendaryCard))
-                    {
                         _deck.GetCardStateByData(legendaryCard).SetCardLocked(false);
-                    }
                 }
             }
         }
@@ -82,9 +79,7 @@ namespace Assets.Source.Game.Scripts.Card
                     if ((data.AttributeData as PassiveAttributeData).MagicType == typeMagic)
                     {
                         if (_deck.GetCardStateByData(data).IsCardUpgraded == true)
-                        {
                             passivCard = data;
-                        }
                     }
                 }
             }

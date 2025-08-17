@@ -42,7 +42,7 @@ namespace Assets.Source.Game.Scripts.Characters
         private float _attackRange;
         private PlayerClassData _classData;
         private Dictionary<TypeParameter, IUpgradeStats> _playerParametrs;
-        private Dictionary<TypeWeaponSupportiveParameter, float> _weaponParametrs = new();
+        private Dictionary<TypeWeaponSupportiveParameter, float> _weaponParametrs = new ();
 
         public PlayerStats(
             WeaponData weaponData,

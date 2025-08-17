@@ -30,7 +30,7 @@ namespace Assets.Source.Game.Scripts.GamePanels
         [SerializeField] private Text _currentRoomLevel;
         [SerializeField] private Text _killCount;
 
-        private List<LanguageButtonView> _languageButtonViews = new();
+        private List<LanguageButtonView> _languageButtonViews = new ();
         private IAudioPlayerService _audioPlayerService;
 
         private void OnDestroy()

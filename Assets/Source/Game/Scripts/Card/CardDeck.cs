@@ -21,7 +21,7 @@ namespace Assets.Source.Game.Scripts.Card
         private List<CardData> _activeCardAbility = new ();
         private List<CardState> _cardState = new ();
         private int _currentMaxCardCount;
-        private bool _isReserWeight = false;
+        private bool _isResetWeight = false;
 
         public CardDeck(bool isContractLevel, List<ITakeCardStrategy> takeCardStrategies)
         {
@@ -76,7 +76,7 @@ namespace Assets.Source.Game.Scripts.Card
             }
 
             if (maxWeight > _weightControl)
-                _isReserWeight = true;
+                _isResetWeight = true;
 
             return _rnd.Next(minWeight, maxWeight);
         }
@@ -101,11 +101,11 @@ namespace Assets.Source.Game.Scripts.Card
                 if (card.IsLegendariCard == false)
                     card.SetCardLocked(false);
 
-                if (_isReserWeight)
+                if (_isResetWeight)
                     card.ResetWeight();
             }
 
-            _isReserWeight = false;
+            _isResetWeight = false;
         }
 
         public void UpdateDeck()

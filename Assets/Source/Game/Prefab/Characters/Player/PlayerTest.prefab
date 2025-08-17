@@ -631,6 +631,7 @@ MonoBehaviour:
   - rid: 8041066414533509121
   - rid: 8041066414533509122
   - rid: 8041066414533509123
+  - rid: 8041066479784820736
   references:
     version: 2
     RefIds:
@@ -642,6 +643,8 @@ MonoBehaviour:
       type: {class: TakePrimaryAttribute, ns: Assets.Source.Game.Scripts.Card, asm: Assembly-CSharp}
     - rid: 8041066414533509123
       type: {class: TakeRerollPoints, ns: Assets.Source.Game.Scripts.Card, asm: Assembly-CSharp}
+    - rid: 8041066479784820736
+      type: {class: TakeLegendaryAbility, ns: Assets.Source.Game.Scripts.Card, asm: Assembly-CSharp}
 --- !u!114 &3665270091436053377
 MonoBehaviour:
   m_ObjectHideFlags: 0

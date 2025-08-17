@@ -32,7 +32,7 @@ namespace Assets.Source.Game.Scripts.Characters
         private int _tier;
         private EnemyHealth _health;
         private EnemyDamageHandler _damageHandler;
-        private CompositeDisposable _disposables = new();
+        private CompositeDisposable _disposables = new ();
 
         public float AttackDelay => _attackDelay;
         public float Damage => _damage;

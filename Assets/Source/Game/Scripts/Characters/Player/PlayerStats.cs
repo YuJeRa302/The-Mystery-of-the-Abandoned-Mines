@@ -12,8 +12,8 @@ namespace Assets.Source.Game.Scripts.Characters
 {
     public class PlayerStats
     {
-        private readonly Dictionary<int, int> _levels = new();
-        private readonly Dictionary<int, int> _upgradeLevels = new();
+        private readonly Dictionary<int, int> _levels = new ();
+        private readonly Dictionary<int, int> _upgradeLevels = new ();
         private readonly int _maxExperience = 50;
         private readonly int _maxUpgradeExperience = 500;
         private readonly int _minValue = 0;
@@ -189,9 +189,7 @@ namespace Assets.Source.Game.Scripts.Characters
             _rerollPoints = Mathf.Clamp(_rerollPoints--, _minValue, _rerollPoints);
 
             if (_playerParametrs.TryGetValue(TypeParameter.Reroll, out IUpgradeStats parametr))
-            {
                 (parametr as IRevertStats).Revent(1);
-            }
         }
 
         public void GetReward(int value)
@@ -229,15 +227,14 @@ namespace Assets.Source.Game.Scripts.Characters
                 .CardData
                 .AttributeData.Parameters[cardView.CardState.CurrentLevel]
                 .CardParameters[0].TypeParameter;
+
             var value = cardView
                 .CardData
                 .AttributeData
                 .Parameters[cardView.CardState.CurrentLevel].CardParameters[0].Value;
 
             if (_playerParametrs.TryGetValue(type, out IUpgradeStats parametr))
-            {
                 parametr.Apply(value);
-            }
         }
 
         public void SetPlayerUpgrades(GameConfig gameConfig, PersistentDataService persistentDataService)
@@ -258,9 +255,7 @@ namespace Assets.Source.Game.Scripts.Characters
                     float value = upgradeData.GetUpgradeParameterByCurrentLevel(upgradeState.CurrentLevel).Value;
 
                     if (_playerParametrs.TryGetValue(upgradeData.TypeParameter, out IUpgradeStats parametr))
-                    {
                         parametr.Apply(value);
-                    }
                 }
             }
         }
@@ -270,9 +265,7 @@ namespace Assets.Source.Game.Scripts.Characters
             foreach (CardParameter parameter in ability.AmplifierParameters)
             {
                 if (_playerParametrs.TryGetValue(parameter.TypeParameter, out IUpgradeStats value))
-                {
                     value.Apply(parameter.Value);
-                }
             }
         }
 
@@ -282,7 +275,7 @@ namespace Assets.Source.Game.Scripts.Characters
             {
                 if (_playerParametrs.TryGetValue(type.TypeParameter, out IUpgradeStats parameter))
                 {
-                    if((parameter as IRevertStats) != null)
+                    if ((parameter as IRevertStats) != null)
                         (parameter as IRevertStats).Revent(type.Value);
                 }
             }
@@ -298,7 +291,7 @@ namespace Assets.Source.Game.Scripts.Characters
 
             foreach (var parameter in weaponData.WeaponParameters)
             {
-                if(_weaponParametrs.ContainsKey(parameter.SupportiveParameter) == false)
+                if (_weaponParametrs.ContainsKey(parameter.SupportiveParameter) == false)
                     _weaponParametrs.Add(parameter.SupportiveParameter, parameter.Value);
                 else
                     _weaponParametrs[parameter.SupportiveParameter] = parameter.Value;

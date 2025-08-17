@@ -145,7 +145,7 @@ namespace Assets.Source.Game.Scripts.Characters
             _classAbilities.Add(_ability);
         }
 
-        public void CreateAbilityView(AbilityView abilityView, ParticleSystem particleSystem, Transform throwPoint)
+        public void CreateAbilityView(AbilityView abilityView, ParticleSystem particleSystem)
         {
             _particleSystem = particleSystem;
             _abilityView = abilityView;
@@ -168,7 +168,6 @@ namespace Assets.Source.Game.Scripts.Characters
         public void CreateLegendaryAbilityView(
             AbilityView abilityView,
             ParticleSystem particleSystem,
-            Transform throwPoint,
             ActiveAbilityData abilityAttributeData)
         {
             _particleSystem = particleSystem;

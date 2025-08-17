@@ -39,6 +39,7 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
             _particleSystem = abilityEntitiesHolder.ParticleSystem;
             _spellPrefab = legendaryAbilityData.LegendarySpell;
             _damageDelay = legendaryAbilityData.DamageSource.DamageDelay;
+            _throwPoint = _player.ThrowAbilityPoint;
             var container = SceneManager.GetActiveScene().GetSceneContainer();
             _coroutineRunner = container.Resolve<ICoroutineRunner>();
         }

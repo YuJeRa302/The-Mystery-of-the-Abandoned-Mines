@@ -1,7 +1,6 @@
 using Assets.Source.Game.Scripts.AbilityScripts;
 using Assets.Source.Game.Scripts.Card;
 using Assets.Source.Game.Scripts.Factories;
-using Assets.Source.Game.Scripts.GamePanels;
 using Assets.Source.Game.Scripts.Items;
 using Assets.Source.Game.Scripts.Menu;
 using Assets.Source.Game.Scripts.PoolSystem;
@@ -43,7 +42,7 @@ namespace Assets.Source.Game.Scripts.Characters
         [SerializeField] private int _currentHealth = 100;
         [SerializeReference] private List<ITakeCardStrategy> _takeCardStrategies;
 
-        private CompositeDisposable _disposables = new ();
+        private CompositeDisposable _disposables = new();
         private PlayerView _playerView;
         private PlayerAbilityCaster _playerAbilityCaster;
         private PlayerStats _playerStats;
@@ -154,7 +153,7 @@ namespace Assets.Source.Game.Scripts.Characters
                 gameConfig.GetLevelData(
                     persistentDataService.PlayerProgress.LevelService.CurrentLevelId).IsContractLevel,
                 _takeCardStrategies);
-            
+
             _playerAbilityCaster = new PlayerAbilityCaster(
                 abilityFactory,
                 this,
@@ -162,7 +161,7 @@ namespace Assets.Source.Game.Scripts.Characters
                 playerClassData,
                 _audioPlayer);
 
-            _playerView.Initialize(playerClassData.Icon, _throwAbilityPoint);
+            _playerView.Initialize(playerClassData.Icon);
             SetPlayerStats();
             AddListeners();
             _playerStats.SetPlayerUpgrades(gameConfig, persistentDataService);
@@ -221,11 +220,13 @@ namespace Assets.Source.Game.Scripts.Characters
             _playerStats.ExperienceValueChanged += OnExperienceValueChanged;
             _playerStats.UpgradeExperienceValueChanged += OnUpgradeExperienceValueChanged;
 
-            MessageBroker.Default.Receive<M_MaxHealthChanged>()
+            MessageBroker.Default
+                .Receive<M_MaxHealthChanged>()
                 .Subscribe(m => OnMaxHealthChanged(Convert.ToInt32(m.Value)))
                 .AddTo(_disposables);
 
-            MessageBroker.Default.Receive<M_HealthReduced>()
+            MessageBroker.Default
+                .Receive<M_HealthReduced>()
                 .Subscribe(m => OnReduceHealth(Convert.ToInt32(m.Reduction)))
                 .AddTo(_disposables);
 
@@ -254,9 +255,6 @@ namespace Assets.Source.Game.Scripts.Characters
 
         private void RemoveListeners()
         {
-            if (_disposables != null)
-                _disposables.Dispose();
-
             _playerAttacker.Attacked -= OnAttack;
             _playerAttacker.EnemyFinded -= OnRotateToTarget;
             _playerAttacker.CritAttacked -= OnApplayCritDamage;
@@ -326,13 +324,11 @@ namespace Assets.Source.Game.Scripts.Characters
         private void OnLegendaryAbilityViewCreated(
             AbilityView abilityView,
             ParticleSystem particleSystem,
-            Transform throwPoint,
             ActiveAbilityData abilityAttributeData)
         {
             _playerAbilityCaster.CreateLegendaryAbilityView(
                 abilityView,
                 particleSystem,
-                throwPoint,
                 abilityAttributeData);
         }
 
@@ -341,12 +337,9 @@ namespace Assets.Source.Game.Scripts.Characters
             _playerAbilityCaster.CreatePassiveAbilityView(passiveAbilityView);
         }
 
-        private void OnAbilityViewCreated(
-            AbilityView abilityView,
-            ParticleSystem particleSystem,
-            Transform throwPoint)
+        private void OnAbilityViewCreated(AbilityView abilityView, ParticleSystem particleSystem)
         {
-            _playerAbilityCaster.CreateAbilityView(abilityView, particleSystem, throwPoint);
+            _playerAbilityCaster.CreateAbilityView(abilityView, particleSystem);
         }
 
         private void OnClassAbilityTaked(ClassAbilityData abilityData, int currentLevel)

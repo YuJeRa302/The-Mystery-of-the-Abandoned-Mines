@@ -28,19 +28,17 @@ namespace Assets.Source.Game.Scripts.Characters
         [SerializeField] private Image _playerMapIcon;
         [SerializeField] private Sprite _closeAbilityIcon;
 
-        private Transform _throwPoint;
         private ParticleSystem _abilityEffect;
 
-        public event Action<AbilityView, ParticleSystem, Transform> AbilityViewCreated;
+        public event Action<AbilityView, ParticleSystem> AbilityViewCreated;
         public event Action<ClassAbilityData, ClassSkillButtonView, int> ClassAbilityViewCreated;
-        public event Action<AbilityView, ParticleSystem, Transform, ActiveAbilityData> LegendaryAbilityViewCreated;
+        public event Action<AbilityView, ParticleSystem, ActiveAbilityData> LegendaryAbilityViewCreated;
         public event Action<PassiveAbilityView> PassiveAbilityViewCreated;
 
-        public void Initialize(Sprite iconPlayer, Transform throwPoint)
+        public void Initialize(Sprite iconPlayer)
         {
             _playerMapIcon.sprite = iconPlayer;
             _playerIcon.sprite = iconPlayer;
-            _throwPoint = throwPoint;
         }
 
         public void TakeClassAbility(ClassAbilityData abilityData, int currentLevel)
@@ -88,7 +86,7 @@ namespace Assets.Source.Game.Scripts.Characters
 
             abilityView.Initialize(abilityAttributeData.Icon, currentAbilityCooldown);
             LegendaryAbilityViewCreated?.Invoke(
-                abilityView, abilityAttributeData.Particle, _throwPoint, abilityAttributeData);
+                abilityView, abilityAttributeData.Particle, abilityAttributeData);
         }
 
         public void TakeAbility(ActiveAbilityData abilityAttributeData, int currentLevel)
@@ -106,7 +104,7 @@ namespace Assets.Source.Game.Scripts.Characters
 
             abilityView = Instantiate(abilityAttributeData.AbilityView, _abilityObjectContainer);
             abilityView.Initialize(abilityAttributeData.Icon, currentAbilityCooldown);
-            AbilityViewCreated?.Invoke(abilityView, _abilityEffect, _throwPoint);
+            AbilityViewCreated?.Invoke(abilityView, _abilityEffect);
         }
 
         public void ChangePlayerLevel(int currentLevel, int maxExperienceValue, int currentExperience)

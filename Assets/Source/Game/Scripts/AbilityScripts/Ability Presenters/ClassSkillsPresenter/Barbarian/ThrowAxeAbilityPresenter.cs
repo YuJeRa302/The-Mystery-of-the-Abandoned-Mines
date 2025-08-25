@@ -81,7 +81,10 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
                 _axeMissile = GameObject.Instantiate(_axeMissilePrefab, _throwPoint.position, Quaternion.identity);
 
                 _pool.InstantiatePoolObject(_axeMissile, _axeMissilePrefab.name);
-                _axeMissile.Initialize(_player, _player.DamageSource, _player.MoveSpeed, _ability.CurrentDuration);
+                _axeMissile.Initialize(_player,
+                    _player.DamageSource,
+                    _player.PlayerStats.MoveSpeed,
+                    _ability.CurrentDuration);
             }
 
             _axeMissile.GetComponent<Rigidbody>().AddForce(

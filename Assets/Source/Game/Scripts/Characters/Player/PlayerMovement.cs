@@ -172,8 +172,8 @@ namespace Assets.Source.Game.Scripts.Characters
 
         private void ApplyMovement(Vector2 input)
         {
-            _direction += input.x * GetCameraRight(_camera) * _player.MoveSpeed;
-            _direction += input.y * GetCameraForward(_camera) * _player.MoveSpeed;
+            _direction += input.x * GetCameraRight(_camera) * _player.PlayerStats.MoveSpeed;
+            _direction += input.y * GetCameraForward(_camera) * _player.PlayerStats.MoveSpeed;
             _rigidbody.AddForce(_direction, ForceMode.Impulse);
             _direction = Vector3.zero;
         }
@@ -186,9 +186,9 @@ namespace Assets.Source.Game.Scripts.Characters
             Vector3 horizontalVelocity = _rigidbody.velocity;
             horizontalVelocity.y = 0;
 
-            if (horizontalVelocity.sqrMagnitude > _player.MaxMoveSpeed * _player.MaxMoveSpeed)
+            if (horizontalVelocity.sqrMagnitude > _player.PlayerStats.MaxMoveSpeed * _player.PlayerStats.MaxMoveSpeed)
                 _rigidbody.velocity =
-                    horizontalVelocity.normalized * _player.MaxMoveSpeed + Vector3.up * _rigidbody.velocity.y;
+                    horizontalVelocity.normalized * _player.PlayerStats.MaxMoveSpeed + Vector3.up * _rigidbody.velocity.y;
 
             _rigidbody.velocity = new Vector3(_rigidbody.velocity.x, 0, _rigidbody.velocity.z);
         }

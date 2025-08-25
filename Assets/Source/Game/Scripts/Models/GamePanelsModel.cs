@@ -140,7 +140,7 @@ namespace Assets.Source.Game.Scripts.Models
 
         public void GetRerollPointsReward()
         {
-            _player.PlayerStats.GetReward(_countRerollPointsReward);
+            _player.PlayerStats.GetReward();
         }
 
         public void GetEndGameReward()

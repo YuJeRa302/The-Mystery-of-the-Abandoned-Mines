@@ -82,9 +82,9 @@ namespace Assets.Source.Game.Scripts.GamePanels
             _playerHealth.text = GamePanelsModel.GetPlayer().CurrentHealth.ToString();
             _playerDamage.text = GamePanelsModel.GetPlayer().DamageSource.Damage.ToString();
             _coins.text = GamePanelsModel.GetPlayer().Coins.ToString();
-            _rerollPoints.text = GamePanelsModel.GetPlayer().RerollPoints.ToString();
+            _rerollPoints.text = GamePanelsModel.GetPlayer().PlayerStats.RerollPoints.ToString();
             _currentRoomLevel.text = GamePanelsModel.GetCurrentRoomLevel().ToString();
-            _killCount.text = GamePanelsModel.GetPlayer().KillCount.ToString();
+            _killCount.text = GamePanelsModel.GetPlayer().PlayerStats.CountKillEnemy.ToString();
         }
 
         private void CreateLanguageButton()

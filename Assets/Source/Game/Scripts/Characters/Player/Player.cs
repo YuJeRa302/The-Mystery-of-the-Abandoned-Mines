@@ -6,7 +6,6 @@ using Assets.Source.Game.Scripts.Menu;
 using Assets.Source.Game.Scripts.PoolSystem;
 using Assets.Source.Game.Scripts.ScriptableObjects;
 using Assets.Source.Game.Scripts.Services;
-using Assets.Source.Game.Scripts.Upgrades;
 using Assets.Source.Game.Scripts.Views;
 using System;
 using System.Collections.Generic;
@@ -72,21 +71,8 @@ namespace Assets.Source.Game.Scripts.Characters
         public PlayerAbilityCaster PlayerAbilityCaster => _playerAbilityCaster;
         public PlayerStats PlayerStats => _playerStats;
         public int CurrentHealth => _playerHealth.GetCurrentHealth();
-        public int Regeneration => _playerStats.Regeneration;
-        public float MoveSpeed => _playerStats.MoveSpeed;
-        public float MaxMoveSpeed => _playerStats.MaxMoveSpeed;
-        public int Armor => _playerStats.Armor;
         public int Coins => _wallet.CurrentCoins;
-        public int UpgradePoints => _playerStats.UpgradePoints;
-        public int Score => _playerStats.Score;
-        public int RerollPoints => _playerStats.RerollPoints;
-        public int KillCount => _playerStats.CountKillEnemy;
-        public float ChanceCriticalDamage => _playerStats.ChanceCriticalDamage;
-        public float CriticalDamageMultiplier => _playerStats.CriticalDamageMultiplier;
-        public float ChanceVampirism => _playerStats.ChanceVampirism;
-        public float VampirismValue => _playerStats.VampirismValue;
-        public float SearchRadius => _playerStats.SearchRadius;
-        public float AttackRange => _playerStats.AttackRange;
+
 
         public void CreatePlayerEntities(
             AbilityFactory abilityFactory,
@@ -161,7 +147,7 @@ namespace Assets.Source.Game.Scripts.Characters
                 playerClassData,
                 _audioPlayer);
 
-            _playerView.Initialize(playerClassData.Icon);
+            _playerView.Initialize(playerClassData.Icon, _playerHealth);
             SetPlayerStats();
             AddListeners();
             _playerStats.SetPlayerUpgrades(gameConfig, persistentDataService);
@@ -182,7 +168,7 @@ namespace Assets.Source.Game.Scripts.Characters
         public void TakeEndGameReward()
         {
             _wallet.AddCoins(Coins);
-            _playerStats.GetReward(UpgradePoints);
+            _playerStats.GetReward();
         }
 
         public void TakeDamage(int value)
@@ -197,69 +183,19 @@ namespace Assets.Source.Game.Scripts.Characters
             _playerAttacker.CritAttacked += OnApplayCritDamage;
             _playerAttacker.HealedVampirism += OnHealingVampirism;
 
-            CardDeck.MessageBroker
-                .Receive<M_TakeAbility>()
-                .Subscribe(m => OnSetNewAbility(m.CardView))
-                .AddTo(_disposables);
-
-            CardDeck.MessageBroker
-                .Receive<M_TakePassiveAbility>()
-                .Subscribe(m => OnTakenPassiveAbility(m.CardView))
-                .AddTo(_disposables);
-
-            CardDeck.MessageBroker
-                .Receive<M_TakePrimaryAttribute>()
-                .Subscribe(m => OnStatsUpdate(m.CardView))
-                .AddTo(_disposables);
-
-            CardDeck.MessageBroker
-                .Receive<M_TakeRerollPoints>()
-                .Subscribe(m => OnUpdateRerollPoints(m.CardView))
-                .AddTo(_disposables);
-
             _playerStats.ExperienceValueChanged += OnExperienceValueChanged;
             _playerStats.UpgradeExperienceValueChanged += OnUpgradeExperienceValueChanged;
-
-            MessageBroker.Default
-                .Receive<M_MaxHealthChanged>()
-                .Subscribe(m => OnMaxHealthChanged(Convert.ToInt32(m.Value)))
-                .AddTo(_disposables);
-
-            MessageBroker.Default
-                .Receive<M_HealthReduced>()
-                .Subscribe(m => OnReduceHealth(Convert.ToInt32(m.Reduction)))
-                .AddTo(_disposables);
-
-            MessageBroker.Default
-                .Receive<M_Healing>()
-                .Subscribe(m => OnHealing(Convert.ToInt32(m.Value)))
-                .AddTo(_disposables);
-
-            MessageBroker.Default
-                .Receive<M_AbilityDurationChange>()
-                .Subscribe(m => OnAbilityDurationChange(Convert.ToInt32(m.Value)))
-                .AddTo(_disposables);
-
-            MessageBroker.Default
-                .Receive<M_AbilityDamageChange>()
-                .Subscribe(m => OnAbilityDamageChanged(Convert.ToInt32(m.Value)))
-                .AddTo(_disposables);
-
-            MessageBroker.Default
-                .Receive<M_AbilityCooldownReductionChange>()
-                .Subscribe(m => OnAbilityCooldownReductionChanged(Convert.ToInt32(m.Value)))
-                .AddTo(_disposables);
-
             _playerStats.KillCountChanged += OnKillCountChanged;
             _playerStats.PlayerLevelChanged += OnPlayerLevelChanged;
             _playerStats.PlayerUpgradeLevelChanged += OnPlayerUpgradeLevelChanged;
+
             _playerAbilityCaster.AbilityUsed += OnAbilityUsed;
             _playerAbilityCaster.AbilityEnded += OnAbilityEnded;
             _playerAbilityCaster.AbilityTaked += OnAbilityTaked;
             _playerAbilityCaster.PassiveAbilityTaked += OnPassiveAbilityTaked;
             _playerAbilityCaster.LegendaryAbilityTaked += OnLegendaryAbilityTaked;
             _playerAbilityCaster.ClassAbilityTaked += OnClassAbilityTaked;
-            _playerHealth.HealthChanged += OnHealthChanged;
+
             _playerHealth.PlayerDied += OnPlayerDead;
             _playerView.AbilityViewCreated += OnAbilityViewCreated;
             _playerView.PassiveAbilityViewCreated += OnPassiveAbilityViewCreated;
@@ -286,7 +222,6 @@ namespace Assets.Source.Game.Scripts.Characters
             _playerAbilityCaster.PassiveAbilityTaked -= OnPassiveAbilityTaked;
             _playerAbilityCaster.LegendaryAbilityTaked -= OnLegendaryAbilityTaked;
             _playerAbilityCaster.ClassAbilityTaked -= OnClassAbilityTaked;
-            _playerHealth.HealthChanged -= OnHealthChanged;
             _playerHealth.PlayerDied -= OnPlayerDead;
             _playerView.AbilityViewCreated -= OnAbilityViewCreated;
             _playerView.PassiveAbilityViewCreated -= OnPassiveAbilityViewCreated;
@@ -401,11 +336,6 @@ namespace Assets.Source.Game.Scripts.Characters
             _playerView.ChangeExperience(value);
         }
 
-        private void OnHealthChanged(int value)
-        {
-            _playerView.ChangeHealth(value);
-        }
-
         private void OnAddCoins(int count)
         {
             _wallet.AddCoins(count);
@@ -413,7 +343,6 @@ namespace Assets.Source.Game.Scripts.Characters
 
         private void OnHealingVampirism(float healing)
         {
-            _playerHealth.TakeHealing(Convert.ToInt32(healing));
             _playerWeapons.InstantiateHealingEffect();
         }
 
@@ -422,35 +351,10 @@ namespace Assets.Source.Game.Scripts.Characters
             _playerWeapons.InstantiateCritEffect();
         }
 
-        private void OnReduceHealth(float reduce)
-        {
-            _playerHealth.ReduceHealth(reduce);
-        }
-
-        private void OnHealing(int heal)
-        {
-            _playerHealth.TakeHealing(heal);
-        }
-
         private void OnRotateToTarget(Transform transform)
         {
             _playerMovement.ChangeRotate(false);
             _playerMovement.LookAtEnemy(transform);
-        }
-
-        private void OnAbilityCooldownReductionChanged(int value)
-        {
-            _playerAbilityCaster.AbilityCooldownReductionChanged(value);
-        }
-
-        private void OnAbilityDamageChanged(int value)
-        {
-            _playerAbilityCaster.AbilityDamageChanged(value);
-        }
-
-        private void OnAbilityDurationChange(int value)
-        {
-            _playerAbilityCaster.AbilityDurationChanged(value);
         }
 
         private void OnAbilityEnded(Ability ability)
@@ -461,43 +365,6 @@ namespace Assets.Source.Game.Scripts.Characters
         private void OnAbilityUsed(Ability ability)
         {
             _playerStats.AbilityUsed(ability);
-        }
-
-        private void OnMaxHealthChanged(int healthValue)
-        {
-            _playerHealth.ChangeMaxHealth(healthValue, out int currentHealthValue, out int maxHealth);
-            _playerView.ChangeMaxHealthValue(maxHealth, currentHealthValue);
-        }
-
-        private void OnSetNewAbility(CardView cardView)
-        {
-            _playerAbilityCaster.TakeAbility(cardView);
-            cardView.CardState.AddCurrentLevel();
-            cardView.CardState.AddWeight();
-        }
-
-        private void OnUpdateRerollPoints(CardView cardView)
-        {
-            _playerStats.UpdateRerollPoints(cardView);
-            cardView.CardState.AddWeight();
-            cardView.CardState.ResetWeight();
-        }
-
-        private void OnTakenPassiveAbility(CardView cardView)
-        {
-            _playerStats.UpdatePlayerStats(cardView);
-            _playerAbilityCaster.TakeAbility(cardView);
-            cardView.CardState.AddCurrentLevel();
-            cardView.CardState.AddWeight();
-            cardView.CardState.SetCardLocked(true);
-            cardView.CardState.SetUpgradedStatus(true);
-        }
-
-        private void OnStatsUpdate(CardView cardView)
-        {
-            _playerStats.UpdatePlayerStats(cardView);
-            cardView.CardState.AddWeight();
-            cardView.CardState.ResetWeight();
         }
 
         private void TryAttackEnemy()
@@ -519,6 +386,7 @@ namespace Assets.Source.Game.Scripts.Characters
 
         private void ReleaseUnmanagedResources()
         {
+            _playerStats.Dispose();
             _playerHealth.Dispose();
             _playerAnimation.Dispose();
             _playerAttacker.Dispose();

@@ -6,11 +6,12 @@ using Assets.Source.Game.Scripts.Services;
 using Assets.Source.Game.Scripts.Upgrades;
 using System;
 using System.Collections.Generic;
+using UniRx;
 using UnityEngine;
 
 namespace Assets.Source.Game.Scripts.Characters
 {
-    public class PlayerStats
+    public class PlayerStats : IDisposable
     {
         private readonly Dictionary<int, int> _levels = new ();
         private readonly Dictionary<int, int> _upgradeLevels = new ();
@@ -43,6 +44,7 @@ namespace Assets.Source.Game.Scripts.Characters
         private PlayerClassData _classData;
         private Dictionary<TypeParameter, IUpgradeStats> _playerParametrs;
         private Dictionary<TypeWeaponSupportiveParameter, float> _weaponParametrs = new();
+        private CompositeDisposable _disposables = new();
 
         public PlayerStats(
             WeaponData weaponData,
@@ -78,6 +80,8 @@ namespace Assets.Source.Game.Scripts.Characters
                 { TypeParameter.AbilityValue, new AbilityDamageParameter()},
                 { TypeParameter.Healing, new HealingParameter()},
             };
+
+            AddListeners();
         }
 
         public event Action<int> ExperienceValueChanged;
@@ -155,6 +159,12 @@ namespace Assets.Source.Game.Scripts.Characters
         public float AttackRange => _attackRange;
         public PlayerClassData PlayerClassData => _classData;
 
+        public void Dispose()
+        {
+            if (_disposables != null)
+                _disposables.Dispose();
+        }
+
         public void EnemyDied(Enemy enemy)
         {
             _score += enemy.Score;
@@ -188,9 +198,9 @@ namespace Assets.Source.Game.Scripts.Characters
                 (parametr as IRevertStats).Revent(_rerollCost);
         }
 
-        public void GetReward(int value)
+        public void GetReward()
         {
-            _rerollPoints += value;
+            _rerollPoints += _currentUpgradePoints;
         }
 
         public int GetMaxExperienceValue(int currentLevel)
@@ -203,35 +213,6 @@ namespace Assets.Source.Game.Scripts.Characters
         {
             _upgradeLevels.TryGetValue(currentLevel, out int maxUpgradeExperience);
             return maxUpgradeExperience;
-        }
-
-        public void UpdatePlayerStats(CardView cardView)
-        {
-            foreach (var parameter in
-                cardView.CardData.AttributeData.Parameters[cardView.CardState.CurrentLevel].CardParameters)
-            {
-                if (_playerParametrs.TryGetValue(parameter.TypeParameter, out IUpgradeStats value))
-                {
-                    value.Apply(parameter.Value);
-                }
-            }
-        }
-
-        public void UpdateRerollPoints(CardView cardView)
-        {
-            var type = cardView
-                .CardData
-                .AttributeData.Parameters[cardView.CardState.CurrentLevel]
-                .CardParameters[0].TypeParameter;
-
-            var value = cardView
-                .CardData
-                .AttributeData
-                .Parameters[cardView.CardState.CurrentLevel].CardParameters[0].Value;
-            _rerollPoints += value;
-
-            if (_playerParametrs.TryGetValue(type, out IUpgradeStats parametr))
-                parametr.Apply(value);
         }
 
         public void SetPlayerUpgrades(GameConfig gameConfig, PersistentDataService persistentDataService)
@@ -274,6 +255,56 @@ namespace Assets.Source.Game.Scripts.Characters
                 {
                     if ((parameter as IRevertStats) != null)
                         (parameter as IRevertStats).Revent(type.Value);
+                }
+            }
+        }
+
+        private void AddListeners()
+        {
+            CardDeck.MessageBroker
+                .Receive<M_TakePassiveAbility>()
+                .Subscribe(m => UpdatePlayerStats(m.CardView))
+                .AddTo(_disposables);
+
+            CardDeck.MessageBroker
+                .Receive<M_TakePrimaryAttribute>()
+                .Subscribe(m => UpdatePlayerStats(m.CardView))
+                .AddTo(_disposables);
+
+            CardDeck.MessageBroker
+               .Receive<M_TakeRerollPoints>()
+               .Subscribe(m => UpdateRerollPoints(m.CardView))
+               .AddTo(_disposables);
+        }
+
+        private void UpdateRerollPoints(CardView cardView)
+        {
+            var type = cardView
+                .CardData
+                .AttributeData.Parameters[cardView.CardState.CurrentLevel]
+                .CardParameters[0].TypeParameter;
+
+            var value = cardView
+                .CardData
+                .AttributeData
+                .Parameters[cardView.CardState.CurrentLevel].CardParameters[0].Value;
+            _rerollPoints += value;
+
+            if (_playerParametrs.TryGetValue(type, out IUpgradeStats parametr))
+                parametr.Apply(value);
+
+            cardView.CardState.AddWeight();
+            cardView.CardState.ResetWeight();
+        }
+
+        private void UpdatePlayerStats(CardView cardView)
+        {
+            foreach (var parameter in
+                cardView.CardData.AttributeData.Parameters[cardView.CardState.CurrentLevel].CardParameters)
+            {
+                if (_playerParametrs.TryGetValue(parameter.TypeParameter, out IUpgradeStats value))
+                {
+                    value.Apply(parameter.Value);
                 }
             }
         }

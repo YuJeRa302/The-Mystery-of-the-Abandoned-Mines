@@ -52,9 +52,9 @@ namespace Assets.Source.Game.Scripts.Services
         private void OnGameClosed()
         {
             _saveAndLoadProgress.SaveGameProgerss(
-                _player.Score,
+                _player.PlayerStats.Score,
                 _player.Coins,
-                _player.UpgradePoints,
+                _player.PlayerStats.UpgradePoints,
                 _persistentDataService.PlayerProgress.LevelService.CurrentLevelId,
                 _roomService.IsWinGame,
                 _roomService.IsGameInterrupted);

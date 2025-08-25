@@ -4,6 +4,7 @@ using Assets.Source.Game.Scripts.Enums;
 using Assets.Source.Game.Scripts.ScriptableObjects;
 using Assets.Source.Game.Scripts.Views;
 using System;
+using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -36,10 +37,20 @@ namespace Assets.Source.Game.Scripts.Characters
         public event Action<AbilityView, ParticleSystem, ActiveAbilityData> LegendaryAbilityViewCreated;
         public event Action<PassiveAbilityView> PassiveAbilityViewCreated;
 
-        public void Initialize(Sprite iconPlayer)
+        public void Initialize(Sprite iconPlayer, PlayerHealth playerHealth)
         {
             _playerMapIcon.sprite = iconPlayer;
             _playerIcon.sprite = iconPlayer;
+            _sliderHP.maxValue = playerHealth.GetMaxHealth();
+            _sliderHP.value = playerHealth.GetCurrentHealth();
+
+            playerHealth.MaxHealthChanged
+                .Subscribe(maxHealth => _sliderHP.maxValue = maxHealth)
+                .AddTo(this);
+
+            playerHealth.CurrentHealthChanged
+                .Subscribe(currentHealth => _sliderHP.value = currentHealth)
+                .AddTo(this);
         }
 
         public void TakeClassAbility(ClassAbilityData abilityData, int currentLevel)
@@ -136,11 +147,6 @@ namespace Assets.Source.Game.Scripts.Characters
         public void ChangeUpgradeExperience(int target)
         {
             _sliderUpgradePoints.value += target;
-        }
-
-        public void ChangeHealth(int target)
-        {
-            _sliderHP.value = target;
         }
 
         public void ChangeKillCount(int value)

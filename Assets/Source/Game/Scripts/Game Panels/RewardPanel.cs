@@ -107,7 +107,7 @@ namespace Assets.Source.Game.Scripts.GamePanels
                 if (_isRewardReceived == true)
                 {
                     _coinsText.text = GamePanelsModel.GetPlayer().Coins.ToString();
-                    _upgradePointsText.text = GamePanelsModel.GetPlayer().UpgradePoints.ToString();
+                    _upgradePointsText.text = GamePanelsModel.GetPlayer().PlayerStats.UpgradePoints.ToString();
                     _openAdButton.gameObject.SetActive(false);
                     _collectButton.gameObject.SetActive(false);
                     _closeGameButton.gameObject.SetActive(true);
@@ -254,7 +254,7 @@ namespace Assets.Source.Game.Scripts.GamePanels
         private void Fill()
         {
             _coinsText.text = GamePanelsModel.GetPlayer().Coins.ToString();
-            _upgradePointsText.text = GamePanelsModel.GetPlayer().UpgradePoints.ToString();
+            _upgradePointsText.text = GamePanelsModel.GetPlayer().PlayerStats.UpgradePoints.ToString();
         }
     }
 }

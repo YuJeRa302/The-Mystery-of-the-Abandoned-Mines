@@ -6,9 +6,11 @@ using Assets.Source.Game.Scripts.Menu;
 using Assets.Source.Game.Scripts.ScriptableObjects;
 using Assets.Source.Game.Scripts.Services;
 using Assets.Source.Game.Scripts.States;
+using Assets.Source.Game.Scripts.Upgrades;
 using Assets.Source.Game.Scripts.Views;
 using System;
 using System.Collections.Generic;
+using UniRx;
 using UnityEngine;
 
 namespace Assets.Source.Game.Scripts.Characters
@@ -22,7 +24,6 @@ namespace Assets.Source.Game.Scripts.Characters
 
         private IAbilityStrategy _abilityStrategy;
         private Player _player;
-        private PlayerStats _playerStats;
         private List<Ability> _abilities = new ();
         private List<Ability> _classAbilities = new ();
         private List<Ability> _legendaryAbilities = new ();
@@ -37,6 +38,7 @@ namespace Assets.Source.Game.Scripts.Characters
         private int _abilityDamage = 0;
         private int _abilityCooldownReduction = 0;
         private int _currentAbilityLevel;
+        private CompositeDisposable _disposables = new();
 
         public PlayerAbilityCaster(
             AbilityFactory abilityFactory,
@@ -73,60 +75,17 @@ namespace Assets.Source.Game.Scripts.Characters
             {
                 CreateClassAbility(ability);
             }
+
+            AddListeners();
         }
 
-        public void TakeAbility(CardView cardView)
-        {
-            _abilityAttributeData = null;
-
-            if (cardView.CardData.AttributeData as LegendaryAbilityData != null)
-            {
-                if (TrySetLegendaryAbility(
-                    (cardView.CardData.AttributeData as LegendaryAbilityData).UpgradeType,
-                    out Ability legendAbility))
-                    CreateLegendaryAbility(legendAbility, legendAbility.AbilityAttribute);
-            }
-
-            if (cardView.CardData.AttributeData == null)
-                return;
-
-            if (cardView.CardData.AttributeData as PassiveAttributeData != null)
-            {
-                PassiveAbilityTaked?.Invoke(cardView.CardData.AttributeData as PassiveAttributeData);
-            }
-            else
-            {
-                _abilityAttributeData = cardView.CardData.AttributeData as ActiveAbilityData;
-                _currentAbilityLevel = cardView.CardState.CurrentLevel;
-
-                if (TryGetAbility(_abilityAttributeData as ActiveAbilityData, out Ability ability))
-                    ability.Upgrade(ability.AbilityAttribute,
-                        _currentAbilityLevel, _abilityDuration,
-                        _abilityDamage,
-                        _abilityCooldownReduction);
-                else
-                    AbilityTaked?.Invoke(_abilityAttributeData as ActiveAbilityData, cardView.CardState.CurrentLevel);
-            }
-        }
-
+        
         public void Dispose()
         {
             DestroyAbilities();
-        }
 
-        public void AbilityDurationChanged(int value)
-        {
-            _abilityDuration = value;
-        }
-
-        public void AbilityDamageChanged(int value)
-        {
-            _abilityDamage = value;
-        }
-
-        public void AbilityCooldownReductionChanged(int value)
-        {
-            _abilityCooldownReduction = value;
+            if (_disposables != null)
+                _disposables.Dispose();
         }
 
         public void CreateClassAbilityView(
@@ -193,6 +152,88 @@ namespace Assets.Source.Game.Scripts.Characters
         public void CreatePassiveAbilityView(PassiveAbilityView passiveAbilityView)
         {
             _passiveAbilityViews.Add(passiveAbilityView);
+        }
+
+        private void AddListeners()
+        {
+            CardDeck.MessageBroker
+                .Receive<M_TakeAbility>()
+                .Subscribe(m => TakeAbility(m.CardView))
+                .AddTo(_disposables);
+
+            CardDeck.MessageBroker
+                .Receive<M_TakePassiveAbility>()
+                .Subscribe(m => TakeAbility(m.CardView))
+                .AddTo(_disposables);
+
+            MessageBroker.Default
+                .Receive<M_AbilityDurationChange>()
+                .Subscribe(m => AbilityDurationChanged(Convert.ToInt32(m.Value)))
+                .AddTo(_disposables);
+
+            MessageBroker.Default
+                .Receive<M_AbilityDamageChange>()
+                .Subscribe(m => AbilityDamageChanged(Convert.ToInt32(m.Value)))
+                .AddTo(_disposables);
+
+            MessageBroker.Default
+                .Receive<M_AbilityCooldownReductionChange>()
+                .Subscribe(m => AbilityCooldownReductionChanged(Convert.ToInt32(m.Value)))
+                .AddTo(_disposables);
+        }
+
+        private void AbilityDurationChanged(int value)
+        {
+            _abilityDuration = value;
+        }
+
+        private void AbilityDamageChanged(int value)
+        {
+            _abilityDamage = value;
+        }
+
+        private void AbilityCooldownReductionChanged(int value)
+        {
+            _abilityCooldownReduction = value;
+        }
+
+        private void TakeAbility(CardView cardView)
+        {
+            _abilityAttributeData = null;
+
+            if (cardView.CardData.AttributeData as LegendaryAbilityData != null)
+            {
+                if (TrySetLegendaryAbility(
+                    (cardView.CardData.AttributeData as LegendaryAbilityData).UpgradeType,
+                    out Ability legendAbility))
+                    CreateLegendaryAbility(legendAbility, legendAbility.AbilityAttribute);
+            }
+
+            if (cardView.CardData.AttributeData == null)
+                return;
+
+            if (cardView.CardData.AttributeData as PassiveAttributeData != null)
+            {
+                PassiveAbilityTaked?.Invoke(cardView.CardData.AttributeData as PassiveAttributeData);
+                cardView.CardState.SetCardLocked(true);
+                cardView.CardState.SetUpgradedStatus(true);
+            }
+            else
+            {
+                _abilityAttributeData = cardView.CardData.AttributeData as ActiveAbilityData;
+                _currentAbilityLevel = cardView.CardState.CurrentLevel;
+
+                if (TryGetAbility(_abilityAttributeData as ActiveAbilityData, out Ability ability))
+                    ability.Upgrade(ability.AbilityAttribute,
+                        _currentAbilityLevel, _abilityDuration,
+                        _abilityDamage,
+                        _abilityCooldownReduction);
+                else
+                    AbilityTaked?.Invoke(_abilityAttributeData as ActiveAbilityData, cardView.CardState.CurrentLevel);
+            }
+
+            cardView.CardState.AddCurrentLevel();
+            cardView.CardState.AddWeight();
         }
 
         private void CreateClassAbility(ClassAbilityData abilityData)

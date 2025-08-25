@@ -1,4 +1,5 @@
 using Assets.Source.Game.Scripts.Card;
+using Assets.Source.Game.Scripts.Characters;
 using Assets.Source.Game.Scripts.Models;
 using Assets.Source.Game.Scripts.ScriptableObjects;
 using System.Collections.Generic;
@@ -21,6 +22,7 @@ namespace Assets.Source.Game.Scripts.GamePanels
 
         private List<CardView> _cardViews = new ();
         private GamePanelsModel _gamePanelsViewModel;
+        private Player _player;
 
         private void OnDestroy()
         {
@@ -32,6 +34,7 @@ namespace Assets.Source.Game.Scripts.GamePanels
             base.Initialize(gamePanelsModel);
             _gamePanelsViewModel = gamePanelsModel;
             AddListeners();
+            _player = GamePanelsModel.GetPlayer();
         }
 
         protected override void Open()
@@ -39,15 +42,15 @@ namespace Assets.Source.Game.Scripts.GamePanels
             GamePanelsModel.CreateCardPool();
             base.Open();
 
-            if (GamePanelsModel.GetPlayer().RerollPoints > 0)
+            if (_player.PlayerStats.RerollPoints > 0)
                 _buttonReroll.gameObject.SetActive(true);
 
-            _countRerollPointsText.text = GamePanelsModel.GetPlayer().RerollPoints.ToString();
+            _countRerollPointsText.text = _player.PlayerStats.RerollPoints.ToString();
         }
 
         protected override void Close()
         {
-            GamePanelsModel.GetPlayer().CardDeck.UpdateDeck();
+            _player.CardDeck.UpdateDeck();
             Clear();
             base.Close();
         }
@@ -66,15 +69,15 @@ namespace Assets.Source.Game.Scripts.GamePanels
 
         private void OnCardTaked(CardView cardView)
         {
-            GamePanelsModel.GetPlayer().CardDeck.TakeCard(cardView);
+            _player.CardDeck.TakeCard(cardView);
             Close();
         }
 
         private void OnCloseAdCallback()
         {
             CloseRewardAds();
-            _countRerollPointsText.text = GamePanelsModel.GetPlayer().RerollPoints.ToString();
-            _buttonReroll.gameObject.SetActive(GamePanelsModel.GetPlayer().PlayerStats.TryGetRerollPoints());
+            _countRerollPointsText.text = _player.PlayerStats.RerollPoints.ToString();
+            _buttonReroll.gameObject.SetActive(_player.PlayerStats.TryGetRerollPoints());
         }
 
         private void OnErrorCallback()
@@ -137,16 +140,16 @@ namespace Assets.Source.Game.Scripts.GamePanels
 
         private void Reroll()
         {
-            if (GamePanelsModel.GetPlayer().PlayerStats.TryGetRerollPoints())
+            if (_player.PlayerStats.TryGetRerollPoints())
             {
                 Clear();
-                GamePanelsModel.GetPlayer().CardDeck.UpdateDeck();
-                GamePanelsModel.GetPlayer().PlayerStats.UpdateCardPanelByRerollPoints();
+                _player.CardDeck.UpdateDeck();
+                _player.PlayerStats.UpdateCardPanelByRerollPoints();
                 GamePanelsModel.CreateCardPool();
-                _countRerollPointsText.text = GamePanelsModel.GetPlayer().RerollPoints.ToString();
+                _countRerollPointsText.text = _player.PlayerStats.RerollPoints.ToString();
             }
 
-            _buttonReroll.gameObject.SetActive(GamePanelsModel.GetPlayer().PlayerStats.TryGetRerollPoints());
+            _buttonReroll.gameObject.SetActive(_player.PlayerStats.TryGetRerollPoints());
         }
     }
 }

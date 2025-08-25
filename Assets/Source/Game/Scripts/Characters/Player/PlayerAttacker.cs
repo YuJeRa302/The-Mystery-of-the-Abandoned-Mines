@@ -147,7 +147,7 @@ namespace Assets.Source.Game.Scripts.Characters
             {
                 var colliders = Physics.OverlapSphereNonAlloc(
                 _player.transform.position,
-                _player.SearchRadius,
+                _player.PlayerStats.SearchRadius,
                 _foundEnemyColliders
             ); ;
 
@@ -158,7 +158,7 @@ namespace Assets.Source.Game.Scripts.Characters
                         float distanceToTarget =
                             Vector3.Distance(enemy.transform.position, _player.transform.position);
 
-                        if (distanceToTarget <= _player.SearchRadius)
+                        if (distanceToTarget <= _player.PlayerStats.SearchRadius)
                             if (_enemies.ContainsKey(distanceToTarget) == false)
                                 _enemies.Add(distanceToTarget, enemy);
                     }
@@ -185,7 +185,7 @@ namespace Assets.Source.Game.Scripts.Characters
         {
             float distanceToTarget = Vector3.Distance(_currentTarget.transform.position, _player.transform.position);
 
-            if (distanceToTarget <= _player.AttackRange)
+            if (distanceToTarget <= _player.PlayerStats.AttackRange)
                 Attacked?.Invoke();
 
             if (_findTarget != null)
@@ -197,19 +197,24 @@ namespace Assets.Source.Game.Scripts.Characters
             if (_currentTarget == null)
                 return;
 
+            float vampirismValue = _player.PlayerStats.VampirismValue;
+            float criticalDamageMultiplier = _player.PlayerStats.CriticalDamageMultiplier;
+            float chanceCriticalDamage = _player.PlayerStats.ChanceCriticalDamage;
+            float chanceVampirism = _player.PlayerStats.ChanceVampirism;
+            float attackRange = _player.PlayerStats.AttackRange;
             Vector3 directionToTarget = _player.transform.position - _currentTarget.transform.position;
             float distanceToTarget = directionToTarget.magnitude;
 
-            if (distanceToTarget <= _player.AttackRange)
+            if (distanceToTarget <= attackRange)
             {
-                if (CalculateChance(_player.ChanceCriticalDamage))
+                if (CalculateChance(chanceCriticalDamage))
                 {
                     DamageSource criticalDamageSource = new(
                         _player.DamageSource.TypeDamage,
                         _player.DamageSource.DamageParameters,
                         _player.DamageSource.PoolParticle,
                         _player.DamageSource.Damage *
-                        (_defaultCriticalDamageMultiplier + _player.CriticalDamageMultiplier / _divider));
+                        (_defaultCriticalDamageMultiplier + criticalDamageMultiplier / _divider));
 
                     _currentTarget.TakeDamage(criticalDamageSource);
                     CritAttacked?.Invoke();
@@ -219,8 +224,8 @@ namespace Assets.Source.Game.Scripts.Characters
                     _currentTarget.TakeDamage(_player.DamageSource);
                 }
 
-                if (CalculateChance(_player.ChanceVampirism))
-                    HealedVampirism?.Invoke(_player.DamageSource.Damage * (_player.VampirismValue / _divider));
+                if (CalculateChance(chanceVampirism))
+                    HealedVampirism?.Invoke(_player.DamageSource.Damage * (vampirismValue / _divider));
             }
 
             if (_coolDownAttack != null)

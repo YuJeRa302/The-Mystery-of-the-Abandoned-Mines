@@ -6,6 +6,7 @@ using Assets.Source.Game.Scripts.Utility;
 using Assets.Source.Game.Scripts.ScriptableObjects;
 using UniRx;
 using Assets.Source.Game.Scripts.Models;
+using Assets.Source.Game.Scripts.Characters;
 
 namespace Assets.Source.Game.Scripts.GamePanels
 {
@@ -74,7 +75,7 @@ namespace Assets.Source.Game.Scripts.GamePanels
         {
             if (index == _gamePanelsModel.GetDefalutRewardIndex())
             {
-                GamePanelsModel.GetEndGameReward();
+                MessageBroker.Default.Publish(new M_CoinsAdd(GamePanelsModel.Player.Coins));
                 _isRewardReceived = true;
             }
         }

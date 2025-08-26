@@ -56,7 +56,6 @@ namespace Assets.Source.Game.Scripts.Characters
         private Transform _spawnPoint;
 
         public event Action PlayerLevelChanged;
-        public event Action PlayerDied;
 
         public Pool Pool => _poolBullet;
         public Transform PlayerAbilityContainer => _playerAbilityContainer;
@@ -148,7 +147,6 @@ namespace Assets.Source.Game.Scripts.Characters
                 _audioPlayer);
 
             _playerView.Initialize(playerClassData.Icon, _playerHealth);
-            SetPlayerStats();
             AddListeners();
             _playerStats.SetPlayerUpgrades(gameConfig, persistentDataService);
         }
@@ -165,12 +163,6 @@ namespace Assets.Source.Game.Scripts.Characters
             transform.position = _spawnPoint.transform.position;
         }
 
-        public void TakeEndGameReward()
-        {
-            _wallet.AddCoins(Coins);
-            _playerStats.GetReward();
-        }
-
         public void TakeDamage(int value)
         {
             _playerHealth.TakeDamage(value);
@@ -178,84 +170,19 @@ namespace Assets.Source.Game.Scripts.Characters
 
         private void AddListeners()
         {
-            _playerAttacker.Attacked += OnAttack;
-            _playerAttacker.EnemyFinded += OnRotateToTarget;
-            _playerAttacker.CritAttacked += OnApplayCritDamage;
-            _playerAttacker.HealedVampirism += OnHealingVampirism;
-
-            _playerStats.ExperienceValueChanged += OnExperienceValueChanged;
-            _playerStats.UpgradeExperienceValueChanged += OnUpgradeExperienceValueChanged;
-            _playerStats.KillCountChanged += OnKillCountChanged;
-            _playerStats.PlayerLevelChanged += OnPlayerLevelChanged;
-            _playerStats.PlayerUpgradeLevelChanged += OnPlayerUpgradeLevelChanged;
-
-            _playerAbilityCaster.AbilityUsed += OnAbilityUsed;
-            _playerAbilityCaster.AbilityEnded += OnAbilityEnded;
-            _playerAbilityCaster.AbilityTaked += OnAbilityTaked;
-            _playerAbilityCaster.PassiveAbilityTaked += OnPassiveAbilityTaked;
-            _playerAbilityCaster.LegendaryAbilityTaked += OnLegendaryAbilityTaked;
-            _playerAbilityCaster.ClassAbilityTaked += OnClassAbilityTaked;
-
-            _playerHealth.PlayerDied += OnPlayerDead;
-            _playerView.AbilityViewCreated += OnAbilityViewCreated;
             _playerView.PassiveAbilityViewCreated += OnPassiveAbilityViewCreated;
             _playerView.LegendaryAbilityViewCreated += OnLegendaryAbilityViewCreated;
             _playerView.ClassAbilityViewCreated += OnClassAbilityViewCreated;
-            _playerStats.CoinsAdding += OnAddCoins;
         }
 
         private void RemoveListeners()
         {
-            _playerAttacker.Attacked -= OnAttack;
-            _playerAttacker.EnemyFinded -= OnRotateToTarget;
-            _playerAttacker.CritAttacked -= OnApplayCritDamage;
-            _playerAttacker.HealedVampirism -= OnHealingVampirism;
-            _playerStats.ExperienceValueChanged -= OnExperienceValueChanged;
-            _playerStats.UpgradeExperienceValueChanged -= OnUpgradeExperienceValueChanged;
-            _playerStats.CoinsAdding -= OnAddCoins;
-            _playerStats.KillCountChanged -= OnKillCountChanged;
-            _playerStats.PlayerLevelChanged -= OnPlayerLevelChanged;
-            _playerStats.PlayerUpgradeLevelChanged -= OnPlayerUpgradeLevelChanged;
-            _playerAbilityCaster.AbilityUsed -= OnAbilityUsed;
-            _playerAbilityCaster.AbilityEnded -= OnAbilityEnded;
-            _playerAbilityCaster.AbilityTaked -= OnAbilityTaked;
-            _playerAbilityCaster.PassiveAbilityTaked -= OnPassiveAbilityTaked;
-            _playerAbilityCaster.LegendaryAbilityTaked -= OnLegendaryAbilityTaked;
-            _playerAbilityCaster.ClassAbilityTaked -= OnClassAbilityTaked;
-            _playerHealth.PlayerDied -= OnPlayerDead;
-            _playerView.AbilityViewCreated -= OnAbilityViewCreated;
             _playerView.PassiveAbilityViewCreated -= OnPassiveAbilityViewCreated;
             _playerView.LegendaryAbilityViewCreated -= OnLegendaryAbilityViewCreated;
             _playerView.ClassAbilityViewCreated -= OnClassAbilityViewCreated;
 
             if (_disposables != null)
                 _disposables.Dispose();
-        }
-
-        private void SetPlayerStats()
-        {
-            _playerView.ChangeUpgradeLevel(
-                _currentUpgradeLevel,
-                _playerStats.GetMaxUpgradeExperienceValue(_currentUpgradeLevel),
-                _currentUpgradeExperience);
-
-            _playerView.ChangePlayerLevel(
-                _currentLevel,
-                _playerStats.GetMaxExperienceValue(_currentLevel),
-                _currentExperience);
-
-            _playerView.ChangeKillCount(_countKillEnemy);
-
-            _playerView.ChangeMaxHealthValue(
-                _playerHealth.GetMaxHealth(),
-                _playerHealth.GetCurrentHealth());
-        }
-
-        public void OnPlayerDead()
-        {
-            _playerHealth.DisableHealing();
-            _playerMovement.DisableMovement();
-            PlayerDied?.Invoke();
         }
 
         private void OnClassAbilityViewCreated(
@@ -282,91 +209,6 @@ namespace Assets.Source.Game.Scripts.Characters
             _playerAbilityCaster.CreatePassiveAbilityView(passiveAbilityView);
         }
 
-        private void OnAbilityViewCreated(AbilityView abilityView, ParticleSystem particleSystem)
-        {
-            _playerAbilityCaster.CreateAbilityView(abilityView, particleSystem);
-        }
-
-        private void OnClassAbilityTaked(ClassAbilityData abilityData, int currentLevel)
-        {
-            _playerView.TakeClassAbility(abilityData, currentLevel);
-        }
-
-        private void OnLegendaryAbilityTaked(ActiveAbilityData abilityAttributeData)
-        {
-            _playerView.TakeLegendaryAbility(abilityAttributeData);
-        }
-
-        private void OnPassiveAbilityTaked(PassiveAttributeData passiveAttributeData)
-        {
-            _playerView.TakePassiveAbility(passiveAttributeData);
-        }
-
-        private void OnAbilityTaked(ActiveAbilityData abilityAttributeData, int currentLevel)
-        {
-            _playerView.TakeAbility(abilityAttributeData, currentLevel);
-        }
-
-        private void OnPlayerUpgradeLevelChanged(
-            int currenLevel,
-            int maxExperienceValue,
-            int currentExperience)
-        {
-            _playerView.ChangeUpgradeLevel(currenLevel, maxExperienceValue, currentExperience);
-        }
-
-        private void OnPlayerLevelChanged(int currenLevel, int maxExperienceValue, int currentExperience)
-        {
-            _playerView.ChangePlayerLevel(currenLevel, maxExperienceValue, currentExperience);
-            PlayerLevelChanged?.Invoke();
-        }
-
-        private void OnKillCountChanged(int value)
-        {
-            _playerView.ChangeKillCount(value);
-        }
-
-        private void OnUpgradeExperienceValueChanged(int value)
-        {
-            _playerView.ChangeUpgradeExperience(value);
-        }
-
-        private void OnExperienceValueChanged(int value)
-        {
-            _playerView.ChangeExperience(value);
-        }
-
-        private void OnAddCoins(int count)
-        {
-            _wallet.AddCoins(count);
-        }
-
-        private void OnHealingVampirism(float healing)
-        {
-            _playerWeapons.InstantiateHealingEffect();
-        }
-
-        private void OnApplayCritDamage()
-        {
-            _playerWeapons.InstantiateCritEffect();
-        }
-
-        private void OnRotateToTarget(Transform transform)
-        {
-            _playerMovement.ChangeRotate(false);
-            _playerMovement.LookAtEnemy(transform);
-        }
-
-        private void OnAbilityEnded(Ability ability)
-        {
-            _playerStats.AbilityEnded(ability);
-        }
-
-        private void OnAbilityUsed(Ability ability)
-        {
-            _playerStats.AbilityUsed(ability);
-        }
-
         private void TryAttackEnemy()
         {
             _playerAttacker.AttackEnemy();
@@ -379,11 +221,6 @@ namespace Assets.Source.Game.Scripts.Characters
             _playerMovement.ChangeRotate(true);
         }
 
-        private void OnAttack()
-        {
-            _playerAnimation.AttackAnimation();
-        }
-
         private void ReleaseUnmanagedResources()
         {
             _playerStats.Dispose();
@@ -392,6 +229,7 @@ namespace Assets.Source.Game.Scripts.Characters
             _playerAttacker.Dispose();
             _playerAbilityCaster.Dispose();
             _playerMovement.Dispose();
+            _wallet.Dispose();
         }
     }
 }

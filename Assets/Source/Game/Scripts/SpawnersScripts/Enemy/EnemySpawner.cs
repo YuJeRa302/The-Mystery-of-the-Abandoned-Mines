@@ -1,3 +1,4 @@
+using Assets.Source.Game.Scripts.Card;
 using Assets.Source.Game.Scripts.Characters;
 using Assets.Source.Game.Scripts.Menu;
 using Assets.Source.Game.Scripts.PoolSystem;
@@ -6,6 +7,7 @@ using Assets.Source.Game.Scripts.Views;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UniRx;
 using UnityEngine;
 
 namespace Assets.Source.Game.Scripts.SpawnersScripts
@@ -32,6 +34,7 @@ namespace Assets.Source.Game.Scripts.SpawnersScripts
         private bool _isEnemySpawned = false;
         private AudioPlayer _audioPlayer;
         private int _currentLevelTier;
+        private CompositeDisposable _disposables = new();
 
         public EnemySpawner(Pool enemyPool,
             ICoroutineRunner coroutineRunner,
@@ -55,8 +58,8 @@ namespace Assets.Source.Game.Scripts.SpawnersScripts
             if (_spawnEnemy != null)
                 _coroutineRunner.StopCoroutine(_spawnEnemy);
 
-            if (_player != null)
-                _player.PlayerDied -= OnPlayerDead;
+            if (_disposables != null)
+                _disposables.Dispose();
 
             foreach (Enemy enemy in _enemies)
             {
@@ -68,7 +71,11 @@ namespace Assets.Source.Game.Scripts.SpawnersScripts
         public void InitPlayerInstance(Player player)
         {
             _player = player;
-            _player.PlayerDied += OnPlayerDead;
+
+            CardDeck.MessageBroker
+                .Receive<M_PlayerDied>()
+                .Subscribe(m => OnPlayerDead())
+                .AddTo(_disposables);
         }
 
         public void EnterRoom(RoomView currentRoom)

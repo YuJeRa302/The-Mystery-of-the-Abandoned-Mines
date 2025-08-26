@@ -1,3 +1,4 @@
+using Assets.Source.Game.Scripts.Card;
 using Assets.Source.Game.Scripts.Characters;
 using Assets.Source.Game.Scripts.Rooms;
 using Assets.Source.Game.Scripts.SpawnersScripts;
@@ -22,6 +23,7 @@ namespace Assets.Source.Game.Scripts.Services
         private bool _canSeeDoor;
         private int _countStages = 0;
         private int _currentStage = 0;
+        private CompositeDisposable _disposables = new();
 
         public RoomService(
             RoomPlacer roomPlacer,
@@ -96,14 +98,20 @@ namespace Assets.Source.Game.Scripts.Services
         {
             _enemySpawner.AllEnemyRoomDied += OnRoomCompleted;
             _enemySpawner.EnemyDied += OnEnemyDied;
-            _player.PlayerDied += OnPlayerDied;
+
+            CardDeck.MessageBroker
+                .Receive<M_PlayerDied>()
+                .Subscribe(m => OnPlayerDied())
+                .AddTo(_disposables);
         }
 
         private void RemoveListener()
         {
             _enemySpawner.AllEnemyRoomDied -= OnRoomCompleted;
             _enemySpawner.EnemyDied -= OnEnemyDied;
-            _player.PlayerDied -= OnPlayerDied;
+
+            if(_disposables != null)
+                _disposables.Dispose();
         }
 
         private void AddRoomListener()

@@ -38,7 +38,6 @@ namespace Assets.Source.Game.Scripts.Characters
             _regeneration = _coroutineRunner.StartCoroutine(RegenerationHealth());
         }
 
-        public event Action PlayerDied;
         public ReactiveProperty<int> MaxHealthChanged { get; } = new ReactiveProperty<int>();
         public ReactiveProperty<int> CurrentHealthChanged { get; } = new ReactiveProperty<int>();
 
@@ -58,19 +57,8 @@ namespace Assets.Source.Game.Scripts.Characters
                 CurrentHealthChanged.Value = _currentHealth;
 
                 if (_currentHealth <= _minHealth)
-                    SetPlayerDie();
+                    MessageBroker.Default.Publish(new M_PlayerDied());
             }
-        }
-
-        public void DisableHealing()
-        {
-            _canHealing = false;
-
-            if (_regeneration != null && _coroutineRunner != null)
-                _coroutineRunner.StopCoroutine(_regeneration);
-
-            if (_timeReduce != null && _coroutineRunner != null)
-                _coroutineRunner.StopCoroutine(_timeReduce);
         }
 
         public int GetMaxHealth()
@@ -97,6 +85,17 @@ namespace Assets.Source.Game.Scripts.Characters
             RemoveListeners();
         }
 
+        private void DisableHealing()
+        {
+            _canHealing = false;
+
+            if (_regeneration != null && _coroutineRunner != null)
+                _coroutineRunner.StopCoroutine(_regeneration);
+
+            if (_timeReduce != null && _coroutineRunner != null)
+                _coroutineRunner.StopCoroutine(_timeReduce);
+        }
+
         private void AddListeners()
         {
             _gamePauseService.GamePaused += OnPauseGame;
@@ -117,7 +116,10 @@ namespace Assets.Source.Game.Scripts.Characters
                 .Subscribe(m => TakeHealing(Convert.ToInt32(m.Value)))
                 .AddTo(_disposables);
 
-            CurrentHealthChanged.Value = _currentHealth;
+            MessageBroker.Default
+                .Receive<M_PlayerDied>()
+                .Subscribe(m => DisableHealing())
+                .AddTo(_disposables);
         }
 
         private void TakeHealing(int heal)
@@ -183,11 +185,6 @@ namespace Assets.Source.Game.Scripts.Characters
             }
 
             _regeneration = null;
-        }
-
-        private void SetPlayerDie()
-        {
-            PlayerDied?.Invoke();
         }
     }
 }

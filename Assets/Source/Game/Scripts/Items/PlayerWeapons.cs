@@ -1,12 +1,14 @@
+using Assets.Source.Game.Scripts.Card;
 using Assets.Source.Game.Scripts.Characters;
 using Assets.Source.Game.Scripts.Enums;
 using Assets.Source.Game.Scripts.PoolSystem;
 using Assets.Source.Game.Scripts.ScriptableObjects;
 using System;
+using UniRx;
 
 namespace Assets.Source.Game.Scripts.Items
 {
-    public class PlayerWeapons
+    public class PlayerWeapons : IDisposable
     {
         private Player _player;
         private WeaponData _weapon;
@@ -14,6 +16,7 @@ namespace Assets.Source.Game.Scripts.Items
         private Pool _pool;
         private PoolParticle _critParticle;
         private PoolParticle _vampirismParticle;
+        private CompositeDisposable _disposables = new();
 
         public PlayerWeapons(Player player, WeaponData weaponData, Pool pool, PoolParticle critParticle, PoolParticle vampiticmParticle)
         {
@@ -25,6 +28,13 @@ namespace Assets.Source.Game.Scripts.Items
             _vampirismParticle = vampiticmParticle;
 
             CreateWeaponView();
+            AddListener();
+        }
+
+        public void Dispose()
+        {
+            if (_disposables != null)
+                _disposables.Dispose();
         }
 
         public WeaponData GetWeaponData()
@@ -51,7 +61,7 @@ namespace Assets.Source.Game.Scripts.Items
             }
         }
 
-        public void InstantiateCritEffect()
+        private void InstantiateCritEffect()
         {
             PoolParticle particle;
 
@@ -70,7 +80,7 @@ namespace Assets.Source.Game.Scripts.Items
             }
         }
 
-        public void InstantiateHealingEffect()
+        private void InstantiateHealingEffect()
         {
             PoolParticle particle;
 
@@ -96,6 +106,19 @@ namespace Assets.Source.Game.Scripts.Items
                 PaladinWeaponData paladinWeaponData = _weapon as PaladinWeaponData;
                 UnityEngine.Object.Instantiate(paladinWeaponData.AdditionalWeapon, _player.AdditionalWeaponPoint);
             }
+        }
+
+        private void AddListener()
+        {
+            CardDeck.MessageBroker
+                .Receive<M_CritAttack>()
+                .Subscribe(m => InstantiateCritEffect())
+                .AddTo(_disposables);
+
+            CardDeck.MessageBroker
+                .Receive<M_HealedVampirism>()
+                .Subscribe(m => InstantiateHealingEffect())
+                .AddTo(_disposables);
         }
     }
 }

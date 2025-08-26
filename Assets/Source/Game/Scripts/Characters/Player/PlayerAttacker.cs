@@ -1,4 +1,5 @@
 using Assets.Source.Game.Scripts.Enums;
+using Assets.Source.Game.Scripts.Models;
 using Assets.Source.Game.Scripts.PoolSystem;
 using Assets.Source.Game.Scripts.ScriptableObjects;
 using Assets.Source.Game.Scripts.Services;
@@ -7,6 +8,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UniRx;
 using UnityEngine;
 
 namespace Assets.Source.Game.Scripts.Characters
@@ -53,11 +55,6 @@ namespace Assets.Source.Game.Scripts.Characters
             AddListeners();
             _coolDownAttack = _coroutineRunner.StartCoroutine(CoolDownAttack());
         }
-
-        public event Action Attacked;
-        public event Action CritAttacked;
-        public event Action<Transform> EnemyFinded;
-        public event Action<float> HealedVampirism;
 
         public void Dispose()
         {
@@ -174,7 +171,7 @@ namespace Assets.Source.Game.Scripts.Characters
 
                     if (_currentTarget != null && _currentTarget.isActiveAndEnabled == true)
                     {
-                        EnemyFinded?.Invoke(_currentTarget.transform);
+                        MessageBroker.Default.Publish(new M_EnemyFind(_currentTarget.transform));
                         GetHit();
                     }
                 }
@@ -186,7 +183,7 @@ namespace Assets.Source.Game.Scripts.Characters
             float distanceToTarget = Vector3.Distance(_currentTarget.transform.position, _player.transform.position);
 
             if (distanceToTarget <= _player.PlayerStats.AttackRange)
-                Attacked?.Invoke();
+                MessageBroker.Default.Publish(new M_Attack());
 
             if (_findTarget != null)
                 _coroutineRunner.StopCoroutine(_findTarget);
@@ -217,7 +214,7 @@ namespace Assets.Source.Game.Scripts.Characters
                         (_defaultCriticalDamageMultiplier + criticalDamageMultiplier / _divider));
 
                     _currentTarget.TakeDamage(criticalDamageSource);
-                    CritAttacked?.Invoke();
+                    MessageBroker.Default.Publish(new M_CritAttack());
                 }
                 else
                 {
@@ -225,7 +222,10 @@ namespace Assets.Source.Game.Scripts.Characters
                 }
 
                 if (CalculateChance(chanceVampirism))
-                    HealedVampirism?.Invoke(_player.DamageSource.Damage * (vampirismValue / _divider));
+                {
+                    float heal = _player.DamageSource.Damage * (vampirismValue / _divider);
+                    MessageBroker.Default.Publish(new M_HealedVampirism(heal));
+                }
             }
 
             if (_coolDownAttack != null)

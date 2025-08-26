@@ -2,6 +2,7 @@ using Assets.Source.Game.Scripts.AbilityScripts;
 using Assets.Source.Game.Scripts.Card;
 using Assets.Source.Game.Scripts.Enums;
 using Assets.Source.Game.Scripts.Factories;
+using Assets.Source.Game.Scripts.GamePanels;
 using Assets.Source.Game.Scripts.Menu;
 using Assets.Source.Game.Scripts.ScriptableObjects;
 using Assets.Source.Game.Scripts.Services;
@@ -11,6 +12,7 @@ using Assets.Source.Game.Scripts.Views;
 using System;
 using System.Collections.Generic;
 using UniRx;
+using UnityEditor.Playables;
 using UnityEngine;
 
 namespace Assets.Source.Game.Scripts.Characters
@@ -55,13 +57,6 @@ namespace Assets.Source.Game.Scripts.Characters
             _abilityEntitiesHolder = new AbilityEntitiesHolder(this);
         }
 
-        public event Action<ClassAbilityData, int> ClassAbilityTaked;
-        public event Action<PassiveAttributeData> PassiveAbilityTaked;
-        public event Action<ActiveAbilityData, int> AbilityTaked;
-        public event Action<ActiveAbilityData> LegendaryAbilityTaked;
-        public event Action<Ability> AbilityUsed;
-        public event Action<Ability> AbilityEnded;
-
         public Player Player => _player;
         public Ability Ability => _ability;
         public AbilityView AbilityView => _abilityView;
@@ -104,7 +99,7 @@ namespace Assets.Source.Game.Scripts.Characters
             _classAbilities.Add(_ability);
         }
 
-        public void CreateAbilityView(AbilityView abilityView, ParticleSystem particleSystem)
+        private void CreateAbilityView(AbilityView abilityView, ParticleSystem particleSystem)
         {
             _particleSystem = particleSystem;
             _abilityView = abilityView;
@@ -180,6 +175,13 @@ namespace Assets.Source.Game.Scripts.Characters
                 .Receive<M_AbilityCooldownReductionChange>()
                 .Subscribe(m => AbilityCooldownReductionChanged(Convert.ToInt32(m.Value)))
                 .AddTo(_disposables);
+
+            MessageBroker.Default
+                .Receive<M_AbilityViewCreat>()
+                .Subscribe(m => CreateAbilityView(
+                m.AbilityView,
+                m.ParticleSystem))
+                .AddTo(_disposables);
         }
 
         private void AbilityDurationChanged(int value)
@@ -214,7 +216,8 @@ namespace Assets.Source.Game.Scripts.Characters
 
             if (cardView.CardData.AttributeData as PassiveAttributeData != null)
             {
-                PassiveAbilityTaked?.Invoke(cardView.CardData.AttributeData as PassiveAttributeData);
+                MessageBroker.Default.Publish(new M_PassiveAbilityTake(
+                        cardView.CardData.AttributeData as PassiveAttributeData));
                 cardView.CardState.SetCardLocked(true);
                 cardView.CardState.SetUpgradedStatus(true);
             }
@@ -229,29 +232,33 @@ namespace Assets.Source.Game.Scripts.Characters
                         _abilityDamage,
                         _abilityCooldownReduction);
                 else
-                    AbilityTaked?.Invoke(_abilityAttributeData as ActiveAbilityData, cardView.CardState.CurrentLevel);
-            }
+                    MessageBroker.Default.Publish(new M_AbilityTake(
+                        (_abilityAttributeData as ActiveAbilityData),
+                       cardView.CardState.CurrentLevel));
 
-            cardView.CardState.AddCurrentLevel();
-            cardView.CardState.AddWeight();
+                cardView.CardState.AddCurrentLevel();
+                cardView.CardState.AddWeight();
+            }
         }
 
         private void CreateClassAbility(ClassAbilityData abilityData)
         {
             ClassAbilityState classAbilityState =
                 _persistentDataService.PlayerProgress.ClassAbilityService.GetClassAbilityStateById(abilityData.Id);
-            ClassAbilityTaked?.Invoke(abilityData, classAbilityState.CurrentLevel);
+            MessageBroker.Default.Publish(new M_ClassAbilityTake(
+                abilityData,
+                classAbilityState.CurrentLevel));
         }
 
         private void OnAbilityUsed(Ability ability)
         {
-            AbilityUsed?.Invoke(ability);
+            MessageBroker.Default.Publish(new M_AbilityUse(ability));
             _audioPlayer.PlayCharacterAudio(ability.AudioClip);
         }
 
         private void OnAbilityEnded(Ability ability)
         {
-            AbilityEnded?.Invoke(ability);
+            MessageBroker.Default.Publish(new M_AbilityEnd(ability));
         }
 
         private void DestroyAbilities()
@@ -348,7 +355,8 @@ namespace Assets.Source.Game.Scripts.Characters
             }
 
             ability.Dispose();
-            LegendaryAbilityTaked?.Invoke((abilityAttributeData as AttackAbilityData).LegendaryAbilityData);
+            MessageBroker.Default.Publish(new M_LegendaryAbilityTake(
+                (abilityAttributeData as AttackAbilityData).LegendaryAbilityData));
         }
     }
 }

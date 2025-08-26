@@ -84,13 +84,6 @@ namespace Assets.Source.Game.Scripts.Characters
             AddListeners();
         }
 
-        public event Action<int> ExperienceValueChanged;
-        public event Action<int> UpgradeExperienceValueChanged;
-        public event Action<int> KillCountChanged;
-        public event Action<int, int, int> PlayerLevelChanged;
-        public event Action<int, int, int> PlayerUpgradeLevelChanged;
-        public event Action<int> CoinsAdding;
-
         public DamageSource DamageSource => _damageSource;
 
         public int Armor
@@ -171,10 +164,10 @@ namespace Assets.Source.Game.Scripts.Characters
             _currentExperience += enemy.ExperienceReward;
             _currentUpgradeExperience += enemy.UpgradeExperienceReward;
             _countKillEnemy++;
-            UpgradeExperienceValueChanged?.Invoke(enemy.UpgradeExperienceReward);
-            ExperienceValueChanged?.Invoke(enemy.ExperienceReward);
-            CoinsAdding?.Invoke(enemy.GoldReward);
-            KillCountChanged?.Invoke(_countKillEnemy);
+            MessageBroker.Default.Publish(new M_ExperienceValueChange(enemy.ExperienceReward));
+            MessageBroker.Default.Publish(new M_UpgradeExperienceValueChange(enemy.UpgradeExperienceReward));
+            MessageBroker.Default.Publish(new M_CoinsAdd(enemy.GoldReward));
+            MessageBroker.Default.Publish(new M_KillCountChange(_countKillEnemy));
             SetNewPlayerLevel(_currentLevel);
             SetNewUpgradePoints(_currentUpgradeLevel);
         }
@@ -238,7 +231,7 @@ namespace Assets.Source.Game.Scripts.Characters
             }
         }
 
-        public void AbilityUsed(Ability ability)
+        private void AbilityUsed(Ability ability)
         {
             foreach (CardParameter parameter in ability.AmplifierParameters)
             {
@@ -247,7 +240,7 @@ namespace Assets.Source.Game.Scripts.Characters
             }
         }
 
-        public void AbilityEnded(Ability ability)
+        private void AbilityEnded(Ability ability)
         {
             foreach (CardParameter type in ability.AmplifierParameters)
             {
@@ -261,6 +254,16 @@ namespace Assets.Source.Game.Scripts.Characters
 
         private void AddListeners()
         {
+            MessageBroker.Default
+                .Receive<M_AbilityEnd>()
+                .Subscribe(m => AbilityEnded(m.Ability))
+                .AddTo(_disposables);
+
+            MessageBroker.Default
+                 .Receive<M_AbilityUse>()
+                .Subscribe(m => AbilityUsed(m.Ability))
+                .AddTo(_disposables);
+
             CardDeck.MessageBroker
                 .Receive<M_TakePassiveAbility>()
                 .Subscribe(m => UpdatePlayerStats(m.CardView))
@@ -348,8 +351,11 @@ namespace Assets.Source.Game.Scripts.Characters
                     _currentUpgradePoints++;
                     _currentUpgradeExperience = difference;
                     _upgradeLevels.TryGetValue(_currentUpgradeLevel, out int maxExperienceValue);
-                    PlayerUpgradeLevelChanged?.Invoke(_currentUpgradeLevel,
-                        maxExperienceValue, _currentUpgradeExperience);
+
+                    MessageBroker.Default.Publish(new M_PlayerUpgradeLevelChange(
+                        _currentLevel,
+                        maxExperienceValue,
+                        _currentExperience));
                 }
             }
         }
@@ -364,7 +370,11 @@ namespace Assets.Source.Game.Scripts.Characters
                     _currentLevel++;
                     _currentExperience = difference;
                     _levels.TryGetValue(_currentLevel, out int maxExperienceValue);
-                    PlayerLevelChanged?.Invoke(_currentLevel, maxExperienceValue, _currentExperience);
+
+                    MessageBroker.Default.Publish(new M_PlayerLevelChange(
+                        _currentLevel,
+                        maxExperienceValue,
+                        _currentExperience));
                 }
             }
         }

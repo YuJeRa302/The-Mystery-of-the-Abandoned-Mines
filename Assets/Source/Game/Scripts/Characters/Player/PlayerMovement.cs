@@ -1,6 +1,8 @@
+using Assets.Source.Game.Scripts.Card;
 using Assets.Source.Game.Scripts.Services;
 using System;
 using System.Collections;
+using UniRx;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using YG;
@@ -23,6 +25,7 @@ namespace Assets.Source.Game.Scripts.Characters
         private Coroutine _movement;
         private bool _canRotate = true;
         private bool _canMove = true;
+        private CompositeDisposable _disposables = new();
 
         public PlayerMovement(
             Camera camera,
@@ -65,7 +68,12 @@ namespace Assets.Source.Game.Scripts.Characters
             RemoveListeners();
         }
 
-        public void DisableMovement()
+        public void ChangeRotate(bool canRotate)
+        {
+            _canRotate = canRotate;
+        }
+
+        private void DisableMovement()
         {
             _canMove = false;
 
@@ -76,12 +84,7 @@ namespace Assets.Source.Game.Scripts.Characters
                 _coroutineRunner.StopCoroutine(_movement);
         }
 
-        public void ChangeRotate(bool canRotate)
-        {
-            _canRotate = canRotate;
-        }
-
-        public void LookAtEnemy(Transform target)
+        private void LookAtEnemy(Transform target)
         {
             _rigidbody.transform.LookAt(new Vector3(target.position.x, 0, target.position.z));
         }
@@ -97,6 +100,20 @@ namespace Assets.Source.Game.Scripts.Characters
 
         private void AddListeners()
         {
+            MessageBroker.Default
+                .Receive<M_EnemyFind>()
+                .Subscribe(m =>
+                {
+                    ChangeRotate(false);
+                    LookAtEnemy(m.Transform);
+                })
+                .AddTo(_disposables);
+
+            MessageBroker.Default
+                .Receive<M_PlayerDied>()
+                .Subscribe(m => DisableMovement())
+                .AddTo(_disposables);
+
             _gamePauseService.GamePaused += OnPauseGame;
             _gamePauseService.GameResumed += OnResumeGame;
         }
@@ -105,6 +122,9 @@ namespace Assets.Source.Game.Scripts.Characters
         {
             _gamePauseService.GamePaused -= OnPauseGame;
             _gamePauseService.GameResumed -= OnResumeGame;
+
+            if (_disposables != null)
+                _disposables.Dispose();
         }
 
         private void OnPauseGame(bool state)

@@ -56,6 +56,7 @@ namespace Assets.Source.Game.Scripts.Models
         public float SfxVolumeValue { get; private set; }
         public bool IsMuted { get; private set; } = false;
         public AudioPlayer AudioPlayer => _audioPlayer;
+        public Player Player => _player;
 
         public void OpenCardPanel()
         {
@@ -141,11 +142,6 @@ namespace Assets.Source.Game.Scripts.Models
         public void GetRerollPointsReward()
         {
             _player.PlayerStats.GetReward();
-        }
-
-        public void GetEndGameReward()
-        {
-            _player.TakeEndGameReward();
         }
 
         public void Mute()

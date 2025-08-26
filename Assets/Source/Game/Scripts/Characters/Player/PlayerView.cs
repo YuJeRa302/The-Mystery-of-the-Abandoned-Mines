@@ -1,9 +1,11 @@
 using Assets.Source.Game.Scripts.AbilityScripts;
 using Assets.Source.Game.Scripts.Enums;
+using Assets.Source.Game.Scripts.GamePanels;
 using Assets.Source.Game.Scripts.ScriptableObjects;
 using Assets.Source.Game.Scripts.Views;
 using System;
 using UniRx;
+using UnityEditor.Playables;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -30,11 +32,17 @@ namespace Assets.Source.Game.Scripts.Characters
         [SerializeField] private Sprite _closeAbilityIcon;
 
         private ParticleSystem _abilityEffect;
+        private CompositeDisposable _disposables = new();
 
-        public event Action<AbilityView, ParticleSystem> AbilityViewCreated;
         public event Action<ClassAbilityData, ClassSkillButtonView, int> ClassAbilityViewCreated;
         public event Action<AbilityView, ParticleSystem, ActiveAbilityData> LegendaryAbilityViewCreated;
         public event Action<PassiveAbilityView> PassiveAbilityViewCreated;
+
+        private void OnDestroy()
+        {
+            if (_disposables != null)
+                _disposables.Dispose();
+        }
 
         public void Initialize(Sprite iconPlayer, PlayerHealth playerHealth)
         {
@@ -50,9 +58,11 @@ namespace Assets.Source.Game.Scripts.Characters
             playerHealth.CurrentHealthChanged
                 .Subscribe(currentHealth => _sliderHP.value = currentHealth)
                 .AddTo(this);
+
+            AddListeners();
         }
 
-        public void TakeClassAbility(ClassAbilityData abilityData, int currentLevel)
+        private void TakeClassAbility(ClassAbilityData abilityData, int currentLevel)
         {
             ClassSkillButtonView abilityView;
             float currentAbilityCooldown = 0f;
@@ -75,14 +85,14 @@ namespace Assets.Source.Game.Scripts.Characters
             ClassAbilityViewCreated?.Invoke(abilityData, abilityView, currentLevel);
         }
 
-        public void TakePassiveAbility(PassiveAttributeData passiveAttributeData)
+        private void TakePassiveAbility(PassiveAttributeData passiveAttributeData)
         {
             PassiveAbilityView view = Instantiate(passiveAttributeData.AbilityView, _passiveAbilityContainer);
             view.Initialize(passiveAttributeData);
             PassiveAbilityViewCreated?.Invoke(view);
         }
 
-        public void TakeLegendaryAbility(ActiveAbilityData abilityAttributeData)
+        private void TakeLegendaryAbility(ActiveAbilityData abilityAttributeData)
         {
             float currentAbilityCooldown = 0f;
             _abilityEffect = abilityAttributeData.Particle;
@@ -103,7 +113,7 @@ namespace Assets.Source.Game.Scripts.Characters
                 abilityAttributeData);
         }
 
-        public void TakeAbility(ActiveAbilityData abilityAttributeData, int currentLevel)
+        private void TakeAbility(ActiveAbilityData abilityAttributeData, int currentLevel)
         {
             AbilityView abilityView;
             float currentAbilityCooldown = 0f;
@@ -118,42 +128,96 @@ namespace Assets.Source.Game.Scripts.Characters
 
             abilityView = Instantiate(abilityAttributeData.AbilityView, _abilityObjectContainer);
             abilityView.Initialize(abilityAttributeData.Icon, currentAbilityCooldown);
-            AbilityViewCreated?.Invoke(abilityView, _abilityEffect);
+            MessageBroker.Default.Publish(new M_AbilityViewCreat(abilityView, _abilityEffect));
         }
 
-        public void ChangePlayerLevel(int currentLevel, int maxExperienceValue, int currentExperience)
+        private void ChangePlayerLevel(int currentLevel, int maxExperienceValue, int currentExperience)
         {
             _textPlayerLevel.text = currentLevel.ToString();
             _sliderXP.maxValue = maxExperienceValue;
             _sliderXP.value = currentExperience;
         }
 
-        public void ChangeUpgradeLevel(int currentLevel, int maxExperienceValue, int currentExperience)
+        private void ChangeUpgradeLevel(int currentLevel, int maxExperienceValue, int currentExperience)
         {
             _textUpgradePoints.text = currentLevel.ToString();
             _sliderUpgradePoints.maxValue = maxExperienceValue;
             _sliderUpgradePoints.value = currentExperience;
         }
 
-        public void ChangeMaxHealthValue(int maxHealthValue, int currentHealthValue)
-        {
-            _sliderHP.maxValue = maxHealthValue;
-            _sliderHP.value = currentHealthValue;
-        }
-
-        public void ChangeExperience(int target)
+        private void ChangeExperience(int target)
         {
             _sliderXP.value += target;
         }
 
-        public void ChangeUpgradeExperience(int target)
+        private void ChangeUpgradeExperience(int target)
         {
             _sliderUpgradePoints.value += target;
         }
 
-        public void ChangeKillCount(int value)
+        private void ChangeKillCount(int value)
         {
             _killCount.text = value.ToString();
+        }
+
+        private void AddListeners()
+        {
+            MessageBroker.Default
+              .Receive<M_ClassAbilityTake>()
+              .Subscribe(m => TakeClassAbility(
+                  m.ClassAbilityData,
+              m.CurrentLvl))
+              .AddTo(_disposables);
+
+            MessageBroker.Default
+               .Receive<M_PassiveAbilityTake>()
+               .Subscribe(m => TakePassiveAbility(
+                   m.PassiveAttributeData))
+               .AddTo(_disposables);
+
+            MessageBroker.Default
+              .Receive<M_LegendaryAbilityTake>()
+              .Subscribe(m => TakeLegendaryAbility(
+                  m.ActiveAbilityData))
+              .AddTo(_disposables);
+
+            MessageBroker.Default
+                .Receive<M_KillCountChange>()
+                .Subscribe(m => ChangeKillCount(m.Value))
+                .AddTo(_disposables);
+
+            MessageBroker.Default
+                .Receive<M_UpgradeExperienceValueChange>()
+                .Subscribe(m => ChangeUpgradeExperience(m.Value))
+                .AddTo(_disposables);
+
+            MessageBroker.Default
+                .Receive<M_ExperienceValueChange>()
+                .Subscribe(m => ChangeExperience(m.Value))
+                .AddTo(_disposables);
+
+            MessageBroker.Default
+                 .Receive<M_PlayerLevelChange>()
+                .Subscribe(m => ChangePlayerLevel(
+                    m.CurrentLevel,
+                    m.MaxExperienceValue,
+                    m.CurrentExperience))
+                .AddTo(_disposables);
+
+            MessageBroker.Default
+                .Receive<M_PlayerUpgradeLevelChange>()
+                .Subscribe(m => ChangeUpgradeLevel(
+                    m.CurrentUpgradeLevel,
+                    m.MaxExperienceValue,
+                    m.CurrentUpgradeExperience))
+                .AddTo(_disposables);
+
+            MessageBroker.Default
+                .Receive<M_AbilityTake>()
+                .Subscribe(m => TakeAbility(
+                    m.ActiveAbilityData,
+                    m.CurrentLvl))
+                .AddTo(_disposables);
         }
     }
 }

@@ -1,7 +1,9 @@
+using Assets.Source.Game.Scripts.GamePanels;
 using Assets.Source.Game.Scripts.ScriptableObjects;
 using Assets.Source.Game.Scripts.Services;
 using System;
 using System.Collections;
+using UniRx;
 using UnityEngine;
 
 namespace Assets.Source.Game.Scripts.Characters
@@ -16,6 +18,7 @@ namespace Assets.Source.Game.Scripts.Characters
         private Coroutine _moveCorontine;
         private Player _player;
         private float _maxSpeed;
+        private CompositeDisposable _disposables = new();
 
         public PlayerAnimation(
             Animator animator,
@@ -45,7 +48,7 @@ namespace Assets.Source.Game.Scripts.Characters
             RemoveListeners();
         }
 
-        public void AttackAnimation()
+        private void AttackAnimation()
         {
             _animator.SetTrigger(AnimationPlayerName.ATTACK_ANIMATION);
         }
@@ -64,6 +67,11 @@ namespace Assets.Source.Game.Scripts.Characters
         {
             _gamePauseService.GamePaused += OnGamePaused;
             _gamePauseService.GameResumed += OnGameResumed;
+
+            MessageBroker.Default
+              .Receive<M_Attack>()
+              .Subscribe(m => AttackAnimation())
+              .AddTo(_disposables);
         }
 
         private void RemoveListeners()
@@ -73,6 +81,9 @@ namespace Assets.Source.Game.Scripts.Characters
                 _gamePauseService.GamePaused -= OnGamePaused;
                 _gamePauseService.GameResumed -= OnGameResumed;
             }
+
+            if (_disposables != null)
+                _disposables.Dispose();
         }
 
         private void OnGamePaused(bool state)

@@ -27,6 +27,7 @@ namespace Assets.Source.Game.Scripts.Views
         {
             ClearLanguageButtons();
             RemoveListeners();
+            _settingsModel.Dispose();
         }
 
         public void Initialize(SettingsModel settingsModel, IAudioPlayerService audioPlayerService)

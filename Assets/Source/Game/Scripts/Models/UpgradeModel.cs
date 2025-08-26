@@ -42,27 +42,16 @@ namespace Assets.Source.Game.Scripts.Models
             if (_currentStats == null)
                 return;
 
-            if (_currentStats.CurrentLevel >= _currentUpgradeData.UpgradeParameters.Count)
+            if (_currentStats.CurrentLevel >= _maxStatsLevel)
                 return;
 
-            if (UpgradePoints >= _currentUpgradeData.UpgradeParameters[_currentStats.CurrentLevel].Cost)
-            {
-                _persistentDataService.TrySpendUpgradePoints(
-                    _currentUpgradeData.UpgradeParameters[_currentStats.CurrentLevel].Cost);
-
-                if (_currentStats.CurrentLevel < _maxStatsLevel)
-                {
-                    int nextLevel = _currentStats.CurrentLevel + 1;
-                    _currentStats.ChangeCurrentLevel(nextLevel);
-                }
-
-                MessageBroker.Default.Publish(new M_StatsUpgraded(_currentStats));
-                _persistentDataService.PlayerProgress.UpgradeService.SetUpgradeState(_currentStats);
-            }
-            else
-            {
+            if (!_persistentDataService.TrySpendUpgradePoints(
+                    _currentUpgradeData.UpgradeParameters[_currentStats.CurrentLevel].Cost))
                 return;
-            }
+
+            _currentStats.ChangeCurrentLevel(_currentStats.CurrentLevel + 1);
+            _persistentDataService.PlayerProgress.UpgradeService.SetUpgradeState(_currentStats);
+            MessageBroker.Default.Publish(new M_StatsUpgraded(_currentStats));
         }
     }
 }

@@ -32,6 +32,7 @@ namespace Assets.Source.Game.Scripts.Views
         [SerializeField] private float _duration = 1f;
         [SerializeField] private float _timeNewTips = 10;
 
+        private CompositeDisposable _disposables = new ();
         private MenuModel _menuModel;
         private List<TipView> _tipViews = new ();
         private IEnumerator _getTips;
@@ -41,12 +42,6 @@ namespace Assets.Source.Game.Scripts.Views
 
         private void OnEnable()
         {
-            if (_getTips != null)
-                StopCoroutine(_getTips);
-
-            if (_animationTips != null)
-                StopCoroutine(_animationTips);
-
             CreateTip();
             GetRandomTip();
         }
@@ -62,13 +57,6 @@ namespace Assets.Source.Game.Scripts.Views
             _audioPlayerService = audioPlayerService;
             _delayNewTips = new WaitForSeconds(_timeNewTips);
             AddListener();
-
-            if (_getTips != null)
-                StopCoroutine(_getTips);
-
-            if (_animationTips != null)
-                StopCoroutine(_animationTips);
-
             CreateTip();
             GetRandomTip();
         }
@@ -83,12 +71,24 @@ namespace Assets.Source.Game.Scripts.Views
             _openKnowledgeBaseButton.onClick.AddListener(ShowKnowledgeBase);
             _openLeaderboardButton.onClick.AddListener(ShowLeaderboard);
             _menuModel.InvokedMainMenuShowed += Show;
-            _menuModel.GamePaused += OnGamePaused;
-            _menuModel.GameResumed += OnGameResumed;
+
+            MenuModel.Message
+                .Receive<M_GamePaused>()
+                .Subscribe(m => OnGamePaused(m.IsGamePaused))
+                .AddTo(_disposables);
+
+            MenuModel.Message
+                .Receive<M_GameResumed>()
+                .Subscribe(m => OnGameResumed(m.IsGameResumed))
+                .AddTo(_disposables);
         }
 
         private void RemoveListener()
         {
+            if (_disposables != null)
+                _disposables.Dispose();
+
+            _menuModel.InvokedMainMenuShowed -= Show;
             _menuModel.Dispose();
             _openUpgradesButton.onClick.RemoveListener(ShowUpgrades);
             _openSettingsButton.onClick.RemoveListener(ShowSettings);
@@ -97,9 +97,6 @@ namespace Assets.Source.Game.Scripts.Views
             _openClassAbilityButton.onClick.RemoveListener(ShowClassAbility);
             _openKnowledgeBaseButton.onClick.RemoveListener(ShowKnowledgeBase);
             _openLeaderboardButton.onClick.RemoveListener(ShowLeaderboard);
-            _menuModel.InvokedMainMenuShowed -= Show;
-            _menuModel.GamePaused -= OnGamePaused;
-            _menuModel.GameResumed -= OnGameResumed;
         }
 
         private void ShowLeaderboard()

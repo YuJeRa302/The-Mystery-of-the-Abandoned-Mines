@@ -33,7 +33,7 @@ namespace Assets.Source.Game.Scripts.Views
         [SerializeField] private SpriteRenderer _renderer;
         [SerializeField] private Sprite _complitIcon;
 
-        private List<RoomDoorView> _roomDoorViews = new();
+        private List<RoomDoorView> _roomDoorViews = new ();
         private RoomDoorView _openDoor;
         private int _dividerIndexColor = 2;
 

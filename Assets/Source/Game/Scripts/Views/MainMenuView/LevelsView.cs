@@ -67,16 +67,16 @@ namespace Assets.Source.Game.Scripts.Views
 
         private bool _isContractLevel = false;
         private LevelDataView _currentLevelDataView;
-        private List<PlayerClassDataView> _playerClassDataViews = new();
-        private List<LevelDataView> _levelDataViews = new();
-        private List<WeaponDataView> _weaponDataViews = new();
+        private List<PlayerClassDataView> _playerClassDataViews = new ();
+        private List<LevelDataView> _levelDataViews = new ();
+        private List<WeaponDataView> _weaponDataViews = new ();
         private LevelsModel _levelsModel;
         private IAudioPlayerService _audioPlayerService;
         private bool _isLevelSelect = false;
         private bool _isPlayerClassShow = false;
         private bool _isLevelsShow = false;
         private bool _isWeaponSelect = false;
-        private CompositeDisposable _disposables = new();
+        private CompositeDisposable _disposables = new ();
 
         public event Action<int> WeaponStateReseted;
 

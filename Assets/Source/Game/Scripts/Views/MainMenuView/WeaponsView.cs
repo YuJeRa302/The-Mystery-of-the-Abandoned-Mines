@@ -37,10 +37,10 @@ namespace Assets.Source.Game.Scripts.Views
         [Space(20)]
         [SerializeField] private GameObject _parameterPanel;
 
-        private List<WeaponStatsView> _weaponStatsViews = new();
-        private List<PlayerClassDataView> _playerClassDataViews = new();
-        private List<WeaponDataView> _weaponDataViews = new();
-        private CompositeDisposable _disposables = new();
+        private List<WeaponStatsView> _weaponStatsViews = new ();
+        private List<PlayerClassDataView> _playerClassDataViews = new ();
+        private List<WeaponDataView> _weaponDataViews = new ();
+        private CompositeDisposable _disposables = new ();
         private WeaponsModel _weaponsModel;
         private IAudioPlayerService _audioPlayerService;
 

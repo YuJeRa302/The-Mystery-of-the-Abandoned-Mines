@@ -48,9 +48,9 @@ namespace Assets.Source.Game.Scripts.Views
         [SerializeField] private GameObject _parameterPanel;
         [SerializeField] private GameObject _descriptionPanel;
 
-        private List<PlayerClassDataView> _playerClassDataViews = new();
-        private List<ClassAbilityDataView> _classAbilityDataViews = new();
-        private List<ClassAbilityStatsView> _classAbilityStatsViews = new();
+        private List<PlayerClassDataView> _playerClassDataViews = new ();
+        private List<ClassAbilityDataView> _classAbilityDataViews = new ();
+        private List<ClassAbilityStatsView> _classAbilityStatsViews = new ();
         private ClassAbilityModel _classAbilityModel;
         private IAudioPlayerService _audioPlayerService;
         private CompositeDisposable _disposables = new();

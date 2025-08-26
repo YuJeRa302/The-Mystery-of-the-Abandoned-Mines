@@ -6,7 +6,6 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
 {
     public sealed class AbilityPresenter
     {
-        private readonly AbilityEntitiesHolder _abilityEntitiesHolder;
         private readonly GamePauseService _gamePauseService;
         private readonly GameLoopService _gameLoopService;
         private readonly Ability _ability;
@@ -17,12 +16,11 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
 
         public AbilityPresenter(AbilityEntitiesHolder abilityEntitiesHolder)
         {
-            _abilityEntitiesHolder = abilityEntitiesHolder;
-            _ability = _abilityEntitiesHolder.Ability;
-            _abilityView = _abilityEntitiesHolder.AbilityView;
-            _abilityStrategy = _abilityEntitiesHolder.IAbilityStrategy;
-            _classAbilityStrategy = _abilityEntitiesHolder.IAbilityStrategy as IClassAbilityStrategy;
-            _abilityPauseStrategy = _abilityEntitiesHolder.IAbilityStrategy as IAbilityPauseStrategy;
+            _ability = abilityEntitiesHolder.Ability;
+            _abilityView = abilityEntitiesHolder.AbilityView;
+            _abilityStrategy = abilityEntitiesHolder.IAbilityStrategy;
+            _classAbilityStrategy = abilityEntitiesHolder.IAbilityStrategy as IClassAbilityStrategy;
+            _abilityPauseStrategy = abilityEntitiesHolder.IAbilityStrategy as IAbilityPauseStrategy;
             var container = SceneManager.GetActiveScene().GetSceneContainer();
             _gamePauseService = container.Resolve<GamePauseService>();
             _gameLoopService = container.Resolve<GameLoopService>();

@@ -92,9 +92,8 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
 
         public List<CardParameter> AmplifierParameters { get; private set; } = new List<CardParameter>();
         public bool IsAbilityEnded { get; private set; } = true;
-        public bool IsAutoCast => _isAutoCast;
-        public float CurrentDuration => _abilityParameters.ContainsKey(TypeParameter.AbilityDuration) 
-            ?_abilityParameters[TypeParameter.AbilityDuration]
+        public float CurrentDuration => _abilityParameters.ContainsKey(TypeParameter.AbilityDuration)
+            ? _abilityParameters[TypeParameter.AbilityDuration]
             : 0f;
         public int CurrentAbilityValue => Convert.ToInt32(_abilityParameters[TypeParameter.AbilityValue]);
         public Dictionary<TypeParameter, float> AbilityParameters => _abilityParameters;
@@ -206,7 +205,7 @@ namespace Assets.Source.Game.Scripts.AbilityScripts
         {
             foreach (var parameter in _damageSource.DamageParameters)
             {
-                if(parameter.TypeDamageParameter == TypeDamageParameter.Duration)
+                if (parameter.TypeDamageParameter == TypeDamageParameter.Duration)
                     parameter.ChangeParameterValue(_abilityParameters[TypeParameter.AbilityDuration]);
             }
         }

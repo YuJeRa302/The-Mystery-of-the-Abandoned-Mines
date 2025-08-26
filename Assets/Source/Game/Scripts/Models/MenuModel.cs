@@ -6,9 +6,28 @@ namespace Assets.Source.Game.Scripts.Models
 {
     public class MenuModel : IDisposable
     {
+        public static readonly IMessageBroker Message = new MessageBroker();
+
         private CompositeDisposable _disposables = new ();
 
         public MenuModel()
+        {
+            AddListeners();
+        }
+
+        public event Action InvokedMainMenuShowed;
+
+        public void Dispose()
+        {
+            RemoveListeners();
+        }
+
+        private void OnShowMenu()
+        {
+            InvokedMainMenuShowed?.Invoke();
+        }
+
+        private void AddListeners()
         {
             YG2.onFocusWindowGame += OnVisibilityWindowGame;
 
@@ -18,26 +37,18 @@ namespace Assets.Source.Game.Scripts.Models
                 .AddTo(_disposables);
         }
 
-        public event Action InvokedMainMenuShowed;
-        public event Action<bool> GamePaused;
-        public event Action<bool> GameResumed;
-
-        public void Dispose()
+        private void RemoveListeners()
         {
             YG2.onFocusWindowGame -= OnVisibilityWindowGame;
-        }
-
-        private void OnShowMenu()
-        {
-            InvokedMainMenuShowed?.Invoke();
+            _disposables?.Dispose();
         }
 
         private void OnVisibilityWindowGame(bool state)
         {
             if (state == true)
-                GameResumed?.Invoke(state);
+                Message.Publish(new M_GameResumed(state));
             else
-                GamePaused?.Invoke(state);
+                Message.Publish(new M_GamePaused(state));
         }
     }
 }

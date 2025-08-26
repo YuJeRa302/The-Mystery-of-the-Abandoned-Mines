@@ -1,33 +1,37 @@
 using Assets.Source.Game.Scripts.Menu;
 using Assets.Source.Game.Scripts.Services;
 using Lean.Localization;
+using System;
+using UniRx;
 
 namespace Assets.Source.Game.Scripts.Models
 {
-    public class SettingsModel
+    public class SettingsModel : IDisposable
     {
         private readonly LeanLocalization _leanLocalization;
         private readonly AudioPlayer _audioPlayer;
         private readonly PersistentDataService _persistentDataService;
+
+        private CompositeDisposable _disposables = new ();
 
         public SettingsModel(PersistentDataService persistentDataService, LeanLocalization leanLocalization, AudioPlayer audioPlayer)
         {
             _leanLocalization = leanLocalization;
             _persistentDataService = persistentDataService;
             _audioPlayer = audioPlayer;
-            AmbientVolumeValue = _persistentDataService.PlayerProgress.AmbientVolume;
-            SfxVolumeValue = _persistentDataService.PlayerProgress.SfxVolume;
-            IsMuted = _persistentDataService.PlayerProgress.IsMuted;
-            _audioPlayer.AmbientValueChanged(AmbientVolumeValue);
-            _audioPlayer.SfxValueChanged(SfxVolumeValue);
-            _audioPlayer.PlayAmbient();
-            _audioPlayer.MuteSound(IsMuted);
+            SetVolumeParameters();
             SetLanguage(_persistentDataService.PlayerProgress.Language);
+            AddListeners();
         }
 
         public float AmbientVolumeValue { get; private set; }
         public float SfxVolumeValue { get; private set; }
         public bool IsMuted { get; private set; }
+
+        public void Dispose()
+        {
+            RemoveListeners();
+        }
 
         public void SetAmbientVolume(float volume)
         {
@@ -45,18 +49,6 @@ namespace Assets.Source.Game.Scripts.Models
         {
             SfxVolumeValue = volume;
             _persistentDataService.PlayerProgress.SfxVolume = volume;
-        }
-
-        public void OnGamePause(bool state)
-        {
-            if (_audioPlayer != null)
-                _audioPlayer.MuteSound(!state);
-        }
-
-        public void OnGameResume(bool state)
-        {
-            if (_audioPlayer != null)
-                _audioPlayer.MuteSound(_persistentDataService.PlayerProgress.IsMuted);
         }
 
         public void Mute()
@@ -81,6 +73,48 @@ namespace Assets.Source.Game.Scripts.Models
                 Mute();
             else
                 UnMute();
+        }
+
+        private void OnGamePause(bool state)
+        {
+            if (_audioPlayer != null)
+                _audioPlayer.MuteSound(!state);
+        }
+
+        private void OnGameResume(bool state)
+        {
+            if (_audioPlayer != null)
+                _audioPlayer.MuteSound(_persistentDataService.PlayerProgress.IsMuted);
+        }
+
+        private void SetVolumeParameters() 
+        {
+            AmbientVolumeValue = _persistentDataService.PlayerProgress.AmbientVolume;
+            SfxVolumeValue = _persistentDataService.PlayerProgress.SfxVolume;
+            IsMuted = _persistentDataService.PlayerProgress.IsMuted;
+            _audioPlayer.AmbientValueChanged(AmbientVolumeValue);
+            _audioPlayer.SfxValueChanged(SfxVolumeValue);
+            _audioPlayer.PlayAmbient();
+            _audioPlayer.MuteSound(IsMuted);
+        }
+
+        private void AddListeners()
+        {
+            MenuModel.Message
+                .Receive<M_GamePaused>()
+                .Subscribe(m => OnGamePause(m.IsGamePaused))
+                .AddTo(_disposables);
+
+            MenuModel.Message
+                .Receive<M_GameResumed>()
+                .Subscribe(m => OnGameResume(m.IsGameResumed))
+                .AddTo(_disposables);
+        }
+
+        private void RemoveListeners()
+        {
+            if (_disposables != null)
+                _disposables.Dispose();
         }
     }
 }

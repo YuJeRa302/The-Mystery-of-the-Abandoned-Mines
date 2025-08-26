@@ -50,29 +50,19 @@ namespace Assets.Source.Game.Scripts.Models
             if (_currentClassAbilityState == null)
                 return;
 
-            if (_currentClassAbilityState.CurrentLevel >= _currentClassAbilityData.AbilityClassParameters.Count)
+            if (_currentClassAbilityState.CurrentLevel >= _maxAbilityLevel)
                 return;
 
-            if (Coins >= _currentClassAbilityData.AbilityClassParameters[_currentClassAbilityState.CurrentLevel].Cost)
-            {
-                _persistentDataService.TrySpendCoins(
-                    _currentClassAbilityData.AbilityClassParameters[_currentClassAbilityState.CurrentLevel].Cost);
-
-                if (_currentClassAbilityState.CurrentLevel < _maxAbilityLevel)
-                {
-                    int nextLevel = _currentClassAbilityState.CurrentLevel + 1;
-                    _currentClassAbilityState.ChangeCurrentLevel(nextLevel);
-                }
-
-                MessageBroker.Default.Publish(new M_AbilityUpgraded(_currentClassAbilityState));
-                
-                _persistentDataService.PlayerProgress.
-                    ClassAbilityService.SetClassAbilityState(_currentClassAbilityState);
-            }
-            else
-            {
+            if (!_persistentDataService.TrySpendCoins(
+                    _currentClassAbilityData.AbilityClassParameters[_currentClassAbilityState.CurrentLevel].Cost))
                 return;
-            }
+
+            _currentClassAbilityState.ChangeCurrentLevel(_currentClassAbilityState.CurrentLevel + 1);
+
+            _persistentDataService.PlayerProgress.
+                ClassAbilityService.SetClassAbilityState(_currentClassAbilityState);
+
+            MessageBroker.Default.Publish(new M_AbilityUpgraded(_currentClassAbilityState));
         }
     }
 }

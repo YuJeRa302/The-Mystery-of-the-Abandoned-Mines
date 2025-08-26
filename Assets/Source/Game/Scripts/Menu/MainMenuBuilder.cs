@@ -33,7 +33,6 @@ namespace Assets.Source.Game.Scripts.Menu
 
         private void Awake()
         {
-            Time.timeScale = _resumeValue;
             Build();
 
             if (YG2.isGameplaying != true)
@@ -42,14 +41,8 @@ namespace Assets.Source.Game.Scripts.Menu
 
         private void Build()
         {
-            _persistentDataService = new PersistentDataService();
-            _saveAndLoad = new(_persistentDataService, _configData);
-
-            if (_saveAndLoad.TryGetGameData())
-                _saveAndLoad.LoadDataFromCloud();
-            else
-                _saveAndLoad.LoadDataFromConfig();
-
+            Time.timeScale = _resumeValue;
+            LoadData();
             CreateMenuEntities();
         }
 
@@ -86,6 +79,17 @@ namespace Assets.Source.Game.Scripts.Menu
             _classAbilityView.Initialize(classAbilityModel, _audioPlayer);
             _knowledgeBaseView.Initialize(_audioPlayer);
             _leaderboardView.Initialize(leaderboardModel);
+        }
+
+        private void LoadData() 
+        {
+            _persistentDataService = new PersistentDataService();
+            _saveAndLoad = new(_persistentDataService, _configData);
+
+            if (_saveAndLoad.TryGetGameData())
+                _saveAndLoad.LoadDataFromCloud();
+            else
+                _saveAndLoad.LoadDataFromConfig();
         }
     }
 }

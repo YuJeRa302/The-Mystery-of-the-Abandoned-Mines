@@ -62,8 +62,7 @@ namespace Assets.Source.Game.Scripts.Characters
             _regeneration = regeneration;
             _countKillEnemy = countKillEnemy;
             _classData = classData;
-            GenerateLevelPlayer(_maxPlayerLevel);
-            GenerateUpgradeLevel(_maxUpgradeLevel);
+
             ApplyWeaponParameters(weaponData, classData.TypeAttackRange);
             _armor = armor + Convert.ToInt32(GetDamageParameter(TypeWeaponSupportiveParameter.BonusArmor));
 
@@ -210,6 +209,8 @@ namespace Assets.Source.Game.Scripts.Characters
 
         public void SetPlayerUpgrades(GameConfig gameConfig, PersistentDataService persistentDataService)
         {
+            GenerateUpgradeLevel(_maxUpgradeLevel);
+            GenerateLevelPlayer(_maxPlayerLevel);
             UpgradeData upgradeData;
 
             if (persistentDataService.PlayerProgress.UpgradeService.UpgradeStates == null)
@@ -353,9 +354,9 @@ namespace Assets.Source.Game.Scripts.Characters
                     _upgradeLevels.TryGetValue(_currentUpgradeLevel, out int maxExperienceValue);
 
                     MessageBroker.Default.Publish(new M_PlayerUpgradeLevelChange(
-                        _currentLevel,
+                        _currentUpgradeLevel,
                         maxExperienceValue,
-                        _currentExperience));
+                        _currentUpgradeExperience));
                 }
             }
         }
@@ -387,6 +388,11 @@ namespace Assets.Source.Game.Scripts.Characters
                 {
                     _levels.Add(index, _maxExperience + _maxExperience * index);
                 }
+
+                MessageBroker.Default.Publish(new M_PlayerLevelChange(
+                        _currentLevel,
+                        _maxExperience,
+                        _currentExperience));
             }
         }
 
@@ -398,6 +404,11 @@ namespace Assets.Source.Game.Scripts.Characters
                 {
                     _upgradeLevels.Add(index, _maxUpgradeExperience + _maxUpgradeExperience * index);
                 }
+
+                MessageBroker.Default.Publish(new M_PlayerUpgradeLevelChange(
+                        _currentUpgradeLevel,
+                        _maxUpgradeExperience,
+                        _currentUpgradeExperience));
             }
         }
     }

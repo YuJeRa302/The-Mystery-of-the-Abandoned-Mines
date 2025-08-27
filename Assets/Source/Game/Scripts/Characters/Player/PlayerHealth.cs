@@ -33,7 +33,9 @@ namespace Assets.Source.Game.Scripts.Characters
             _coroutineRunner = coroutineRunner;
             _gamePauseService = gamePauseService;
             _currentHealth = currentHealth;
+            CurrentHealthChanged.Value = _currentHealth;
             _maxHealth = currentHealth;
+            MaxHealthChanged.Value = _maxHealth;
             AddListeners();
             _regeneration = _coroutineRunner.StartCoroutine(RegenerationHealth());
         }

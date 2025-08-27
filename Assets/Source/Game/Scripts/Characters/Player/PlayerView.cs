@@ -3,9 +3,7 @@ using Assets.Source.Game.Scripts.Enums;
 using Assets.Source.Game.Scripts.GamePanels;
 using Assets.Source.Game.Scripts.ScriptableObjects;
 using Assets.Source.Game.Scripts.Views;
-using System;
 using UniRx;
-using UnityEditor.Playables;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -33,10 +31,6 @@ namespace Assets.Source.Game.Scripts.Characters
 
         private ParticleSystem _abilityEffect;
         private CompositeDisposable _disposables = new();
-
-        public event Action<ClassAbilityData, ClassSkillButtonView, int> ClassAbilityViewCreated;
-        public event Action<AbilityView, ParticleSystem, ActiveAbilityData> LegendaryAbilityViewCreated;
-        public event Action<PassiveAbilityView> PassiveAbilityViewCreated;
 
         private void OnDestroy()
         {
@@ -82,14 +76,17 @@ namespace Assets.Source.Game.Scripts.Characters
             }
 
             abilityView.Initialize(abilityData.Icon, currentAbilityCooldown);
-            ClassAbilityViewCreated?.Invoke(abilityData, abilityView, currentLevel);
+            MessageBroker.Default.Publish(new M_ClassAbilityViewCreat(
+                abilityData,
+                abilityView,
+                currentLevel));
         }
 
         private void TakePassiveAbility(PassiveAttributeData passiveAttributeData)
         {
             PassiveAbilityView view = Instantiate(passiveAttributeData.AbilityView, _passiveAbilityContainer);
             view.Initialize(passiveAttributeData);
-            PassiveAbilityViewCreated?.Invoke(view);
+            MessageBroker.Default.Publish(new M_PassiveAbilityViewCreat(view));
         }
 
         private void TakeLegendaryAbility(ActiveAbilityData abilityAttributeData)
@@ -107,10 +104,10 @@ namespace Assets.Source.Game.Scripts.Characters
 
             abilityView.Initialize(abilityAttributeData.Icon, currentAbilityCooldown);
 
-            LegendaryAbilityViewCreated?.Invoke(
+            MessageBroker.Default.Publish(new M_LegendaryAbilityViewCreat(
                 abilityView, 
-                abilityAttributeData.Particle, 
-                abilityAttributeData);
+                abilityAttributeData.Particle,
+                abilityAttributeData));
         }
 
         private void TakeAbility(ActiveAbilityData abilityAttributeData, int currentLevel)
@@ -136,6 +133,7 @@ namespace Assets.Source.Game.Scripts.Characters
             _textPlayerLevel.text = currentLevel.ToString();
             _sliderXP.maxValue = maxExperienceValue;
             _sliderXP.value = currentExperience;
+            MessageBroker.Default.Publish(new M_CardPanelOpen());
         }
 
         private void ChangeUpgradeLevel(int currentLevel, int maxExperienceValue, int currentExperience)

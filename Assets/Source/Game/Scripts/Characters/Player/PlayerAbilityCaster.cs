@@ -83,7 +83,7 @@ namespace Assets.Source.Game.Scripts.Characters
                 _disposables.Dispose();
         }
 
-        public void CreateClassAbilityView(
+        private void CreateClassAbilityView(
             ClassAbilityData classAbilityData,
             ClassSkillButtonView classSkillButtonView,
             int currentLevel)
@@ -119,7 +119,7 @@ namespace Assets.Source.Game.Scripts.Characters
             _abilities.Add(_ability);
         }
 
-        public void CreateLegendaryAbilityView(
+        private void CreateLegendaryAbilityView(
             AbilityView abilityView,
             ParticleSystem particleSystem,
             ActiveAbilityData abilityAttributeData)
@@ -144,7 +144,7 @@ namespace Assets.Source.Game.Scripts.Characters
             _legendaryAbilities.Add(_ability);
         }
 
-        public void CreatePassiveAbilityView(PassiveAbilityView passiveAbilityView)
+        private void CreatePassiveAbilityView(PassiveAbilityView passiveAbilityView)
         {
             _passiveAbilityViews.Add(passiveAbilityView);
         }
@@ -182,6 +182,27 @@ namespace Assets.Source.Game.Scripts.Characters
                 m.AbilityView,
                 m.ParticleSystem))
                 .AddTo(_disposables);
+
+            MessageBroker.Default
+                .Receive<M_PassiveAbilityViewCreat>()
+                .Subscribe(m => CreatePassiveAbilityView(m.PassiveAbilityView))
+                .AddTo(_disposables);
+
+            MessageBroker.Default
+                .Receive<M_LegendaryAbilityViewCreat>()
+                .Subscribe(m => CreateLegendaryAbilityView(
+                    m.AbilityView,
+                    m.ParticleSystem,
+                    m.ActiveAbilityData))
+                .AddTo(_disposables);
+
+            MessageBroker.Default
+               .Receive<M_ClassAbilityViewCreat>()
+               .Subscribe(m => CreateClassAbilityView(
+                   m.ClassAbilityData,
+                   m.ClassSkillButtonView,
+                   m.CurrentLvl))
+               .AddTo(_disposables);
         }
 
         private void AbilityDurationChanged(int value)

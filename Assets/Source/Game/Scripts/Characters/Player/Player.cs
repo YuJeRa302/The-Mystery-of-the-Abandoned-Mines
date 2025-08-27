@@ -1,4 +1,3 @@
-using Assets.Source.Game.Scripts.AbilityScripts;
 using Assets.Source.Game.Scripts.Card;
 using Assets.Source.Game.Scripts.Factories;
 using Assets.Source.Game.Scripts.Items;
@@ -6,8 +5,6 @@ using Assets.Source.Game.Scripts.Menu;
 using Assets.Source.Game.Scripts.PoolSystem;
 using Assets.Source.Game.Scripts.ScriptableObjects;
 using Assets.Source.Game.Scripts.Services;
-using Assets.Source.Game.Scripts.Views;
-using System;
 using System.Collections.Generic;
 using UniRx;
 using UnityEngine;
@@ -54,8 +51,6 @@ namespace Assets.Source.Game.Scripts.Characters
         private PlayerMovement _playerMovement;
         private AudioPlayer _audioPlayer;
         private Transform _spawnPoint;
-
-        public event Action PlayerLevelChanged;
 
         public Pool Pool => _poolBullet;
         public Transform PlayerAbilityContainer => _playerAbilityContainer;
@@ -147,13 +142,11 @@ namespace Assets.Source.Game.Scripts.Characters
                 _audioPlayer);
 
             _playerView.Initialize(playerClassData.Icon, _playerHealth);
-            AddListeners();
             _playerStats.SetPlayerUpgrades(gameConfig, persistentDataService);
         }
 
         public void Remove()
         {
-            RemoveListeners();
             ReleaseUnmanagedResources();
             Destroy(this);
         }
@@ -166,47 +159,6 @@ namespace Assets.Source.Game.Scripts.Characters
         public void TakeDamage(int value)
         {
             _playerHealth.TakeDamage(value);
-        }
-
-        private void AddListeners()
-        {
-            _playerView.PassiveAbilityViewCreated += OnPassiveAbilityViewCreated;
-            _playerView.LegendaryAbilityViewCreated += OnLegendaryAbilityViewCreated;
-            _playerView.ClassAbilityViewCreated += OnClassAbilityViewCreated;
-        }
-
-        private void RemoveListeners()
-        {
-            _playerView.PassiveAbilityViewCreated -= OnPassiveAbilityViewCreated;
-            _playerView.LegendaryAbilityViewCreated -= OnLegendaryAbilityViewCreated;
-            _playerView.ClassAbilityViewCreated -= OnClassAbilityViewCreated;
-
-            if (_disposables != null)
-                _disposables.Dispose();
-        }
-
-        private void OnClassAbilityViewCreated(
-            ClassAbilityData classAbilityData,
-            ClassSkillButtonView classSkillButtonView,
-            int currentLevel)
-        {
-            _playerAbilityCaster.CreateClassAbilityView(classAbilityData, classSkillButtonView, currentLevel);
-        }
-
-        private void OnLegendaryAbilityViewCreated(
-            AbilityView abilityView,
-            ParticleSystem particleSystem,
-            ActiveAbilityData abilityAttributeData)
-        {
-            _playerAbilityCaster.CreateLegendaryAbilityView(
-                abilityView,
-                particleSystem,
-                abilityAttributeData);
-        }
-
-        private void OnPassiveAbilityViewCreated(PassiveAbilityView passiveAbilityView)
-        {
-            _playerAbilityCaster.CreatePassiveAbilityView(passiveAbilityView);
         }
 
         private void TryAttackEnemy()

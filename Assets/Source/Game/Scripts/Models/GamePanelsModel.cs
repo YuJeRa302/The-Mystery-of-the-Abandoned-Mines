@@ -166,12 +166,6 @@ namespace Assets.Source.Game.Scripts.Models
             _gamePauseService.GamePaused += OnGamePause;
             _gamePauseService.GameResumed += OnGameResume;
             _cardLoader.CardPoolCreated += OnCardPoolCreate;
-            _player.PlayerLevelChanged += OnPlayerLevelChanged;
-        }
-
-        private void OnPlayerLevelChanged()
-        {
-            MessageBroker.Default.Publish(new M_CardPanelOpen());
         }
 
         private void OnGameEnded(bool state)

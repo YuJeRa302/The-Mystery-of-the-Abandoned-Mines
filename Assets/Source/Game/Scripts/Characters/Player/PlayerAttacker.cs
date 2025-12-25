@@ -1,5 +1,4 @@
 using Assets.Source.Game.Scripts.Enums;
-using Assets.Source.Game.Scripts.Models;
 using Assets.Source.Game.Scripts.PoolSystem;
 using Assets.Source.Game.Scripts.ScriptableObjects;
 using Assets.Source.Game.Scripts.Services;
@@ -146,7 +145,7 @@ namespace Assets.Source.Game.Scripts.Characters
                 _player.transform.position,
                 _player.PlayerStats.SearchRadius,
                 _foundEnemyColliders
-            ); ;
+            );
 
                 for (int i = 0; i < colliders; i++)
                 {

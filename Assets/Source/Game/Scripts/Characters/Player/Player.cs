@@ -6,7 +6,6 @@ using Assets.Source.Game.Scripts.PoolSystem;
 using Assets.Source.Game.Scripts.ScriptableObjects;
 using Assets.Source.Game.Scripts.Services;
 using System.Collections.Generic;
-using UniRx;
 using UnityEngine;
 
 namespace Assets.Source.Game.Scripts.Characters
@@ -38,7 +37,6 @@ namespace Assets.Source.Game.Scripts.Characters
         [SerializeField] private int _currentHealth = 100;
         [SerializeReference] private List<ITakeCardStrategy> _takeCardStrategies;
 
-        private CompositeDisposable _disposables = new();
         private PlayerView _playerView;
         private PlayerAbilityCaster _playerAbilityCaster;
         private PlayerStats _playerStats;
@@ -66,7 +64,6 @@ namespace Assets.Source.Game.Scripts.Characters
         public PlayerStats PlayerStats => _playerStats;
         public int CurrentHealth => _playerHealth.GetCurrentHealth();
         public int Coins => _wallet.CurrentCoins;
-
 
         public void CreatePlayerEntities(
             AbilityFactory abilityFactory,

@@ -76,6 +76,7 @@ namespace Assets.Source.Game.Scripts.Characters
             }
 
             abilityView.Initialize(abilityData.Icon, currentAbilityCooldown);
+            
             MessageBroker.Default.Publish(new M_ClassAbilityViewCreat(
                 abilityData,
                 abilityView,
@@ -114,7 +115,6 @@ namespace Assets.Source.Game.Scripts.Characters
         {
             AbilityView abilityView;
             float currentAbilityCooldown = 0f;
-
             _abilityEffect = abilityAttributeData.Particle;
 
             foreach (var parameter in abilityAttributeData.Parameters[currentLevel].CardParameters)

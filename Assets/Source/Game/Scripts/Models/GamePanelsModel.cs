@@ -15,7 +15,6 @@ namespace Assets.Source.Game.Scripts.Models
     {
         private readonly string _defalutRewardIndex = "0";
         private readonly string _rerollPointsRewardIndex = "1";
-        private readonly int _countRerollPointsReward = 2;
         private readonly int _minWeaponCount = 1;
         private readonly Random _rnd = new();
         private readonly PersistentDataService _persistentDataService;

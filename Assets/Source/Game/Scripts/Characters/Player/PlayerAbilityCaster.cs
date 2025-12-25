@@ -12,7 +12,6 @@ using Assets.Source.Game.Scripts.Views;
 using System;
 using System.Collections.Generic;
 using UniRx;
-using UnityEditor.Playables;
 using UnityEngine;
 
 namespace Assets.Source.Game.Scripts.Characters
@@ -40,7 +39,7 @@ namespace Assets.Source.Game.Scripts.Characters
         private int _abilityDamage = 0;
         private int _abilityCooldownReduction = 0;
         private int _currentAbilityLevel;
-        private CompositeDisposable _disposables = new();
+        private CompositeDisposable _disposables = new ();
 
         public PlayerAbilityCaster(
             AbilityFactory abilityFactory,
@@ -73,7 +72,6 @@ namespace Assets.Source.Game.Scripts.Characters
 
             AddListeners();
         }
-
         
         public void Dispose()
         {
@@ -266,6 +264,7 @@ namespace Assets.Source.Game.Scripts.Characters
         {
             ClassAbilityState classAbilityState =
                 _persistentDataService.PlayerProgress.ClassAbilityService.GetClassAbilityStateById(abilityData.Id);
+
             MessageBroker.Default.Publish(new M_ClassAbilityTake(
                 abilityData,
                 classAbilityState.CurrentLevel));
@@ -376,6 +375,7 @@ namespace Assets.Source.Game.Scripts.Characters
             }
 
             ability.Dispose();
+
             MessageBroker.Default.Publish(new M_LegendaryAbilityTake(
                 (abilityAttributeData as AttackAbilityData).LegendaryAbilityData));
         }

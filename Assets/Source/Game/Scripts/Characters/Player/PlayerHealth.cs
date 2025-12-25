@@ -149,7 +149,6 @@ namespace Assets.Source.Game.Scripts.Characters
             MaxHealthChanged.Value = _maxHealth;
         }
 
-
         private void RemoveListeners()
         {
             _gamePauseService.GamePaused -= OnPauseGame;
